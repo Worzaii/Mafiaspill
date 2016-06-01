@@ -1,0 +1,206 @@
+/*#############################################################
+Name: Blackbox
+Date: 2006-06-01
+Author: Viktor Persson
+URL: http://arcsin.se
+
+Feel free to use and modify but please provide credits.
+#############################################################*/
+
+/* Standard elements */
+* {
+	margin: 0;
+	padding: 0;
+}
+a {
+	color: #999;
+	text-decoration: none;
+}
+body {
+	background: #000 url(logginn/bg.png) repeat-x fixed left bottom;
+	color: #555;
+	margin: 20px 0;
+	text-align: center;
+	font: normal 0.7em sans-serif,Arial;
+}
+ul {
+	margin: 12px 0;
+}
+li {
+	/*list-style: url(logginn/li.gif);*/
+	margin-left: 18px;
+}
+code {
+	font: normal 1em "Lucida Sans Unicode",serif;
+	background: url(logginn/bgcode.gif);
+	color: #888;
+	display: block;
+	padding: 3px 6px;
+	white-space: pre;
+	margin-bottom: 12px;
+}
+
+
+/* Misc */
+div.quote {
+	margin-bottom: 12px;
+	font: normal 1.1em "Lucida Sans Unicode",serif;
+	background: url(logginn/quote.gif) no-repeat;
+	padding-left: 28px;
+	color: #666;
+}
+
+
+/* Main structure */
+.main {
+	background: #000;
+	border: 3px double #EEE;
+	border-color: #141414 #202020 #222 #202020;
+	margin: 20px auto 4px auto;
+	text-align: left;
+	width: 600px;
+}
+
+
+/* Header */
+.gfx {
+	background: #222 url('imgs/logginnheader copy.png') no-repeat;
+	height: 160px;
+}
+.gfx h1 {
+    color: #999;
+    font: normal 23px Tahoma,sans-serif;
+    padding: 0px;
+    position: relative;
+    top: 131px;
+    text-align: center;
+    background: black;
+}
+
+
+/* Menu */
+.menu a {
+	background: #000 url(logginn/bgmenu.png) repeat-x;
+	border-right: 1px solid #222;
+	border-top: 1px solid #1A1A1A;
+	color: #444;
+	font-size: 1.2em;
+	float: left;
+	padding-top: 4px;
+	width: 149px; height: 36px;
+}
+.menu a span {
+	padding-left: 6px;
+}
+.menu a:hover {
+	background-position: left bottom;
+	color: #666;
+}
+.menu a#last {
+	width: 150px;
+	border-right: none;
+}
+
+
+/* Content */
+.content {
+	border-top: 1px solid #1A1A1A;
+	background: #1A1A1A;
+	clear: both;
+}
+.content h1 {
+	margin: 0 0 4px;
+	font: bold 1.1em sans-serif,Arial;
+	color: #666;
+}
+.content p {
+	margin: 0 0 12px;
+}
+.item {
+	background: #030303 url(logginn/bgitem.gif) repeat-x;
+	padding: 8px 10px;
+}
+
+
+/*LOGG INN AV MAGNUS*/
+.submit {
+	border: none;
+	height: 30px;
+	width: 150px;
+	background: url('logginn/menu_heading.png') repeat-x;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-top: 1px solid #6e5844;
+	border-bottom: 1px solid #000;
+	margin: 10px 30px 0px 0px;
+	float: right;
+
+	line-height: 30px;
+	text-align: center;
+	color: #ccc;
+	text-shadow: 1px 1px 0px #000;
+}
+
+.submit[type=submit]:hover {
+	border-bottom: 1px solid #6e5844;
+	border-top: 1px solid #111;
+	color: #fff;
+}
+/*SLUTT LOGGINN /MAGNUS */
+
+/* Footer */
+.footer {
+	padding: 5px;
+	background: #0A0A0A;
+	color: #666;
+    text-align:center;
+}
+.awesome, .awesome:visited {
+	background: #222 url(/images/alert-overlay.png) repeat-x;
+	display: inline-block;
+	padding: 5px 10px 6px;
+	color: #fff;
+	text-decoration: none;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+	border-bottom: 1px solid rgba(0,0,0,0.25);
+	position: relative;
+	cursor: pointer;
+}
+.awesome:hover							{ background-color: #111; color: #fff; }
+	.awesome:active							{ top: 1px; }
+	.small.awesome, .small.awesome:visited 			{ font-size: 11px; }
+	.awesome, .awesome:visited,
+	.medium.awesome, .medium.awesome:visited 		{ font-size: 13px; font-weight: bold; line-height: 1; text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
+	.large.awesome, .large.awesome:visited 			{ font-size: 14px; padding: 8px 14px 9px; }
+
+	.green.awesome, .green.awesome:visited		{ background-color: #91bd09; }
+	.green.awesome:hover						{ background-color: #749a02; }
+	.blue.awesome, .blue.awesome:visited		{ background-color: #2daebf; }
+	.blue.awesome:hover							{ background-color: #007d9a; }
+	.red.awesome, .red.awesome:visited			{ background-color: #e33100; }
+	.red.awesome:hover							{ background-color: #872300; }
+	.magenta.awesome, .magenta.awesome:visited		{ background-color: #a9014b; }
+	.magenta.awesome:hover							{ background-color: #630030; }
+	.orange.awesome, .orange.awesome:visited		{ background-color: #ff5c00; }
+	.orange.awesome:hover							{ background-color: #d45500; }
+	.yellow.awesome, .yellow.awesome:visited		{ background-color: #ffb515; }
+	.yellow.awesome:hover							{ background-color: #fc9200; }
+table.glemt{
+margin: 0 auto;
+border:1px solid #222;
+border-collapse:collapse;
+}
+table.glemt td, table.glemt th{
+border:1px solid #222;
+}
+table.glemt th{
+padding:10px;
+background:none;
+font-family:'Times New Roman';
+text-align:center;
+}
