@@ -1,6 +1,6 @@
 <?php
 include("core.php");
-if(50 + 50 == 100){
+if(!r1){
   startpage("Ingen tilgang");
   noaccess();
   endpage();
