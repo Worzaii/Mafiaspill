@@ -1,7 +1,7 @@
 
 <?php
-  global $db,$obj,$set;/*Ettersom left.php blir inkludert inne i en funksjon, så må disse variablene globaliseres for at dette scriptet skal kunne bruke disse variablene*/
-  $sql = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN '".(time()-1800)."' AND '".time()."' ORDER BY `lastactive` DESC");/*Siste 30 spillere pålogget*/
+  global $db,$obj,$set;/*Ettersom left.php blir inkludert inne i en funksjon, sÃ¥ mÃ¥ disse variablene globaliseres for at dette scriptet skal kunne bruke disse variablene*/
+  $sql = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN '".(time()-1800)."' AND '".time()."' ORDER BY `lastactive` DESC");/*Siste 30 spillere pÃ¥logget*/
   $ant = $db->num_rows();
   $sql3= $db->query("SELECT * FROM `chat`");
   $num2= $db->num_rows();
@@ -91,7 +91,7 @@ else{echo '<li><a href="Fengsel">Fengsel</a> <span style="font-size:10px;" id="j
 </ul>
 <h2>Verdier</h2>
 <ul>
-  <li><a href="Marked">Svartebørsen</a></li>
+  <li><a href="Marked">SvartebÃ¸rsen</a></li>
   <li><a href="Bunker">Bunker</a></li>
   <li><a href="Bank">Banken</a></li>
   <li><a href="Poeng">Poeng</a></li>
@@ -103,9 +103,9 @@ else{echo '<li><a href="Fengsel">Fengsel</a> <span style="font-size:10px;" id="j
 <h2>Kommunikasjon</h2>
 <ul>
   <li><a href="Innboks">Innboks</a><?=$nymeldinger?></li>
-  <li><a href="deputy.php">Send inn søknad!</a></li>
+  <li><a href="deputy.php">Send inn sÃ¸knad!</a></li>
   <li><a href="support.php">Support</a></li>
-  <li><a href="<?php echo $onl; ?>">Spillere pålogget</a> (<?=$ant;?>)</li>
+  <li><a href="<?php echo $onl; ?>">Spillere pÃ¥logget</a> (<?=$ant;?>)</li>
   <li><a href="Nyheter">Nyheter</a></li>
   <li><a href="Ledelsen">Ledelsen</a></li>
 </ul>
@@ -113,7 +113,7 @@ else{echo '<li><a href="Fengsel">Fengsel</a> <span style="font-size:10px;" id="j
 <ul>
   <li><a href="Chat">Chat</a> <?php if($num2 >= 2){echo "($num2)";}?></li>
   <li><a href="nyforum.php?type=1"> Generelt Forum</a></li>
-  <li><a href="nyforum.php?type=2"> Salg og Søknadsforum</a></li>
+  <li><a href="nyforum.php?type=2"> Salg og SÃ¸knadsforum</a></li>
   <li><a href="nyforum.php?type=3"> Off-Topic</a></li>
   <?php if($obj->family != NULL){echo '<li><a href="familiepanel.php?side=konfam">Familie</a></li>';}
   else{?>
@@ -129,27 +129,6 @@ else{echo '<li><a href="Fengsel">Fengsel</a> <span style="font-size:10px;" id="j
 	<script src='//js.pusher.com/2.2/pusher.min.js'></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/shortcut.js"></script>
-
-
-<script type = "text/javascript">
-    $(document).keyup(function (e) {
-        var keyCode = e.keyCode ? e.keyCode : e.which
-        if (keyCode == 751617) {
-    window.location = "Krim";
-}
-        if (keyCode == 66) {
-    window.location = "Bil";
-}
-        if (keyCode == 79) {
-    window.location = "online7.php";
-}
-    });
-</script> 
-
-	
-			
-
-
 <div id="cometchat_base" style="left: 20px; width: 1326px; z-index: 100004;">
 <div id="cometchat_optionsbutton" class="cometchat_tab" unselectable="on">
 <div id="cometchat_optionsbutton_icon" class="cometchat_optionsimages">
@@ -191,7 +170,7 @@ else{echo '<li><a href="Fengsel">Fengsel</a> <span style="font-size:10px;" id="j
 </div>
       <script type="text/javascript">
             function notchrome() {
-               alert ("\bViktig informasjon!!\b\nDu bruker ikke google chrome og vill dermed ikke få full effekt av alle opplevlsene i spillet, vi anbefaler derfor at du bruker google chrome når du spiller westmafia!");
+               alert ("\bViktig informasjon!!\b\nDu bruker ikke google chrome og vill dermed ikke fÃ¥ full effekt av alle opplevlsene i spillet, vi anbefaler derfor at du bruker google chrome nÃ¥r du spiller westmafia!");
             }
       </script>
 <?php
