@@ -1,6 +1,6 @@
 <?php
 include("core.php");
-if(!r1){
+if(!r1()){
   startpage("Ingen tilgang");
   noaccess();
   endpage();
