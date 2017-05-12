@@ -1,2 +1,3 @@
 # Mafiaspill
-Legger ut det gamle mafiaspillet mitt da jeg ikke lengre blir å ta det opp, og gir dermed sjansen til andre som vil prøve seg frem.
+Det gamle mafia-no.net scriptet som jeg laget for flere år siden i sammarbeid med Thomas Andreassen Jeg stod for store deler av programmeringen av spillet. Design er av evjand design, men firmaet ser ut til å ha lagt ned.
+Jobber noe på en oppdatering med libraries i fritiden, men dette er såvidt påbegynt og er ikke klar til deling.
