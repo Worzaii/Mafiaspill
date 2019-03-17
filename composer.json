@@ -1,0 +1,12 @@
+{
+    "name": "werzaire.net/mafia.werzaire.net",
+    "description": "Mafiaspillet",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Worzaii",
+            "email": "baretester@live.no"
+        }
+    ],
+    "require": {}
+}

@@ -153,7 +153,6 @@ if(isset($_GET['getaccess'])){
 }
 if(isset($_GET['brukerreg'])){
   #die(print(json_encode(array('string'=>gen('<p style="color:#850000">Utilgjengelig for øyeblikket!</p>')))));
-  define('THRUTT', "Sperredørp!");
   include_once("../classes/class.php");
   $db = new database;
   $db->configure();
@@ -194,7 +193,7 @@ if(isset($_GET['brukerreg'])){
           }
           else{$error=1;}
         }
-        if($error){
+        if(isset($error) && $error === 1){
           $str=array('string'=>'<p style="color:#f00;">Brukeren din angav i verving ble ikke godkjent. Pr&oslash;v igjen, eller la feltet st&aring; tomt.</p>');
         }
         else{
