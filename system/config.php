@@ -1,61 +1,54 @@
 <?php
+
+function safegen($u, $p)
+{
+    global $_SERVER;
+    $ua = $_SERVER["HTTP_USER_AGENT"];
+    $l  = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
+    $i  = isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : NULL;
+    return md5(sha1($u.$p.$ua.$l.$i."f9f9¤Sss9"));
+}
+
+function gen($t)
+{
+    return str_replace(['æ', 'ø', 'å', 'Æ', 'Ø', 'Å'], ['&aelig;', '&oslash;', '&aring;', '&Aelig;', '&Oslash;', '&Aring;'],
+        $t);
+}
 if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
-/* if(isset($_SERVER['DOMAIN_NAME']) && $_SERVER['DOMAIN_NAME'] != "mafia-no.net"){
-  die('Feil domene!');
-  }
-  if(isset($_GET['debug']) && ($_GET['debug'] == "secret_code")){
-  $sefeil = 1;
-  }
-  else{
-  $sefeil=0;//0=av/1=på
-  } */
 $sefeil = 1;
 define('THRUTT', "Sperredørp!"); /* Sikkerhetsinnlegg for blokkering av oppdelte scripts */
 define('DOMENE_NAVN', 'mafia.werzaire.net');
 define('NAVN_DOMENE', 'Werzaire.net');
 define('MAIL_SENDER', 'werzaire.net');
+define("HENVEND_MAIL", "henvendelser@".DOMENE_NAVN);
+define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 /* Konfigurasjon */
+ini_set('session.use_cookies', 1);
 ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_secure', 1);
+ini_set('session.use_strict_mode', 1);
+session_set_cookie_params(1800, NULL, DOMENE_NAVN, TRUE, FALSE);
 ini_set('memory_limit', '32M');
-ini_set('mysql.connect_timeout', 5);
 date_default_timezone_set('Europe/Oslo');
 ini_set("date.timezone", "Europe/Oslo");
-//ini_set('max_execution_time', 0);
-//ini_set("session.save_path", "/tmp");
-ini_set('session.cookie_httponly', true);
+ini_set('max_execution_time', 15);
 date_default_timezone_set("Europe/Oslo");
 ini_set("date.timezone", "Europe/Oslo");
 
 /* Error-reporting */
 ini_set('error_reporting', (($sefeil == 1) ? E_ALL : 0));
-ini_set('display_errors', "Yes");
-ini_set('display_startup_errors', "Yes");
-
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
 /* Error-reporting END */
 
-session_name(NAVN_DOMENE); /* Setter egen session-name ftw */
-
-//session_set_cookie_params(3600, '/', 'mafia-no.net', FALSE, TRUE);/*Får session til å vare i 30 minutter istedenfor 20 min*/
-/* Konfigurasjon END */
-function safegen($u, $p)
-{
-    /* Denne funksjonen skal brukes til "alltid innlogget" funksjonen som et sikkerhetstiltak. */
-    global $_SERVER;
-    $ua = $_SERVER["HTTP_USER_AGENT"];
-    //$c = $_SERVER["HTTP_COOKIE"]; /*Kan ikke bruke denne delen da den endrer seg og ødelegger for alltid innloggetfunksjonen*/
-    $l  = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
-    $i  = isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : NULL;
-    return md5(sha1($u.$p.$ua.$l.$i."f9f9¤Sss9"));
-}
-//  header("Content-Type: text/html; charset=UTF-8");
-header("Content-Type: text/html; charset=windows-1252");
+session_name(NAVN_DOMENE);
 session_start();
+header("Content-Type: text/html; charset=UTF-8");
 if (isset($_SESSION['HTTP_USER_AGENT'])) {
     if ($_SESSION['HTTP_USER_AGENT'] !== sha1($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR'])) {
-        session_destroy();
-        header('Location: https://'.DOMENE_NAVN);
+        header('Location: https://'.DOMENE_NAVN.'loggut.php?g=8');
         exit('Cross-network-tilgang avslått!');
     }
 } else {
