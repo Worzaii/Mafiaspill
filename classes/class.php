@@ -12,13 +12,13 @@ if(THRUTT == "Sperredørp!"){
     var $num_queries=0;
     var $start_time;
     var $last_error;
-    function configure($host="", $user="", $pass="", $database="")
+    function configure($host="localhost", $user="mafia", $pass="mafia", $database="mafia")
     {
       $this->host=$host;
       $this->user=$user;
       $this->pass=$pass;
       $this->database=$database;
-      return 1; //Success.
+      return 1;
     }
     function connect()
     {
