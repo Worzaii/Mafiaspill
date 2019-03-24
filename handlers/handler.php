@@ -14,7 +14,7 @@ if (isset($_GET['login']) || isset($_GET['reg']) || isset($_GET['pass'])) {
             $u = $db->escape($_POST['username']);
             $p = md5($_POST['password']);
             if (strlen($u) <= 1 || strlen($p) <= 1) {
-                echo '<p class="feil">Du må fylle ut alle feltene.</p>';
+                echo '<p class="feil">Du m&aring; fylle ut alle feltene.</p>';
             } else {
                 $db->query("SELECT * FROM `users` WHERE `user` = '$u' AND `pass` = '$p' AND `activated` = '1' AND `status` <> '5'");
                 if ($db->num_rows() == 1) {
@@ -25,8 +25,8 @@ if (isset($_GET['login']) || isset($_GET['reg']) || isset($_GET['pass'])) {
                             : $_SERVER['REMOTE_ADDR'];
                     $db->query("UPDATE `users` SET `lastactive` = '$time',`ip` = '$ip' WHERE `id` = '$g->id' AND `pass` = '$p'");
                     echo <<<END
-<p class="lykket">Du har blitt logget inn, sender deg videre!<br />Om siden ikke lastet inn på nytt, klikk her: <a href="/Nyheter">Nyheter</a>.</p>
-<script type="text/javascript">
+<p class="lykket">Du har blitt logget inn, sender deg videre!<br>Om siden ikke lastet inn p&aring; nytt, klikk her: <a href="/Nyheter">Nyheter</a>.</p>
+<script>
 var eventy = '<scr'+'ipt type="text/javascript">window.location.href="http://mafia-no.net/Nyheter";</scr' + 'ipt>';
 eval(eventy);
 </script>
@@ -34,16 +34,16 @@ END;
                 } else {
                     $db->query("SELECT * FROM `users` WHERE `user` = '$u' AND `pass` = '$p' AND `activated` = '0'");
                     if ($db->num_rows() == 1) {
-                        echo '<p class="lykket">Din bruker har ikke blitt aktivert enda, aktiver brukeren igjennom emailen du mottok på mail. Om du har skrevet feil når du registrerte deg, ta kontakt med oss! <a href="mailto:system@mafia-no.net">system@mafia-no.net</a>.</p>';
+                        echo '<p class="lykket">Din bruker har ikke blitt aktivert enda, aktiver brukeren igjennom emailen du mottok p&aring; mail. Om du har skrevet feil n&aring;r du registrerte deg, ta kontakt med oss! <a href="mailto:system@mafia-no.net">system@mafia-no.net</a>.</p>';
                     } else {
                         echo '
-                        <p class="feil">Brukernavnet og passordet stemte ikke, prøv igjen. Det kan også være at din bruker er død.</p>
+                        <p class="feil">Brukernavnet og passordet stemte ikke, pr&oslash;v igjen. Det kan ogs&aring; v&aelig;re at din bruker er d&oslash;d.</p>
                         ';
                     }
                 }
             }
         } else {
-            echo '<p>Du må fylle ut alle feltene,hmm!</p>';
+            echo '<p>Du m&aring; fylle ut alle feltene,hmm!</p>';
             exit;
         }
     } else if (isset($_GET['reg'])) {
@@ -69,12 +69,12 @@ END;
                     if ($rr->code == $code) {
                         if ($db->query("UPDATE `regcodes` SET `used` = '1' WHERE `code` = '$code'")) {
                             if (mysql_query("UPDATE `users` SET `activated` = '1' WHERE `id` = '$rr->uid'")) {
-                                echo '<p style="color:#0f0;font-size:14px;font-weight:bold;">Din bruker har blitt aktivert! Du kan nå logge inn.</p>';
+                                echo '<p style="color:#0f0;font-size:14px;font-weight:bold;">Din bruker har blitt aktivert! Du kan n&aring; logge inn.</p>';
                             } else {
                                 echo '<p>Kunne ikke oppdatere din bruker... Du kan rapportere dette til Ledelsen via mail: <a href="mailto:system@mafia-no.net">system@mafia-no.net</a></p>';
                             }
                         } else {
-                            echo '<p>Av en grunn vil ikke linken oppdateres i db, dermed vil ikke din bruker heller oppdateres. Prøv igjen senere!</p>';
+                            echo '<p>Av en grunn vil ikke linken oppdateres i db, dermed vil ikke din bruker heller oppdateres. Pr&oslash;v igjen senere!</p>';
                         }
                     } else {
                         echo '<p>Koden stemte ikke overens med det registrerte.</p>';
@@ -87,7 +87,7 @@ END;
         //ActiEND
         if (isset($_POST['user'])) {
             if (!isset($_POST['email']) || !isset($_POST['pass']) || !isset($_POST['vpass']) || !isset($_POST['captcha_code'])) {
-                echo "<p>Du må fylle inn alle feltene.</p>";
+                echo "<p>Du m&aring; fylle inn alle feltene.</p>";
             }
             $db->configure();
             $db->connect();
@@ -116,19 +116,19 @@ END;
                     $res .= '<p class="feil">E-posten er allerede i bruk. Vennligst bruk en som er din.</p>';
                 }
                 if (strlen($user) <= 3) {
-                    $res .= '<p class="feil">Brukernavnet du har valgt deg er for kort! Det må være 4 tegn eller lengre. Max 15 tegn er tillatt for brukernavn.</p>';
+                    $res .= '<p class="feil">Brukernavnet du har valgt deg er for kort! Det m&aring; v&aelig;re 4 tegn eller lengre. Max 15 tegn er tillatt for brukernavn.</p>';
                 }
                 if (strlen($user) >= 16) {
-                    $res .= '<p class="feil">Brukernavnet du har valgt deg er for langt! Det må være 15 tegn eller mindre. Max 15 tegn, minimum 4 tegn, er tillatt for brukernavn.</p>';
+                    $res .= '<p class="feil">Brukernavnet du har valgt deg er for langt! Det m&aring; v&aelig;re 15 tegn eller mindre. Max 15 tegn, minimum 4 tegn, er tillatt for brukernavn.</p>';
                 }
                 if (!preg_match("/^[a-zA-Z]+[\w-_]*$/i", $user)) {
                     $res .= '<p class="feil">Brukernavnet du valgte er ikke gyldig! Du kan bruke kun disse tegnene: a-Z + 0-9 og _ og - Andre tegn vil ikke tillates.</p>';
                 }
                 if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                    $res .= '<p class="feil">Den emailen du oppgav er ikke gyldig! Vennligst oppgi en gyldig E-mail. Uten din email får du ikke aktivert brukeren.</p>';
+                    $res .= '<p class="feil">Den emailen du oppgav er ikke gyldig! Vennligst oppgi en gyldig E-mail. Uten din email f&aring;r du ikke aktivert brukeren.</p>';
                 }
                 if ($pas1 != $pas2) {
-                    $res .= '<p class="feil">Passordene du oppgav var ikke like. Pass på at du har et passord du husker godt og som samtidig ikke er så vanskelig å gjette seg til.</p>';
+                    $res .= '<p class="feil">Passordene du oppgav var ikke like. Pass p&aring; at du har et passord du husker godt og som samtidig ikke er s&aring; vanskelig &aring; gjette seg til.</p>';
                 }
                 if ($image->check($_POST['captcha_code']) == false) {
                     $res .= '<p class="feil">Du klarte ikke Antibotten!</p>';
@@ -147,12 +147,12 @@ END;
                     </head>
                     <body>
                     <h1>Takk for at du, '.$user.', registrerte deg hos oss!</h1>
-                    <hr />
-                    <p class="feil">For å aktivere din bruker, klikk på linken under:<br /><a href="http://mafia-no.net/registrerdeg.php?code='.$code.'">Aktiver bruker!</a></p>
-                    <p class="feil">Noen mail-klienter kan ikke klikke på slike linker. I det tilfellet, så må du kopiere denne url-en og lime den inn i nettleseren din:<br />
+                    <hr>
+                    <p class="feil">For &aring; aktivere din bruker, klikk p&aring; linken under:<br><a href="http://mafia-no.net/registrerdeg.php?code='.$code.'">Aktiver bruker!</a></p>
+                    <p class="feil">Noen mail-klienter kan ikke klikke p&aring; slike linker. I det tilfellet, s&aring; m&aring; du kopiere denne url-en og lime den inn i nettleseren din:<br>
                     http://mafia-no.net/registrerdeg.php?code='.$code.'</p>
-                    <br /><br />
-                    <p class="feil"><b>Hilsen,</b><br />Mafia-no.net sin ledelse.</p>
+                    <br><br>
+                    <p class="feil"><b>Hilsen,</b><br>Mafia-no.net sin ledelse.</p>
                     </body>
                     </html>
                     ';
@@ -161,13 +161,13 @@ END;
                     $headers .= 'To: '.$user.' <'.$mail.'>'."\r\n";
                     $headers .= 'From: Mafia-no.net <system@mafia-no.net>'."\r\n";
                     if (!mail($mail, $tittel, $melding, $headers)) {
-                        echo '<p style="color:#f00;font-size:20px;font-weight:bold;">Mailen kunne ikke sendes! Ta kontakt med Ledelsen, så du får mottat mailen med aktiveringslinken.</p>';
+                        echo '<p style="color:#f00;font-size:20px;font-weight:bold;">Mailen kunne ikke sendes! Ta kontakt med Ledelsen, s&aring; du f&aring;r mottat mailen med aktiveringslinken.</p>';
                     }
                     $usid = mysql_query("SELECT * FROM `users` WHERE `user` = '$user'");
                     $uid  = mysql_fetch_object($usid);
                     if ($db->query("INSERT INTO `regcodes`(`uid`,`code`,`date`) VALUES('$uid->id','$code','$date')")) {
                         $res .= '
-                        <p style="color:#0f0;font-family:\'Comic Sans MS\',\'Times New Roman\'">Du har blitt registrert! Du skal nå ha mottat en mail med aktiveringslink. Sjekk din søppelpost om du ikke finner mailen med aktiveringslink.Om du ikke mottar eposten innen 5 minutter, så kan det være at vår mailserver ikke klarte å sende mailen til deg, da kan du skrive en e-mail til <a href="mailto:system@mafia-no.net">system@mafia-no.net</a> med ditt brukernavn og mailen du registrerte med så skal vi prøve å hjelpe deg.</p>
+                        <p style="color:#0f0;font-family:\'Comic Sans MS\',\'Times New Roman\'">Du har blitt registrert! Du skal n&aring; ha mottat en mail med aktiveringslink. Sjekk din s&oslash;ppelpost om du ikke finner mailen med aktiveringslink.Om du ikke mottar eposten innen 5 minutter, s&aring; kan det v&aelig;re at v&aring;r mailserver ikke klarte &aring; sende mailen til deg, da kan du skrive en e-mail til <a href="mailto:system@mafia-no.net">system@mafia-no.net</a> med ditt brukernavn og mailen du registrerte med s&aring; skal vi pr&oslash;ve &aring; hjelpe deg.</p>
                         ';
                     } else {
                         $res .= '<p style="font-family:\'Comic Sans MS\',\'Times New Roman\'">Du har blitt registrert, men det oppstod en feil med aktiveringskoden. Send mail til <a href="mailto:system@mafia-no.net">system@mafia-no.net</a> og varsle om dette. Evt. skriv detaljer om ditt brukernavn, mail og lignende.</p>';
@@ -194,7 +194,7 @@ END;
                 }
             }
         } else {
-            echo '<p>Du må skrive inn et brukernavn!</p>';
+            echo '<p>Du m&aring; skrive inn et brukernavn!</p>';
         }
         echo $res;
     }//Registrering END
@@ -203,8 +203,8 @@ END;
     }//Glemt pass END
 } else {
     header('Location: /');
-    echo '<p>Siden du prøver å nå finnes ikke!</p>';
+    echo '<p>Siden du pr&oslash;ver &aring; n&aring; finnes ikke!</p>';
 }
 //echo '<p>Dette scriptet fungerer som det skal!</p>';
-//echo '<p>Headers sent:<br />Post:'.print_r($_POST,true).'<br />GET:'.print_r($_GET,true).'</p>';
+//echo '<p>Headers sent:<br>Post:'.print_r($_POST,true).'<br>GET:'.print_r($_GET,true).'</p>';
 ?>

@@ -3,7 +3,7 @@ die();
 include("core.php");
 startpage("Bildebestillinger");
 ?>
-<h1>Søk etter bilder/avatarer/profilbilder ++</h1>
+<h1>S&oslash;k etter bilder/avatarer/profilbilder ++</h1>
 <?php
 if(isset($_POST['stock']) && isset($_POST['type']) && isset($_POST['pris1']) && isset($_POST['pris2']) && isset($_POST['hvem']) && isset($_POST['extra'])){
 $link = mysql_real_escape_string($_POST['stock']);
@@ -39,7 +39,7 @@ echo mysql_error();
 <th colspan="2">Fyll ut dette skjemaet til hver detalj!</th>
 </tr>
 <tr>
-<td>Stock:</td><td><input type="text" name="stock" /></td>
+<td>Stock:</td><td><input type="text" name="stock"></td>
 </tr>
 <tr>
 <td>Type:</td><td>
@@ -57,7 +57,7 @@ echo mysql_error();
 </td>
 </tr>
 <tr>
-<td>Villig pris:</td><td>Gir minst:<br /><input type="number" name="pris1" id="pris1" min="0" max="300000000" value="0" onchange="changemin2()" /><br />Maks:<br /><input type="number" name="pris2" min="0" max="300000000" id="pris2" value="0" /></td>
+<td>Villig pris:</td><td>Gir minst:<br><input type="number" name="pris1" id="pris1" min="0" max="300000000" value="0" onchange="changemin2()"><br>Maks:<br><input type="number" name="pris2" min="0" max="300000000" id="pris2" value="0"></td>
 </tr>
 <tr>
 <td><span title="Er det en spesiell picmaker som skal jobbe med bildet ditt?"><em>Hvem:</em></span></td><td>
@@ -75,16 +75,16 @@ echo '
 </td>
 </tr>
 <tr>
-<td colspan="2">Ekstra kommentar til picmaker:<br />
-<textarea name="ekstra" style="width:100%;" placeholder="Noe spessielt du vil ha gjort med bildet, så kan du forklare det her."></textarea>
+<td colspan="2">Ekstra kommentar til picmaker:<br>
+<textarea name="ekstra" style="width:100%;" placeholder="Noe spessielt du vil ha gjort med bildet, s&aring; kan du forklare det her."></textarea>
 </td>
 </tr>
 <tr>
-<th colspan="2"><input type="submit" name="submitter" value="Send bildebestillingen!" /></th>
+<th colspan="2"><input type="submit" name="submitter" value="Send bildebestillingen!"></th>
 </tr>
 </table>
 </form>
-<script type="text/javascript">
+<script>
 function displayrow(valu){
 if(valu == 4){
 /*$("#trtog").css("display","table-row");

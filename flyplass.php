@@ -1,15 +1,15 @@
 <?php
   include("core.php");
   startpage("Flyplass");
-  echo '<img src="imgs\flyplass.png" />';
+  echo '<img src="imgs\flyplass.png">';
 ?>
 <h1>Flyplass</h1>
 <?php
 if(bunker() == true){
   $bu = bunker(true);
   echo '
-  <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-  <script type="text/javascript">
+  <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+  <script>
   teller('.($bu - time()).',\'bunker\',false,\'ned\');
   </script>
   ';
@@ -18,14 +18,14 @@ else if(fengsel()){
   $ja = fengsel(true);
   echo '
   <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.$ja.'</span></p>
-  <script type="text/javascript">
+  <script>
   teller('.$ja.',\'krim\',true,\'ned\');
   </script>
   ';
 }
 else{
   if($obj->airportwait > time()){
-    echo '<p class="feil">Du må vente før du kan fly igjen! <span id="flyplass"></span><script type="text/javascript">teller('.($obj->airportwait - time()).',"flyplass",false,"ned")</script></p>';
+    echo '<p class="feil">Du m&aring; vente f&oslash;r du kan fly igjen! <span id="flyplass"></span><script>teller('.($obj->airportwait - time()).',"flyplass",false,"ned")</script></p>';
   }
   else{
   if(isset($_POST['tilby']))
@@ -38,16 +38,16 @@ else{
       }
       else{
         if($obj->hand <= 9999){
-          echo '<p class="feil">Du har ikke råd til å fly!</p>';
+          echo '<p class="feil">Du har ikke r&aring;d til &aring; fly!</p>';
         }
         else if($obj->hand >= 10000){
           $db->query("UPDATE `users` SET `hand` = (`hand` - 10000),`city` = '$i',`airportwait` = (UNIX_TIMESTAMP() + 600) WHERE `id` = '{$obj->id}' LIMIT 1");
           if($db->affected_rows() == 1){
-            echo '<p class="lykket">Du har betalt for en billett til '.city($i).' til prisen av 10,000kr! Du må nå vente i 20 minutter før du kan reise igjen.</p>';
+            echo '<p class="lykket">Du har betalt for en billett til '.city($i).' til prisen av 10,000kr! Du m&aring; n&aring; vente i 20 minutter f&oslash;r du kan reise igjen.</p>';
             $db->query("UPDATE `firma` SET `Konto` = (`Konto` + 10000) WHERE `By` = '$i' AND `Type` = '2' LIMIT 1");
           }
           else{
-            echo '<p class="feil">Du kunne ikke reise på grunn av en feil i enten spørring eller i databasen, ta kontakt med Ledelsen!</p>';
+            echo '<p class="feil">Du kunne ikke reise p&aring; grunn av en feil i enten sp&oslash;rring eller i databasen, ta kontakt med Ledelsen!</p>';
           }
         }
       }
@@ -57,7 +57,7 @@ else{
     }
   }
 ?>
-<p>Å ta fly vil koste deg 10,000kr ingame. Dette blir endret i fremtiden slik at firmahaverne kan endre prisene mellom 1,000kr-50,000kr!</p>
+<p>&aring; ta fly vil koste deg 10,000kr ingame. Dette blir endret i fremtiden slik at firmahaverne kan endre prisene mellom 1,000kr-50,000kr!</p>
 <form method="post" action id="fly">
   <table class="table flyplass">
     <tr>
@@ -74,7 +74,7 @@ else{
       }
     ?>
   </table>
-  <input type="hidden" id="vei" value="0" name="tilby" />
+  <input type="hidden" id="vei" value="0" name="tilby">
 </form>
 <script>
   $(function() {
@@ -93,7 +93,7 @@ else{
     });
   });
   </script>
-<script type="text/javascript" language="javascript">
+<script language="javascript">
 function sendpost(valg) {
 $('#vei').val(valg);
 //$('.wantto').dialog();

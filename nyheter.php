@@ -11,7 +11,7 @@
         if($obj->status == 1 || $obj->status == 2){
           echo '<p class="button2"><a href="publiser.php">Skriv en ny nyhet!</a></p>';
         }
-        $sql = $db->query("SELECT * FROM `news` WHERE `vis` = '1' AND `userlevel` >= '".$obj->status."' ORDER BY `id` DESC LIMIT 0,5");
+        $sql = $db->query("SELECT * FROM `news` WHERE `showing` = '1' AND `userlevel` >= '".$obj->status."' ORDER BY `id` DESC LIMIT 0,5");
         if($db->num_rows() == 0){
           echo '<p class="feil">Ingen nyheter er publisert!</p>';
         }
@@ -38,7 +38,7 @@
             $f = $db->fetch_object($q);
             print '
             <tr>
-            <td class="linkstyle"'.$statuss.'><b>'.htmlentities($r->title, ENT_NOQUOTES | ENT_HTML401, 'ISO-8859-1').'</b> skrevet av <a href="profil.php?id='.$f->id.'" style="font-weight:bold;">'.$r->author.'</a><div class="innlegsdato">'.date("H:i:s | d.m.Y",$r->time).'</div></td>
+            <td class="linkstyle"'.$statuss.'><b>'.htmlentities($r->title, ENT_NOQUOTES | ENT_HTML401, 'ISO-8859-1').'</b> skrevet av '.user($r->author).'<div class="innlegsdato">'.date("H:i:s | d.m.Y",$r->timestamp).'</div></td>
             </tr>
             <tr>
             <td colspan="2">

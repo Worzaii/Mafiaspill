@@ -26,7 +26,7 @@ color: #DEDEDE;
 startpage("Endre profil",$e);
 ?>
 <h1>Endre profil</h1>
-<p>Her har du mulighet til å lage din egen profil!</p>
+<p>Her har du mulighet til &aring; lage din egen profil!</p>
 <?php
     if(isset($_POST['bilde']) && isset($_POST['profil'])){
     $i = $db->escape($_POST['bilde']);
@@ -75,7 +75,7 @@ startpage("Endre profil",$e);
           echo mysqli_error($db->connection_id);
         }
         else{
-          echo '<p class="feil">Det har oppstått en feil! Rapporter dette til Support snarest!</p>';
+          echo '<p class="feil">Det har oppst&aring;tt en feil! Rapporter dette til Support snarest!</p>';
         }
       }
       $bilde = htmlentities($_POST['bilde']);
@@ -88,11 +88,11 @@ startpage("Endre profil",$e);
     }
 ?>
 <form method="post" action="" style="text-align:center;">
-  <textarea style="background-color: #A9A9A9;width:100%;padding:0;margin:0;-webkit-box-shadow: inset 0 1px 1px #000;height:370px;" name="profil"><?=$profi?></textarea><br />
+  <textarea style="background-color: #A9A9A9;width:100%;padding:0;margin:0;-webkit-box-shadow: inset 0 1px 1px #000;height:370px;" name="profil"><?=$profi?></textarea><br>
   <p>Avatar:</p>
-  <input type="text" name="bilde" value="<?=$bilde?>" style="width:90%;" /><br />
-  <br />
-  <input type="submit" class="endre" value="Lagre informasjon" /> <br />
+  <input type="text" name="bilde" value="<?=$bilde?>" style="width:90%;"><br>
+  <br>
+  <input type="submit" class="endre" value="Lagre informasjon"> <br>
 </form>
 <?php
 endpage();

@@ -6,7 +6,7 @@
   $rnr=$rank[0];
   $prosent=($rank[2] / $maks)*100;
   if($rnr == 12){
-    $rest="Du har nådd høyeste rank, gratulerer! :)";
+    $rest="Du har n&aring;dd h&oslash;yeste rank, gratulerer! :)";
   }
   else{
     $rest=$maks - $rank[2];
@@ -22,7 +22,7 @@
   </tr>
 </table>
 <?php
-// En ineffektiv måte for å sjekke handlinger :P Don't mind it.
+// En ineffektiv m&aring;te for &aring; sjekke handlinger :P Don't mind it.
 $fuck = $db->query("SELECT * FROM `krimlogg` WHERE `usid` = '$obj->id'");
 $krlyk = $db->num_rows($db->query("SELECT * FROM `krimlogg` WHERE `usid` = '$obj->id' AND `resu` = '1'"));
 $krfeil = $db->num_rows($db->query("SELECT * FROM `krimlogg` WHERE `usid` = '$obj->id' AND `resu` = '0'"));
@@ -42,9 +42,9 @@ $rantjent = $db->fetch_object($ranlyk);
     <th style="padding:1px;" colspan="2">Statistikk over lykket / feilet handlinger</th>
   </tr>
   <tr>
-    <td>Krim: <?=$krlyk?> / <?=$krfeil?></td><td>Totalt gjennomført: <?=$db->num_rows($fuck)?></td>
-    <tr><td>Biltyveri: <?=$fuckxtolyk?> / <?=$fuckxtofeil+$fuckxtofeilto?></td><td>Totalt gjennomført: <?=$db->num_rows($fuckxto)?></td></tr>
-    <tr><td>Ran-Spiller: <?=$ranlyk?> / <?=$ranfeil?></td><td>Totalt gjennomførte: <?=$db->num_rows($ran)?></td></tr>
+    <td>Krim: <?=$krlyk?> / <?=$krfeil?></td><td>Totalt gjennomf&oslash;rt: <?=$db->num_rows($fuck)?></td>
+    <tr><td>Biltyveri: <?=$fuckxtolyk?> / <?=$fuckxtofeil+$fuckxtofeilto?></td><td>Totalt gjennomf&oslash;rt: <?=$db->num_rows($fuckxto)?></td></tr>
+    <tr><td>Ran-Spiller: <?=$ranlyk?> / <?=$ranfeil?></td><td>Totalt gjennomf&oslash;rte: <?=$db->num_rows($ran)?></td></tr>
   </tr>
 </table>
 
@@ -55,8 +55,8 @@ $rantjent = $db->fetch_object($ranlyk);
   </div>
   <p style="padding:0;z-index: 2;position: relative;margin:0;top:22px;text-align: center"><?=number_format($prosent,3)?>%</p>
 </div>
-<p>Nåværende xp: <?=$obj->exp?><br />
-Gjenværende xp i denne ranken: <?=$rest?></p>
+<p>N&aring;v&aelig;rende xp: <?=$obj->exp?><br>
+Gjenv&aelig;rende xp i denne ranken: <?=$rest?></p>
 <?
   endpage();
 ?>

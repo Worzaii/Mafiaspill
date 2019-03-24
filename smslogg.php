@@ -6,9 +6,9 @@ if(!r1()){
   endpage();
 }
 else{
-  startpage("Se alle spillere som har kjøpt");
+  startpage("Se alle spillere som har kj&oslash;pt");
 ?>
-<p>Om du forstår noe så kan du jo sjekke denne filen:</br><a href="smsloggfull.php">Smsloggfull</a>
+<p>Om du forst&aring;r noe s&aring; kan du jo sjekke denne filen:</br><a href="smsloggfull.php">Smsloggfull</a>
 <?php
   $sender = $_GET['sender'];
   $amount = $_GET['amount'];
@@ -23,7 +23,7 @@ $betalvis = $db->query("SELECT * FROM `paymentcheck` ORDER BY `id` DESC");
     </tr>
     <tr>
         <td>Spiller</td>
-        <td>Kjøpte</td>
+        <td>Kj&oslash;pte</td>
         <td>Mobilnummer</td>
         <td>Status</td>
         <td>Tid</td>

@@ -6,17 +6,17 @@ startpage("Fabrikk");
     @date 29.04.14 */
 if($obj->har_fabrikk == 0){
     //Har ikke fabrikk
-    echo 'I nærmeste tid så vil du snart få kjøpe fabrikk.</br>
+    echo 'I n&aelig;rmeste tid s&aring; vil du snart f&aring; kj&oslash;pe fabrikk.</br>
         Her kommer det; </br>
-        * Bank for fabrikker <font style="color:red;">*IKKE PÅBEGYNT*</font></br>
-        * Produksjon av hylser / krutt for produksjon av kuler <font style="color:red;">*IKKE PÅBEGYNT*</font></br>
-        * Kjøp / Salg av hylser / krutt slik at kulefabrikk-eier kan kjøpe de <font style="color:yellow;">*PROGRESS*</font></br> 
-        * Kjøp / Salg av råvarer som trengs for å produsere hylser/krutt. <font style="color:green;">*DONE*</font></br>
+        * Bank for fabrikker <font style="color:red;">*IKKE P&aring;BEGYNT*</font></br>
+        * Produksjon av hylser / krutt for produksjon av kuler <font style="color:red;">*IKKE P&aring;BEGYNT*</font></br>
+        * Kj&oslash;p / Salg av hylser / krutt slik at kulefabrikk-eier kan kj&oslash;pe de <font style="color:yellow;">*PROGRESS*</font></br> 
+        * Kj&oslash;p / Salg av r&aring;varer som trengs for &aring; produsere hylser/krutt. <font style="color:green;">*DONE*</font></br>
       </br>
         Forventet ferdig: 01.07.2014 </br>
         Datoen kan endres uten varsel.</br>
         </br>
-        Spørsmål rettes til <a href="http://mafia-no.net/profil.php?id=2">Slowboii</a>
+        Sp&oslash;rsm&aring;l rettes til <a href="http://mafia-no.net/profil.php?id=2">Slowboii</a>
         ';
 }elseif($obj->har_fabrikk == 1){
     // Har fabrikk
@@ -29,7 +29,7 @@ if($obj->har_fabrikk == 0){
         2=>array('ingr_name' => "Svovel", 'html' => "svo", 'need' => 30,'pris' => 200000, 'type' => 2),
         3=>array('ingr_name' => "Trekull", 'html' => "tre", 'need' => 30,'pris' => 200000, 'type' => 2),
         4=>array('ingr_name' => "Kopper", 'html' => "kop", 'need' => 50,'pris' => 500000, 'type' => 1),
-        5=>array('ingr_name' => "Stål", 'html' => "stal",'need' => 50,'pris' => 300000, 'type' => 1) ,
+        5=>array('ingr_name' => "St&aring;l", 'html' => "stal",'need' => 50,'pris' => 300000, 'type' => 1) ,
     );
     $kapp = array("sal"=>1,"svo"=>2,"tre"=>3,"kop"=>4,"stal"=>5);
 
@@ -46,7 +46,7 @@ if($obj->har_fabrikk == 0){
 
 <?php
     }elseif($page == 3){
-        // KJØP RÅVARER
+        // KJØP R&aring;VARER
         $curr = unserialize($obj->fabrikk_ingredienser);
         $total = 0;
         foreach($curr as $type => $ant){
@@ -62,7 +62,7 @@ if($obj->har_fabrikk == 0){
             //var_dump($radioinput);
             $textfield = (is_numeric($db->escape($_POST['inputA']))) ? $db->escape($_POST['inputA']) : 0;
             if($curr == NULL){
-                echo 'Du fucket spillet vårt. Thanks. Please let us know.';
+                echo 'Du fucket spillet v&aring;rt. Thanks. Please let us know.';
                 endpage();
                 die();
             }
@@ -75,22 +75,22 @@ if($obj->har_fabrikk == 0){
                     if($textfield >= 1){
                         if($obj->hand >= $oppskrift[$radioinput]["pris"]){
                             $curr[$radioinput] +=$textfield;
-lykket('Grattis makker, du kjøpte deg '.htmlentities($textfield).' stk '.$oppskrift[$kapp[$radioinput]]["ingr_name"].' til prisen av '.number_format($oppskrift[$kapp[$radioinput]]['pris'] * $textfield).'!');
+lykket('Grattis makker, du kj&oslash;pte deg '.htmlentities($textfield).' stk '.$oppskrift[$kapp[$radioinput]]["ingr_name"].' til prisen av '.number_format($oppskrift[$kapp[$radioinput]]['pris'] * $textfield).'!');
                             $db->query("UPDATE `users` SET `fabrikk_ingredienser` = '".serialize($curr)."',`hand` = (`hand` - ".($oppskrift[$kapp[$radioinput]]['pris'] * $textfield).") WHERE `id` = '{$obj->id}' LIMIT 1");
                         }
                         else{
-                            feil('Du har ikke råd til å kjøpe '.htmlentities($textfield).' stk '.$oppskrift[$radioinput]["ingr_name"].'! Se at du har nok penger på handa til å betale '.number_format(($oppskrift[$kapp[$radioinput]]['pris'] * $textfield)).' kr!');
+                            feil('Du har ikke r&aring;d til &aring; kj&oslash;pe '.htmlentities($textfield).' stk '.$oppskrift[$radioinput]["ingr_name"].'! Se at du har nok penger p&aring; handa til &aring; betale '.number_format(($oppskrift[$kapp[$radioinput]]['pris'] * $textfield)).' kr!');
                         }
                     }
                     else{
-                        feil('Du kan ikke kjøpe 0 stk '.$oppskrift[$kapp[$radioinput]]["ingr_name"].', velg et antall mellom 1 og '.($obj->fabrikk_oppgradert - $curr[$radioinput]).'');
+                        feil('Du kan ikke kj&oslash;pe 0 stk '.$oppskrift[$kapp[$radioinput]]["ingr_name"].', velg et antall mellom 1 og '.($obj->fabrikk_oppgradert - $curr[$radioinput]).'');
                     }
                 }
                 else{
-                    feil('Du kan ikke kjøpe så mye, klikk <a href="/Poeng">her</a> for å oppgradere fabrikken!');
+                    feil('Du kan ikke kj&oslash;pe s&aring; mye, klikk <a href="/Poeng">her</a> for &aring; oppgradere fabrikken!');
                 }
             }else{
-                feil('Du har ikke valgt godkjent ingrediens, prøv igjen!');
+                feil('Du har ikke valgt godkjent ingrediens, pr&oslash;v igjen!');
             }
         }
         else if(isset($_POST['selg'])){
@@ -99,7 +99,7 @@ lykket('Grattis makker, du kjøpte deg '.htmlentities($textfield).' stk '.$oppskr
             //var_dump($radioinput);
             $textfield = (is_numeric($db->escape($_POST['inputA']))) ? $db->escape($_POST['inputA']) : 0;
             if($curr == NULL){
-                echo 'Du fucket spillet vårt. Thanks. Please let us know.';
+                echo 'Du fucket spillet v&aring;rt. Thanks. Please let us know.';
                 endpage();
                 die();
             }
@@ -118,13 +118,13 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
                     feil('Du kan ikke selge mer enn du allerede har!');
                 }
             }else{
-                feil('Du har ikke valgt godkjent ingrediens, prøv igjen!');
+                feil('Du har ikke valgt godkjent ingrediens, pr&oslash;v igjen!');
             }
         }
         ?>
 <form action="" method="post">
     <table style="width:320px;" class="table">
-        <th colspan="4">Kjøp Råvarer</th>
+        <th colspan="4">Kj&oslash;p R&aring;varer</th>
         <tr>
             <td>Hva</td>
             <td>Pris</td>
@@ -154,7 +154,7 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
         ?>
         <tr>
             <td colspan="4">
-                <input type="submit" name="send" value="Kjøp"/>
+                <input type="submit" name="send" value="Kj&oslash;p"/>
                 <input type="submit" name="selg" value="Selg"/> 
             </td>
         </tr>
@@ -164,7 +164,7 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
     }
     elseif($page == 4){
         // Produksjon av hylser/krutt
-        /*Her bruker vi oppskriften for å lage hylser eller krutt av råvarene vi har kjøpt tidligere.*/
+        /*Her bruker vi oppskriften for &aring; lage hylser eller krutt av r&aring;varene vi har kj&oslash;pt tidligere.*/
         $unser = unserialize($obj->fabrikk_ingredienser);
         $type = array(
             1=>array('name' => "hylser"),
@@ -172,7 +172,7 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
         );
         $query = $db->query("SELECT * FROM `users` WHERE `id` = '$obj->id'");
         if(isset($_POST['produser'])){
-            //Gjør noe da bruker trykker produser
+            //Gj&oslash;r noe da bruker trykker produser
         }
         ?>
 <form action="" method="post">
@@ -189,7 +189,7 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
                     <td><input type="text" name="kopper"/></td>
                 </tr>
                 <tr>
-                    <td>Stål</td>
+                    <td>St&aring;l</td>
                     <td>'.$unser['stal'].'</td>
                     <td><input type="text" name="stal"/></td>
                 </tr>

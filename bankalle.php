@@ -3,14 +3,14 @@
   include("pagination.php");
   $style=NULL;
   if($obj->status == 1 || $obj->status == 2){
-  startpage("Viser alle bankoverføringer",$style);
+  startpage("Viser alle bankoverf&oslash;ringer",$style);
 ?>
-<h1>Alle bankoverføringer</h1>
+<h1>Alle bankoverf&oslash;ringer</h1>
 <?php
   echo '
   <table class="table" style="width:500px;">
   <tr>
-  <th colspan="5">Viser siste 100 bankoverføringer</th>
+  <th colspan="5">Viser siste 100 bankoverf&oslash;ringer</th>
   </tr>
   <tr>
   <th>Id</th><th>Fra</th><th>Til</th><th>Sum:</th><th style="width:101px">Tid:</th>
@@ -31,6 +31,6 @@
     }
     else{
       startpage("Ingen tilgang!");
-      echo '<h1>Ingen tilgang!</h1><p>Du har ingen tilgang til å vise denne siden.</p>';
+      echo '<h1>Ingen tilgang!</h1><p>Du har ingen tilgang til &aring; vise denne siden.</p>';
     }
     endpage();

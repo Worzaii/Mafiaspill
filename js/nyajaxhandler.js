@@ -18,16 +18,22 @@ $(document).ready(function () {
             success: function (data) {
                 $res = eval(data);
                 console.log($res);
-                if ($res.state === 1) {
+                if ($res.state == 1) {
                     updatepage($res.string, "res1");
                     var count = 1.5;
+                    console.log('Counting down from ' + count);
                     countdown = setInterval(function () {
+                        console.log('Counting... Val: ' + count);
                         if (count === 0) {
                             window.location.href = $res.href;
                         }
+                        count -= 0.5;
                     }, 500);
-                } else if ($res.state === 0) {
+                } else if ($res.state == 0) {
                     updatepage($res.string, "res1");
+                }
+                else {
+                    alert("Something went wrong");
                 }
             }
         });

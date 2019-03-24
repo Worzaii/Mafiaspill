@@ -26,7 +26,7 @@ if ($db->num_rows() == 1) {
     <head>
         <title>Mafia-no Registrering</title>
         <meta http-equiv="content-type" content="text/html;charset=ISO-8859-1">
-        <meta name="description" content="mafia-no.net er også en av de spillene som er på webben og håper på en fremtid med berømmelse og ting som interesserer spillerne. Se vår facebookside idag https://www.facebook.com/Mafia.no.net.Nicho!">
+        <meta name="description" content="mafia-no.net er ogs&aring; en av de spillene som er p&aring; webben og h&aring;per p&aring; en fremtid med ber&oslash;mmelse og ting som interesserer spillerne. Se v&aring;r facebookside idag https://www.facebook.com/Mafia.no.net.Nicho!">
         <meta name="keywords" content="mafiaspill, klikkbasert, ikke ferdig, jobbes med, mafia, mafiano">
         <meta name="author" content="Nicholas Arnesen">
         <link type="text/css" rel="stylesheet" href="css/login.css">
@@ -50,11 +50,11 @@ if ($db->num_rows() == 1) {
                         <h2>Registrer deg</h2>
                         <div id="ressu"></div>
                         <form class="loginform" id="brukerreg" action="handlers/handler2.php?brukerreg">
-                            <input type="email" class="text" name="mail" placeholder="Email" readonly value="<?= $mail ?>" /><br />
-                            <input type="text" class="text" name="code" placeholder="Kode" readonly value="<?= $code ?>"><br />
-                            <input type="text" class="text" name="vervetav" placeholder="Hvem ble du vervet av?" tabindex="1"><br />
-                            <input type="text" class="text" name="user"<?= $disa1 ?> placeholder="Brukernavn" tabindex="2"><br />
-                            <input type="password" class="text" name="pass"<?= $disa2 ?> placeholder="Passord" tabindex="3"><br />
+                            <input type="email" class="text" name="mail" placeholder="Email" readonly value="<?= $mail ?>"><br>
+                            <input type="text" class="text" name="code" placeholder="Kode" readonly value="<?= $code ?>"><br>
+                            <input type="text" class="text" name="vervetav" placeholder="Hvem ble du vervet av?" tabindex="1"><br>
+                            <input type="text" class="text" name="user"<?= $disa1 ?> placeholder="Brukernavn" tabindex="2"><br>
+                            <input type="password" class="text" name="pass"<?= $disa2 ?> placeholder="Passord" tabindex="3"><br>
                             <input type="submit" value="Registrer deg" tabindex="4" class="button"/>
                         </form>
                     </div>

@@ -1,5 +1,5 @@
 <?php
-// Ikke jobbet med denne ennå.
+// Ikke jobbet med denne enn&aring;.
 include("core.php");
 function br($t){
   return str_replace("\n","<br>",$t);

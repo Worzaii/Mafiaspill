@@ -1,23 +1,23 @@
 <?php
     include("core.php");
     startpage("Stjel penger");
-    echo '<img src="imgs/Ranspiller.png" />';
+    echo '<img src="imgs/Ranspiller.png">';
 ?>
 <h1>Stjel penger fra spillere</h1>
 <?php
 if(bunker() == true){
 	$bu = bunker(true);
 	echo '
-	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-	<script type="text/javascript">
+	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+	<script>
 	teller('.($bu - time()).',\'bunker\',false,\'ned\');
 	</script>
 	';
 }
 else if(fengsel() == true){
 	echo '
-	<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">'.fengsel(true).'</span></p>
-	<script type="text/javascript">
+	<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.fengsel(true).'</span></p>
+	<script>
 	teller('.fengsel(true).',\'krim\',true,\'ned\');
 	</script>
 	';
@@ -31,16 +31,16 @@ else{
     $left = $l->time - $time;
     if($left >= 1){
     $kan = 0;
-    //Må fortsatt vente
-    echo '<p class="feil">Du må fortsatt vente i <span id="rantid"></span>!<!--<br />Tid: '.$l->time.' - '.$time.' = '.$left.'--></p><script type="text/javascript">teller('.$left.',"rantid",true,"ned");</script>';
+    //M&aring; fortsatt vente
+    echo '<p class="feil">Du m&aring; fortsatt vente i <span id="rantid"></span>!<!--<br>Tid: '.$l->time.' - '.$time.' = '.$left.'--></p><script>teller('.$left.',"rantid",true,"ned");</script>';
     }
     else{
-    //echo '<p>time: '.$time.'<br />ltime: '.$l->time.'<br />time - ltime = '.$left.'</p>';
+    //echo '<p>time: '.$time.'<br>ltime: '.$l->time.'<br>time - ltime = '.$left.'</p>';
     $kan = 1;
     }
     }
     else{
-    //Første kupp
+    //F&oslash;rste kupp
     $kan = 1;
     }
     if(isset($_POST['spiller'])){
@@ -60,11 +60,11 @@ else{
     echo '<p class="feil">Du kan ikke rane ledelsen!</p>';
     }
     else if($f->health <= 0){
-    echo '<p class="feil">Du kan ikke rane døde spillere!</p>';
+    echo '<p class="feil">Du kan ikke rane d&oslash;de spillere!</p>';
     }
     else{
     if($f->city == $obj->city){
-    if($f->hand >= 500000){//Om spiller har over 500,000kr ute, så kan han bli bestjålet
+    if($f->hand >= 500000){//Om spiller har over 500,000kr ute, s&aring; kan han bli bestj&aring;let
     $rand = rand(100000,$f->hand);
     $db->query("UPDATE `users` SET `hand` = (`hand` - $rand) WHERE `id` = '$f->id' LIMIT 1");
     $db->query("UPDATE `users` SET `hand` = (`hand` + $rand),`exp` = (`exp` + 2.0) WHERE `id` = '$obj->id' LIMIT 1");
@@ -74,7 +74,7 @@ else{
     $db->query("UPDATE `oppuid` SET `tms` = (`tms` + 1) WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `tms` < '30' AND `oid` = '4' LIMIT 1");
 }
     $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->id."','".time()."','".$db->slash('--<b>Ran Spiller</b><br/>'.$obj->user.' ranet '.number_format($rand).'kr fra deg!')."')");
-    echo '<p class="lykket">Du klarte å rane '.status($f->user).' for '.number_format($rand).' kr!</p>';
+    echo '<p class="lykket">Du klarte &aring; rane '.status($f->user).' for '.number_format($rand).' kr!</p>';
     }
     else{
     echo '<p class="feil">Mafiaen har ikke nok penger ute! '.$f->user.' har bare '.number_format($f->hand).' kr ute!</p>';
@@ -93,7 +93,7 @@ else{
     }
     }
     }
-?><br />
+?><br>
 <form method="post" action="">
     <table class="table" style="width: 300px;">
         <tr>
@@ -102,12 +102,12 @@ else{
         <tr>
             <td>Nick:</td>
             <td>
-                <input type="sumbit" maxlength="15" name="spiller" />
+                <input type="sumbit" maxlength="15" name="spiller">
             </td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;">
-                <input class="ran" type="submit" value="Ran spilleren!" />
+                <input class="ran" type="submit" value="Ran spilleren!">
             </td>
         </tr>
     </table>

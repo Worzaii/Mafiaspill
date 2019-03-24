@@ -15,7 +15,7 @@ $moddetvis = $db->query("SELECT * FROM `infoin`");
 ?>
 <table class="table">
     <tr>
-        <th colspan="2">Full info om poengkjøp</th>
+        <th colspan="2">Full info om poengkj&oslash;p</th>
     </tr>
     <tr>
         <td colspan="2">Info</td>

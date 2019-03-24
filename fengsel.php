@@ -20,8 +20,8 @@ if(bunker() == true){
 	echo '<h1>Fengsel</h1>';
 	$bu = bunker(true);
 	echo '
-	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-	<script type="text/javascript">
+	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+	<script>
 	teller('.($bu - time()).',\'bunker\',false,\'ned\');
 	</script>
 	';
@@ -32,19 +32,19 @@ if(isset($_POST['valget']) && (isset($_POST['kjope']) || isset($_POST['bryte']))
     if(isset($_POST['kjope'])) $ut = 1;
     else if(isset($_POST['bryte'])) $ut = 0;
     if(fengsel() == true){
-        if($ut == 0) $res = '<p class="feil">Du kan ikke bryte ut noen når du er i fengselet selv!</p>';
-        else if($ut == 1) $res = '<p class="feil">Du kan ikke kjøpe ut noen når du er i fengselet selv!</p>';
+        if($ut == 0) $res = '<p class="feil">Du kan ikke bryte ut noen n&aring;r du er i fengselet selv!</p>';
+        else if($ut == 1) $res = '<p class="feil">Du kan ikke kj&oslash;pe ut noen n&aring;r du er i fengselet selv!</p>';
     }
     else{/*Fortsetter script*/
         if($ut == 1){
-            /*Spilleren kjøpes ut om personen har råd*/
+            /*Spilleren kj&oslash;pes ut om personen har r&aring;d*/
             $getjailuser = $db->query("SELECT * FROM `jail` WHERE `breaker` = '0' AND `timeleft` > UNIX_TIMESTAMP() AND `id` = '$tid'");
             if($db->num_rows() == 0){
                 $res = '<p class="feil">Spilleren var ikke i fengsel!</p>';
             }
             $f = $db->fetch_object($getjailuser);
             if($f->timeleft >= time() + 900){
-                $res = '<p class="feil">Du kan ikke kjøpe ut noen som har over 15minutter ventetid!</p>';
+                $res = '<p class="feil">Du kan ikke kj&oslash;pe ut noen som har over 15minutter ventetid!</p>';
             }
             else{
                 $e = $db->query("SELECT * FROM `jail` WHERE `breaker` = '0' AND `timeleft` > UNIX_TIMESTAMP() AND `id` = '$tid'");
@@ -53,13 +53,13 @@ if(isset($_POST['valget']) && (isset($_POST['kjope']) || isset($_POST['bryte']))
                     if($db->query("UPDATE `users` SET `hand` = (`hand` - '{$f->prisut}') WHERE `id` = '{$obj->id}' LIMIT 1")){
                         if($db->query("UPDATE `jail` SET `breaker` = '{$obj->id}' WHERE `breaker` = '0' AND `id` = '$tid' AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1")){
                             $db->query("UPDATE `jail` SET `bryttut` = '1' WHERE `id` = '$tid'");
-                            $res = '<p class="lykket">Du har kjøpt ut '.user($f->uid).' for '.number_format($f->prisut).'kr!</p>';
-                            $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br/>'.$obj->user.' kjøpte deg ut fra fengslet!')."')");     
+                            $res = '<p class="lykket">Du har kj&oslash;pt ut '.user($f->uid).' for '.number_format($f->prisut).'kr!</p>';
+                            $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br/>'.$obj->user.' kj&oslash;pte deg ut fra fengslet!')."')");     
                         }
                     }
                 }
                 else{
-                    $res = '<p class="feil">Du har ikke råd til å kjøpe ut '.status($f->uid,1).'!</p>';
+                    $res = '<p class="feil">Du har ikke r&aring;d til &aring; kj&oslash;pe ut '.status($f->uid,1).'!</p>';
                 }
             }
         }
@@ -85,21 +85,21 @@ if(isset($_POST['valget']) && (isset($_POST['kjope']) || isset($_POST['bryte']))
                 }
                 else{
                 $n2 = rand(1, 100);
-                if($n2 <= 60){/*40 % sjanse for å havne i fengsel.*/
+                if($n2 <= 60){/*40 % sjanse for &aring; havne i fengsel.*/
                     /*Spilleren settes i fengsel*/
-                    if(settinn($obj->id, "Prøvde å bryte ut {$userlocked}", 90)){
-                        $res = '<p class="feil">Du klarte ikke å bryte ut '.user($f->uid).'! Du ble satt inn selv.</p>';
+                    if(settinn($obj->id, "Pr&oslash;vde &aring; bryte ut {$userlocked}", 90)){
+                        $res = '<p class="feil">Du klarte ikke &aring; bryte ut '.user($f->uid).'! Du ble satt inn selv.</p>';
                     }
                     else echo '<p class="feil">Av en eller annen grunn ble du ikke satt i fengselet!</p>';
                 }
                 else{
-                    /*Spilleren klarte å bryte ut den innsatte!*/
+                    /*Spilleren klarte &aring; bryte ut den innsatte!*/
                     if($db->query("UPDATE `jail` SET `breaker` = '{$obj->id}' WHERE `breaker` = '0' AND `id` = '$tid' AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1")){
                         if($db->query("UPDATE `users` SET `exp` = (`exp` + 0.05) WHERE `id` = '{$obj->id}' LIMIT 1")){
                             $db->query("UPDATE `jail` SET `bryttut` = '1' WHERE `id` = '$tid'");
-                            $res = '<p class="lykket">Du klarte å bryte ut '.user($f->uid).'!<br>Du fikk også litt rank!</p>';
-                            //$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br/>'.$obj->user.' brøt deg ut fra fengslet!')."')");   
-                            sysmel($f->uid,'--<b>Fengsel</b></br>'.$obj->user.' brøt deg ut fra fengslet!');
+                            $res = '<p class="lykket">Du klarte &aring; bryte ut '.user($f->uid).'!<br>Du fikk ogs&aring; litt rank!</p>';
+                            //$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br/>'.$obj->user.' br&oslash;t deg ut fra fengslet!')."')");   
+                            sysmel($f->uid,'--<b>Fengsel</b></br>'.$obj->user.' br&oslash;t deg ut fra fengslet!');
                         }
                     }
                     }
@@ -109,7 +109,7 @@ if(isset($_POST['valget']) && (isset($_POST['kjope']) || isset($_POST['bryte']))
 }
 }
 startpage("Fengselet");
-echo '<img src="imgs/fengsel.png" />';
+echo '<img src="imgs/fengsel.png">';
 ?>
 <h1>Fengselet</h1>
 <div style="margin: 0 auto;width: auto;text-align: center;">
@@ -137,7 +137,7 @@ echo '<img src="imgs/fengsel.png" />';
                         <td>'.user($r->uid,0).'</td>
                             <td>'.$r->reason.'</td>
                                 <td><span id="f'.$r->id.'"></span>
-                                    <script type="text/javascript">teller('.$left.',"f'.$r->id.'",false,"ned");</script>
+                                    <script>teller('.$left.',"f'.$r->id.'",false,"ned");</script>
                                 </td>
                                 <td>'.  number_format($r->prisut).'kr</td>
                         </tr>';
@@ -152,7 +152,7 @@ echo '<img src="imgs/fengsel.png" />';
                         '<tr>
                             <td colspan="4" style="text-align: center;">
                                 <input type="submit" value="Bryt ut!" name="bryte" class="button2">
-                                <input type="submit" value="Kjøp ut!" name="kjope" class="button2">
+                                <input type="submit" value="Kj&oslash;p ut!" name="kjope" class="button2">
                                 
                             </td>
                         </tr>';
@@ -166,7 +166,7 @@ echo '<img src="imgs/fengsel.png" />';
 </table>
 <input type="hidden" id="valget" value name="valget">
 </form>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             $('.velg').hover(function(){
                 $(this).not(".valgt").removeClass().addClass('c_2 velg').css('cursor','pointer');
@@ -192,12 +192,12 @@ echo '<img src="imgs/fengsel.png" />';
      $rand = mt_rand(1,100);
      if($rand > 80){
        $db->query("UPDATE `jail` SET `bryttut` = '1',`breaker`='".$obj->id."' WHERE `uid` = '$obj->id' AND `id` = '$r->id'");
-       echo '<p class="lykket">Du klarte å bryte ut deg selv!';
+       echo '<p class="lykket">Du klarte &aring; bryte ut deg selv!';
      }
      else if($rand < 80){
      $db->query("UPDATE `jail` SET `timeleft` = (`timeleft` + 120) WHERE `uid` = '$obj->id' AND `id` = '$r->id'");
-     $db->query("UPDATE `jail` SET `reason` = 'Prøvde å bryte seg selv ut' WHERE `id` = '$r->id' AND `uid` = '$obj->id'");
-     echo '<p class="feil">Du klarte ikke å bryte ut deg selv. Du fikk to minutter ekstra i straff! Du kan ikke bryte deg selv ut flere enn en gang per straff.';
+     $db->query("UPDATE `jail` SET `reason` = 'Pr&oslash;vde &aring; bryte seg selv ut' WHERE `id` = '$r->id' AND `uid` = '$obj->id'");
+     echo '<p class="feil">Du klarte ikke &aring; bryte ut deg selv. Du fikk to minutter ekstra i straff! Du kan ikke bryte deg selv ut flere enn en gang per straff.';
      }  
    }
    }
@@ -205,7 +205,7 @@ echo '<img src="imgs/fengsel.png" />';
 }
 if(fengsel() == true){
 echo '
-<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">'.fengsel(true).'</span></p>
+<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.fengsel(true).'</span></p>
 <script type= "text/javascript">
 teller('.fengsel(true).',\'krim\',true,\'ned\');
 </script>

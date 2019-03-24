@@ -4,7 +4,7 @@ startpage("Bunker");
 if(fengsel() == true){
 	echo '<h1>Bunker</h1>
 	<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.fengsel(true).'</span></p>
-	<script type="text/javascript">
+	<script>
 	teller('.fengsel(true).',\'krim\',true,\'ned\');
 	</script>
 	';
@@ -12,8 +12,8 @@ if(fengsel() == true){
 else if(bunker() == true){
 	$bu = bunker(true);
 	echo '<h1>Bunker</h1>
-	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-	<script type="text/javascript">
+	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+	<script>
 	teller('.($bu - time()).',\'bunker\',false,\'ned\');
 	</script>
 	';
@@ -32,11 +32,11 @@ else{
   );
   $times = array("1"=>1800,"2"=>3600,"3"=>7200,"4"=>10800,"5"=>14400,"6"=>18000,"7"=>21600,"8"=>25200,"9"=>28800,"10"=>32400,"11"=>36000,"12"=>39600,"13"=>43200);
   $dont_touch_my_tralala = array(1800=>"30 minutter",3600=>"1 time",7200=>"2 timer",10800=>"3 timer",14400=>"4 timer",18000=>"5 timer",21600=>"6 timer",25200=>"7 timer",28800=>"8 timer",32400=>"9 timer",36000=>"10 timer",39600=>"11 timer",43200=>"12 timer");
-  echo '<h1>Bunker</h1><p>Her kan du gå i bunker, eller invitere andre til bunkeren din. Du kan kjøpe eiendom med bunker på <a href="/Marked">Svartebørsen</a>!</p>';
+  echo '<h1>Bunker</h1><p>Her kan du g&aring; i bunker, eller invitere andre til bunkeren din. Du kan kj&oslash;pe eiendom med bunker p&aring; <a href="/Marked">Svarteb&oslash;rsen</a>!</p>';
   $s = $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '{$obj->id}' AND `accepted` = '0' AND `used` = '0' AND `declined` = '0' AND `gone` = '0'");
     $antinv = $db->num_rows();
   if($obj->eigendom == 0){
-    /*Spilleren har ikke kjøpt eiendom enda*/
+    /*Spilleren har ikke kj&oslash;pt eiendom enda*/
   }
   else{
     $eiendom = $obj->eigendom;
@@ -47,7 +47,7 @@ else{
     $antgiv = $db->num_rows();
     $left = $space - $antgiv;
     if(isset($_POST['uinv']) && isset($_POST['ubtid']) && isset($_POST['sendbunker'])){
-      /*Spilleren prøver å sende bunker til andre spillere, prøver å utføre kommando*/
+      /*Spilleren pr&oslash;ver &aring; sende bunker til andre spillere, pr&oslash;ver &aring; utf&oslash;re kommando*/
       $invs = $_POST['uinv'];
       $time = $_POST['ubtid'];
       //echo 'Samler informasjon!<br>';/*Skriveribugfiksetingtang*/
@@ -66,10 +66,10 @@ else{
           echo '<p class="feil">'.htmlentities($inv_inf[$a]["i"]).' eksisterer ikke!</p>';
         }
       }
-      //echo 'Utfører siste beregninger<br>';/*Skriveribugfiksetingtang*/
+      //echo 'Utf&oslash;rer siste beregninger<br>';/*Skriveribugfiksetingtang*/
       for($o=0;$o<count($names);$o++){
         $t = $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '".user_exists($names[$o]["i"], 1)."' AND `uid` = '{$obj->id}' AND `used` = '0' AND `accepted` = '0' AND `declined` = '0' AND `gone` = '0'");
-        if($db->num_rows() >= 1){/*Spiller har allerede fått bunker*/
+        if($db->num_rows() >= 1){/*Spiller har allerede f&aring;tt bunker*/
           echo '<p class="feil">Kan ikke sende bunker til '.user(user_exists($names[$o]["i"], 1)).' da du allerede har invitert spilleren!</p>';
         }
         else{
@@ -79,7 +79,7 @@ else{
           else{
             if($db->query("INSERT INTO `bunkerinv`(`uid`,`tid`,`time`,`timeleft`,`length`) "
                     . "VALUES('".$obj->id."','".user_exists($names[$o]["i"], 1)."',UNIX_TIMESTAMP(),NULL,'".$names[$o]['t']."')")){
-              echo '<p class="lykket">'.htmlentities($names[$o]["i"]).' mottok bunkerinvitasjon på '.$dont_touch_my_tralala[$names[$o]['t']].'!</p>';
+              echo '<p class="lykket">'.htmlentities($names[$o]["i"]).' mottok bunkerinvitasjon p&aring; '.$dont_touch_my_tralala[$names[$o]['t']].'!</p>';
             }
             else{
               echo 'Det oppstod feil med query: '.$db->last_query."<br>".mysqli_error($db->connection_id)."<br>";
@@ -106,12 +106,12 @@ else{
         }
       }
       else{
-        echo '<p class="feil">Feil valg, prøv igjen!</p>';
+        echo '<p class="feil">Feil valg, pr&oslash;v igjen!</p>';
       }
     }
   }
   /*Viser tabeller osv*/
-  /*Først vises tabell for invitasjoner fra andre*/
+  /*F&oslash;rst vises tabell for invitasjoner fra andre*/
   if(isset($_POST['invacc'])){
     $id = $db->escape($_POST['invacc']);
     if(isset($_POST['godtainv'])){
@@ -119,7 +119,7 @@ else{
       if($db->num_rows() == 1){
         $o1 = $db->fetch_object();
         if($db->query("UPDATE `bunkerinv` SET `accepted`='1',`timeleft`='".(time() +$o1->length)."',`used`='1' WHERE `id` = '$id'")){
-          echo '<p class="lykket">Du har nå satt deg i bunker i '.$times[$o1->length].'!<br>Du er ute om: <span id="tidforute"></span><script type="text/javascript">teller('.(time() + $o1->length).',\'tidforute\',false,\'ned\');</script></p>';
+          echo '<p class="lykket">Du har n&aring; satt deg i bunker i '.$times[$o1->length].'!<br>Du er ute om: <span id="tidforute"></span><script>teller('.(time() + $o1->length).',\'tidforute\',false,\'ned\');</script></p>';
         }
         else{
           echo '<p class="feil">Kunne ikke sette deg i bunker, queryfeil: '.mysqli_error($db->connection_id).'<br>Query: "'.$db->last_query.'"</p>';
@@ -170,7 +170,7 @@ else{
         }
       ?>
       <tr>
-        <td colspan="4" style="text-align: right"><input type="submit" class="button" name="godtainv" value="Gå i bunker!"><input type="submit" name="slettinv" value="Slett invitasjon"></td>
+        <td colspan="4" style="text-align: right"><input type="submit" class="button" name="godtainv" value="G&aring; i bunker!"><input type="submit" name="slettinv" value="Slett invitasjon"></td>
       </tr>
     </tbody>
   </table>
@@ -182,7 +182,7 @@ else{
         <th>Bunker</th>
       </tr>
       <tr>
-        <th>Her kan du sende bunkerinvitasjoner til andre spillere om du har plass på eiendommen.</th>
+        <th>Her kan du sende bunkerinvitasjoner til andre spillere om du har plass p&aring; eiendommen.</th>
       </tr>
     </thead>
     <tbody>
@@ -210,7 +210,7 @@ else{
     </tbody>
   </table>
 </form>
-<script type="text/javascript">
+<script>
   $(document).ready(function(){
     $("input[class='gudleif']").on("keyup",function(data){
       var form = $(this).serialize();

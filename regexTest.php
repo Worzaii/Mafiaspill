@@ -16,5 +16,5 @@ if(isset($_POST['sub'])){
     <input type="text" name="re4" placeholder="[a-zA-Z]">
     <input type="text" name="re5" placeholder="[1-9]">
     <input type="text" name="re6" placeholder="[\w-_a-zA-Z0-9 ]">
-    <br /><input type="submit" name="sub" value="Sjekk!">
+    <br><input type="submit" name="sub" value="Sjekk!">
 </form>

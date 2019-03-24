@@ -20,10 +20,10 @@ echo '
 <tbody>
 <tr><td>Antall spillere registrert:</td><td>'.$db->num_rows($select2).'</td></tr>
 <tr><td>Antall aktiverte spillere:</td><td>'.$db->num_rows($select5).'</td></tr>
-<tr><td>Antall døde spillere:</td><td>'.$tw.'</td></tr>
+<tr><td>Antall d&oslash;de spillere:</td><td>'.$tw.'</td></tr>
 </tbody>
 </table>
-<br />
+<br>
 <table style="width:220px;float:left;clear:left;margin-left:25px;" class="table">
 <thead><tr><th colspan="2">Siste 10 registrerte:</th></tr></thead>
 <tr><td style="width:50px;">ID:</td><td>Bruker:</td></tr>
@@ -119,7 +119,7 @@ $srr = $db->query("SELECT * FROM `familier` WHERE `lagtned` = '0' ORDER BY `Time
  echo '
 
          <tr class="c_2">
-          <td><a href="familievis.php?fam='.$r->Navn.'"><img src="'.$r->img.'" alt="" height="35" width="35" /></a></td>
+          <td><a href="familievis.php?fam='.$r->Navn.'"><img src="'.$r->img.'" alt="" height="35" width="35"></a></td>
           <td><a href="familievis.php?fam='.$r->Navn.'">'.$r->Navn.'</a></td>
           <td><a href="profil.php?id='.$r->id.'">'.user($r->Leder).'</a></td>
           <td><a href="profil.php?id='.$r->id.'">'.user($r->Ub).'</a></td>

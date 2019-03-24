@@ -11,7 +11,7 @@ $style='<style type="text/css">
 <?php
 if(!isset($_GET['id'])){
 echo '
-<p>Denne profilen kan ikke vises. Vennligst søk på en spiller for å se profilen. Søkefunksjonen kommer så snart profilscriptet er klart.</p>
+<p>Denne profilen kan ikke vises. Vennligst s&oslash;k p&aring; en spiller for &aring; se profilen. S&oslash;kefunksjonen kommer s&aring; snart profilscriptet er klart.</p>
 ';
 }
 
@@ -40,10 +40,10 @@ else{
 $image = htmlentities(filter_var($fetch->image, FILTER_SANITIZE_URL));
 }
 $regd = ($fetch->regdato != 0) ? date("H:i:s | d-m-Y",$fetch->regdato) : '<em>Ukjent registreringsdato</em>';
-$var = array(1=>"<span class='stat1' title='Admin'>Admin</span>",2=>"<span class='stat2' title='Moderator'>Moderator</span>",3=>"<span class='stat3' title='Forum moderator'>Forum Moderator</span>",4=>rainbow("Picmaker"),5=>"<span class='stat5' title='Vanlig spiller'>Vanlig spiller</span>",6=>"<span class='stat6' title='Død'>Død</span>");
+$var = array(1=>"<span class='stat1' title='Admin'>Admin</span>",2=>"<span class='stat2' title='Moderator'>Moderator</span>",3=>"<span class='stat3' title='Forum moderator'>Forum Moderator</span>",4=>rainbow("Picmaker"),5=>"<span class='stat5' title='Vanlig spiller'>Vanlig spiller</span>",6=>"<span class='stat6' title='D&oslash;d'>D&oslash;d</span>");
 $status = $var[$fetch->status];
 if($fetch->health == 0){
-$status = '<span style="color:#ff0000">Død</span>';
+$status = '<span style="color:#ff0000">D&oslash;d</span>';
 }
 $ute = number_format($fetch->hand);
 $sendtmld = number_format($fetch->sendtmld);
@@ -56,7 +56,7 @@ $exbut= (r1() || r2()) ? '<a class="button" href="profil.php?id='.$fetch->id.'&n
 $familie = famidtoname($fetch->family,1);
 if($fetch->family == null){$familie = "<i>ingen</i>";}else{$familie = famidtoname($fetch->family,1);}
 if(isset($_GET['note'])){
-/*Vis notat på bruker*/
+/*Vis notat p&aring; bruker*/
   if(isset($_POST['norte'])){
 $id = $db->escape($_POST['norte']);
 $db->query("UPDATE `users` SET `note` = '".$db->escape($_POST['norte'])."' WHERE `id` = '".$fetch->id."' LIMIT 1");
@@ -65,15 +65,15 @@ lykket("Notatene ble oppdatert!");
   $fetch->note = htmlentities($_POST['norte'],NULL,"ISO-8859-1");
 }
 else{
-echo "<p class=\"feil\">Hold det så kort som mulig, unngå enter og lang tekst.</br></p>";
+echo "<p class=\"feil\">Hold det s&aring; kort som mulig, unng&aring; enter og lang tekst.</br></p>";
 }
 echo '<form method="post" action=""><textarea style="height:140px; width:430px;" name="norte">'.($fetch->note).'</textarea><input type="submit" value="Lagre"></form>';
 }
 if(r1() || r2()){
-echo '<p>'.(($obj->status == 1) ? "<a href=\"stilling.php?nick='.$fetch->user.'\">Sett stilling</a> || " : NULL).'<a href="modkill2.php?kill='.$fetch->id.'">Modkill Spilleren</a> || <a href="forumban.php?ban='.$fetch->id.'">Forumban Spilleren</a> || <a href="profil.php?id='.$fetch->id.'&note">Endre notat på spiller</a>'.(($obj->status == 1) ? " || <a href=\"endrespiller.php?u=".$fetch->user."\">Endre verdier</a>" : NULL).'</p>';
-//echo '<a href="profil.php?id='.$fetch->id.'&bank">Se 50 siste bank overføringer fra brukeren</a></br>';
+echo '<p>'.(($obj->status == 1) ? "<a href=\"stilling.php?nick='.$fetch->user.'\">Sett stilling</a> || " : NULL).'<a href="modkill2.php?kill='.$fetch->id.'">Modkill Spilleren</a> || <a href="forumban.php?ban='.$fetch->id.'">Forumban Spilleren</a> || <a href="profil.php?id='.$fetch->id.'&note">Endre notat p&aring; spiller</a>'.(($obj->status == 1) ? " || <a href=\"endrespiller.php?u=".$fetch->user."\">Endre verdier</a>" : NULL).'</p>';
+//echo '<a href="profil.php?id='.$fetch->id.'&bank">Se 50 siste bank overf&oslash;ringer fra brukeren</a></br>';
     $fetch->note = html_entity_decode($fetch->note,NULL,"ISO-8859-1");
-echo '<p style="text-align:center;cursor:pointer;font-weight:bold" title="Trykk på meg!" onclick="javascript:$(\'#togme\').fadeToggle();">Admin/mod notater</p><div id="togme" style="display:none;">'.bbcodes($fetch->note,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0).'</div>';
+echo '<p style="text-align:center;cursor:pointer;font-weight:bold" title="Trykk p&aring; meg!" onclick="javascript:$(\'#togme\').fadeToggle();">Admin/mod notater</p><div id="togme" style="display:none;">'.bbcodes($fetch->note,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0).'</div>';
 }			
 echo "
 
@@ -88,7 +88,7 @@ echo "
 <td>Nick:</td><td><a href=\"innboks.php?ny&usertoo=$fetch->user\">".status($fetch->id,1)."</a></td>
 </tr>
 <tr>
-<td>Sist pålogget:</td><td>{$lasttime}</td>
+<td>Sist p&aring;logget:</td><td>{$lasttime}</td>
 </tr>
 <tr>
 <td>Tid siden sist:</td><td><span id=\"usertime\"></span></td>
@@ -106,7 +106,7 @@ echo "
 <td>Rank:</td><td>{$ranknm}{$experience}</td>
 </tr>
 <!--<tr>
-<td>Pengerank:</td><td>Venter på sql</td>-->
+<td>Pengerank:</td><td>Venter p&aring; sql</td>-->
 </tr>
 <tr>
 <td>Familie:</td><td>$familie</td>
@@ -132,9 +132,9 @@ echo '<tr><th colspan="2">Moderator & Admin info</th></tr><tr>
 <tr><td>Liv:</td><td>'.$fetch->health.'%</td></tr>
 <tr><td>Kuler:</td><td>'.$fetch->bullets.'</td></tr>
 <tr><td>Poeng:</td><td>'.$fetch->points.'</td></tr>
-<tr><td>Oppført IP:</td><td>'.(($obj->status > 1) ? "***" : (($fetch->regip != NULL) ? $fetch->regip : "<i>Ikke registrert</i>")).'</td></tr>
+<tr><td>Oppf&oslash;rt IP:</td><td>'.(($obj->status > 1) ? "***" : (($fetch->regip != NULL) ? $fetch->regip : "<i>Ikke registrert</i>")).'</td></tr>
 <tr><td>Sist brukte IP:</td><td>'.(($obj->status > 1) ? "***" : (($fetch->ip != NULL) ? $fetch->ip : "<i>Ikke registrert</i>")).'</td></tr>
-<tr><td>Oppført hostname:</td><td>'.(($obj->status > 1) ? "***" : (($fetch->reghostname != NULL) ? $fetch->reghostname : "<i>Ikke registrert</i>")).'</td></tr>
+<tr><td>Oppf&oslash;rt hostname:</td><td>'.(($obj->status > 1) ? "***" : (($fetch->reghostname != NULL) ? $fetch->reghostname : "<i>Ikke registrert</i>")).'</td></tr>
 <tr><td>Siste hostname:</td><td>'.(($obj->status > 1) ? "***" : (($fetch->hostname != NULL) ? $fetch->hostname : "<i>Ikke registrert</i>")).'</td></tr><tr>
 <td colspan="2"><a href="http://browscap.org/ua-lookup">Nettleser:</a><br>'.$harikke.'</td>  
 </tr>
@@ -143,7 +143,7 @@ echo '<tr><th colspan="2">Moderator & Admin info</th></tr><tr>
 }
 echo "
 </table>
-<br />
+<br>
 
 <div class=\"profiltekst\">
 ";
@@ -151,14 +151,14 @@ $profil = bbcodes($fetch->profile,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0);
 echo $profil;
 echo '
 </div>
-<script type="text/javascript">
+<script>
 teller('.$timeuser.',\'usertime\',false,\'opp\');
 </script>
 ';
 }
 else{
 echo '
-<p class="feil">Det var ikke funnet noen bruker med id: '.htmlentities($id).'! Bruk søkefunksjonen <a href="finnspiller.php">Finn spiller</a> for å finne spillere.</p>
+<p class="feil">Det var ikke funnet noen bruker med id: '.htmlentities($id).'! Bruk s&oslash;kefunksjonen <a href="finnspiller.php">Finn spiller</a> for &aring; finne spillere.</p>
 ';
 }
 }

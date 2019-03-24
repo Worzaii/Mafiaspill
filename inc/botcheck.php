@@ -33,7 +33,7 @@
  								// Hvis brukeren har fler en 1 feil
 						//mysql_query(""); oppdater databasen med tegnene; +1		
  					}
-					echo 'Feil kode! Du har ".$forsokigjen." antall forsøk igjen!';
+					echo 'Feil kode! Du har ".$forsokigjen." antall fors&oslash;k igjen!';
 					$result = false;
 				}
 			}
@@ -58,7 +58,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="center"><input class="text" type="submit" name="submitBtn" value="Fullfør"></td>
+					<td align="center"><input class="text" type="submit" name="submitBtn" value="Fullf&oslash;r"></td>
 				</tr>
 			</table>  
 		</form>

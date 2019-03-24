@@ -34,7 +34,7 @@ if($obj->status == 1){ ?>
 </ul>
 <p style="text-align: center;">Moderatorpanel</p>
 <ul class="adminpanel">
-                <a href="bankalle.php"><li>Bankoverføringer</li></a>
+                <a href="bankalle.php"><li>Bankoverf&oslash;ringer</li></a>
 		<a href="publiser.php"><li>Legge til en nyhet</li></a>
 		<a href="ipsjekk.php"><li>Sjekk spillere som kan bruke multi</li></a>
 		<a href="modkill2.php"><li>Modkill spiller</li></a>
@@ -51,7 +51,7 @@ if($obj->status == 1){ ?>
  <a href="tomprat.php" onclick="return confirm('Er du sikker p&aring; at du vil t&oslash;mme praten?')"><li>Loggf&oslash;r og t&oslash;m praten!</li></a>
 <a href="chatlog.php"><li>Vis loggf&oslash;rte chat logger</li></a>
 </ul>
-<br /><br />
+<br><br>
 <?php }
 else
 {

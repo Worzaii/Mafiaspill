@@ -1,6 +1,6 @@
 <?php
 include("core.php");
-if(r1() || r2()){//Denne gjør slik at kun admin og moderator kan se innholdet i filen.(se siden i html) Hvis du skriver /poker.php i nettleseren får du en rød trekant :P
+if(r1() || r2()){//Denne gj&oslash;r slik at kun admin og moderator kan se innholdet i filen.(se siden i html) Hvis du skriver /poker.php i nettleseren f&aring;r du en r&oslash;d trekant :P
 $suits = array (
   "Spar", "Hjerter", "Kl&oslash;ver", "Ruter"
 );
@@ -20,12 +20,12 @@ $hand = array();
 startpage("Poker");
 ?>
 <h1>Poker</h1>
-<p>Spill poker, det annerkjente kortspillet der de alle lever ville liv i håp om å få Royal Flush!<br>Minstebeløp er på 10,000kr, maks er på 500,000,000kr!</p>
+<p>Spill poker, det annerkjente kortspillet der de alle lever ville liv i h&aring;p om &aring; f&aring; Royal Flush!<br>Minstebel&oslash;p er p&aring; 10,000kr, maks er p&aring; 500,000,000kr!</p>
 <?php
   /*Sjekker for eksisterende runde*/
   $poker = $db->query("SELECT * FROM `pokertables` WHERE `uid` = '{$obj->id}' AND `round` = '0' ORDER BY `id` DESC LIMIT 0,1");
   if(!$poker){
-    feil("Tabellen eksisterer ikke eller det var noe feil med spørringen, ta kontakt med support!");
+    feil("Tabellen eksisterer ikke eller det var noe feil med sp&oslash;rringen, ta kontakt med support!");
     endpage();
   }
   if($db->num_rows() == 1){
@@ -48,8 +48,8 @@ startpage("Poker");
           if($card['suit'] == "Hjerter"){
             $img = '<img src="spillkort/h'.$faces[$card['face']].'.png" alt=" '.$faces['face'].'" title="'.$faces[$card['face']].'">';
           }
-          else if($card['suit'] == "Kløver"){
-            $img = '<img src="spillkort/k'.$faces[$card['face']].'.png" alt="Kløver'.$faces['face'].'" title="'.$faces[$card['face']].'">';
+          else if($card['suit'] == "Kl&oslash;ver"){
+            $img = '<img src="spillkort/k'.$faces[$card['face']].'.png" alt="Kl&oslash;ver'.$faces['face'].'" title="'.$faces[$card['face']].'">';
           }
           else if($card['suit'] == "Ruter"){
             $img = '<img src="spillkort/r'.$faces[$card['face']].'.png" alt="Ruter '.$faces['face'].'" title="'.$faces[$card['face']].'">';
@@ -69,10 +69,10 @@ startpage("Poker");
   else{
     /*Runde er ikke satt.*/
     if(isset($_POST['verdi'])){
-      /*Starter poker, hvis spiller har råd*/
+      /*Starter poker, hvis spiller har r&aring;d*/
         /*Starter validering av input*/
       $bet = $_POST['verdi'];
-      /*Fjerner først vanlige ekstrafidelideier*/
+      /*Fjerner f&oslash;rst vanlige ekstrafidelideier*/
       $bet = str_replace(array('kr',',','.'),NULL,$bet);
       if(!is_numeric($bet)){
         feil("Det var ikke tall!");
@@ -86,14 +86,14 @@ startpage("Poker");
           $qu = $db->query("INSERT INTO `pokertables`(`id`,`uid`,`ucards`,`rest`,`round`,`time`,`bet`,`result`) "
             . "VALUES(NULL,'{$obj->id}','".serialize($ucards)."','".serialize($deck)."','0',UNIX_TIMESTAMP(),'".$db->escape($bet)."',NULL)");
             if(!$qu){
-              feil('Det hendte en feil ved denne spørringen: '.$db->last_query.'<br>'.  mysql_errno($db->connection_id).' '.mysqli_error($db->connection_id));
+              feil('Det hendte en feil ved denne sp&oslash;rringen: '.$db->last_query.'<br>'.  mysql_errno($db->connection_id).' '.mysqli_error($db->connection_id));
             }
             else{
               lykket("Du har startet en runde!");
             }
         }
         else{
-          feil('Du kan ikke by mer eller mindre enn 10,000->500,000,000kr! Du prøvde å by '.number_format(htmlentities($bet)));
+          feil('Du kan ikke by mer eller mindre enn 10,000->500,000,000kr! Du pr&oslash;vde &aring; by '.number_format(htmlentities($bet)));
         }
       }
     }
@@ -108,7 +108,7 @@ startpage("Poker");
           </thead>
           <tbody>
             <tr>
-              <td><p>Hvor mye er du villig til å satse for?</p><input type="text" name="verdi"><br /><input type="submit" value="Start runde!"></td>
+              <td><p>Hvor mye er du villig til &aring; satse for?</p><input type="text" name="verdi"><br><input type="submit" value="Start runde!"></td>
             </tr>
           </tbody>
         </table>

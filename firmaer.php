@@ -3,7 +3,7 @@ include("core.php");
 startpage("Firma-paneler");
   if(fengsel() == true){
 echo '
-<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">'.fengsel(true).'</span></p>
+<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.fengsel(true).'</span></p>
 <script type= "text/javascript">
 teller('.fengsel(true).',\'krim\',true,\'ned\');
 </script>
@@ -12,8 +12,8 @@ teller('.fengsel(true).',\'krim\',true,\'ned\');
 else if(bunker() == true){
 $bu = bunker(true);
 echo '
-<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-<script type="text/javascript">
+<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+<script>
 teller('.($bu - time()).',\'bunker\',false,\'ned\');
 </script>
 ';
@@ -21,13 +21,13 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
 else{
 echo '<h1>Dine firmaer</h1>';
 $config = array("type"=>array("1"=>"Lottofirma","2"=>"Flyplassfirma"));
-//echo '<h1>Firmapaneler</h1><p class="feil">Dette gjelder for de med flyplassfirmaer:<br />Heisann! Werzaire her. Jeg vil informere dere om at innstillinger for flyplass ikke er helt klart enda. Og derfor ønsker jeg at dere lar alle innstillingene som står tilgjengelig la være stående da det kan være feil med noe. Jeg har ikke testet dette selv. Det vil bli oppdatert om ikke så lenge. Man får ikke noe på flyplassene enda, så det vil også komme så snart jeg har fått scriptet ferdig for flyplasseierne!<br />~ Werzaire</p>';
+//echo '<h1>Firmapaneler</h1><p class="feil">Dette gjelder for de med flyplassfirmaer:<br>Heisann! Werzaire her. Jeg vil informere dere om at innstillinger for flyplass ikke er helt klart enda. Og derfor &oslash;nsker jeg at dere lar alle innstillingene som st&aring;r tilgjengelig la v&aelig;re st&aring;ende da det kan v&aelig;re feil med noe. Jeg har ikke testet dette selv. Det vil bli oppdatert om ikke s&aring; lenge. Man f&aring;r ikke noe p&aring; flyplassene enda, s&aring; det vil ogs&aring; komme s&aring; snart jeg har f&aring;tt scriptet ferdig for flyplasseierne!<br>~ Werzaire</p>';
 $s = $db->query("SELECT * FROM `firma` WHERE `Eier` = '{$obj->id}' ORDER BY `id` ASC");//Henter firmapanelene til spilleren.
 if($db->num_rows() >= 1 || $obj->status == 1){
   if($obj->status == 1)$s = $db->query("SELECT * FROM `firma` ORDER BY `id` ASC");
   if(isset($_POST['allout']) || isset($_POST['overfor'])){
     if(isset($_POST['allout'])){
-      /*Tar ut pengene så lengst personen eier firmaet. Admin kan ikke ta ut.*/
+      /*Tar ut pengene s&aring; lengst personen eier firmaet. Admin kan ikke ta ut.*/
       $id = $db->escape($_POST['id']);
       $in = firma($id);
       $eier = $in[1];
@@ -46,12 +46,12 @@ if($db->num_rows() >= 1 || $obj->status == 1){
       $id = $db->escape($_POST['id']);
       $u = (user_exists($usr) == true) ? true : false;
       if($u == true){
-        /*Overfører*/
+        /*Overf&oslash;rer*/
         $uin = user_exists($usr,1);
         if(is_numeric($uin)){
           if($db->query("UPDATE `firma` SET `Eier` = '{$uin}' WHERE `id` = '$id' LIMIT 1")){
             echo '<p class="lykket">Du har overf&oslash;rt firmaet ditt til '.user($uin).'!</p>';
-            sysmel($uin, '<b>--Firma</b><br />Du har mottat et firma ifra '.user($obj->id).'! Klikk her for å se ditt panel over firmaene dine: <a href="http://mafia-no.net/Firmaer">Firmapanel</a>');
+            sysmel($uin, '<b>--Firma</b><br>Du har mottat et firma ifra '.user($obj->id).'! Klikk her for &aring; se ditt panel over firmaene dine: <a href="http://mafia-no.net/Firmaer">Firmapanel</a>');
           }
           else{
             echo '<p class="feil">Feil i sp&oslash;rring! '.$db->last_error.'</p>';
@@ -67,7 +67,7 @@ if($db->num_rows() >= 1 || $obj->status == 1){
     if($a->Type == 1){
       /*Lottofirma har ekstra egenskaper*/
       /*Noen variabler for Lotto*/
-      $lottoupdate='<input type="submit" name="changelotto" value="Oppdater Lottoinnstillinger."><br />';
+      $lottoupdate='<input type="submit" name="changelotto" value="Oppdater Lottoinnstillinger."><br>';
       /*END VARIABLER*/
       $get_settings = $db->query("SELECT * FROM `lottoconfig` ORDER BY `id` DESC LIMIT 1");
       if($db->num_rows() == 1){
@@ -117,16 +117,16 @@ if($db->num_rows() >= 1 || $obj->status == 1){
       }
       $ex = '
       <tr>
-        <td>Pris per lodd:</td><td><input name="edit1lotto" type="number" min="10000" max="1000000" value="'.$current_value1.'"> kr<br />Minst: 10,000kr Maks: 1,000,000kr</td>
+        <td>Pris per lodd:</td><td><input name="edit1lotto" type="number" min="10000" max="1000000" value="'.$current_value1.'"> kr<br>Minst: 10,000kr Maks: 1,000,000kr</td>
       </tr>
       <tr>
-        <td>Tid per lottorunde:</td><td><input name="edit2lotto" type="number" min="10" max="60" value="'.$current_value2.'"> minutter<br />Minst: 10 minutter Maks 1 time(60 minutter)</td>
+        <td>Tid per lottorunde:</td><td><input name="edit2lotto" type="number" min="10" max="60" value="'.$current_value2.'"> minutter<br>Minst: 10 minutter Maks 1 time(60 minutter)</td>
       </tr>
       <tr>
-        <td>Trekk til deg:</td><td><input name="edit3lotto" type="number" min="5" max="15" value="'.$current_value3.'"> % trekk<br />Minst: 5% Maks: 30%</td>
+        <td>Trekk til deg:</td><td><input name="edit3lotto" type="number" min="5" max="15" value="'.$current_value3.'"> % trekk<br>Minst: 5% Maks: 30%</td>
       </tr>
       <tr>
-        <td>Antall mulige lodd:</td><td><input name="edit4lotto" type="number" min="100" max="1000" value="'.$current_value4.'"> stk<br />Minst: 100 lodd Maks: 1,000 lodd</td>
+        <td>Antall mulige lodd:</td><td><input name="edit4lotto" type="number" min="100" max="1000" value="'.$current_value4.'"> stk<br>Minst: 100 lodd Maks: 1,000 lodd</td>
       </tr>
       ';
       $by = NULL;
@@ -155,7 +155,7 @@ if($db->num_rows() >= 1 || $obj->status == 1){
       <tr>
         <td colspan="2">
         '.$lottoupdate.'
-        <input type="submit" name="allout" value="Ta ut alle pengene!"><br />
+        <input type="submit" name="allout" value="Ta ut alle pengene!"><br>
         <input type="submit" value="Overf&oslash;r til en annen spiller:" name="overfor">
         <input type="text" placeholder="Nick" name="overfortil"></td>
       </tr>

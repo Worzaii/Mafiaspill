@@ -25,7 +25,7 @@
             }
         }
         if(isset($_GET['nick'])){
-        //Forhåndsbestemt nick til pm
+        //Forh&aring;ndsbestemt nick til pm
         $til = 'value="'.$db->escape($_GET['nick']).'"';
         }
         else{
@@ -53,7 +53,7 @@ ENDHTML;
         if(isset($_POST['smsback'])){
           $sms = $db->escape($_POST['smsback']);
           if(strlen($sms) <= 1){
-            echo '<p class="feil">Du må ha en meldingstekst lengre enn et tegn.</p>';
+            echo '<p class="feil">Du m&aring; ha en meldingstekst lengre enn et tegn.</p>';
             $keep = (strlen($sms)<=1) ? $sms : null;
           }
           if($r->besvart == 1){
@@ -72,7 +72,7 @@ ENDHTML;
                 echo '<p class="feil">Feil ved sending av melding: <br>'.$db->last_error.'</p>';
               }
               else{
-                echo '<p class="feil">Det har oppstått et problem ved sending av meldingen. Rapporter dette til en Administrator.</p>';
+                echo '<p class="feil">Det har oppst&aring;tt et problem ved sending av meldingen. Rapporter dette til en Administrator.</p>';
               }
             }
           }
@@ -101,7 +101,7 @@ ENDHTML;
         <td>Mottat: '.$dato.'</td><td>Fra: '.$fra.'</td>
         </tr>
         <tr>
-        <td colspan="2"><b>Melding:</b> <br />'.$textout.'</td>
+        <td colspan="2"><b>Melding:</b> <br>'.$textout.'</td>
         </tr>
         </table>
 				<form method="post" action="">
@@ -113,7 +113,7 @@ ENDHTML;
 						</thead>
 						<tbody>
 							<tr>
-								<td style="text-align:center;"><textarea style="width:100%;height:230px;color:#aaa;background-color:#333;border:0px;" name="smsback" placeholder="Skriv svaret her">'.htmlentities($textin->message,NULL,"ISO-8859-1").'</textarea><br /><input type="submit" value="Besvar meldingen!"></td>
+								<td style="text-align:center;"><textarea style="width:100%;height:230px;color:#aaa;background-color:#333;border:0px;" name="smsback" placeholder="Skriv svaret her">'.htmlentities($textin->message,NULL,"ISO-8859-1").'</textarea><br><input type="submit" value="Besvar meldingen!"></td>
                                                               ';
         if($r->read == 1){
             \NULL;} 

@@ -12,7 +12,7 @@ margin:0;
 <body>
 <div id="wrap">
 <div id="head"><h1>Du har blitt drept!</h1></div>
-<div id="body"><p>Du har blitt drept, og mister tilgangen til alle pengeverdier og skrivemuligheter.<br />Har du klager, skriv til system@mafia-no.net</p></div>
+<div id="body"><p>Du har blitt drept, og mister tilgangen til alle pengeverdier og skrivemuligheter.<br>Har du klager, skriv til system@mafia-no.net</p></div>
 </div>
 </body>
 </html>';

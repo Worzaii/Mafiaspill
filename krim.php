@@ -1,7 +1,7 @@
 <?php
   include("core.php");
   startpage("Kriminalitet");
-  echo '<img src="imgs/krim.png" /><p>Når du først starter med kriminalitet, så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp.</p>';
+  echo '<img src="imgs/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp.</p>';
   if(fengsel() == true){
     header("Location: /fengsel.php");
     die();
@@ -9,8 +9,8 @@
   else if(bunker() == true){
     $bu = bunker(true);
     echo '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-    <script type="text/javascript">
+    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+    <script>
     teller('.($bu - time()).',\'bunker\',false,\'ned\');
     </script>
     ';
@@ -25,7 +25,7 @@
       }
       else{
         echo '
-        <p class="feil">Det har oppstått en feil, vennligst kontakt Admin via Support for å få rettet på dette!</p>
+        <p class="feil">Det har oppst&aring;tt en feil, vennligst kontakt Admin via Support for &aring; f&aring; rettet p&aring; dette!</p>
         ';
       }
     }
@@ -35,15 +35,15 @@
       if(time() < $f->time){
         $tid = $f->time - time();
         echo '
-        <p class="feil">Du må vente <span id="krim">'.$tid.'</span> før neste krim.</p>
-        <script type="text/javascript">
+        <p class="feil">Du m&aring; vente <span id="krim">'.$tid.'</span> f&oslash;r neste krim.</p>
+        <script>
         teller('.$tid.',\'krim\',true,\'ned\');
         </script>
         ';
       }
     }
     else if($db->num_rows() == 0){
-      /*Krimen er klar til å tas.*/
+      /*Krimen er klar til &aring; tas.*/
       if(isset($_POST['valget'])){
       if(empty($_POST['valget'])){
         echo '<p class="feil">Du m&aring; velge et alternativ f&oslash;rst!</p>';
@@ -54,27 +54,27 @@
       if(!$valg){
       if($obj->status == 1){
       echo '
-      <p>Feil i spørring1: '.mysqli_error($db->connection_id).'</p>
+      <p>Feil i sp&oslash;rring1: '.mysqli_error($db->connection_id).'</p>
       ';
       }
       else{
         echo '
-        <p>Det var feil i utførelse av spørringer, vennligst rapporter dette til en Admin!</p>
+        <p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til en Admin!</p>
         ';
       }
       }
       else{
-        /*Fortsetter med krimutføringen*/
+        /*Fortsetter med krimutf&oslash;ringen*/
         $v = $db->fetch_object($valg);
         $sj = $db->query("SELECT * FROM `chance` WHERE `uid` = '".$obj->id."' AND `type` = '1' AND `option` = '".$val."'");
         if($db->num_rows() == 0){
-          /*Om sjansen ikke eksisterer, så opprettes en ny*/
+          /*Om sjansen ikke eksisterer, s&aring; opprettes en ny*/
           $db->query("INSERT INTO `chance`(`uid`,`type`,`option`) VALUES('$obj->id','1','$val')");
         }
         else{
           $vf = $db->fetch_object($sj);
           if($vf->percent >= 74){
-            /*Sjansen er blitt såpass høy at vi setter den ned.*/
+            /*Sjansen er blitt s&aring;pass h&oslash;y at vi setter den ned.*/
             $ran2 = rand(10,46);
             $db->query("UPDATE `chance` SET `percent` = (`percent` - $ran2) WHERE `uid` = '".$obj->id."' AND `option` = '".$vf->option."' AND `percent` > '73' LIMIT 1");
             $vf->percent +=$ran2;//Oppdaterer objektet, slik at prosenten stemmer med det samme
@@ -90,7 +90,7 @@
         $time = $v->wait + time();
         $time2 = $time - time();
         if(mt_rand(0,100) <= $sjanse){
-          /*/*Noen hadde satt random til mellom 1 og 3, dermed gjort det 100% mulig å klare krimmen...*/
+          /*/*Noen hadde satt random til mellom 1 og 3, dermed gjort det 100% mulig &aring; klare krimmen...*/
           if($db->query("UPDATE `users` SET `hand` = (`hand` + $kr),`exp` = (`exp` + $v->expgain) WHERE `user`= '$obj->user' LIMIT 1")){
             if($db->query("INSERT INTO `krimlogg`(`usid`,`time`,`valid`,`resu`,`timelast`) VALUES('$obj->id','$time','{$v->id}','1','".time()."')")){
               $db->query("SELECT * FROM `oppuid` WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `oid` = '2' ORDER BY `oid` DESC LIMIT 1");
@@ -112,12 +112,12 @@
             else{
               if($obj->status == 1){
                 echo '
-                <p>Feil i spørring2: '.mysqli_error($db->connection_id).'</p>
+                <p>Feil i sp&oslash;rring2: '.mysqli_error($db->connection_id).'</p>
                 ';
               }
               else{
                 echo '
-                <p>Det var feil i utførelse av spørringer, vennligst rapporter dette til support, slik at de kan se i loggen hva som hendte!</p>
+                <p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til support, slik at de kan se i loggen hva som hendte!</p>
                 ';
               }
             }
@@ -125,12 +125,12 @@
           else{
             if($obj->status == 1){
               echo '
-              <p>Feil i spørring: '.mysqli_error($db->connection_id).'</p>
+              <p>Feil i sp&oslash;rring: '.mysqli_error($db->connection_id).'</p>
               ';
             }
             else{
               echo '
-              <p>Det var feil i utførelse av spørringer, vennligst rapporter dette til support!</p>
+              <p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til support!</p>
               ';
             }
           }
@@ -142,7 +142,7 @@
               echo '
               <p class="feil">Du klarte det ikke!</p>
               <p class="feil">Tid til neste krim: <span id="krim">'.$time2.'</span>.</p>
-              <script type="text/javascript">
+              <script>
               teller('.$time2.',\'krim\',true,\'ned\');
               </script>
               ';
@@ -150,22 +150,22 @@
             else{
               $time = time();
               $time2 = time() + 120;
-              $q = $db->query("INSERT INTO `jail`(`uid`,`reason`,`time`,`timeleft`,`prisut`) VALUES('$obj->id','Utførte kriminelle handlinger!','$time','$time2',2500000)");
+              $q = $db->query("INSERT INTO `jail`(`uid`,`reason`,`time`,`timeleft`,`prisut`) VALUES('$obj->id','Utf&oslash;rte kriminelle handlinger!','$time','$time2',2500000)");
               $timeleft2 = 120;
               echo '
-              <p class="feil">Du klarte det ikke, og politiet oppdaget deg! Går til fengsel om 3 sekunder</p>';
+              <p class="feil">Du klarte det ikke, og politiet oppdaget deg! G&aring;r til fengsel om 3 sekunder</p>';
               header('Refresh: 3;url=fengsel.php');
               die();
               if($db->affected_rows() == 1){
                 echo '
-                <p class="feil">Du ble satt i fengsel! <br />Gjenstående tid: <span id="krim2">'.$timeleft2.'</span>.</p>
-                <script type="text/javascript">
+                <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">'.$timeleft2.'</span>.</p>
+                <script>
                 teller('.$timeleft2.',\'krim2\',true,\'ned\');
                 </script>
                 ';
               }
               else{
-                echo '<p class="feil">Klarte ikke å sette deg i fengsel! </p>';
+                echo '<p class="feil">Klarte ikke &aring; sette deg i fengsel! </p>';
               }
             }
           }
@@ -218,7 +218,7 @@
         </table>
         <input type="hidden" value="" name="valget" id="valget">
       </form>
-      <script type="text/javascript" language="javascript">
+      <script language="javascript">
       function sendpost(valg) {
         $('#valget').val(valg);
         $('#krim').submit();

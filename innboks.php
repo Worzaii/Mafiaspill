@@ -69,7 +69,7 @@
           echo '<tr><td colspan="5">'.$pagination_links.'</tr></td>';
         }
         else{
-          echo '<tr><td colspan="4"><em>Ingen meldinger å hente...</em></td></tr>';
+          echo '<tr><td colspan="4"><em>Ingen meldinger &aring; hente...</em></td></tr>';
         }
     ?>
     </tbody>
@@ -98,7 +98,7 @@
                 if(isset($_POST['smsback'])){
                     $sms = $db->escape($_POST['smsback']);
                     if(strlen($sms) <= 1){
-                        echo '<p class="feil">Du må ha en meldingstekst lengre enn et tegn.';
+                        echo '<p class="feil">Du m&aring; ha en meldingstekst lengre enn et tegn.';
                         $keep = (strlen($sms)<=1) ? $sms : null;
                     }
                     else{
@@ -112,7 +112,7 @@
                                 echo '<p class="feil">Feil ved sending av melding: <br>'.mysqli_error().'</p>';
                             }
                             else{
-                                echo '<p class="feil">Det har oppstått et problem ved sending av meldingen. Rapporter dette til Support.</p>';
+                                echo '<p class="feil">Det har oppst&aring;tt et problem ved sending av meldingen. Rapporter dette til Support.</p>';
                             }
                         }
                     }
@@ -166,11 +166,11 @@
             $re = false;
           }
           else if(!user_exists($til)){
-            $res = '<p class="feil">Brukeren '.htmlentities($til).' finnes ikke i våre databaser, sjekk at du har skrevet riktig.</p>';
+            $res = '<p class="feil">Brukeren '.htmlentities($til).' finnes ikke i v&aring;re databaser, sjekk at du har skrevet riktig.</p>';
             $re = false;
           }
           else if(strlen($mel) <= 2){
-            $res = '<p class="feil">Meldingen din er for kort! Du må minst ha 3 tegn.</p>';
+            $res = '<p class="feil">Meldingen din er for kort! Du m&aring; minst ha 3 tegn.</p>';
             $re = false;
           }
           else{
@@ -397,7 +397,7 @@
                 echo '<tr><td colspan="5">'.$pagination_links.'</tr></td>';
             }
             else{
-                echo '<tr><td colspan="4"><em>Ingen meldinger å hente...</em></td></tr>';
+                echo '<tr><td colspan="4"><em>Ingen meldinger &aring; hente...</em></td></tr>';
             }
             }
     }
@@ -422,7 +422,7 @@
         $db->query("UPDATE `sysmail` SET `read` = '1' WHERE `uid` = '{$obj->id}'");
       }
       else {
-      echo '<p class="lykket">Du har ingen meldinger å lese!</p>';  
+      echo '<p class="lykket">Du har ingen meldinger &aring; lese!</p>';  
       }
         
     }
@@ -444,16 +444,16 @@
             }
           }
           else{
-            $resub= '<p class="feil">Brukeren eksisterer ikke! Prøv igjen!</p>';
+            $resub= '<p class="feil">Brukeren eksisterer ikke! Pr&oslash;v igjen!</p>';
           }
         }
         else if($_POST['allow']){
-          /*Fjering av blokkering på spiller*/
+          /*Fjering av blokkering p&aring; spiller*/
           if(user_exists($_POST['user'])){
             $u = user_exists($_POST['user'], 1);
             $db->query("SELECT * FROM `blokkering` WHERE `tid` = '$u'");
             if($db->num_rows() == 0){
-              $resub= '<p class="feil">Det finnes ingen blokkering på spilleren!</p>';
+              $resub= '<p class="feil">Det finnes ingen blokkering p&aring; spilleren!</p>';
             }
             else{
               $db->query("DELETE FROM `blokkering` WHERE `uid` = '$obj->id' AND `tid` = '$u'");
@@ -471,7 +471,7 @@
         }
       }
       startpage("Blokkering");
-      echo '<h1>Blokker en spiller</h1><p>Dette innebærer at spilleren ikke lengre kan sende meldinger til deg via innboks.</p>';
+      echo '<h1>Blokker en spiller</h1><p>Dette inneb&aelig;rer at spilleren ikke lengre kan sende meldinger til deg via innboks.</p>';
       if(isset($resub))echo $resub;
       ?>
     <form method="POST" action="innboks.php?blokker">

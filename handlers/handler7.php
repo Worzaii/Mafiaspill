@@ -4,9 +4,9 @@ include '../core.php';
 header('Content-type: application/json');
 $dagpremie=array(1=>1000000,2=>1200000,3=>1400000,4=>1600000,5=>2000000,6=>3000000,7=>4000000,8=>5000000,9=>6000000,10=>7000000,11=>8000000,12=>9000000,13=>10000000,14=>11000000,15=>12000000,16=>13000000,17=>14000000,18=>15000000,19=>16000000,20=>17000000,21=>18000000,22=>19000000,23=>25000000,24=>50000000);
 function goclean($txt){
-  $txt = str_replace("å", "&aring;", $txt);
-  $txt = str_replace("ø", "&oslash;", $txt);
-  $txt = str_replace("æ", "&aelig;", $txt);
+  $txt = str_replace("&aring;", "&aring;", $txt);
+  $txt = str_replace("&oslash;", "&oslash;", $txt);
+  $txt = str_replace("&aelig;", "&aelig;", $txt);
   return $txt;
 }
 if(isset($_POST['dag'])){
@@ -25,7 +25,7 @@ if(isset($_POST['dag'])){
       else if($db->num_rows() == 0){
         $db->query("INSERT INTO `offers`(`uid`,`gained`,`day`) VALUES('$obj->id','1','$dag')");
         if($db->affected_rows() == 1){
-          $res = "Du har mottat en gave på ".number_format($dagpremie[$dag])."kr!";
+          $res = "Du har mottat en gave p&aring; ".number_format($dagpremie[$dag])."kr!";
           $wiit=4;
           $db->query("UPDATE `users` SET `hand` = (`hand` + ".$dagpremie[$dag].") WHERE `id` = '$obj->id'");
         }

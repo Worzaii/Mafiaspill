@@ -4,8 +4,8 @@ include("core.php");
     startpage("Blackjack");
     $bu = bunker(true);
     echo '<h1>Blackjack</h1>
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-    <script type="text/javascript">
+    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+    <script>
     teller('.($bu - time()).',\'bunker\',false,\'ned\');
     </script>
     ';
@@ -15,7 +15,7 @@ include("core.php");
     $ja = fengsel(true);
     echo '<h1>Blackjack</h1>
     <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.$ja.'</span></p>
-    <script type="text/javascript">
+    <script>
     teller('.$ja.',\'krim\',true,\'ned\');
     </script>
     ';
@@ -23,13 +23,13 @@ include("core.php");
   else{
 include("inc/gamefunctions.php");
 startpage("Blackjack");
-/* Setter opp navnene på deckene */
+/* Setter opp navnene p&aring; deckene */
 $suits = array (
-    "Spar", "Hjerter", "Kløver", "Ruter"
+    "Spar", "Hjerter", "Kl&oslash;ver", "Ruter"
 );
-/* Så setter vi opp verdiene på alle kortene */
+/* S&aring; setter vi opp verdiene p&aring; alle kortene */
 $faces = array (
-    "To"=>2, "Tre"=>3, "Fire"=>4, "Fem"=>5, "Seks"=>6, "Syv"=>7, "Åtte"=>8,
+    "To"=>2, "Tre"=>3, "Fire"=>4, "Fem"=>5, "Seks"=>6, "Syv"=>7, "&aring;tte"=>8,
     "Ni"=>9, "Ti"=>10, "Knekt"=>10, "Dame"=>10, "Konge"=>10, "Ess"=>1
 );
 function evaluateHand($hand) {
@@ -54,7 +54,7 @@ function evaluateHand($hand) {
   }
   return $value;
 }
-/* Så bruker vi foreach til å sette opp hele kortstokken istedenfor å gjøre dette manuelt selv. */
+/* S&aring; bruker vi foreach til &aring; sette opp hele kortstokken istedenfor &aring; gj&oslash;re dette manuelt selv. */
 $deck = array();
 foreach ($suits as $suit) {
     $keys = array_keys($faces);
@@ -65,9 +65,9 @@ foreach ($suits as $suit) {
 /* Deretter blander vi opp kortstokken, da alle kort blir plassert hulter til bulter */
 shuffle($deck);
 $hand = array();
-/* Her startes en ny runde, hvis spilleren definerte en pengesum å spille for */
+/* Her startes en ny runde, hvis spilleren definerte en pengesum &aring; spille for */
 if(isset($_POST['price'])){
-  /*Kasser inn og legger ut kort på bordet.*/
+  /*Kasser inn og legger ut kort p&aring; bordet.*/
   $s = $db->query("SELECT * FROM `bjtables` WHERE `uid` = '{$obj->id}' AND `round` = '0' ORDER BY `id` DESC LIMIT 1");
   if($db->num_rows($s) == 1){
     echo '<p class="feil">Du spiller allerede en runde, fullf&oslash;r den f&oslash;r du pr&oslash;ver &aring; starte et nytt spill!</p>';
@@ -80,13 +80,13 @@ if(isset($_POST['price'])){
     $pris = str_replace(".", "", $pris);
     $pris = str_replace(" ", "", $pris);
     if($pris <= 99){
-      echo '<p class="feil">Du må by 100kr eller mer</p>';
+      echo '<p class="feil">Du m&aring; by 100kr eller mer</p>';
     }
     else if(!is_numeric($pris)){
-      echo '<p class="feil">Du har ikke oppgitt en gyldig verdi! Tall er godkjent om følgende tegn er blant tallene: "kr", ",", "." og mellomrom.</p>';
+      echo '<p class="feil">Du har ikke oppgitt en gyldig verdi! Tall er godkjent om f&oslash;lgende tegn er blant tallene: "kr", ",", "." og mellomrom.</p>';
     }
-    else if($pris > 750000000){//Tillater en maksgrense på 750,000,000kroners innsats.
-      echo '<p class="feil">Maks innsats per runde er på 750,000,000kr!</p>';
+    else if($pris > 750000000){//Tillater en maksgrense p&aring; 750,000,000kroners innsats.
+      echo '<p class="feil">Maks innsats per runde er p&aring; 750,000,000kr!</p>';
     }
     else if($pris >= 100 && is_numeric($pris) && $pris <=750000000){
       if($obj->hand <= ($pris - 1)){
@@ -113,7 +113,7 @@ if(isset($_POST['price'])){
           $db->query("UPDATE `users` SET `hand` = (`hand` - $pris) WHERE `id` = '$obj->id' LIMIT 1");
         }
         if(evaluateHand($hand) == 21){
-          /*Spiller fikk 21 på første, vinner om dealer ikke fikk 21.*/
+          /*Spiller fikk 21 p&aring; f&oslash;rste, vinner om dealer ikke fikk 21.*/
           if(evaluateHand($dealer) == 21){
             echo '<p class="feil">Dere begge fikk 21, du fikk pengene tilbake!</p>';
             $db->query("UPDATE `users` SET `hand` = (`hand` + '$pris') WHERE `id` = '$obj->id' LIMIT 1");
@@ -121,7 +121,7 @@ if(isset($_POST['price'])){
             $failed = true;
           }
           else{
-            /*21 på første og dealeren under, vil si 3 ganger innsats*/
+            /*21 p&aring; f&oslash;rste og dealeren under, vil si 3 ganger innsats*/
             $price3 = $pris * 3;
             $db->query("UPDATE `users` SET `hand` = (`hand` + $price3) WHERE `id` = '$obj->id' LIMIT 1");
             $db->query("UPDATE `bjtables` SET `round` = '1',`result` = '$price3' WHERE `uid` = '$obj->id' AND `round` = '0' LIMIT 1");
@@ -150,7 +150,7 @@ if(isset($_POST['price'])){
 					<tr>
 						<td>
 						<?php
-						//Henter inn nåværende runde, om det er noen.
+						//Henter inn n&aring;v&aelig;rende runde, om det er noen.
 						$db -> query("SELECT * FROM `bjtables` WHERE `uid` = '{$obj->id}' AND `round` = '0' LIMIT 1");
             $activeRound = 0;
 						if ($db -> num_rows() == 1) {
@@ -178,7 +178,7 @@ if(isset($_POST['price'])){
 									$failed = true;
 								} 
                 else if (evaluateHand($dealer) <= 21 && evaluateHand($dealer) > evaluateHand($hand)) {
-                  /*Dealer hadde høyere enn spiller*/
+                  /*Dealer hadde h&oslash;yere enn spiller*/
 									echo '<p class="feil">Dealeren hadde h&oslash;yere enn deg, du tapte!</p>';
 									$db -> query("UPDATE `bjtables` SET `round` = '1',`result` = '-$arraycards->price',`dcards` = '".serialize($dealer)."' WHERE `uid` = '$obj->id' AND `round` = '0' ORDER BY `id` DESC LIMIT 1");
 									$failed = true;
@@ -217,14 +217,14 @@ if(isset($_POST['price'])){
 									}
 								}
 							}
-              $tastatur=array("Ess"=>1,"To"=>2,"Tre"=>3,"Fire"=>4,"Fem"=>5,"Seks"=>6,"Syv"=>7,"Åtte"=>8,"Ni"=>9,"Ti"=>10,"Knekt"=>11,"Dame"=>12,"Konge"=>13);
+              $tastatur=array("Ess"=>1,"To"=>2,"Tre"=>3,"Fire"=>4,"Fem"=>5,"Seks"=>6,"Syv"=>7,"&aring;tte"=>8,"Ni"=>9,"Ti"=>10,"Knekt"=>11,"Dame"=>12,"Konge"=>13);
 							foreach ($hand as $index => $card) {
                 /*Henter fram bilder, og sorterer de etter kode*/
                 if($card['suit'] == "Hjerter"){
                   $img = '<img src="spillkort/h'.$tastatur[$card['face']].'.png" alt="Hjerter '.$tastatur['face'].'">';
                 }
-                else if($card['suit'] == "Kløver"){
-                  $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kløver'.$tastatur['face'].'">';
+                else if($card['suit'] == "Kl&oslash;ver"){
+                  $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kl&oslash;ver'.$tastatur['face'].'">';
                 }
                 else if($card['suit'] == "Ruter"){
                   $img = '<img src="spillkort/r'.$tastatur[$card['face']].'.png" alt="Ruter '.$tastatur['face'].'">';
@@ -242,14 +242,14 @@ if(isset($_POST['price'])){
 							echo '
                 <tr>
                 <td style="text-align: center;">
-                <input type="submit" value="Nytt kort!" name="newcard" />
-                <input type="submit" value="St&aring;" name="stand" /></td>
+                <input type="submit" value="Nytt kort!" name="newcard">
+                <input type="submit" value="St&aring;" name="stand"></td>
                 </tr>';
 						} else {
 							echo '
                 <form method="post" action="">
-                <h3>Innskudd:</h3><br />
-                <input type="text" name="price" value="100,000kr" /><input class="spill" type="submit" value="Spill!" />                                        
+                <h3>Innskudd:</h3><br>
+                <input type="text" name="price" value="100,000kr"><input class="spill" type="submit" value="Spill!">                                        
                 </form>';
 						}
 						?></td>
@@ -263,8 +263,8 @@ if(isset($_POST['price'])){
                 if($dealer[0]['suit'] == "Hjerter"){
                   $img = '<img src="spillkort/h'.$tastatur[$dealer[0]['face']].'.png" alt="Hjerter '.$tastatur[$dealer[0]['face']].'">';
                 }
-                else if($dealer[0]['suit'] == "Kløver"){
-                  $img = '<img src="spillkort/k'.$tastatur[$dealer[0]['face']].'.png" alt="Kløver '.$tastatur[$dealer[0]['face']].'">';
+                else if($dealer[0]['suit'] == "Kl&oslash;ver"){
+                  $img = '<img src="spillkort/k'.$tastatur[$dealer[0]['face']].'.png" alt="Kl&oslash;ver '.$tastatur[$dealer[0]['face']].'">';
                 }
                 else if($dealer[0]['suit'] == "Ruter"){
                   $img = '<img src="spillkort/r'.$tastatur[$dealer[0]['face']].'.png" alt="Ruter '.$tastatur[$dealer[0]['face']].'">';
@@ -281,8 +281,8 @@ if(isset($_POST['price'])){
                   if($card['suit'] == "Hjerter"){
                     $img = '<img src="spillkort/h'.$tastatur[$card['face']].'.png" alt="Hjerter '.$tastatur[$dealer[0]['face']].'">';
                   }
-                  else if($card['suit'] == "Kløver"){
-                    $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kløver '.$tastatur[$dealer[0]['face']].'">';
+                  else if($card['suit'] == "Kl&oslash;ver"){
+                    $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kl&oslash;ver '.$tastatur[$dealer[0]['face']].'">';
                   }
                   else if($card['suit'] == "Ruter"){
                     $img = '<img src="spillkort/r'.$tastatur[$card['face']].'.png" alt="Ruter '.$tastatur[$dealer[0]['face']].'">';
@@ -303,9 +303,9 @@ if(isset($_POST['price'])){
 	</table>
 </form>
 <a style="margin-left: 15px;" href='bj.php'>Ny runde</a>
-<br />
+<br>
 <a style="margin-left: 15px;" href="bjstats.php">Statistikk over tidligere runder</a>
-<br />
+<br>
 <a style="margin-left: 15px;display:none;" href="BjRounds">Vis resultatet av tidligere runder(med kort)</a>
 <?php
 }

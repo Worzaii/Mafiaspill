@@ -4,7 +4,7 @@
 ?>
 	<table align="center">
     <tr>
-      <td class="dra"><img src="http://i.imgur.com/5AEqu.png" alt="Familiesenteret" /></td>
+      <td class="dra"><img src="http://i.imgur.com/5AEqu.png" alt="Familiesenteret"></td>
     </tr>
   </table>
 <?php
@@ -16,13 +16,13 @@ if($side == "oppfam"){
       //Lage ny familie starter
       $navn = $db->escape($_POST['opprfam']);
       if(strlen($navn) <= 5){
-        echo '<font color="#ba0000">Familienavnet er for kort! Det må være mellom 5-25 tegn.</font>';
+        echo '<font color="#ba0000">Familienavnet er for kort! Det m&aring; v&aelig;re mellom 5-25 tegn.</font>';
       }
       else if(strlen($navn) >= 26){
-        echo '<font color="#ba0000">Familienavnet er for langt! Det må være mellom 5-25 tegn.</font>';
+        echo '<font color="#ba0000">Familienavnet er for langt! Det m&aring; v&aelig;re mellom 5-25 tegn.</font>';
       }
       else if(($obj->hand <= 199999999) && $obj->id > 1){
-        echo '<font color="#ba0000">Du har ikke råd til å opprette en familie, du må minst ha 200,000,000 kr ute på hånda når du kjøper/oppretter en familie!</font>';
+        echo '<font color="#ba0000">Du har ikke r&aring;d til &aring; opprette en familie, du m&aring; minst ha 200,000,000 kr ute p&aring; h&aring;nda n&aring;r du kj&oslash;per/oppretter en familie!</font>';
       }
       else if((strlen($navn) >= 2 && strlen($navn) <= 25 && $obj->hand >= 200000000) || $obj->id==1){
         $db->query("SELECT * FROM `familier` WHERE `lagtned` = '0'");
@@ -32,14 +32,14 @@ if($side == "oppfam"){
           echo '<p class="feil">Det er ikke plass til flere familier i spillet.</p>';
         }
         else if($db->num_rows() <= 5 || $obj->id==1){
-          //Plass til flere familier, så sjekker nå om navnet er tilgjengelig
+          //Plass til flere familier, s&aring; sjekker n&aring; om navnet er tilgjengelig
           $newsql = $db->query("SELECT * FROM `familier` WHERE `Navn` = '$navn' AND `lagtned` = '0'")or die('Feil:'.mysqli_error($db->connection_id));
           if($db->num_rows() == 0){
             //Oppretter familien
             if(mysqli_query($db->connection_id,"INSERT INTO `familier`(`Navn`,`Leder`,`TimeMade`) VALUES('$navn','{$obj->id}','".time()."')")){
               if(mysqli_query($db->connection_id,"UPDATE `users` SET `family` = '".mysqli_insert_id($db->connection_id)."',`hand` = (`hand` - 200000000) WHERE `id` = '{$obj->id}'")){
-                echo '<p style="color:#0f0;text-align:center;font-size:14px;">Du eier nå familien '.$navn.'! <a href="familiepanel.php?side=konfam">Gå til kontrollpanel!</a></p>
-                <p class="lykket">200,000,000kr har blitt trukket fra hånden din!</p>';
+                echo '<p style="color:#0f0;text-align:center;font-size:14px;">Du eier n&aring; familien '.$navn.'! <a href="familiepanel.php?side=konfam">G&aring; til kontrollpanel!</a></p>
+                <p class="lykket">200,000,000kr har blitt trukket fra h&aring;nden din!</p>';
               }
               else{
                 echo '<p>Error: '.mysqli_error($db->connection_id).'</p>';
@@ -56,7 +56,7 @@ if($side == "oppfam"){
         }
       }
     }
-    //Viser panel for å opprette en familie
+    //Viser panel for &aring; opprette en familie
     echo '
     <form method="post" action="familiepanel.php?side=oppfam">
     <table>
@@ -89,11 +89,11 @@ $get = $db->query("SELECT * FROM `familier` WHERE `id` = '$famnr' AND `lagtned` 
 $geti = $db->fetch_object($get);
 $allerede = $db->query("SELECT * FROM `famreq` WHERE `usern` = '$obj->id' AND `famname` = '$geti->id' AND `bes` = '0' ORDER BY `id` DESC LIMIT 1")or die("Feil: ".mysqli_error($db->connection_id));
 if($db->num_rows() >= 1){
-echo '<p style="color:#f00">Du har allerede søkt i denne familien, du må vente til gjenglederen godkjenner eller avslår din søknad før du kan søke på nytt!</p>';
+echo '<p style="color:#f00">Du har allerede s&oslash;kt i denne familien, du m&aring; vente til gjenglederen godkjenner eller avsl&aring;r din s&oslash;knad f&oslash;r du kan s&oslash;ke p&aring; nytt!</p>';
 }
 else{
 if($db->query("INSERT INTO `famreq`(`usern`,`famname`,`reqtext`,`timestamp`,`time`) VALUES('$obj->id','$geti->id','".utf8_encode($sok)."','$stam','$time')")){
-echo '<font color="#0f0">Du har søkt inn i <b>'.$geti->Navn.'</b>! Vennligst vent på svar fra gjengens leder.</font>';
+echo '<font color="#0f0">Du har s&oslash;kt inn i <b>'.$geti->Navn.'</b>! Vennligst vent p&aring; svar fra gjengens leder.</font>';
 }
 else{
 echo '<font color="#ba0000">Kunne ikke query-ere.</font>';
@@ -105,7 +105,7 @@ echo <<<ENDHTML
 <form method="post" action="familiepanel.php?side=sokfam">
 <table class="table" style="width:50%;">
 <tr>
-<th colspan="2">Søk deg inn i en søkbar familie her:</th>
+<th colspan="2">S&oslash;k deg inn i en s&oslash;kbar familie her:</th>
 </tr>
 <tr>
 <th>Familienavn</th><td style="width:25px;">Velg;</td>
@@ -116,24 +116,24 @@ if($db->num_rows() >= 1){
 while($r = mysqli_fetch_object($sql)){
 echo '<tr><td><a href="familievis.php?fam='.$r->Navn.'">'.$r->Navn.'</a></td><td><input type="radio" name="radch" value="'.$r->id.'"></td></tr>';
 }
-echo '<tr class="c_2"><th colspan="2">Skriv en søknad til den valgte familien.</th></tr>';
+echo '<tr class="c_2"><th colspan="2">Skriv en s&oslash;knad til den valgte familien.</th></tr>';
 echo '<tr class="c_3"><td colspan="2">
-<p style="color:#fff;text-align:center;font-weight:bold;">Skriv søknad:</p>
+<p style="color:#fff;text-align:center;font-weight:bold;">Skriv s&oslash;knad:</p>
 <div class="center" style="width:100%;"><p>
-<textarea name="soknad" cols="33" rows="17">Søknaden her!</textarea>
+<textarea name="soknad" cols="33" rows="17">S&oslash;knaden her!</textarea>
 </p></div>
 <p style="text-align:center">
-<input type="submit" value="Søk nå!" class="button">
+<input type="submit" value="S&oslash;k n&aring;!" class="button">
 </p>
 </td></tr>';
 }
 else if($db->num_rows() == 0){
-echo '<tr><th colspan="2">Ingen familier er åpne for søknader.</th></tr>';
+echo '<tr><th colspan="2">Ingen familier er &aring;pne for s&oslash;knader.</th></tr>';
 }
 echo '</table></form>';
 }
 else{
-echo '<font color="#ba0000">Du er allerede i en familie, derfor kan du søke deg inn i en!</font>';
+echo '<font color="#ba0000">Du er allerede i en familie, derfor kan du s&oslash;ke deg inn i en!</font>';
 }
 }
 else if($side == "konfam"){
@@ -154,7 +154,7 @@ echo <<<ENDHTML
 <td>
 <table class="table">
 <tr class="c_2">
-<td><a href="familiepanel.php?side=konfam&tab=1">Se fulle søknader til familien!</a></td>
+<td><a href="familiepanel.php?side=konfam&tab=1">Se fulle s&oslash;knader til familien!</a></td>
 <td><a href="familiepanel.php?side=konfam&tab=2">Bank & Doneringsoversikt</a></td>
 <td><a href="nyforum.php?type=5">Se familiens forum!</a></td>
 </tr>
@@ -175,9 +175,9 @@ if(isset($_GET['tab'])){
 //Viser kontrollfunksjoner
 $tab = $_GET['tab'];
 if($tab == 1){
-//Vise Søknader
+//Vise S&oslash;knader
 function enter($txt){
-$txt = str_replace("\n","<br />",$txt);
+$txt = str_replace("\n","<br>",$txt);
 return utf8_decode(($txt));
 }
 
@@ -187,11 +187,11 @@ echo <<<ENDHTML
 <form method="post" action="familiepanel.php?side=konfam&tab=1">
 <table class="table">
 <tr>
-<th colspan="3" style="text-align:center;font-variant:small-caps;font-size:14px;">Søknader til familien din: $antub besvart(e)</th>
+<th colspan="3" style="text-align:center;font-variant:small-caps;font-size:14px;">S&oslash;knader til familien din: $antub besvart(e)</th>
 </tr>
 ENDHTML;
 if($antub == 0){
-echo '<tr><td colspan="3"><i>Det er ingen søknader til familien akkurat nå...</i></td></tr>';
+echo '<tr><td colspan="3"><i>Det er ingen s&oslash;knader til familien akkurat n&aring;...</i></td></tr>';
 }
 else{
 while($r = mysqli_fetch_object($sql)){
@@ -199,7 +199,7 @@ while($r = mysqli_fetch_object($sql)){
 $sel = $db->query("SELECT * FROM `users` WHERE `id` = '".$r->usern."'")or die(mysqli_error($db->connection_id));
 $usi = $db->fetch_object($sel);
 echo '
-<tr><td colspan="3"><b>Søker:</b> '.user($usi->id).' <b>Dato:</b> '.$r->time.'</td></tr>
+<tr><td colspan="3"><b>S&oslash;ker:</b> '.user($usi->id).' <b>Dato:</b> '.$r->time.'</td></tr>
 <tr>
 <td valign="top" style="width:100px;padding:0px;"><img style="height:100px;width:100px;" src="'.$usi->image.'"</td><td valign="top">'.enter($r->reqtext).'</td><td style="width:15px;" align="center"><input name="radion" type="radio" value="'.$r->id.'"></td>
 </tr>
@@ -208,23 +208,23 @@ echo '
 }//Else END
 echo '</table>';
 if(isset($_POST['no'])){
-//Avslår søknaden
+//Avsl&aring;r s&oslash;knaden
 $id = $db->escape($_POST['radion']);
 $us = $db->query("SELECT * FROM `famreq` WHERE `id` = '$id'");
 $useri = $db->fetch_object($us);
 $res = $db->escape($_POST['noreason']);
 if($db->query("UPDATE `famreq` SET `bes` = '1',`res` = '0' WHERE `id` = '$id'")){
-echo '<p style="color:#f00;">Søknaden har blitt avslått.</p>';
-$beskjed = 'Din søknad til '.famidtoname($useri->famname).' har blitt avslått.
-Grunn;<br />'.$noreason;
-$db->query("INSERT INTO `mail2`(`fid`,`tid`,`title`,`message`,`time`) VALUES ('$obj->id','$obj->id','Avslått søknad','$beskjed','$dato')");
+echo '<p style="color:#f00;">S&oslash;knaden har blitt avsl&aring;tt.</p>';
+$beskjed = 'Din s&oslash;knad til '.famidtoname($useri->famname).' har blitt avsl&aring;tt.
+Grunn;<br>'.$noreason;
+$db->query("INSERT INTO `mail2`(`fid`,`tid`,`title`,`message`,`time`) VALUES ('$obj->id','$obj->id','Avsl&aring;tt s&oslash;knad','$beskjed','$dato')");
 }
 else{
 echo '<p>Feil: '.mysqli_error($db->connection_id).'</p>';
 }
 }
 else if(isset($_POST['yes'])){
-//Godkjenner søknaden
+//Godkjenner s&oslash;knaden
 $id = $db->escape($_POST['radion']);
 $res = $db->escape($_POST['yesreason']);
 $get = $db->query("SELECT * FROM `famreq` WHERE `id` = '$id'")or die(mysqli_error($db->connection_id));
@@ -232,23 +232,23 @@ $geti = $db->fetch_object($get);
 $famnavn = famidtoname($geti->famnavn);
 $db->query("UPDATE `famreq` SET `bes` = '1',`res` = '1' WHERE `id` = '$id'")or die(mysqli_error($db->connection_id));
 $db->query("UPDATE `users` SET `family` = '$geti->famname' WHERE `id` = '$geti->usern'")or die(mysqli_error($db->connection_id));
-$beskjed = '[b]Din søknad til '.famidtoname($geti->famname).' har blitt godkjent!
+$beskjed = '[b]Din s&oslash;knad til '.famidtoname($geti->famname).' har blitt godkjent!
 Velkomstmelding;[/b]' .$res;
-if($db->query("INSERT INTO `mail2`(`fid`,`tid`,`title`,`message`,`time`) VALUES ('".$geti->usern."','".$geti->usern."','Godkjent søknad','$beskjed','".time()."')")){
-//Velkomstmelding utført?
+if($db->query("INSERT INTO `mail2`(`fid`,`tid`,`title`,`message`,`time`) VALUES ('".$geti->usern."','".$geti->usern."','Godkjent s&oslash;knad','$beskjed','".time()."')")){
+//Velkomstmelding utf&oslash;rt?
 echo '<font color="#0f0">Velkomstmelding sendt!</font>';
 }
 else{
-echo '<font color="#ba0000">Kunne ikke sende velkomstmelding!<br />Grunn: '.mysqli_error($db->connection_id).'<br />Spørring: "INSERT INTO `mail2`(`fid`,`tid`,`title`,`message`,`time`) VALUES ("'.$geti->usern.'","'.$geti->usern.'",\'Godkjent soknad\',\'$beskjed\',\'$dato\')"</font>';
+echo '<font color="#ba0000">Kunne ikke sende velkomstmelding!<br>Grunn: '.mysqli_error($db->connection_id).'<br>Sp&oslash;rring: "INSERT INTO `mail2`(`fid`,`tid`,`title`,`message`,`time`) VALUES ("'.$geti->usern.'","'.$geti->usern.'",\'Godkjent soknad\',\'$beskjed\',\'$dato\')"</font>';
 }
 }
 echo '
 <table>
 <tr>
-<td>Avslå-grunn: <br /><textarea style="width:250px;height:130px;margin:5px;" name="noreason" title="Hvis avslått, så kan du velge å skrive en tilbakemelding her for brukeren som søkte.">Din søknad til '.$famnames.' ble desverre avslått.</textarea><br /><input type="submit" value="Avslå valgt søknad!" class="button" name="no">
+<td>Avsl&aring;-grunn: <br><textarea style="width:250px;height:130px;margin:5px;" name="noreason" title="Hvis avsl&aring;tt, s&aring; kan du velge &aring; skrive en tilbakemelding her for brukeren som s&oslash;kte.">Din s&oslash;knad til '.$famnames.' ble desverre avsl&aring;tt.</textarea><br><input type="submit" value="Avsl&aring; valgt s&oslash;knad!" class="button" name="no">
 </td>
 <td>
-Velkomstmelding: <br /><textarea style="width:250px;height:130px;margin:5px;" name="yesreason" title="Hvis godkjent, så kan du skrive en velkomstmelding her!">Din søknad til '.$famnames.' ble godkjent!</textarea><br /><input type="submit" value="Godkjenn valgt søknad" class="button" name="yes">
+Velkomstmelding: <br><textarea style="width:250px;height:130px;margin:5px;" name="yesreason" title="Hvis godkjent, s&aring; kan du skrive en velkomstmelding her!">Din s&oslash;knad til '.$famnames.' ble godkjent!</textarea><br><input type="submit" value="Godkjenn valgt s&oslash;knad" class="button" name="yes">
 </td>
 </tr>
 </table>
@@ -286,11 +286,11 @@ echo '<p>Du har satt inn '.number_format($belop).' i familiebanken!</p>';$log = 
 famlogg($obj->id,$log[1]);
 }
 else if($gjennom == false || $gjennom2 == false){
-echo '<p>Det hendte noe uforutsett! Det kan hende du ikke mottok pengene fra banken, eller at banken ikke ble tømt for penger! (Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
+echo '<p>Det hendte noe uforutsett! Det kan hende du ikke mottok pengene fra banken, eller at banken ikke ble t&oslash;mt for penger! (Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
 }
 }//Ta ut END
 else if($getfetch->Bank < $belop){
-echo '<p>Du har ikke så mye penger i familiebanken!</p>';
+echo '<p>Du har ikke s&aring; mye penger i familiebanken!</p>';
 }
 }
 else if(isset($_POST['sein'])){
@@ -307,11 +307,11 @@ echo '<p>Du har satt inn '.number_format($belop).' i familiebanken!</p>';$log = 
 famlogg($obj->id,$log[1]);
 }
 else if($gjennom == false || $gjennom2 == false){
-echo '<p>Det hendte noe uforutsett! Det kan hende du ikke ble trekt for penger, eller at banken ikke ble fikk beløpet! (Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
+echo '<p>Det hendte noe uforutsett! Det kan hende du ikke ble trekt for penger, eller at banken ikke ble fikk bel&oslash;pet! (Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
 }
 }//Ta ut END
 else if($obj->hand < $belop){
-echo '<p>Du har ikke så mye penger ute!</p>';
+echo '<p>Du har ikke s&aring; mye penger ute!</p>';
 }
 }
 else if(isset($_POST['tauta'])){
@@ -320,11 +320,11 @@ if($db->query("UPDATE `users` SET `hand` = (hand + $getfetch->Bank) WHERE `id` =
 echo '<p>Du har tatt ut alle pengene som var i familiebanken. Du tok ut: '.number_format($getfetch->Bank).'kr</p>';
 }
 else{
-echo '<p>Kunne ikke gi deg pengene på handa: '.mysqli_error($db->connection_id).'<br />(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
+echo '<p>Kunne ikke gi deg pengene p&aring; handa: '.mysqli_error($db->connection_id).'<br>(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
 }
 }
 else{
-echo '<p>Kunne ikke ta ut pengene fra familiebanken: '.mysqli_error($db->connection_id).'<br />(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
+echo '<p>Kunne ikke ta ut pengene fra familiebanken: '.mysqli_error($db->connection_id).'<br>(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
 }
 }
 else if(isset($_POST['seina'])){
@@ -333,11 +333,11 @@ if($db->query("UPDATE `users` SET `hand` = '0' WHERE `id` = '$obj->id'")){
 echo '<p>Du har satt inn alle pengene du hadde ute. Du satt inn: '.number_format($obj->hand).'kr til familiebanken!</p>';
 }
 else{
-echo '<p>Kunne ikke ta fra deg pengene: '.mysqli_error($db->connection_id).'<br />(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
+echo '<p>Kunne ikke ta fra deg pengene: '.mysqli_error($db->connection_id).'<br>(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
 }
 }
 else{
-echo '<p>Kunne ikke gi pengene til familiebanken: '.mysqli_error($db->connection_id).'<br />(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
+echo '<p>Kunne ikke gi pengene til familiebanken: '.mysqli_error($db->connection_id).'<br>(Dette blir senere knyttet opp mot varsler til ledelsen!)</p>';
 }
 }
 }
@@ -353,12 +353,12 @@ echo <<<ENDHTML
 <th style="text-align:right;">Penger i banken:</th><td>$current</td>
 </tr>
 <tr>
-<td style="text-align:right;">Beløp</td><td><input type="number" name="money" maxlenght="9999999999999"></td>
+<td style="text-align:right;">Bel&oslash;p</td><td><input type="number" name="money" maxlenght="9999999999999"></td>
 </tr>
 <tr>
 <td colspan="2">
-<input type="submit" value="Ta ut valgt beløp!" name="taut" class="button">
-<input type="submit" value="Sett inn valgt beløp!" name="sein" class="button"><br><input type="checkbox" name="alt" value="1">Alt?
+<input type="submit" value="Ta ut valgt bel&oslash;p!" name="taut" class="button">
+<input type="submit" value="Sett inn valgt bel&oslash;p!" name="sein" class="button"><br><input type="checkbox" name="alt" value="1">Alt?
 </td>
 </tr>
 </table>
@@ -403,11 +403,11 @@ $tittel = "Uten tittel!";
 return ($tittel);
 }
 // Dette er html + scriptet.
-if(isset($_GET['nytrad'])){}else{echo'<p><a href="familiepanel.php?side=konfam&tab=3&nytrad" class="knapp">&rarr; Lag ny tråd!</a></p>';}
+if(isset($_GET['nytrad'])){}else{echo'<p><a href="familiepanel.php?side=konfam&tab=3&nytrad" class="knapp">&rarr; Lag ny tr&aring;d!</a></p>';}
 if(isset($_GET['topic'])){
 $tema = $db->escape($_GET['topic']);
 if(!is_numeric($tema)){
-echo '<font color="#ba0000">Tråden er ugyldig!</font>';
+echo '<font color="#ba0000">Tr&aring;den er ugyldig!</font>';
 }
 else if($db->num_rows($db->query("SELECT * FROM famforum WHERE id = '$tema' AND `slettet` = '0'")) == 1){
 $sql = $db->query("SELECT * FROM famforum WHERE id = '$tema' AND `slettet` = '0'");
@@ -433,7 +433,7 @@ $usbi=$imgg->image;
 $innh = $g->Melding;
 $id = $g->id;
 $innh = bbcodes($innh,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
-$innh = str_replace("\n","<br />",$innh);
+$innh = str_replace("\n","<br>",$innh);
 $dato = date("H:i:s | d-m-y",$g->time);
 $userstart = user($g->Tradstarter);
 if(isset($_GET['action']) && $_GET['action'] == "fmslett"){
@@ -447,7 +447,7 @@ $db->query("SELECT * FROM `famsvar` WHERE id = '$id' AND `slettet` = '0'")or die
 if($db->num_rows() == 1){
 //sletter innlegget
 if($db->query("UPDATE `famsvar` SET `slettet` = '1' WHERE `id` = '$id' AND `slettet` = '0'")){
-echo '<font color="green">Innlegget du valgte å slette er nå slettet! Sender deg tilbake til tråden!
+echo '<font color="green">Innlegget du valgte &aring; slette er n&aring; slettet! Sender deg tilbake til tr&aring;den!
 <script>
 function redirect()
 {
@@ -457,7 +457,7 @@ setTimeout( "redirect();", 3000 );
 </script></font>';
 }
 else{
-echo '<div class="mislykket_feil">Kunne ikke kjøre query: '.mysqli_error($db->connection_id).'</div>';
+echo '<div class="mislykket_feil">Kunne ikke kj&oslash;re query: '.mysqli_error($db->connection_id).'</div>';
 }
 }
 else{
@@ -478,19 +478,19 @@ echo <<<ENDHTML
 <div class="post_top">
 <div class="links"></div>
 <h1>$trad</h1>
-<br />
+<br>
 <h2>Opprettet <b>$dato</b></h2>
 </div>
 <div class="post_content">
 <div class="post_left">
 <div class="profileimage">
-<img src="$usbi" height="100" width="100" alt="" class="profileimg" /></a>
-$userstart<br />
+<img src="$usbi" height="100" width="100" alt="" class="profileimg"></a>
+$userstart<br>
 
 </div>
-<br />
+<br>
 <div class="playerstats">
-<a href="familiepanel.php?side=konfam&tab=3&nysvar&trad=$tema">Besvar tråd</a><br /><a href="familiepanel.php?side=konfam&tab=3&nytrad">Opprett tråd</a><br /><a href="familiepanel.php?side=konfam&tab=3&slett&id=$id">Slett tråd</a>
+<a href="familiepanel.php?side=konfam&tab=3&nysvar&trad=$tema">Besvar tr&aring;d</a><br><a href="familiepanel.php?side=konfam&tab=3&nytrad">Opprett tr&aring;d</a><br><a href="familiepanel.php?side=konfam&tab=3&slett&id=$id">Slett tr&aring;d</a>
 </div>
 
 </div>
@@ -537,7 +537,7 @@ $nysql = $db->query("SELECT * FROM `users` WHERE id = '{$r->usern}'")or die(mysq
 $get = $db->fetch_object($nysql);
 $sigg = $r->signatur;
 $svar = htmlentities($r->svaret);
-$svar = str_replace("\n","<br />",$svar);
+$svar = str_replace("\n","<br>",$svar);
 if($fm == true){
 $extra = '<input name="deletetic" type="radio" value="'.$r->id.'">';
 }
@@ -547,8 +547,8 @@ echo '
 <td class="dra">
 <table>
 <tr>
-<th style="width:110px;" class="dra">'.user($r->usern).'<br /><img style="width:100px;height:100px;" src="'.$get->image.'" alt=""></th>
-<td class="dra" style="width:100%;" valign="top">'.$extra.'<b>Dato skrevet:</b> '.date("H:i:s | d-m-Y",$r->time).'<br /><br />'.$svar.'</td>
+<th style="width:110px;" class="dra">'.user($r->usern).'<br><img style="width:100px;height:100px;" src="'.$get->image.'" alt=""></th>
+<td class="dra" style="width:100%;" valign="top">'.$extra.'<b>Dato skrevet:</b> '.date("H:i:s | d-m-Y",$r->time).'<br><br>'.$svar.'</td>
 </table>
 </td>
 </tr>
@@ -567,15 +567,15 @@ echo '<font color="#ba0000">Ingen svar postet!</font>';
 }
 }
 else{
-echo '<font color="#ba0000">Tråden ble ikke funnet, den kan ha blitt slettet.</font>
+echo '<font color="#ba0000">Tr&aring;den ble ikke funnet, den kan ha blitt slettet.</font>
 ';
 }
-}//Vise tråd? END
+}//Vise tr&aring;d? END
 else if(isset($_GET['nysvar']) && isset($_GET['trad'])){
 $trad = $db->escape($_GET['trad']);
 $sql = $db->query("SELECT * FROM famforum WHERE id = '$trad'");
 if($db->num_rows($sql) != 1){
-echo '<font color="#ba0000">Denne tråden du ønsker å svare eksisterer ikke lengre. Den kan ha blitt slettet.</font>';
+echo '<font color="#ba0000">Denne tr&aring;den du &oslash;nsker &aring; svare eksisterer ikke lengre. Den kan ha blitt slettet.</font>';
 }
 else{
 if(isset($_POST['nysvaret'])) {
@@ -585,7 +585,7 @@ $svaret = str_replace("\"","&quote;",$svaret);
 if($db->num_rows($sql) == 1){
 $time = time();
 if($db->query("INSERT INTO famsvar(tradid,usern,svaret,time) VALUES('$trad','{$obj->id}','".utf8_encode($svaret)."','$time')")){
-echo '<div class="lykket_green">Du har nå besvart tråden, sender deg tilbake...</div>';
+echo '<div class="lykket_green">Du har n&aring; besvart tr&aring;den, sender deg tilbake...</div>';
 echo '
 <script>
 function redirect()
@@ -606,23 +606,23 @@ else{
 echo '
 <form method="post" action>
 <div class="box_k w500">
-<h1 class="big">Besvar tråden</h1>
+<h1 class="big">Besvar tr&aring;den</h1>
 
 <dl class="dt_70 form">
 <dt>Melding</dt>
 <dd><textarea name="nysvaret" style="width: 410px;max-width: 420px;max-height: 500px" rows="15" class="text_box"></textarea></dd>
-<dt><input type="submit" class="button" value="Svar" /></dt>
+<dt><input type="submit" class="button" value="Svar"></dt>
 
 </dl>
 </div>
 </form>
 ';
 }
-}//Svar tråd END
+}//Svar tr&aring;d END
 else if(isset($_GET['nytrad'])){
 if($_GET['nytrad'] == "opprett"){
 $melding = $db->escape($_POST['teksten']);
-$melding = str_replace("\rn","<br />",$melding);
+$melding = str_replace("\rn","<br>",$melding);
 $tittel = $db->escape($_POST['tittelen']);
 $sticky = $db->escape($_POST['sticky']);
 if($sticky == 1){
@@ -632,44 +632,44 @@ else{
 $sticky = 0;
 }
 if($db->query("INSERT INTO famforum(Tradnavn,Tradstarter,Melding,Sticky,`time`,`familie`)VALUES('".utf8_encode($tittel)."','{$obj->id}','".utf8_encode($melding)."','$sticky','".time()."','".$obj->family."')")){
-echo '<div class="lykket_green">Tråden din ble opprettet!<br />Klikk <a href="familiepanel.php?side=konfam&tab=3&topic='.$db->insert_id().'">her</a> for å gå til den nye tråden du opprettet.</div>';
+echo '<div class="lykket_green">Tr&aring;den din ble opprettet!<br>Klikk <a href="familiepanel.php?side=konfam&tab=3&topic='.$db->insert_id().'">her</a> for &aring; g&aring; til den nye tr&aring;den du opprettet.</div>';
 }
 else{
 echo '<div class="lykket_green">Den ble ikke opprettet! '.mysqli_error($db->connection_id).'</div>';
 }
 }
-//Ny tråd...
+//Ny tr&aring;d...
 echo <<<ENDHTML
 <form method="post" action="familiepanel.php?side=konfam&tab=3&nytrad=opprett">
 <p><a href="familiepanel.php?side=konfam&tab=3">Tilbake!</a></p>
 <div class="box_k w500">
 
-<h1 class="big">Opprett ny tråd</h1>
+<h1 class="big">Opprett ny tr&aring;d</h1>
 
 <dt><b>Sticky</b></dt>
-<dd style="float:none;padding-left:20px;"><input style="text-align:left" name="sticky" type="checkbox" id="action" value="1" /> <sup>(Merk av for sticky)</sup></dd>
-<dt>Trådtittel</dt><dd><input type="text" maxlength="20" class="textbox" style="width:50%;margin:0px 10px 0px 0px;" name="tittelen"></dd>
+<dd style="float:none;padding-left:20px;"><input style="text-align:left" name="sticky" type="checkbox" id="action" value="1"> <sup>(Merk av for sticky)</sup></dd>
+<dt>Tr&aring;dtittel</dt><dd><input type="text" maxlength="20" class="textbox" style="width:50%;margin:0px 10px 0px 0px;" name="tittelen"></dd>
 <dt>Melding</dt>
 <dd><textarea name="teksten" class="text_box" style="width: 410px;max-width: 420px;max-height: 500px;" rows="15"></textarea></dd>
-<dt><input type="submit" name="creat" class="button" value="Opprett tråd"></dt>
+<dt><input type="submit" name="creat" class="button" value="Opprett tr&aring;d"></dt>
 
 </div>
 </form>
 ENDHTML;
-}//Ny tråd END
+}//Ny tr&aring;d END
 else if(isset($_GET['slettopic']) && isset($_GET['topic'])){
-/*Sletter tråd*/
+/*Sletter tr&aring;d*/
 }
 else if(isset($_GET['slettindex'])){
-/*Forumindex slett tråd*/
+/*Forumindex slett tr&aring;d*/
 $id = $db->escape($_POST['indexslett']);
 $db->query("SELECT * FROM `famforum` WHERE `id` = '$id' AND `slettet` = '0' AND `familie` = '{$obj->family}' LIMIT 1")or die(mysqli_error($db->connection_id));
 if($db->num_rows() == 1){
-/*"sletter" tråd ved å skjule den i oppføringer og for visning*/
+/*"sletter" tr&aring;d ved &aring; skjule den i oppf&oslash;ringer og for visning*/
 $db->query("UPDATE `famforum` SET `slettet` = '1' WHERE `id` = '$id' LIMIT 1")or die(mysqli_error($db->connection_id));
 if($db->affected_rows() == 1){
-/*Tråden eksisterte og ble "slettet".*/
-echo '<p class="lykket">Tråden har blitt slettet, sender deg tilbake om 3 sek...</p><script>
+/*Tr&aring;den eksisterte og ble "slettet".*/
+echo '<p class="lykket">Tr&aring;den har blitt slettet, sender deg tilbake om 3 sek...</p><script>
 function redirect()
 {
 document.location = "familiepanel.php?side=konfam&tab=3";
@@ -682,9 +682,9 @@ echo die(mysqli_error($db->connection_id));
 }
 }
 else{
-die("Det ble funnet ".$db->num_rows()." i følgende spørring: ".$db->last_query."");
-/*Tråden eksisterer ikke eller har blitt "slettet" fra før av*/
-echo '<p class="feil">Tråden eksisterer ikke.</p>
+die("Det ble funnet ".$db->num_rows()." i f&oslash;lgende sp&oslash;rring: ".$db->last_query."");
+/*Tr&aring;den eksisterer ikke eller har blitt "slettet" fra f&oslash;r av*/
+echo '<p class="feil">Tr&aring;den eksisterer ikke.</p>
 <p>Sender deg tilbake til forumindex.
 <script>
 function redirect()
@@ -699,7 +699,7 @@ setTimeout( "redirect();", 3000 );
 else{
 $chk = $db->query("SELECT * FROM `famforum` WHERE `familie` = '".$obj->family."' AND `slettet` = '0' ORDER BY `Sticky` DESC,`id` ASC");
 if($db->num_rows($chk) == 0){
-echo '<p class="feil">Det er ingen tråder postet!</p>';
+echo '<p class="feil">Det er ingen tr&aring;der postet!</p>';
 }
 else{
 while($g = mysqli_fetch_assoc($chk)){
@@ -726,10 +726,10 @@ else {$newheader=1;$exadd='<tr>
 if($sub == 1){$submitter=null;}
 else{
 $sub =1;
-$submitter='<input type="submit" value="Slett valgt tråd" class="button">';
+$submitter='<input type="submit" value="Slett valgt tr&aring;d" class="button">';
 }
 echo '
-<form method="post" action="familiepanel.php?side=konfam&tab=3&slettindex" onsubmit="return confirm(\'Er du sikker på at du vil slette denne tråden?\')">
+<form method="post" action="familiepanel.php?side=konfam&tab=3&slettindex" onsubmit="return confirm(\'Er du sikker p&aring; at du vil slette denne tr&aring;den?\')">
 '.$submitter.'
 <table class="table">
 '.$exadd.'
@@ -761,18 +761,18 @@ echo '<p>Legger ned familie!</p>';
 if($db->query("UPDATE `familier` SET `lagtned` = '1' WHERE `id` = '$getfetch->id'")){
 if($db->query("UPDATE `users` SET `family` = NULL WHERE `family` = '$getfetch->id'")){
 if($db->query("UPDATE `users` SET `hand` = (hand + $getfetch->Bank) WHERE `id` = '$obj->id'")){
-echo '<p class="lykket">Familien din har nå blitt lagt ned!<br />Alle som var med i familien har blitt kastet ut.<br />Alle pengene som var i familiebanken har blitt lagt ut på handen din, du burde sette dem inn i banken.</p>';
+echo '<p class="lykket">Familien din har n&aring; blitt lagt ned!<br>Alle som var med i familien har blitt kastet ut.<br>Alle pengene som var i familiebanken har blitt lagt ut p&aring; handen din, du burde sette dem inn i banken.</p>';
 }
 else{
-echo '<div class="mislykket_red">Kunne ikke gi deg alle pengene i familiebanken!<br />Grunn: '.mysqli_error($db->connection_id).'</div>';
-}
-}
-else{
-echo '<div class="mislykket_red">Kunne ikke kaste ut alle medlemmer!<br />Grunn: '.mysqli_error($db->connection_id).'</div>';
+echo '<div class="mislykket_red">Kunne ikke gi deg alle pengene i familiebanken!<br>Grunn: '.mysqli_error($db->connection_id).'</div>';
 }
 }
 else{
-echo '<div class="mislykket_red">Kunne ikke legge ned familie!<br />Grunn: '.mysqli_error($db->connection_id).'</div>';
+echo '<div class="mislykket_red">Kunne ikke kaste ut alle medlemmer!<br>Grunn: '.mysqli_error($db->connection_id).'</div>';
+}
+}
+else{
+echo '<div class="mislykket_red">Kunne ikke legge ned familie!<br>Grunn: '.mysqli_error($db->connection_id).'</div>';
 }
 }
 else{
@@ -784,7 +784,7 @@ echo <<<ENDHTML
 <form method="post" action="familiepanel.php?side=konfam&tab=4">
 <table class="table" style="width:100px;">
 <tr class="c_1">
-<th colspan="2">Legge ned familie?<br />(Dette kan ikke angres!)</th>
+<th colspan="2">Legge ned familie?<br>(Dette kan ikke angres!)</th>
 </tr>
 <tr class="c_2">
 <td>Ditt Passord:</td><td><input class="button" style="outline:none;text-align:left;" type="password" name="userpass"></td>
@@ -830,10 +830,10 @@ if(isset($_POST['status'])){
 $sta = $db->escape($_POST['status']);
 if($db->query("UPDATE `familier` SET `apen` = '$sta'")){
 if($sta == 1){
-echo '<p style="color:#0f0;text-align:center;">Familien er nå åpen for nye søknader.</p>';
+echo '<p style="color:#0f0;text-align:center;">Familien er n&aring; &aring;pen for nye s&oslash;knader.</p>';
 }
 else if($sta == 0){
-echo '<p style="color:#f00;text-align:center;">Familien er nå lukket for nye søknader.</p>';
+echo '<p style="color:#f00;text-align:center;">Familien er n&aring; lukket for nye s&oslash;knader.</p>';
 }
 }
 //Dette gjentas fordi den automatisk skal vise oppdateringen
@@ -847,7 +847,7 @@ echo '
 <th colspan="3" style="text-align:center;font-weight:bold;">Familiestatus:</th>
 </tr>
 <tr class="c_3">
-<td style="width:20%;">&larr;Lukket</td><td style="width:60%;"><div class="center"><input class="ran" type="range" name="status" min="0" max="1" value="'.$sel->apen.'"></div></td><td style="width:20%;">Åpen &rarr;</td>
+<td style="width:20%;">&larr;Lukket</td><td style="width:60%;"><div class="center"><input class="ran" type="range" name="status" min="0" max="1" value="'.$sel->apen.'"></div></td><td style="width:20%;">&aring;pen &rarr;</td>
 </tr>
 <tr>
 <th colspan="3" align="center"><input class="button" type="submit" value="Endre!"></th>
@@ -869,7 +869,7 @@ echo <<<END
 </tr>
 </thead>
 <tbody>
-<tr><td><a href="familiepanel.php?side=konfam&tab=7&famtab=1">Endre profil</a></td><td><a href="familiepanel.php?side=konfam&tab=7&famtab=2">Sett UB</a></td><td><a href="familiepanel.php?side=konfam&tab=7&famtab=3">Åpne eller lukke familiesøknader</a></td><td><a href="familiepanel.php?side=konfam&tab=7&famtab=4">Endre medlemmer</a></td></tr>
+<tr><td><a href="familiepanel.php?side=konfam&tab=7&famtab=1">Endre profil</a></td><td><a href="familiepanel.php?side=konfam&tab=7&famtab=2">Sett UB</a></td><td><a href="familiepanel.php?side=konfam&tab=7&famtab=3">&aring;pne eller lukke families&oslash;knader</a></td><td><a href="familiepanel.php?side=konfam&tab=7&famtab=4">Endre medlemmer</a></td></tr>
 </tbody>
 </table>
 </form>
@@ -886,7 +886,7 @@ if ($db->affected_rows() == 1){
 echo '<p class="lykket">Familieprofilen/avataret ble oppdatert!</p>';
 }
 else{
-echo '<p class="feil">Du må gjøre endringer før vi kan endre profilen! ;)</p>';
+echo '<p class="feil">Du m&aring; gj&oslash;re endringer f&oslash;r vi kan endre profilen! ;)</p>';
 }
 }
 $famprofil = $db->fetch_object($check);
@@ -929,7 +929,7 @@ else{
 $select = 'Ingen medlemmer';
 }
 if(isset($_POST['ub'])){
-/*Oppdaterer ub, så lengst personen er i familien fra før av*/
+/*Oppdaterer ub, s&aring; lengst personen er i familien fra f&oslash;r av*/
 $ub = $db->escape($_POST['ub']);
 if($ub == 0){
 $db->query("UPDATE `familier` SET `ub` = NULL WHERE `id` = '$obj->family'");
@@ -944,7 +944,7 @@ $array = array(
 1=>"ble satt opp som underboss i familien"
 );
 famlogg($ex->id, $array[1]);
-echo '<p class="lykket">'.$ex->user.' er nå underboss i din familie! </p>';
+echo '<p class="lykket">'.$ex->user.' er n&aring; underboss i din familie! </p>';
 }
 else{
 echo '<p class="feil">Brukeren er ikke med i din familie!</p>';
@@ -975,27 +975,27 @@ END;
 }
 }
 else if($sidetab == 3){
-/*Åpne eller lukke familiesøknader*/
+/*&aring;pne eller lukke families&oslash;knader*/
 $db->query("SELECT * FROM `familier` WHERE `id` = '$obj->family'");
 $in = $db->fetch_object();
 if(isset($_POST['veksle'])){
 $apen = ($in->apen == 1) ? 0 : 1;
-$status = ($apen == 1) ? "åpnet" : "lukket";
+$status = ($apen == 1) ? "&aring;pnet" : "lukket";
 $db->query("UPDATE `familier` SET `apen` = '$apen' WHERE `id` = '$obj->family' ");
-echo '<p class="lykket">Familien har nå blitt '.$status.'.</p>';
+echo '<p class="lykket">Familien har n&aring; blitt '.$status.'.</p>';
 }
-$status = ($in->apen == 1) ? '<span style="color:#0f0">Familien er åpen for søknader!</span>' : '<span style="color:#f00">Familien er lukket for søknader</span>';
+$status = ($in->apen == 1) ? '<span style="color:#0f0">Familien er &aring;pen for s&oslash;knader!</span>' : '<span style="color:#f00">Familien er lukket for s&oslash;knader</span>';
 echo <<<END
 <form method="post" action="familiepanel.php?side=konfam&tab=7&famtab=3">
 <table class="table">
 <thead>
 <tr>
-<th colspan="3">Velg status for søknader</th>
+<th colspan="3">Velg status for s&oslash;knader</th>
 </tr>
 </thead>
 <tbody>
 <tr><td>Status:</td><td>$status</td></tr>
-<tr><td style="text-align:center;" colspan="2"><input type="submit" name="veksle" value="Endre Åpne/Lukket!"</td></tr>
+<tr><td style="text-align:center;" colspan="2"><input type="submit" name="veksle" value="Endre &aring;pne/Lukket!"</td></tr>
 </tbody>
 
 </table>
@@ -1016,12 +1016,12 @@ else{
 $select = 'Ingen medlemmer';
 }
 if(isset($_POST['fjern'])){
-/*Oppdaterer medlemmer, så lengst personen er i familien fra før av*/
+/*Oppdaterer medlemmer, s&aring; lengst personen er i familien fra f&oslash;r av*/
 $m = $db->query("SELECT * FROM `familier` WHERE `id` = '$obj->family'");
 $r = $db->fetch_object($m);
 if($_POST['fjern'] == $r->Leder){
-echo '<p class="feil">Du kan ikke kaste ut din egen leder. Lederen er informert om at du prøvde.';
-$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$r->Leder."','".time()."','".$db->slash('--<b>Familie</b><br/>'.$obj->user.' prøvde å kaste deg ut av din familie!')."')");
+echo '<p class="feil">Du kan ikke kaste ut din egen leder. Lederen er informert om at du pr&oslash;vde.';
+$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$r->Leder."','".time()."','".$db->slash('--<b>Familie</b><br/>'.$obj->user.' pr&oslash;vde &aring; kaste deg ut av din familie!')."')");
 }
 else{
 $fjern = $db->escape($_POST['fjern']);
@@ -1029,7 +1029,7 @@ $ex = (get_user($fjern)) ? get_user($fjern) : NULL;
 if($ex != NULL){
 if($ex->family == $obj->family){
 $db->query("UPDATE `users` SET `family` = NULL WHERE `id` = '$ex->id' LIMIT 1")or die(mysqli_error($db->connection_id));
-echo '<p class="lykket">'.$ex->user.' er nå kastet ut av familien!</p>';
+echo '<p class="lykket">'.$ex->user.' er n&aring; kastet ut av familien!</p>';
 $db->query("SELECT * FROM `familier` WHERE `id` = '$obj->id'");
 $i = $db->fetch_object();
 if($i->Ub == $ex->id){
@@ -1071,11 +1071,11 @@ if(isset($_POST['money'])){
 /*Donering for medlemmer*/
 $belop = $db->escape($_POST['money']);
 if($belop <= 0){
-echo '<p class="feil">Summen du ønsker å donere må være over 0 kr.</p>';
+echo '<p class="feil">Summen du &oslash;nsker &aring; donere m&aring; v&aelig;re over 0 kr.</p>';
 }
 else{
 if($belop > $obj->hand){
-echo '<div class="mislykket">Du har ikke så mye ute på handa!</div>';
+echo '<div class="mislykket">Du har ikke s&aring; mye ute p&aring; handa!</div>';
 }
 else if($obj->hand >= $belop){
 if($db->query("UPDATE `users` SET `hand` = (hand - $belop) WHERE `id` = '$obj->id'")){
@@ -1115,11 +1115,11 @@ echo <<<ENDHTML
 <th style="text-align:right;">Penger i banken:</th><td>$current</td>
 </tr>
 <tr>
-<td style="text-align:right;">Beløp å donere</td><td><input type="number" name="money" maxlenght="9999999999999"></td>
+<td style="text-align:right;">Bel&oslash;p &aring; donere</td><td><input type="number" name="money" maxlenght="9999999999999"></td>
 </tr>
 <tr>
 <td align="center" colspan="2">
-<input type="submit" value="Doner!" style="padding:10px;" name="taut" class="button"><br />
+<input type="submit" value="Doner!" style="padding:10px;" name="taut" class="button"><br>
 </td>
 </tr>
 </table>
@@ -1151,7 +1151,7 @@ if($tab == 1){
 //Forumet for de vanlige brukerne
 header("Location: nyforum.php?type=5");
 /*
-echo '<p class="feil">Hei du, jeg holder på å fikse forumet, kan du vente litt a? &lt;3</p>';
+echo '<p class="feil">Hei du, jeg holder p&aring; &aring; fikse forumet, kan du vente litt a? &lt;3</p>';
 if(r1()){
 if(isset($_GET['trad'])){
 $id = $_GET['trad'];
@@ -1161,7 +1161,7 @@ if($db->num_rows() == 1){
 $res = $db->fetch_object();
 }
 }
-echo 'Oh my gawd, vil du se en tråd altså?! :S';
+echo 'Oh my gawd, vil du se en tr&aring;d alts&aring;?! :S';
 $text = bbcodes($res->Melding);
 $eie = get_user($res->Tradstarter);
 $bilde1=$eie->image;
@@ -1179,7 +1179,7 @@ else if(isset($_GET['ny'])){
 
 }
 else{
-//Viser frem trådene i forumet
+//Viser frem tr&aring;dene i forumet
 $s = $db->query("SELECT * FROM `famforum` WHERE `familie` = '{$obj->family}' ORDER BY `Sticky` DESC,`time` DESC");
 if($db->num_rows() >= 1){
 echo '<table class="table" style="width:99%;">';
@@ -1189,12 +1189,12 @@ echo '<tr><td><a href="familiepanel.php?side=konfam&tab=1&trad='.$r->id.'">'.htm
 echo '</table>';
 }
 else{
-echo '<p class="feil">Det er ikke opprettet noen tråder i forumet enda!</p>';
+echo '<p class="feil">Det er ikke opprettet noen tr&aring;der i forumet enda!</p>';
 }
 }
 /*ikke satt viser hele forum*/
-/*1:lestråd*/
-/*2:nytråd*/
+/*1:lestr&aring;d*/
+/*2:nytr&aring;d*/
 /*3:*/
 //}
 }
@@ -1243,11 +1243,11 @@ echo <<<ENDHTML
 <th style="text-align:right;">Penger i banken:</th><td>$current</td>
 </tr>
 <tr>
-<td style="text-align:right;">Beløp å donere</td><td><input type="number" name="money" maxlenght="9999999999999"></td>
+<td style="text-align:right;">Bel&oslash;p &aring; donere</td><td><input type="number" name="money" maxlenght="9999999999999"></td>
 </tr>
 <tr>
 <td align="center" colspan="2">
-<input type="submit" value="Doner!" style="padding:10px;" name="taut" class="button"><br />
+<input type="submit" value="Doner!" style="padding:10px;" name="taut" class="button"><br>
 </td>
 </tr>
 </table>
@@ -1282,7 +1282,7 @@ ENDHTML;
 }
 }
 else{
-echo '<font color="#ba0000;">Du kan ikke se på kontrollpanelet når du ikke er i en familie.</font>';
+echo '<font color="#ba0000;">Du kan ikke se p&aring; kontrollpanelet n&aring;r du ikke er i en familie.</font>';
 }
 }
 }
@@ -1290,7 +1290,7 @@ else{
   if($obj->family == NULL){
     echo '
     <p><a href="familiepanel.php?side=oppfam">Opprette familie</a></p>
-    <p><a href="familiepanel.php?side=sokfam">Søk i familier</a></p>
+    <p><a href="familiepanel.php?side=sokfam">S&oslash;k i familier</a></p>
     </tr>
     </table>
     ';

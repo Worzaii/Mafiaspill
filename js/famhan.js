@@ -1,4 +1,4 @@
-//Dette scriptet skal håndtere behandlingen av info frem og tilbake og forårsake autoupdate
+//Dette scriptet skal h&aring;ndtere behandlingen av info frem og tilbake og for&aring;rsake autoupdate
 function updatepage(str,responsediv){
     //document.getElementById(responsediv).style.display="block";
     //$cur = '#'+document.getElementById(responsediv);
@@ -7,7 +7,7 @@ function updatepage(str,responsediv){
     document.getElementById(responsediv).innerHTML=str;
     document.getElementById(responsediv).style.display="block";
     document.getElementById(responsediv).style.color="red";
-    //alert("Oppgave fullført!");
+    //alert("Oppgave fullf&oslash;rt!");
 }
 $(document).ready(function(){
   $("#lfn").submit(function(event) {
@@ -18,7 +18,7 @@ $(document).ready(function(){
           var obj = eval(data);
           alert(obj.text);
           if(typeof obj.redir == "undefined"){
-              //Ikke gjør noe
+              //Ikke gj&oslash;r noe
           }
           else{
               window.location.replace="http://mafia-no.net/" + obj.redir;

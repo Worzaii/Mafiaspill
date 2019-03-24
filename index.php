@@ -21,9 +21,9 @@ if (isset($_SESSION['sessionzar'])) {
         <meta name="description" content="Kommer senere...">
         <meta name="keywords" content="Kommer senere...">
         <meta name="author" content="Nicholas Arnesen">
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript" src="js/nyajaxhandler.js"></script>
-        <script type="text/javascript">
+        <script src="js/jquery.js"></script>
+        <script src="js/nyajaxhandler.js"></script>
+        <script>
             $(document).ready(function () {
                 $(".loginform").find("input").removeAttr("disabled");
                 $(".loginform [name='username']").trigger("focus");

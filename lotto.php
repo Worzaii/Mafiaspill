@@ -4,8 +4,8 @@ include("core.php");
     startpage("Lotto");
     $bu = bunker(true);
     echo '<h1>Lotto</h1>
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-    <script type="text/javascript">
+    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+    <script>
     teller('.($bu - time()).',\'bunker\',false,\'ned\');
     </script>
     ';
@@ -14,8 +14,8 @@ include("core.php");
     startpage("Lotto",$stil);
     $ja = fengsel(true);
     echo '<h1>Lotto</h1>
-    <p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">'.$ja.'</span></p>
-    <script type="text/javascript">
+    <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.$ja.'</span></p>
+    <script>
     teller('.$ja.',\'krim\',true,\'ned\');
     </script>
     ';
@@ -26,15 +26,15 @@ include("core.php");
     $textout=null;
     $s = $db->query("SELECT * FROM `lotto` ORDER BY `id` DESC LIMIT 0,1");//Henter siste runde, om det er noen.
     if($db->num_rows() == 0)
-    {//Første runde starter automatisk
+    {//F&oslash;rste runde starter automatisk
       $run=1;
-      $tid=time()+(10*60);//10 minutters pause første runden
+      $tid=time()+(10*60);//10 minutters pause f&oslash;rste runden
       $co = $db->query("SELECT * FROM `lottoconfig` ORDER BY `id` DESC LIMIT 0,1");//Henter siste config og oppdaterer
       $conf = $db->fetch_object();
       $db->query("INSERT INTO `lotto`(`runde`,`tid`,`vinner`,`tidstart`,`pl`,`pr`,`ti`,`al`,`premie`) VALUES('$run','$tid',NULL,'$now','{$conf->Loddpris}','{$conf->Prosent}','{$conf->Tid}','{$conf->Antlodd}',NULL);")or die(mysqli_error($db->connetion_id));
     }
     else
-    {//Fortsetter med nåværende runde
+    {//Fortsetter med n&aring;v&aelig;rende runde
       $f = $db->fetch_object($s);
       $run = $f->runde;
       $tid = $f->tid;
@@ -42,13 +42,13 @@ include("core.php");
       $left = $f->tid - time();
       if($tid < time() && $vinner == NULL)
       {
-        /*Om tiden er ute og vinneren ikke er trukket enda, så trekkes vinner og neste runde starter automatisk*/
+        /*Om tiden er ute og vinneren ikke er trukket enda, s&aring; trekkes vinner og neste runde starter automatisk*/
         $co = $db->query("SELECT * FROM `lottoconfig` ORDER BY `id` DESC LIMIT 1");//Henter siste config og oppdaterer
         $conf = $db->fetch_object();
-        $nytid = time()+($conf->Tid*60);//Minutter før trekning settes
+        $nytid = time()+($conf->Tid*60);//Minutter f&oslash;r trekning settes
         $db->query("SELECT * FROM `lodd` WHERE `runde` = '$run' ORDER BY `id` DESC");
         $allnum = $db->num_rows();
-        if($allnum == 0){/*Starter runden på nytt*/
+        if($allnum == 0){/*Starter runden p&aring; nytt*/
           $db->query("UPDATE `lotto` SET `tid` = '".(($conf->Tid * 60) + time())."' WHERE `id` = '".$f->id."'");
         }
         else{
@@ -58,7 +58,7 @@ include("core.php");
           $lotto = $db->query("SELECT * FROM `lotto` ORDER BY `id` DESC LIMIT 1");
           $lotf=$db->fetch_object();
           $sum = $f->pl * $allnum;
-          /*Trekker fra premie som går til eier*/
+          /*Trekker fra premie som g&aring;r til eier*/
           $sum2 = ($sum / 100) * $lotf->pr;
           $sum = $sum - $sum2;
           $nyr = $run + 1;
@@ -68,7 +68,7 @@ include("core.php");
             die();
           }
           $db->query("UPDATE `users` SET `hand` = (`hand` + $sum),`exp` = (`exp` + 5) WHERE `id` = '{$vinner->uid}' LIMIT 1");
-          $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$vinner->uid."','".time()."','".$db->slash('--<b>Vunnet i lotto!</b><br />Du har vunnet '.number_format($sum).'kr')."')");
+          $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$vinner->uid."','".time()."','".$db->slash('--<b>Vunnet i lotto!</b><br>Du har vunnet '.number_format($sum).'kr')."')");
           $db->query("INSERT INTO `lotto`(`runde`,`tid`,`vinner`,`tidstart`,`pl`,`pr`,`ti`,`al`) VALUES('$nyr','$nytid',NULL,'$now','{$conf->Loddpris}','{$conf->Prosent}','{$conf->Tid}','{$conf->Antlodd}')");
           $db->query("UPDATE `firma` SET `Konto` = (`Konto` + ".$sum2.") WHERE `id` = '1'");
           $db->query("SELECT * FROM `oppuid` WHERE `uid` = '{$vinner->uid}' ORDER BY `oid` DESC LIMIT 1");
@@ -85,11 +85,11 @@ include("core.php");
   $antlodd = $f2->antlodd;
   $egenlodd = $f1->egenlodd;
   if(isset($_POST['antloddkj']))
-  {//Spiller skal kjøpe lodd
+  {//Spiller skal kj&oslash;pe lodd
     $ant = $db->escape($_POST['antloddkj']);
     if(!is_numeric($ant) || $ant <= 0)
     {
-      $textout .= '<p>Du må kjøpe mer enn ét lodd om gangen! Du kan ikke kjøpe 0 lodd.</p>';
+      $textout .= '<p>Du m&aring; kj&oslash;pe mer enn ét lodd om gangen! Du kan ikke kj&oslash;pe 0 lodd.</p>';
     }
     else
     {
@@ -116,7 +116,7 @@ include("core.php");
             {
               if($db->query("UPDATE `users` SET `hand` = (`hand` - $pris) WHERE `id` = '{$obj->id}' LIMIT 1;"))
               {
-                $textout .= '<p class="lykket">Du har kjøpt '.number_format($ant).' lodd!</p>';
+                $textout .= '<p class="lykket">Du har kj&oslash;pt '.number_format($ant).' lodd!</p>';
               }
               else
               {
@@ -126,7 +126,7 @@ include("core.php");
                 }
                 else
                 {
-                  $textout .= '<p class="feil">Kunne ikke kjøpe lodd! Feil i spørring!</p>';
+                  $textout .= '<p class="feil">Kunne ikke kj&oslash;pe lodd! Feil i sp&oslash;rring!</p>';
                 }
               }
             }
@@ -138,13 +138,13 @@ include("core.php");
               }
               else
               {
-                $textout .= '<p class="feil">Kunne ikke kjøpe lodd! Feil i spørring!</p>';
+                $textout .= '<p class="feil">Kunne ikke kj&oslash;pe lodd! Feil i sp&oslash;rring!</p>';
               }
             }
           }
           else if($egenlodd >= $f->al)
           {
-            $textout .= '<p class="feil">Du har allerede kjøpt maks antall lodd!</p>';
+            $textout .= '<p class="feil">Du har allerede kj&oslash;pt maks antall lodd!</p>';
           }
           else
           {
@@ -153,12 +153,12 @@ include("core.php");
         }
         else
         {
-          $textout .= '<p class="feil">Du har ikke råd til å kjøpe flere lodd, sjekk at du har penger ute.</p>';
+          $textout .= '<p class="feil">Du har ikke r&aring;d til &aring; kj&oslash;pe flere lodd, sjekk at du har penger ute.</p>';
         }
       }
       else
       {
-        $textout .= '<p class="feil">Du kan ikke kjøpe så mange lodd!</p>';
+        $textout .= '<p class="feil">Du kan ikke kj&oslash;pe s&aring; mange lodd!</p>';
       }
     }
   }
@@ -171,7 +171,7 @@ include("core.php");
   else
   {
     /*
-    $ver->array(NavnPåFirma,EierAvFirma,TypeFirma);
+    $ver->array(NavnP&aring;Firma,EierAvFirma,TypeFirma);
     */
     $Navn = $ver[0];
     $Eier = $ver[1];
@@ -198,7 +198,7 @@ include("core.php");
     echo '<table class="table" style="width:300px;"><tr><th colspan="2">Loddoversikt:</th></tr>';
     while($r = mysqli_fetch_object($l)){
       echo '<tr>
-      <td>'.status($r->uid,1).'</td><td>'.$r->antlodd.' kjøpte lodd</td>
+      <td>'.status($r->uid,1).'</td><td>'.$r->antlodd.' kj&oslash;pte lodd</td>
       </tr>';
     }
     echo '</table>';
@@ -214,13 +214,13 @@ include("core.php");
       <td><?php echo status($uf->user); ?></td>
     </tr>
     <tr>
-      <th>Navn på firma:</th>
+      <th>Navn p&aring; firma:</th>
       <td><?=$Navn;?></td>
     </tr>
     <tr>
       <th colspan="2">Tid igjen:
        <span id="lottoleft"></span>
-      <script type="text/javascript">
+      <script>
       teller(<?php if(empty($left)){echo ($conf->Tid * 60);}else{echo $left;}?>,"lottoleft",true,"ned");
       </script>
       </th>
@@ -250,8 +250,8 @@ include("core.php");
       <td><?=$lotf->pr;?> %</td>
     </tr>
     <tr>
-      <td colspan="2"> <input class="kjøp" type="submit" value="Kjøp lodd" />  <input style="-webkit-appearance: button;
--webkit-padding-end: 20px;border: 1px solid #AAA;color: #555;font-size: inherit;width: 32px;height: 20px;background-color: #aaa;" type="text" name="antloddkj" value="1" min="1" max="<?=$max?>" style="width:50px;" /></td><br />
+      <td colspan="2"> <input class="kj&oslash;p" type="submit" value="Kj&oslash;p lodd">  <input style="-webkit-appearance: button;
+-webkit-padding-end: 20px;border: 1px solid #AAA;color: #555;font-size: inherit;width: 32px;height: 20px;background-color: #aaa;" type="text" name="antloddkj" value="1" min="1" max="<?=$max?>" style="width:50px;"></td><br>
     </tr>
   </table>
 </form>

@@ -3,7 +3,7 @@
   //startpage("Auksjon");
     if(fengsel() == true){
 echo '
-<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">'.fengsel(true).'</span></p>
+<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.fengsel(true).'</span></p>
 <script type= "text/javascript">
 teller('.fengsel(true).',\'krim\',true,\'ned\');
 </script>
@@ -12,29 +12,29 @@ teller('.fengsel(true).',\'krim\',true,\'ned\');
 else if(bunker() == true){
 $bu = bunker(true);
 echo '
-<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-<script type="text/javascript">
+<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+<script>
 teller('.($bu - time()).',\'bunker\',false,\'ned\');
 </script>
 ';
 }
 else{
   $res=NULL;
-  /*Sjekker om det er noen runder som er ferdige før noen handler utføres*/
+  /*Sjekker om det er noen runder som er ferdige f&oslash;r noen handler utf&oslash;res*/
   $q = $db->query("SELECT * FROM `auksjon` WHERE `time_left` < UNIX_TIMESTAMP() AND `done` = '0' OR `done` = '0' AND `autowin` = `currentbid` ORDER BY `id` ASC");
   if($db->num_rows() >= 1){
-    /*Det er noen rader som må gjøres noe med, fullfører handler*/
+    /*Det er noen rader som m&aring; gj&oslash;res noe med, fullf&oslash;rer handler*/
     while($r = mysqli_fetch_object($q)){
       if($r->autowin == $r->currentbid){
-        /*Hvis noen har gitt siste bud så vil de få auksjonen med en gang*/
+        /*Hvis noen har gitt siste bud s&aring; vil de f&aring; auksjonen med en gang*/
         $db->query("SELECT * FROM `budauk` WHERE `aid` = '$r->id' ORDER BY `id` DESC LIMIT 1");/*Henter siste bud*/
         $usr = $db->fetch_object();/*Siste bud*/
-        /*Noen har bydd summen spilleren ønsket, utfører handel om ikke fullført*/
+        /*Noen har bydd summen spilleren &oslash;nsket, utf&oslash;rer handel om ikke fullf&oslash;rt*/
         $db->query("UPDATE `auksjon` SET `done` = '1' WHERE `id` = '$r->id'")or die(mysqli_error($db->connection_id));
         $db->query("UPDATE `users` SET `bank` = (`bank` + ".$r->currentbid.") WHERE `id` = '$r->seller'")or die(mysqli_error($db->connection_id));
         $db->query("UPDATE `firma` SET `Eier` = '{$usr->uid}' WHERE `id` = '$r->item'")or die(mysqli_error($db->connection_id));
-        $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES('".$usr->uid."','".time()."','".$db->slash('--<b>Auksjon!</b><br />Du har mottat et firma, gå hit for å se dine firmaer: <a href="Firmaer">Firmasenter</a>! Du kjøpte firmaet ifra '.user($r->seller).' til '.number_format($r->currentbid).' kr!')."'),('".$r->seller."','".time()."','".$db->slash('--<b>Auksjon!</b><br />Ditt firma har blitt solgt til '.user($usr->uid).' for '.number_format($r->currentbid).' kr!')."')");
-        //echo '<br />4. Berørte rader: '.$db->affected_rows();
+        $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES('".$usr->uid."','".time()."','".$db->slash('--<b>Auksjon!</b><br>Du har mottat et firma, g&aring; hit for &aring; se dine firmaer: <a href="Firmaer">Firmasenter</a>! Du kj&oslash;pte firmaet ifra '.user($r->seller).' til '.number_format($r->currentbid).' kr!')."'),('".$r->seller."','".time()."','".$db->slash('--<b>Auksjon!</b><br>Ditt firma har blitt solgt til '.user($usr->uid).' for '.number_format($r->currentbid).' kr!')."')");
+        //echo '<br>4. Ber&oslash;rte rader: '.$db->affected_rows();
         }
         else if($r->time_left < time()){
           /*Tiden er ute, sjekker om det er noen bud, hvis ikke blir det stemplet som ferdig og ingen overtar firmaet*/
@@ -49,8 +49,8 @@ else{
               $res = $db->fetch_object();
               $db->query("UPDATE `users` SET `bank` = (`bank` + ".$res->bid.") WHERE `id` = '$r->seller'");
               $db->query("UPDATE `firma` SET `Eier` = '$res->uid' WHERE `id` = '$r->item'");
-              sysmel($r->seller,'--<b>Auksjon</b><br />Ditt firma har blitt solgt til '.user($res->uid).' til '.number_format($res->bid).' kr da ingen bydde ditt krav på '.number_format($r->autowin).'!');
-              sysmel($res->uid,'--<b>Auksjon!</b><br />Du har mottat et firma, gå hit for å se dine firmaer: <a href="Firmaer">Firmasenter</a>! Du kjøpte firmaet ifra '.user($r->seller).' til '.number_format($res->bid).' kr!');
+              sysmel($r->seller,'--<b>Auksjon</b><br>Ditt firma har blitt solgt til '.user($res->uid).' til '.number_format($res->bid).' kr da ingen bydde ditt krav p&aring; '.number_format($r->autowin).'!');
+              sysmel($res->uid,'--<b>Auksjon!</b><br>Du har mottat et firma, g&aring; hit for &aring; se dine firmaer: <a href="Firmaer">Firmasenter</a>! Du kj&oslash;pte firmaet ifra '.user($r->seller).' til '.number_format($res->bid).' kr!');
               $db->query("UPDATE `auksjon` SET `done` = '1' WHERE `id` = '$r->id'");
             } 
           }
@@ -61,7 +61,7 @@ else{
     if(isset($_POST['handlemate'])){
       /*Selger/legger ut til auksjon*/
       $id = $db->escape($_POST['choose']);/*ID til salg*/
-      $h = $db->escape($_POST['handlemate']);/*Salgsmåte*/
+      $h = $db->escape($_POST['handlemate']);/*Salgsm&aring;te*/
       $fi = firma($id);
       if($fi != false){
         if($obj->id != $fi[1]){
@@ -88,7 +88,7 @@ else{
               $tid = $db->escape($_POST['period']);
               /*Spilleren vil selge firmaet for en fast pris*/
               if($db->query("INSERT INTO `auksjon`(`item`,`lowbid`,`autowin`,`increasebid`,`start`,`time_left`,`seller`) VALUES('".$id."','".$min."','".$aw."','".$incr."','".time()."','".(time() + $listid[$tid])."','".$obj->id."')")){
-                $res = '<p class="lykket">Du har lagt ut firmaet ditt til auksjonering. Om det ikke kommer inn bud før fristen går ut vil det ikke lengre auksjoneres bort, og du vil fortsette å eie firmaet.</p>';
+                $res = '<p class="lykket">Du har lagt ut firmaet ditt til auksjonering. Om det ikke kommer inn bud f&oslash;r fristen g&aring;r ut vil det ikke lengre auksjoneres bort, og du vil fortsette &aring; eie firmaet.</p>';
               }
               else{
                 $res='<p class="feil">Kan ikke legge ut firmaet, be ledelsen sjekke feilloggen for "auksjon.php".</p>';
@@ -98,7 +98,7 @@ else{
         }
       }
       else{
-        $res = '<p class="feil">Beklageligvis kan vet virke som at dette firmaet har en feil et eller annet sted, ta kontakt med ledelsen for å rette i problemet!<br /></p>';
+        $res = '<p class="feil">Beklageligvis kan vet virke som at dette firmaet har en feil et eller annet sted, ta kontakt med ledelsen for &aring; rette i problemet!<br></p>';
       }
     }
     /*Legge ut noe nytt til salgs*/
@@ -141,7 +141,7 @@ else{
     </tbody>
   </table>
   
-  <p>Velg handlemåte:<br>
+  <p>Velg handlem&aring;te:<br>
     Salg:<input type="radio" class="choice" checked="" name="handlemate" value="0"><br>
     Auksjon:<input type="radio" class="choice" name="handlemate" value="1">
   </p>
@@ -186,7 +186,7 @@ else{
         <th>Autowin:</th><td><input type="number" min="100" value="100" name="aw"></td>
       </tr>
       <tr>
-        <th>Budøkning:</th><td><input type="number" min="100" value="100" name="incr"></td>
+        <th>Bud&oslash;kning:</th><td><input type="number" min="100" value="100" name="incr"></td>
       </tr>
       <tr>
         <th>Varighet:</th><td>
@@ -208,7 +208,7 @@ else{
               <option value="12">1 uke</option>
               <option value="13">2 uker</option>
               <option value="14">3 uker</option>
-              <option value="15">1 måned(max)</option>
+              <option value="15">1 m&aring;ned(max)</option>
             </optgroup>
           </select>
         </td>
@@ -219,7 +219,7 @@ else{
   <input type="submit" value="Legg ut til handel!">
   </div>
 </form>
-<script type="text/javascript" language="javascript">
+<script language="javascript">
   $(document).ready(function () {
     $(".selge").css('cursor','pointer').hover(function () {
       $(this).find('td').not('.valgt').removeClass().addClass('normrad1');
@@ -258,7 +258,7 @@ else{
     $id = $db->escape($_POST['auksjonsid']);
     $sum= $db->escape($_POST['budnummer']);
     if(!is_numeric($sum) || $sum <= 0){
-      $re = '<p class="feil">Du må legge inn et gyldig bud, det aksepteres kun tall som er høyere enn 0!</p>';
+      $re = '<p class="feil">Du m&aring; legge inn et gyldig bud, det aksepteres kun tall som er h&oslash;yere enn 0!</p>';
     }
     else{
       $db->query("SELECT * FROM `auksjon` WHERE `id` = '$id' AND `done` = '0' AND `time_left` > '".time()."' AND `currentbid` < `autowin`");
@@ -266,29 +266,29 @@ else{
         /*Velger auksjon fra id om runden ikke er ferdig eller har autowin*/
         $resu=$db->fetch_object();
         if($resu->seller == $obj->id){
-          /*Den som selger kan ikke kjøpe opp det som en selv la ut til salg*/
-          $re = '<p class="feil">Du kan ikke legge inn bud på egen auksjon!</p>';
+          /*Den som selger kan ikke kj&oslash;pe opp det som en selv la ut til salg*/
+          $re = '<p class="feil">Du kan ikke legge inn bud p&aring; egen auksjon!</p>';
         }
         else{
           $db->query("SELECT * FROM `budauk` WHERE `aid` = '".$id."' ORDER BY `id` DESC LIMIT 1");
           if($db->num_rows() == 1){
-            /*Finnes bud fra før*/
+            /*Finnes bud fra f&oslash;r*/
             $budbefore = TRUE;
             $bud = $db->fetch_object();
             if($obj->id == $bud->uid){
-              /*Spiller prøver å legge inn bud enda han er den siste som har lagt inn bud*/
-              $re = '<p class="feil">Du kan ikke legge inn bud, da du er den siste som la inn budet. Vent til noen andre har lagt inn bud før du prøver igjen.</p>';
+              /*Spiller pr&oslash;ver &aring; legge inn bud enda han er den siste som har lagt inn bud*/
+              $re = '<p class="feil">Du kan ikke legge inn bud, da du er den siste som la inn budet. Vent til noen andre har lagt inn bud f&oslash;r du pr&oslash;ver igjen.</p>';
               $everything_is_ok = FALSE;
             }
             else if($sum <= $bud->bid){
               /*Budet er likt forrige bud, aksepteres ikke*/
               $everything_is_ok = FALSE;
-              $re = '<p class="feil">Du har bydd for lite penger i forhold til nåværende bud. By høyere. Neste gyldige bud er på '.(number_format(($bud->bid + $resu->increasebid))).' kr!</p>';
+              $re = '<p class="feil">Du har bydd for lite penger i forhold til n&aring;v&aelig;rende bud. By h&oslash;yere. Neste gyldige bud er p&aring; '.(number_format(($bud->bid + $resu->increasebid))).' kr!</p>';
             }
             else if($sum > $bud->bid && ($bud->bid + $resu->increasebid) > $sum && $resu->autowin != $sum){
-              /*Budet er høyere, men oppfyller ikke kravet om å øke budet en viss sum, men skulle spilleren by aw enda økningen ikke fyller kravet, vil budet bli godtatt likevell*/
+              /*Budet er h&oslash;yere, men oppfyller ikke kravet om &aring; &oslash;ke budet en viss sum, men skulle spilleren by aw enda &oslash;kningen ikke fyller kravet, vil budet bli godtatt likevell*/
               $everything_is_ok = FALSE;
-              $re = '<p class="feil">Du har bydd en sum som ikke stemmer overens med budøkning. Du må by minst '.(number_format(($bud->bid + $resu->increasebid))).' kr!</p>';
+              $re = '<p class="feil">Du har bydd en sum som ikke stemmer overens med bud&oslash;kning. Du m&aring; by minst '.(number_format(($bud->bid + $resu->increasebid))).' kr!</p>';
             }
             else{
               /*Budet oppfyller kravet, og settes inn evt*/
@@ -310,34 +310,34 @@ else{
                 $db->query("INSERT INTO `budauk` VALUES(NULL,'".$obj->id."','".$id."','".$sum."','".time()."')");
                 $db->query("UPDATE `users` SET `hand` = (`hand` - $sum) WHERE `id` = '".$obj->id."' LIMIT 1");
                 $db->query("UPDATE `auksjon` SET `currentbid` = '$sum' WHERE `id` = '$id'");
-                /*Ettersom en bruker har bydd penger, så vil det forrige budet, om det er noen andre bud, bli satt tilbake til spillerens bank*/
+                /*Ettersom en bruker har bydd penger, s&aring; vil det forrige budet, om det er noen andre bud, bli satt tilbake til spillerens bank*/
                 if($budbefore == true){
                   /*Gir tilbake spilleren de pengene som er bydd*/
                   $db->query("UPDATE `users` SET `bank` = (`bank` + ".$bud->bid.") WHERE `id` = '".$bud->uid."' LIMIT 1");
                 }
-                $re = '<p class="lykket">Du har lagt inn et bud på '.number_format($sum).'kr!';
+                $re = '<p class="lykket">Du har lagt inn et bud p&aring; '.number_format($sum).'kr!';
               }   
               else{
-                $re = '<p class="feil">Du kan ikke legge inn budet på runden, da du ikke har nok penger på handa. Du mangler '.(number_format($sum - $obj->hand)).'kr.</p>';
+                $re = '<p class="feil">Du kan ikke legge inn budet p&aring; runden, da du ikke har nok penger p&aring; handa. Du mangler '.(number_format($sum - $obj->hand)).'kr.</p>';
               }
             }
             else {
               /*Spilleren legger ikke inn gyldig bud*/
-              $re = '<p class="feil">Du må legge inn et bud som oppfyller kravet for minstebudet. Minstebudet er på '.number_format($resu->lowbid).'kr, mens du ga et bud på '.number_format($sum).'kr.';
+              $re = '<p class="feil">Du m&aring; legge inn et bud som oppfyller kravet for minstebudet. Minstebudet er p&aring; '.number_format($resu->lowbid).'kr, mens du ga et bud p&aring; '.number_format($sum).'kr.';
             }
           }
         }
       }
       else{
         /*Auksjon over/eksisterer ikke*/
-        $re = '<p class="feil">Auksjonen er ikke gyldig eller eksisterer ikke lengre. Oppdater siden for å se etter aktive auksjoner.';
+        $re = '<p class="feil">Auksjonen er ikke gyldig eller eksisterer ikke lengre. Oppdater siden for &aring; se etter aktive auksjoner.';
       }
     }
   }/*Issetbud end*/
   startpage("Auksjonshuset",'
-<script type="text/javascript">
+<script>
 /*Script laget av Nicholas Arnesen
-Den fungerer slik at om man ikke har javascript tilgjengelig, så vil ikke hjelp vises.*/
+Den fungerer slik at om man ikke har javascript tilgjengelig, s&aring; vil ikke hjelp vises.*/
   $(document).ready(function(){
   $("#tog").hover(function(){
     $(this).css(\'cursor\',\'pointer\');
@@ -357,7 +357,7 @@ Den fungerer slik at om man ikke har javascript tilgjengelig, så vil ikke hjelp 
       $show = true;
     }
     while($r = mysqli_fetch_object($s1)){
-      /*Skriver alle auksjonene til variabel som skrives ut etterpå*/
+      /*Skriver alle auksjonene til variabel som skrives ut etterp&aring;*/
       $firmaet = firma($r->item);
       if($firmaet[2]==2){
         /*Det er en flyplass*/
@@ -391,7 +391,7 @@ Den fungerer slik at om man ikke har javascript tilgjengelig, så vil ikke hjelp 
         <td>'.$curbid.'</td>
         <td>'.number_format($r->autowin).'kr</td>
         <td>'.number_format($r->increasebid).'kr</td>
-        <td><span id="teller'.$r->id.'"></span><script type="text/javascript">teller('.$tidigjen.',"teller'.$r->id.'",false,"ned");</script></td>
+        <td><span id="teller'.$r->id.'"></span><script>teller('.$tidigjen.',"teller'.$r->id.'",false,"ned");</script></td>
         <td>'.user($r->seller).'</td>
           '.$addd.'
         </tr>';
@@ -402,11 +402,11 @@ Den fungerer slik at om man ikke har javascript tilgjengelig, så vil ikke hjelp 
   }
   /*Feil mellom: B*/
   ?>
-<p id="tog" style="display: none;">Klikk her for å se hvordan auksjon fungerer!</p>
+<p id="tog" style="display: none;">Klikk her for &aring; se hvordan auksjon fungerer!</p>
 <div style="display: none;" id="helpinfo">
-  <p>Alle spillere har mulighet til å legge ut en auksjon/et salg.<br />Når noen byr, så må de enten by minstebud om ingen har bydd før, eller by mer enn forrige som har bydd + økning av budet som også står der.<br />
-    Når Auksjonen er over, så vil det høyste budet stikke av med premien, og forrige eier vil ikke lengre forbli eier av verdien.<br />
-  Om en spiller har bydd og står som siste byder i auksjonen, så kan han/hun ikke by igjen før noen andre har bydd over han/hun.</p></div>
+  <p>Alle spillere har mulighet til &aring; legge ut en auksjon/et salg.<br>N&aring;r noen byr, s&aring; m&aring; de enten by minstebud om ingen har bydd f&oslash;r, eller by mer enn forrige som har bydd + &oslash;kning av budet som ogs&aring; st&aring;r der.<br>
+    N&aring;r Auksjonen er over, s&aring; vil det h&oslash;yste budet stikke av med premien, og forrige eier vil ikke lengre forbli eier av verdien.<br>
+  Om en spiller har bydd og st&aring;r som siste byder i auksjonen, s&aring; kan han/hun ikke by igjen f&oslash;r noen andre har bydd over han/hun.</p></div>
 <form method="post" action="">
   <table class="table">
     <thead>
@@ -416,7 +416,7 @@ Den fungerer slik at om man ikke har javascript tilgjengelig, så vil ikke hjelp 
     </thead>
     <tbody>
       <tr>
-        <th>Hva</th><th>Startbud</th><th>Gjeldende bud</th><th>Autowin</th><th>Minste økning i bud</th><th>Tid igjen</th><th>Selger</th><?php if($show){echo '<th>Byder</th>';}?>
+        <th>Hva</th><th>Startbud</th><th>Gjeldende bud</th><th>Autowin</th><th>Minste &oslash;kning i bud</th><th>Tid igjen</th><th>Selger</th><?php if($show){echo '<th>Byder</th>';}?>
       </tr>
       <?php
         /*Sjekker om det er noen aktive runder.
@@ -430,7 +430,7 @@ Den fungerer slik at om man ikke har javascript tilgjengelig, så vil ikke hjelp 
   <input type="hidden" value="" name="auksjonsid" id="auksjon"><input type="number" name="budnummer" placeholder="Ditt Bud"><input type="submit" value="Legg inn bud!" name="budin">
 </form>
 
-<script type="text/javascript" language="javascript">
+<script language="javascript">
 $(document).ready(function () {
   $(".auksjonsliste").css('cursor','pointer').hover(function () {
     $(this).find('td').not('.valgt').removeClass().addClass('normrad1');

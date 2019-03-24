@@ -2,12 +2,12 @@
 include("core.php");
 include("pagination.php");
 startpage("Garasje");
-echo '<img src="imgs/garasje.png" />';
+echo '<img src="imgs/garasje.png">';
 	if(bunker() == true){
 		$bu = bunker(true);
 		echo '<h1>Garasjen</h1>
-		<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br />Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
-		<script type="text/javascript">
+		<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+		<script>
 		teller('.($bu - time()).',\'bunker\',false,\'ned\');
 		</script>
 		';
@@ -15,8 +15,8 @@ echo '<img src="imgs/garasje.png" />';
 	else if(fengsel()){
 		$ja = fengsel(true);
 		echo '<h1>Garasjen</h1>
-		<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">'.$ja.'</span></p>
-		<script type="text/javascript">
+		<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.$ja.'</span></p>
+		<script>
 		teller('.$ja.',\'krim\',true,\'ned\');
 		</script>
 		';
@@ -24,14 +24,14 @@ echo '<img src="imgs/garasje.png" />';
 	else{
 ?>
 <h1>Garasjen</h1>
-<p>Velkommen til garasjen din!<br>Her for å selge biler, så må du sende bilene til en annen by, når de er fremme, dra til byen du sendte de til, og selg dem for penger :)</p>
+<p>Velkommen til garasjen din!<br>Her for &aring; selge biler, s&aring; m&aring; du sende bilene til en annen by, n&aring;r de er fremme, dra til byen du sendte de til, og selg dem for penger :)</p>
 <?php
     if((isset($_POST['selgbil']) || isset($_POST['sendbil']) || isset($_POST['sendtil']) || isset($_POST['selgalle'])) && isset($_POST['checkbil'])){
-      //Utfører en av tre oppgaver
+      //Utf&oslash;rer en av tre oppgaver
       include_once("inc/bilconfig.php");
-      $biler = $_POST['checkbil'];/*Ikke bruk escape her, da den ødelegger data*/
+      $biler = $_POST['checkbil'];/*Ikke bruk escape her, da den &oslash;delegger data*/
       if(isset($_POST['selgbil'])){
-        /*Åpner mulighet til å selge flere biler samtidig*/
+        /*&aring;pner mulighet til &aring; selge flere biler samtidig*/
         $errors = array("num"=>0,"res"=>"<p class=\"feil\">Kunne ikke selge valgte biler");
         $success = array("num"=>0,"sum"=>0,"res"=>NULL);
         foreach ($biler as $bil) {
@@ -41,7 +41,7 @@ echo '<img src="imgs/garasje.png" />';
           if($db->num_rows() == 1){
             $f = $db->fetch_object();
             if($obj->city == $f->curcity){//Spiller i samme byen
-              if($obj->city == $f->gotcity){//Bil kan ikke selges i byen den ble stjålet.
+              if($obj->city == $f->gotcity){//Bil kan ikke selges i byen den ble stj&aring;let.
                 $errors["num"] +=1;
                 $errors["res"] .=', fordi bilen var i samme by som du stjal den i';
               }
@@ -65,7 +65,7 @@ echo '<img src="imgs/garasje.png" />';
             }
           }//Bil eksisterer
           else{
-            $errors['res'].=', fordi den ikke finnes, eller ikke tilhører deg';
+            $errors['res'].=', fordi den ikke finnes, eller ikke tilh&oslash;rer deg';
             $errors['num']+=1;
           }
         }/*Foreach for flere biler END*/
@@ -77,7 +77,7 @@ echo '<img src="imgs/garasje.png" />';
         }
         if($errors['num'] >= 1){
           $ant = ($success >= 2)?" bilene dine":" bilen din";
-          echo 'Det oppstod '.$errors["num"].' feil'.' da du prøvde å selge '.$ant.'!';
+          echo 'Det oppstod '.$errors["num"].' feil'.' da du pr&oslash;vde &aring; selge '.$ant.'!';
         }
       /*Selg bil END*/}
       else if(isset($_POST['sendbil'])){
@@ -87,7 +87,7 @@ echo '<img src="imgs/garasje.png" />';
         foreach ($biler as $bil) {
           $bil = $db->escape($bil);
           if(is_numeric($tilby)){
-            $tras = time() + 1800;//Tid før overførsel til annen by.
+            $tras = time() + 1800;//Tid f&oslash;r overf&oslash;rsel til annen by.
             $gc = $db->query("SELECT * FROM `bilgarasje` WHERE `id` = '{$bil}' AND `uid` = '{$obj->id}' AND `sold` = '0'")or die(mysql_error());
             if($db->num_rows() == 1){
               $f = $db->fetch_object($gc);
@@ -98,7 +98,7 @@ echo '<img src="imgs/garasje.png" />';
               else{
                 if($f->curcity == $tilby){
                   $errors['num']+=1;
-                  $errors['res'].=', fordi bilen ikke kan sendes tilbake til byen den ble stjålet i';
+                  $errors['res'].=', fordi bilen ikke kan sendes tilbake til byen den ble stj&aring;let i';
                 }
                 else{
                   if($f->curcity == $obj->city){
@@ -138,7 +138,7 @@ echo '<img src="imgs/garasje.png" />';
         }
         if($errors['num'] >= 1){
           $ant = ($success >= 2)?" biler":" bil";
-          echo '<p class="feil">Det oppstod '.$errors["num"].' feil da du prøvde å sendte '.$ant.$errors["res"].'!';
+          echo '<p class="feil">Det oppstod '.$errors["num"].' feil da du pr&oslash;vde &aring; sendte '.$ant.$errors["res"].'!';
         }
       }
       if(isset($_POST['selgalle'])){
@@ -156,7 +156,7 @@ echo '<img src="imgs/garasje.png" />';
           echo '<p class="lykket">Du har solgt '.$ant.' bil'.$pre.' for '.number_format($sum).'kr!</p>';
         }//Biler finnes i byen
         else{
-          echo '<p class="feil">Ingen biler er klare til å selges i '.city($obj->city).'!</p>';
+          echo '<p class="feil">Ingen biler er klare til &aring; selges i '.city($obj->city).'!</p>';
         }
       }//Selg alle klare biler END
     }//Hvis satt END
@@ -164,7 +164,7 @@ echo '<img src="imgs/garasje.png" />';
     *Frakt
     *Salg
     *Salg av alle klare biler
-    *Legge ut på auksjon(denne vil ta tid og kommer senere)
+    *Legge ut p&aring; auksjon(denne vil ta tid og kommer senere)
     */
     $sql = "SELECT * FROM `bilgarasje` WHERE `lostfound` = '0' AND `uid` = '{$obj->id}' AND `sold` = '0' ORDER BY `id` DESC";
     if($db->num_rows($db->query($sql)) >= 1){
@@ -172,7 +172,7 @@ echo '<img src="imgs/garasje.png" />';
         <form method="post" action="" id="bilfrakt">
         <table class="table">
         <tr>
-        <th><input type="checkbox" id="velgalle" onchange="derp();">Velg</th><th>Bil</th><th>Stjålet i</th><th>Nåværende by</th><th>I bevegelse?</th>
+        <th><input type="checkbox" id="velgalle" onchange="derp();">Velg</th><th>Bil</th><th>Stj&aring;let i</th><th>N&aring;v&aelig;rende by</th><th>I bevegelse?</th>
         </tr>';
         include("inc/bilconfig.php");
         $pagination = new Pagination($db,$sql, 20,'p');
@@ -194,7 +194,7 @@ echo '<img src="imgs/garasje.png" />';
             <td>'.city($garasjen['curcity']).'</td>
             <td>
             <span id="bil'.$garasjen['id'].'"></span>
-            <script type="text/javascript">teller('.$biltime.',"bil'.$garasjen['id'].'",false,"ned");</script></td>
+            <script>teller('.$biltime.',"bil'.$garasjen['id'].'",false,"ned");</script></td>
             </tr>
             ';
         }
@@ -202,7 +202,7 @@ echo '<img src="imgs/garasje.png" />';
         echo '
         </table>
         <h1>Valg:</h1>
-        <p><input style="font-size: 12px;border: 1px solid #aaa;-webkit-border-radius: 10px;height: 25px;" type="submit" class="button2" name="sendbil" value="Send til valgt by!" />
+        <p><input style="font-size: 12px;border: 1px solid #aaa;-webkit-border-radius: 10px;height: 25px;" type="submit" class="button2" name="sendbil" value="Send til valgt by!">
         <select style="-webkit-appearance: button;
 -webkit-padding-end: 20px;border: 1px solid #AAA;color: #555;font-size: inherit;width: 107px;height: 20px;background-color: #aaa;" name="tilby">
         <option value="1">Til '.city(1).'</option>
@@ -213,9 +213,9 @@ echo '<img src="imgs/garasje.png" />';
         <option value="6">Til '.city(6).'</option>
         <option value="7">Til '.city(7).'</option>
         <option value="8">Til '.city(8).'</option>
-        </select><br />
-        <input class="button2" style="font-size: 12px;border: 1px solid #aaa;-webkit-border-radius: 10px;height: 25px;" type="submit" name="selgbil" value="Selg bilen!" /><br />
-<input type="submit" style="font-size: 12px;border: 1px solid #aaa;-webkit-border-radius: 10px;height: 25px;" class="button2" name="selgalle" value="Selg biler som er klare!" /></p>
+        </select><br>
+        <input class="button2" style="font-size: 12px;border: 1px solid #aaa;-webkit-border-radius: 10px;height: 25px;" type="submit" name="selgbil" value="Selg bilen!"><br>
+<input type="submit" style="font-size: 12px;border: 1px solid #aaa;-webkit-border-radius: 10px;height: 25px;" class="button2" name="selgalle" value="Selg biler som er klare!"></p>
         </form>
         ';
         
@@ -242,10 +242,10 @@ echo '<img src="imgs/garasje.png" />';
                     echo '<p class="feil">Du har ingen biler!</p>';
                 }
     }
-    echo '</br><a class href="garasje.php?verdier">Sjekk verdiene på bilene!</a>';    
+    echo '</br><a class href="garasje.php?verdier">Sjekk verdiene p&aring; bilene!</a>';    
 	}/*Fengsel/Bunker END*/
   ?>
-<script type="text/javascript">
+<script>
   function derp(){
     if(document.getElementById('velgalle').checked == true){
       a = document.getElementsByName("checkbil[]");

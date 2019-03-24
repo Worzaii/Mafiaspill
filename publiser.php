@@ -37,15 +37,15 @@ else{
 }
 ?>
 <form method="post" action="">
-<p>Tema:<input type="text" name="tema" value="" /></p>
+<p>Tema:<input type="text" name="tema" value=""></p>
 <p>Hvem kan se nyheten?</p>
-<input id='rang' type="range" name="rangerank" min="1" max="4" value="4"><br /><span id="rankrange">Alle</span>
+<input id='rang' type="range" name="rangerank" min="1" max="4" value="4"><br><span id="rankrange">Alle</span>
 <p>Melding:</p>
 <textarea name="melding" style="width:100%;height:250px;"></textarea>
-<input type="submit" value="Publiser nyheten!" />
+<input type="submit" value="Publiser nyheten!">
 </form>
 </div>
-<script type="text/javascript">
+<script>
   $("#rang").change(function(){
     var $sp = $("#rankrange");
     

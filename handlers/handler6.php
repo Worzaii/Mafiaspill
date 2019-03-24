@@ -20,7 +20,7 @@ if($new_notice >= 1){
     else{
         $tt = "Du har $new_notice nye meldinger!";
     }
-  $txt = $tt."<br /><a style='color:rgba(107, 107, 225, 1);' href='http://mafia-no.net/Innboks'>Se Innboks!</a>";
+  $txt = $tt."<br><a style='color:rgba(107, 107, 225, 1);' href='http://mafia-no.net/Innboks'>Se Innboks!</a>";
   $show=1;
 }
 else{

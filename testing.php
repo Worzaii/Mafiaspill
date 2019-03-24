@@ -1,8 +1,8 @@
 <?php
 $melding = $_POST["tekst"];
 ?>
-<script type="text/javascript">
-//Spør om tilatelse for og vise skrivebords varsler
+<script>
+//Sp&oslash;r om tilatelse for og vise skrivebords varsler
 document.addEventListener('DOMContentLoaded', function () {
   if (Notification.permission !== "granted")
     Notification.requestPermission();
@@ -122,7 +122,7 @@ if (strpos( $user_agent, 'Chrome') !== false)
 <?php
 if ($melding != null) {
 	echo "Teksten som ble sendt:<br> $melding ";
-echo '<script type="text/javascript">'
+echo '<script>'
    , 'notifykilled();'
    , '</script>'
 ;

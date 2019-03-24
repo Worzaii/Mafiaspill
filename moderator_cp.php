@@ -13,7 +13,7 @@ if($obj->status <= 2){
 <p style="text-align:center">Mod-funksjoner</p>
 <ul class="adminpanel">
 <a href="ipban.php"><li>Internet Protocol Adresse blokkering :D</li></a>
-<a href="bankalle.php"><li>Bankoverføringer</li></a>
+<a href="bankalle.php"><li>Bankoverf&oslash;ringer</li></a>
 <a href="publiser.php"><li>Legge til en nyhet</li></a>
 <a href="/Multizone"><li>Multi-muligheter</li></a>
 <a href="modkill2.php"><li>Modkill spiller</li></a>
@@ -26,7 +26,7 @@ if($obj->status <= 2){
 <p style="text-align:center"> Forummod funksjoner</p>
 <ul class="adminpanel">
 <a href="forumban.php"><li>Forumban spiller</li></a>
-<a href="tomprat.php" onclick="return confirm('Sikker på at du vil tømme prat? ')"><li>Tøm chatten</li></a>
+<a href="tomprat.php" onclick="return confirm('Sikker p&aring; at du vil t&oslash;mme prat? ')"><li>T&oslash;m chatten</li></a>
 <a href="visprat.php"><li>Vis hele prat databasen</li></a>
 </ul>
 <?php }

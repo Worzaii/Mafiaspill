@@ -9,7 +9,7 @@ if(r1()){
     if($uva != false){
       /*
        * Brukeren eksisterer, henter fram all informasjon fra denne spilleren.
-       * Følgende skal vises om brukeren:
+       * F&oslash;lgende skal vises om brukeren:
        * Banklogg
        * Tilbudslogg
        * Ranklogg(krim/biltyveri/ranspiller/lotto)
@@ -21,21 +21,21 @@ if(r1()){
         </tr>';
       $krim = $db->query("SELECT * FROM `krimlogg` WHERE `usid` = '$obj->id' AND `timelast` <> NULL ORDER BY `id` DESC LIMIT 0,1");
       if($db->num_rows() == 0){
-        $kri1 = "Spilleren har ikke utført noen krim enda etter 'timelast' ble satt inn!";
+        $kri1 = "Spilleren har ikke utf&oslash;rt noen krim enda etter 'timelast' ble satt inn!";
       }
       else{
         $re = $db->fetch_object();
-        $kri1 = '<span id="lastkrim"></span><script type="text/javascript">teller('.(time() - $re->timelast).',"lastkrim",false,"opp");</script>';
+        $kri1 = '<span id="lastkrim"></span><script>teller('.(time() - $re->timelast).',"lastkrim",false,"opp");</script>';
       }
       $bilt = $db->query("SELECT * FROM `billogg` WHERE `uid` = '$obj->id' AND `time` > '$time' ORDER BY `id` DESC LIMIT 0,1");
       if($db->num_rows() == 0){
-        $bil1 = "Spilleren har ikke utført noen biltyveri enda etter 'timelast' ble satt inn!";
+        $bil1 = "Spilleren har ikke utf&oslash;rt noen biltyveri enda etter 'timelast' ble satt inn!";
       }
       else{
         $re2= $db->fetch_object();
-        $bil1 = '<span id="lastbilt"></span><script type="text/javascript">teller('.(time() - $re2->timelast).',"lastbilt",false,"opp");</script>';
+        $bil1 = '<span id="lastbilt"></span><script>teller('.(time() - $re2->timelast).',"lastbilt",false,"opp");</script>';
       }
-      echo '<tr><td>Krim: <br />'.$kri1.'</td><td>Biltyveri: <br />'.$bil1.'</td></tr></table>';
+      echo '<tr><td>Krim: <br>'.$kri1.'</td><td>Biltyveri: <br>'.$bil1.'</td></tr></table>';
     }
   }
   else{

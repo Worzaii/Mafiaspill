@@ -7,12 +7,12 @@ echo '
 while($r = mysql_fetch_object($s)){
 if(!filter_var($r->mail, FILTER_VALIDATE_EMAIL))
   {
-  echo '<p style="color:#f00;">Denne mailen er ikke godkjent! "'.$r->mail.'" på bruker: '.$r->user.'('.$r->id.')</p>';
+  echo '<p style="color:#f00;">Denne mailen er ikke godkjent! "'.$r->mail.'" p&aring; bruker: '.$r->user.'('.$r->id.')</p>';
   }
 else
   {
   echo '<p>'.$r->user.'('.$r->id.') bruker en godkjent email!</p>';
   }
 }
-echo '<p>Ferdig å sjekke alle radene. </p>';
+echo '<p>Ferdig &aring; sjekke alle radene. </p>';
 ?>

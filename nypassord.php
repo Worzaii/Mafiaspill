@@ -31,7 +31,7 @@ if(isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['newpass
 		}
 	}
 	else
-	{/* Ingen feil, prøver å endre passordet*/
+	{/* Ingen feil, pr&oslash;ver &aring; endre passordet*/
 		if($db->query("UPDATE `users` SET `pass` = '{$new}' WHERE `id` = '{$obj->id}' AND `pass` = '{$old}' LIMIT 1"))
 		{
 			$_SESSION['sessionzar'] = array($obj->user,$new);
@@ -60,18 +60,18 @@ startpage("Endre passord");
     </tr>
     <tr>
     	<td>Gammelt passord:</td>
-    	<td><input type="password" name="oldpass" /></td>
+    	<td><input type="password" name="oldpass"></td>
     </tr>
     <tr>
       <td>Nytt passord:</td>
-      <td><input type="password" name="newpass" /></td>
+      <td><input type="password" name="newpass"></td>
     </tr>
     <tr>
       <td>Gjenta passord:</td>
-      <td><input type="password" name="newpass2" /></td>
+      <td><input type="password" name="newpass2"></td>
     </tr>
     <tr>
-    	<th colspan="2"><input type="submit" name="submit" value="Endre passordet!" /></th>
+    	<th colspan="2"><input type="submit" name="submit" value="Endre passordet!"></th>
     </tr>
   </table>
 </form>

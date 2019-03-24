@@ -4,7 +4,7 @@ if(r1() || r2()){
   startpage("Auksjonslogg/oversikt");
   ?>
 <h1>Auksjonslogg</h1>
-<p>Se oversikt over innlagte bud og når budene ble lagt inn!</p>
+<p>Se oversikt over innlagte bud og n&aring;r budene ble lagt inn!</p>
 <table class="table">
   <thead>
     <tr>
@@ -29,9 +29,9 @@ if(r1() || r2()){
                   }
                 }
                 else{
-                  $ex = '<tr><td>Ingen bud har blitt lagt inn!<br /></td></tr>';
+                  $ex = '<tr><td>Ingen bud har blitt lagt inn!<br></td></tr>';
                 }
-                /*Skriver alle auksjonene til variabel som skrives ut etterpå*/
+                /*Skriver alle auksjonene til variabel som skrives ut etterp&aring;*/
                 $firmaet = firma($r->item);
                 if($firmaet[2]==2){
                   /*Det er en flyplass*/
@@ -56,7 +56,7 @@ if(r1() || r2()){
                   <td>'.$curbid.'</td>
                   <td>'.number_format($r->autowin).'kr</td>
                   <td>'.number_format($r->increasebid).'kr</td>
-                  <td><span id="teller'.$r->id.'"></span><script type="text/javascript">teller('.$tidigjen.',"teller'.$r->id.'",false,"ned");</script></td>
+                  <td><span id="teller'.$r->id.'"></span><script>teller('.$tidigjen.',"teller'.$r->id.'",false,"ned");</script></td>
                   <td>'.user($r->seller).'</td>
                   </tr>
                   <tr>
@@ -73,7 +73,7 @@ if(r1() || r2()){
                 echo $res;
             }
             else{
-              echo '<tr><td>Ingen aktive auksjoner å vise!</td></tr>';
+              echo '<tr><td>Ingen aktive auksjoner &aring; vise!</td></tr>';
             }
           ?>
         </table>

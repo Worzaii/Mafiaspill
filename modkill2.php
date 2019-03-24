@@ -4,7 +4,7 @@
   startpage("Modkill spiller")
 ?>
 <h1>Modkill spiller</h1>
-<p>Når dere modkiller noen, så SKAL dere bruke grunn.</p>
+<p>N&aring;r dere modkiller noen, s&aring; SKAL dere bruke grunn.</p>
 <?php
 	if(isset($_POST['bruker']) &&isset($_POST['grunn']) && isset($_POST['valg'])){
 		$user = $db->escape($_POST['bruker']);
@@ -24,7 +24,7 @@
           $db->query("INSERT INTO `modkillLogg`(`uid`,`time`,`active`,`reason`,`aid`,`action`) VALUES('".$fet->id."',UNIX_TIMESTAMP(),'1','$grunn','".$obj->id."','0')");
         }
         else{
-          echo '<p class="feil">Brukeren ble ikke berørt, enten fordi spilleren ikke eksisterer, eller er allerede modkillet!</p>';
+          echo '<p class="feil">Brukeren ble ikke ber&oslash;rt, enten fordi spilleren ikke eksisterer, eller er allerede modkillet!</p>';
         }
       }
       else{
@@ -34,11 +34,11 @@
       if($valg == 2){
       if($db->query("UPDATE `users` SET `moddet` ='0',`modgrunn` ='',`modav` ='',`status` ='5',`health`='100' WHERE `user` ='$user'")){
         if($db->affected_rows() == 1){
-          echo '<p class="lykket">'.$user.' har blitt gjennopplivet. Det burde være en veldig god grunn til dette!</p>';
+          echo '<p class="lykket">'.$user.' har blitt gjennopplivet. Det burde v&aelig;re en veldig god grunn til dette!</p>';
           $db->query("INSERT INTO `modkillLogg`(`uid`,`time`,`active`,`reason`,`aid`,`action`) VALUES('".$fet->id."',UNIX_TIMESTAMP(),'1','$grunn','".$obj->id."','1')");
         }
         else{
-          echo '<p class="feil">Brukeren ble ikke berørt, enten fordi spilleren ikke eksisterer, eller er allerede i live/gjenopplivet!</p>';
+          echo '<p class="feil">Brukeren ble ikke ber&oslash;rt, enten fordi spilleren ikke eksisterer, eller er allerede i live/gjenopplivet!</p>';
         }
       }
       else{
@@ -61,10 +61,10 @@ if(isset($_GET['kill'])){
 <th colspan="2">Modkill / gjenoppliv spiller</th>
 </tr>
 <tr>
-    <td>Bruker:</td><td><input type="text" value="<?=$asd->user?>" name="bruker" /></br></td>
+    <td>Bruker:</td><td><input type="text" value="<?=$asd->user?>" name="bruker"></br></td>
 </tr>
 <tr>
-<td>Grunn:</td><td><input type="text" name="grunn" /></td>
+<td>Grunn:</td><td><input type="text" name="grunn"></td>
 </tr>
 <tr>
 <td>Valg:</td><td>
@@ -75,7 +75,7 @@ if(isset($_GET['kill'])){
 </td>
 </tr>
 </table>
-<input type="submit" value="Utfør!" /></form>
+<input type="submit" value="Utf&oslash;r!"></form>
 <?php
 }
 else{noaccess();}

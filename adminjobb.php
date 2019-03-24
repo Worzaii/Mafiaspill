@@ -2,7 +2,7 @@
 include("core.php");
 include("pagination.php");
 startpage("Hva jobber du med?");
-// Bare admins kan være på denne siden og gjøre endringer.
+// Bare admins kan v&aelig;re p&aring; denne siden og gj&oslash;re endringer.
 if($obj->status == 1){
 // Scriptet
 ?>
@@ -31,9 +31,9 @@ if($db->num_rows($query) == 0){
     $pagination_links = $pagination->GetPageLinks();
     $adminjobb = $pagination->GetSQLRows();
     $fremgang = array(
-        0=>array('id' => 0, 'navn' => "Ikke påbegynt"),
-        1=>array('id' => 1, 'navn' => "Påbegynt"),
-        2=>array('id' => 2, 'navn' => "Feil her / Får ikke til"),
+        0=>array('id' => 0, 'navn' => "Ikke p&aring;begynt"),
+        1=>array('id' => 1, 'navn' => "P&aring;begynt"),
+        2=>array('id' => 2, 'navn' => "Feil her / F&aring;r ikke til"),
         3=>array('id' => 3, 'navn' => "Ferdig")
     );
 ?>
@@ -45,12 +45,12 @@ if($db->num_rows($query) == 0){
     echo '<tr><td>'.bbcodes($adminjobber['arbeid'],1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0).'</td><td>'.$adminjobber['script'].'</td><td>'.$fremgang[$adminjobber['fremgang']]['navn'].'</td><td>'.user($adminjobber['uid']).'</td><td>
 <form action="" method="post">        
 <select name="statusen">
-            <option value="0">Ikke påbegynt</option>
-            <option value="1">Påbegynt</option>
-            <option value="2">Feil her / Får ikke til</option>
+            <option value="0">Ikke p&aring;begynt</option>
+            <option value="1">P&aring;begynt</option>
+            <option value="2">Feil her / F&aring;r ikke til</option>
             <option value="3">Ferdig</option>
-            </select><input type="submit" name="endre_status" value="Endre status!" /> 
-            <input type="hidden" name="playerId" value="'.$adminjobber['id'].'" />
+            </select><input type="submit" name="endre_status" value="Endre status!"> 
+            <input type="hidden" name="playerId" value="'.$adminjobber['id'].'">
 </form> </td></tr>';
     }
     echo '<tr><td colspan="6">'.$pagination_links.'</td></tr>';

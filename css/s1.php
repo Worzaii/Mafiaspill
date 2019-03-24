@@ -666,7 +666,7 @@ width: 401px;
   color:#fff;
 }
 .stat6{
-/*Død spiller*/
+/*D&oslash;d spiller*/
   color:#f00;
 }
 

@@ -9,7 +9,7 @@
   startpage("Logg ut en spiller");
 ?>
 <h1>Logg ut en spiller!</h1>
-<p>Ikke misbruk denne funksjonen da det vil bli en irritasjon til en spiller når brukt i feil tilfelle! Eneste tilfellene man kan bruke denne funksjonen er når det er en spiller som ødelegger for andre. Og lignende situasjoner.</p>
+<p>Ikke misbruk denne funksjonen da det vil bli en irritasjon til en spiller n&aring;r brukt i feil tilfelle! Eneste tilfellene man kan bruke denne funksjonen er n&aring;r det er en spiller som &oslash;delegger for andre. Og lignende situasjoner.</p>
 <?php
 if(isset($_GET['usr'])){
   echo '<p><a href="actonline.php">Tilbake!</a></p>';
@@ -25,20 +25,20 @@ if(isset($_GET['usr'])){
     }
     echo '
     <form method="post" action="actonline.php?usr='.$u->user.'">
-    Sist aktiv: <span id="utid"></span><script type="text/javascript">teller('.$tid.',"utid",false,"opp");</script>
-    <input type="submit" name="utlogg" value="Logg ut spilleren!" />
+    Sist aktiv: <span id="utid"></span><script>teller('.$tid.',"utid",false,"opp");</script>
+    <input type="submit" name="utlogg" value="Logg ut spilleren!">
     </form>
     ';
   }
   else{
-    echo '<p class="feil">Spilleren finnes ikke! Prøv igjen:</p>';
+    echo '<p class="feil">Spilleren finnes ikke! Pr&oslash;v igjen:</p>';
   }
 }
 else{
 ?>
 <form method="get" action="">
-Brukernavn: <input type="text" name="usr" /><br />
-<input type="submit" value="Sjekk spiller!" />
+Brukernavn: <input type="text" name="usr"><br>
+<input type="submit" value="Sjekk spiller!">
 </form>
 <?php
 }

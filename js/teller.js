@@ -1,8 +1,8 @@
 /*
  *Copyright Nicholas Arnesen 2014
- *Dette er beskyttet av opphavsrett, og oppdages det brukt på andre nettsider vil det medfølge konsekvenser
- *Scriptet ble designet for bruk på http://mafia-no.net
- *For å kunne bruke dette scriptet en annen plass, ta kontakt med overnevnt på mail: nicholas@mafia-no.net
+ *Dette er beskyttet av opphavsrett, og oppdages det brukt p&aring; andre nettsider vil det medf&oslash;lge konsekvenser
+ *Scriptet ble designet for bruk p&aring; http://mafia-no.net
+ *For &aring; kunne bruke dette scriptet en annen plass, ta kontakt med overnevnt p&aring; mail: nicholas@mafia-no.net
  **/
 function teller(tid, span, redir, oppned){
   skriv = '';
@@ -78,7 +78,7 @@ function teller(tid, span, redir, oppned){
       skriv = skriv + ' s ';
     }
   }
-  id.innerHTML = skriv/*+ "<br />Debug:<br>Tid: "+tid +"<br>Uker: " + week + "<br>Dager: " + day + "<br>Timer: "+ tim + "<br>Minutter: "+ min + "<br>Sekunder: "+sec+"<br>"*/;
+  id.innerHTML = skriv/*+ "<br>Debug:<br>Tid: "+tid +"<br>Uker: " + week + "<br>Dager: " + day + "<br>Timer: "+ tim + "<br>Minutter: "+ min + "<br>Sekunder: "+sec+"<br>"*/;
   if(tid <= 0 && oppned == 'ned'){
     if (redir) {
       location.href = self.location;

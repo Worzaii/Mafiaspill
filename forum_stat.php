@@ -11,7 +11,7 @@ if($db->num_rows($query) == 0){
 <form action="" method="post">
     <table class="table">
         <th>Statistikk over forum moderatorene</th>
-        <tr><td>Nick</td><td>Tråder slettet</td><td>Sist slettet</td><td>Tømt prat</td><td>Sist tømt</td></tr>
+        <tr><td>Nick</td><td>Tr&aring;der slettet</td><td>Sist slettet</td><td>T&oslash;mt prat</td><td>Sist t&oslash;mt</td></tr>
         <tr>
             <?php
               $sql = "SELECT * FROM `forum_stat` ORDER BY `id` DESC";

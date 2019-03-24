@@ -12,7 +12,7 @@ $suits = array (
     "Spades", "Hearts", "Clubs", "Diamonds"
 );
 /*
-Spar, Hjerte, kløver, ruter
+Spar, Hjerte, kl&oslash;ver, ruter
 */
 
 /* Next, we declare the faces*/
@@ -71,8 +71,8 @@ if (empty($_POST)) {
     while(evaluateHand($dealer) < 17) {
         $dealer[] = array_shift($deck);
     }
-    echo "Dealer hit " . evaluateHand($dealer) . "<br />\n";
-    echo "You hit " . evaluateHand($hand) . "<br />\n";
+    echo "Dealer hit " . evaluateHand($dealer) . "<br>\n";
+    echo "You hit " . evaluateHand($hand) . "<br>\n";
     $handstr = $_POST['handstr'];
     $dealerstr = serialize($dealer);
     $deckstr= serialize($deck);
@@ -86,19 +86,19 @@ if (empty($_POST)) {
     $deckstr= serialize($deck);}
     ?>
 <form method='post'>
-<input type='hidden' name='handstr' value = '<?php echo $handstr ?>' />
-<input type='hidden' name='deckstr' value = '<?php echo $deckstr ?>' />
-<input type='hidden' name='dealerstr' value = '<?php echo $dealerstr ?>' />
+<input type='hidden' name='handstr' value = '<?php echo $handstr ?>'>
+<input type='hidden' name='deckstr' value = '<?php echo $deckstr ?>'>
+<input type='hidden' name='dealerstr' value = '<?php echo $dealerstr ?>'>
 <?php
 
 foreach ($hand as $index =>$card) {
-    echo $card['face'] . ' of ' . $card['suit'] . "<br />";
+    echo $card['face'] . ' of ' . $card['suit'] . "<br>";
 }
 
 ?>
 <p>You have : <?php echo evaluateHand($hand); ?></p>
 <p>Dealer is showing the <?php echo $dealer[0]['face'] ?> of <?php echo $dealer[0]['suit'] ?></p> 
-<input type='submit' name='submit' value='hit me' />
-<input type='submit' name='submit' value='stay' />
+<input type='submit' name='submit' value='hit me'>
+<input type='submit' name='submit' value='stay'>
 </form>
 <a href='bjtest.php'>Try Again</a>

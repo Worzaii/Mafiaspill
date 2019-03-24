@@ -1,11 +1,11 @@
 <?php
 /*
- * Denne skal behandle inputs fra søknadssenteret
+ * Denne skal behandle inputs fra s&oslash;knadssenteret
 */
 header('Content-type: application/json');
 include("../core.php");
 if(isset($_GET['id'])&& isset($_GET['way'])){
-  /*Starter behandling av informasjon mottat av AJAX-forespørselen*/
+  /*Starter behandling av informasjon mottat av AJAX-foresp&oslash;rselen*/
   $id = $db->escape($_REQUEST['id']);
   $way = $db->escape($_REQUEST['way']);
   /*Validering*/
@@ -24,7 +24,7 @@ if(isset($_GET['id'])&& isset($_GET['way'])){
         /*Nedstemt*/
         $db->query("UPDATE `vote` SET `res` = '0' WHERE `uid` = '$obj->id' AND `sid` = '$id' LIMIT 1");
         if($db->affected_rows() == 1){
-          /*Resultat: Fullført*/
+          /*Resultat: Fullf&oslash;rt*/
           $res = array("res"=>1,"txt"=>'Du stemte ned!');
         }
         else{
@@ -35,7 +35,7 @@ if(isset($_GET['id'])&& isset($_GET['way'])){
         /*Oppstemt*/
         $db->query("UPDATE `vote` SET `res` = '1' WHERE `uid` = '$obj->id' AND `sid` = '$id' LIMIT 1");
         if($db->affected_rows() == 1){
-            /*Resultat: Fullført*/
+            /*Resultat: Fullf&oslash;rt*/
             $res = array("res"=>1,"txt"=>'Du stemte opp!');
         }
 
@@ -66,6 +66,6 @@ else if(isset($_GET['msg']) && isset($_GET['kid'])){
   }
 }
 else{
-    $res = array("res"=>0,"txt"=>'Forventet verdier, men fikk ingenting. Prøv igjen!');
+    $res = array("res"=>0,"txt"=>'Forventet verdier, men fikk ingenting. Pr&oslash;v igjen!');
 }
 echo json_encode($res);

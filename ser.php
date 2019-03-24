@@ -1,6 +1,6 @@
 <?php
 $a = array(
-          0=>array(1=>1,2=>1),/*Standard(ingen våpen*/
+          0=>array(1=>1,2=>1),/*Standard(ingen v&aring;pen*/
           1=>array(1=>0,2=>0),
           2=>array(1=>0,2=>0),
           3=>array(1=>0,2=>0),

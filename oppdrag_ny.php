@@ -3,7 +3,7 @@ include("core.php");
 startpage("Oppdrag");
 ?>
 <form method="post" action="">
-<img src="imgs\oppdrag.png" />
+<img src="imgs\oppdrag.png">
 <h1>Oppdrag</h1>
     <table class="table">
 
@@ -21,7 +21,7 @@ startpage("Oppdrag");
 
             <tr>
 
-                <td>Oppdrag<br /><br />Fullf&oslash;rt: !</td>
+                <td>Oppdrag<br><br>Fullf&oslash;rt: !</td>
 
             </tr>
 

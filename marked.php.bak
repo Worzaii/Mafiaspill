@@ -60,22 +60,22 @@
                             echo '<p class="feil">Du har allerede beste eiendom.</p>';
                         }else{
                         $db->query("UPDATE `users` SET `eigendom` = (`eigendom` + 1) WHERE `id` = '$obj->id' LIMIT 1") or die(mysqli_error($db->connection_id));
-                            echo 'Du kjøpte '.$eiendommer[$obj->eigendom]['navn'].'';
+                            echo 'Du kj&oslash;pte '.$eiendommer[$obj->eigendom]['navn'].'';
                         }
                         }
                         $knapp = ($obj->eigendom >= 9) ? 'style="display:none;' : NULL;
                             ?>
 <form action="" method="post">
-    <input type="submit" <?=$knapp?> value="Kjøp Neste Eiendom!" name="eigendoms"/>
+    <input type="submit" <?=$knapp?> value="Kj&oslash;p Neste Eiendom!" name="eigendoms"/>
 </form>
 
                                 <?php
                         }
                 }
                 else if($p == 2){
-			/*V?penkjøp*/
-			startpage("V?penkjøp");
-			echo '<h1>Våpenbutikk</h1><p>Ditt gjeldende våpen:<br>'.weapon($obj->weapon).'</p>';
+			/*V?penkj&oslash;p*/
+			startpage("V?penkj&oslash;p");
+			echo '<h1>V&aring;penbutikk</h1><p>Ditt gjeldende v&aring;pen:<br>'.weapon($obj->weapon).'</p>';
 		}
 		else if($p == 3){
 			/*Kulebutikk*/
@@ -86,12 +86,12 @@
 		}
 	}
 	else{/*Hvis ikke side er satt*/
-		startpage("Svartebørsen",$style);
-		echo '<h1>Svartebørsen</h1>'
+		startpage("Svarteb&oslash;rsen",$style);
+		echo '<h1>Svarteb&oslash;rsen</h1>'
     . '<div class="holder"><ul>'
-            . '<li class="item"><a href="?pa=1"><img src="" alt="Bunker" style="display: none;" />Bunker</a></li>'
-            . '<li class="item"><a href="?pa=2"><img src="" alt="Våpenshop" style="display: none;" />V?penshop</a></li>'
-            . '<li class="item"><a href="?pa=3"><img src="" alt="Ammo" style="display: none;" />Ammo</a></li>'
+            . '<li class="item"><a href="?pa=1"><img src="" alt="Bunker" style="display: none;">Bunker</a></li>'
+            . '<li class="item"><a href="?pa=2"><img src="" alt="V&aring;penshop" style="display: none;">V?penshop</a></li>'
+            . '<li class="item"><a href="?pa=3"><img src="" alt="Ammo" style="display: none;">Ammo</a></li>'
             . '</ul></div>';
 	}
 	endpage();  

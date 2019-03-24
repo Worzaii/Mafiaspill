@@ -8,7 +8,7 @@
 		$id = $db->escape($_GET['edit']);
 		$db->query("DELETE FROM `forumban` WHERE `id` = '$id' LIMIT 1");
 		echo '<p class="lykket">Forumban ble fjernet!</p></br>
-		<a href="forumban.php">Gå tilbake!</a>';		
+		<a href="forumban.php">G&aring; tilbake!</a>';		
 		
 		}
 else{
@@ -22,7 +22,7 @@ echo '<p class"feil">En feil skjedde da du skulle fjerne ban</p>';
                     echo '<p>Valget ditt er ikke gyldig!</p>';
                 }
                 else{
-                    $v=$v-1;//Arrayindex starter på 0
+                    $v=$v-1;//Arrayindex starter p&aring; 0
                     $time = array(0,300,1800,3600,7200,14400,28800,201600,806400);
                     echo '<p class="feil">Funksjon er ikke klar enda!</p>';
                 }
@@ -64,7 +64,7 @@ echo '<p class"feil">En feil skjedde da du skulle fjerne ban</p>';
                                     <option value="6">12 timer</option>
                                     <option value="7">1 dag</option>
                                     <option value="8">1 uke</option>
-                                    <option value="9" style="background-color:#f00;">1 måned</option>
+                                    <option value="9" style="background-color:#f00;">1 m&aring;ned</option>
                                 </select>
                             </td>
                             </tr>
@@ -74,13 +74,13 @@ echo '<p class"feil">En feil skjedde da du skulle fjerne ban</p>';
                         </tbody>
                     </table>
                 </form>
-                <script type="text/javascript">
+                <script>
                 teller($time,"tid",false,"ned");
                 </script>
 ENDHTML;
             }
             else{
-                echo '<p>Denne banen eksisterer ikke lengre, enten for at tiden banen varte er gått ut eller at noen andre har slettet den.</p>';
+                echo '<p>Denne banen eksisterer ikke lengre, enten for at tiden banen varte er g&aring;tt ut eller at noen andre har slettet den.</p>';
             }
             ?>
 
@@ -110,7 +110,7 @@ ENDHTML;
             }
         }
         else{
-        $banres = '<p class="feil">Tid ikke korrekt definert(endring i nettleser) eller grunn ikke lang nok! Grunn må være 4 tegn eller mer.</p>';
+        $banres = '<p class="feil">Tid ikke korrekt definert(endring i nettleser) eller grunn ikke lang nok! Grunn m&aring; v&aelig;re 4 tegn eller mer.</p>';
         }
     }
     if(isset($_GET['ban'])){
@@ -133,10 +133,10 @@ echo $banres;
 <th colspan="2">Forumban en spiller</th>
 </tr>
 <tr>
-<td>Spiller:</td><td><input type="text" value="<?=$asd->user?>"name="user" maxlength="15" /></td>
+<td>Spiller:</td><td><input type="text" value="<?=$asd->user?>"name="user" maxlength="15"></td>
 </tr>
 <tr>
-<td>Grunn:</td><td><input type="text" name="res" /></td>
+<td>Grunn:</td><td><input type="text" name="res"></td>
 </tr>
 <tr>
 <td>Varighet:</td><td>
@@ -152,7 +152,7 @@ echo $banres;
 </td>
 </tr>
 <tr>
-<th colspan="2"><input type="submit" value="Ban spiller!" /></th>
+<th colspan="2"><input type="submit" value="Ban spiller!"></th>
 </tr>
 </table>
 </form>
@@ -176,7 +176,7 @@ echo '
     <td>'.date("H:i:s d.m.Y",$r->date).'</td>
     <td>'.user($r->banid).'</td>
     <td><span id="user'.$r->uid.'"></span>
-    <script type="text/javascript">teller('.$time.',"user'.$r->uid.'",false,"ned");</script>
+    <script>teller('.$time.',"user'.$r->uid.'",false,"ned");</script>
     </td>
 	<td>'.$r->res.'</td>
     <td><a title="Rediger" href="forumban.php?edit='.$r->id.'"><img src="imgs/edit.gif" alt="Rediger"></a></td>
@@ -196,7 +196,7 @@ echo '<tr>
 }
 else if($obj->status == '3'){
   startpage("STENGT");
-  echo '<p class="feil">Forumban er stengt grunnet fatal feil i funksjonen. Vi åpner den straks.</p>';}
+  echo '<p class="feil">Forumban er stengt grunnet fatal feil i funksjonen. Vi &aring;pner den straks.</p>';}
 else{
 startpage("Ingen tilgang!");
 echo '

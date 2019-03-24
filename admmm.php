@@ -21,11 +21,11 @@ if(isset($_POST['tuser']) && isset($_POST['theme']) && isset($_POST['smsen'])){
     $re = false;
   }
   else if(!user_exists($til)){
-    $res = '<p class="feil">Brukeren '.htmlentities($til).' finnes ikke i våre databaser, sjekk at du har skrevet riktig.</p>';
+    $res = '<p class="feil">Brukeren '.htmlentities($til).' finnes ikke i v&aring;re databaser, sjekk at du har skrevet riktig.</p>';
     $re = false;
   }
   else if(strlen($mel) <= 2){
-    $res = '<p class="feil">Meldingen din er for kort! Du må minst ha 3 tegn.</p>';
+    $res = '<p class="feil">Meldingen din er for kort! Du m&aring; minst ha 3 tegn.</p>';
     $re = false;
   }
   else{

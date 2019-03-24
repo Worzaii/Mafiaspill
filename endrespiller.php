@@ -43,7 +43,7 @@ if(isset($_GET['s'])){
       }
     }
     /*Oppdater fetch manuelt*/
-      $ttt = array("<span class='stat1'><b>Administrator</b></span>","<span class='stat2'>Moderator</span>","<span class='stat3'>Forum Moderator</span>","Picmaker","<span style=\"color:#fff;\">Vanlig spiller</span>","<span style=\"color:#FF9600;\">Død</span>");
+      $ttt = array("<span class='stat1'><b>Administrator</b></span>","<span class='stat2'>Moderator</span>","<span class='stat3'>Forum Moderator</span>","Picmaker","<span style=\"color:#fff;\">Vanlig spiller</span>","<span style=\"color:#FF9600;\">D&oslash;d</span>");
       $status = $ttt[($fetch->status -1)];
     ?>
 <form action="" method="POST">
@@ -52,7 +52,7 @@ if(isset($_GET['s'])){
     <tr><td>Brukernavn</td><td><?=$fetch->user?></td></tr>
     <tr><td>ID</td><td>#<?=$fetch->id?></td></tr>
     <tr><td>Bank</td><td><input style="text-align: right" type="text" name="bank" value="<?=number_format($fetch->bank)?>">kr</td></tr>
-    <tr><td>Hånd</td><td><input style="text-align: right" type="text" name="hand" value="<?=number_format($fetch->hand)?>">kr</td></tr>
+    <tr><td>H&aring;nd</td><td><input style="text-align: right" type="text" name="hand" value="<?=number_format($fetch->hand)?>">kr</td></tr>
     <tr><td>Poeng</td><td><input style="text-align: right" type="text" name="poeng" value="<?=number_format($fetch->points)?>"></td></tr>
     <tr><td>Exp</td><td><input style="text-align: right" type="text" name="exp" value="<?=$fetch->exp?>"></td></tr>
     <tr><td>Liv</td><td><input style="text-align: right" type="text" name="liv" value="<?=$fetch->health?>">%</td></tr>
@@ -66,7 +66,7 @@ if(isset($_GET['s'])){
 <?php
   }
   else{
-    feil("Spilleren finnes ikke! Prøv igjen");
+    feil("Spilleren finnes ikke! Pr&oslash;v igjen");
   }
 }
 endpage();

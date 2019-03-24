@@ -12,7 +12,7 @@ if($db->num_rows() == 1){
 	echo '
 	<div style="border-width: 2px; border-style: dotted; border-color: red; "><p class="feil"> Du er utestengt fra forumet!</p>
 	</br><b>Du har blitt utestengt av forumet av '.user($f->banid).' og du kan derfor heller ikke se noe.</br>
-    Du har </h3><span id="user'.$f->uid.'"></span><script type="text/javascript">teller('.$timeleft.',"user'.$f->uid.'","true","ned");</script> igjen av straffen din.</br>
+    Du har </h3><span id="user'.$f->uid.'"></span><script>teller('.$timeleft.',"user'.$f->uid.'","true","ned");</script> igjen av straffen din.</br>
 	</br>
 	Grunnen for at du ble utestengt er: '.$f->res.'</b></div></br>
 	';
@@ -21,7 +21,7 @@ die();
 }
 else{
 function br($t){
-$r = str_replace("\n","<br />",$t);
+$r = str_replace("\n","<br>",$t);
 return($r);
 }
 /*if($obj->status <= 3){
@@ -51,7 +51,7 @@ if(isset($_GET['vis'])){
                 $time = time();
                 $ins = $db->query("INSERT INTO `forumsvar` VALUES(NULL,'$obj->id','$vis','$svar','$dato','$time')");
                 if(!$ins && $obj->status == 1){
-                    echo '<p>Det har oppstï¿½tt en feil ved lagring i databasen! Feilen er:<br />'.mysqli_error().'</p>';
+                    echo '<p>Det har oppstï¿½tt en feil ved lagring i databasen! Feilen er:<br>'.mysqli_error().'</p>';
                 }
                 else if(!$ins && $obj->status >= 2){
                     echo '<p class="feil">Det har oppstï¿½tt en feil! Rapporter via support snarest!</p>';
@@ -62,7 +62,7 @@ if(isset($_GET['vis'])){
                 }
             }
             echo '<a class="button" href="'.$_SERVER['PHP_SELF'].'?svar='.htmlentities($_GET['vis']).'">Besvar emnet!</a>';
-            if($obj->status <= '3'){echo'<a class="button" onclick="return confirm(\'Er du sikker på at du vil slette tråden?\')" href="'.$_SERVER['PHP_SELF'].'?slett='.$_GET['vis'].'">Slett tråd!</a>';}
+            if($obj->status <= '3'){echo'<a class="button" onclick="return confirm(\'Er du sikker p&aring; at du vil slette tr&aring;den?\')" href="'.$_SERVER['PHP_SELF'].'?slett='.$_GET['vis'].'">Slett tr&aring;d!</a>';}
             $ges = $db->query("SELECT * FROM `forumsvar` WHERE `stid` = '$vis' ORDER BY `sid` DESC");
             while($r = mysqli_fetch_object($ge)){
                 $ss = $db->query("SELECT * FROM `users` WHERE `id` = '$r->uid'");
@@ -74,7 +74,7 @@ if(isset($_GET['vis'])){
                 <th colspan="2">'.htmlentities($r->tema).' </br>Skrevet: '.date("H:i:s | d.m.Y",$r->time).'</th>
                 </tr>
                 <tr class="table tema">
-                <td class="forumimg" style="text-align:center;"><img src="'.bilde(htmlentities($r->uid)).'" alt="" style="width:250px;height:200px;" /><br />'.status($user).'</td><td class="tablecontent">   '  .bbcodes($r->melding,1,1,1,1,1,1,1,1,1,1,1,1,1,1).' </td>
+                <td class="forumimg" style="text-align:center;"><img src="'.bilde(htmlentities($r->uid)).'" alt="" style="width:250px;height:200px;"><br>'.status($user).'</td><td class="tablecontent">   '  .bbcodes($r->melding,1,1,1,1,1,1,1,1,1,1,1,1,1,1).' </td>
                 </tr>
                 </table>
                 ';
@@ -86,7 +86,7 @@ if(isset($_GET['vis'])){
                     $user = $u->user;
                     echo '<table class="table">
                     <tr class="forumsvar">
-                    <td class="forumimg" style="text-align:center;"><img src="'.bilde($r->suid).'" alt="" style="width:120px;height:100px;" /><br />'.status($user).'</td><td class="tablecontent"></br>'.bbcodes($r->smelding,1,1,1,1,1,1,1,1,1,1,1,1,1,1).'</td>
+                    <td class="forumimg" style="text-align:center;"><img src="'.bilde($r->suid).'" alt="" style="width:120px;height:100px;"><br>'.status($user).'</td><td class="tablecontent"></br>'.bbcodes($r->smelding,1,1,1,1,1,1,1,1,1,1,1,1,1,1).'</td>
                     </tr>
                     </table>';
                 }
@@ -96,7 +96,7 @@ if(isset($_GET['vis'])){
             }
         }
         else{//Enten slettet, eller eksisterer ikke.
-            echo '<p class="feil">Denne tråden eksisterer ikke eller har blitt slettet!</p>';
+            echo '<p class="feil">Denne tr&aring;den eksisterer ikke eller har blitt slettet!</p>';
         }
     }
 }
@@ -119,20 +119,20 @@ else if(isset($_GET['svar'])){
         <th colspan="2">Besvar emnet $emne</th>
         </tr>
         <tr>
-        <td class="tableimg"><img src="$img" alt="" style="width:100px;height:100px;" /></td><td class="tablecontent">$mld</td>
+        <td class="tableimg"><img src="$img" alt="" style="width:100px;height:100px;"></td><td class="tablecontent">$mld</td>
         </tr>
         <tr>
         <td colspan="2"><textarea name="svar"></textarea></td>
         </tr>
         <tr>
-        <td colspan="2" style="text-align:center;"><input type="submit" value="Besvar!" /></td>
+        <td colspan="2" style="text-align:center;"><input type="submit" value="Besvar!"></td>
         </tr>
         </table>
         </form>
 ENDHTML;
         }
         else{
-        echo '<p class="feil">Tråden eksisterer ikke, eller har blitt slettet!</p>';
+        echo '<p class="feil">Tr&aring;den eksisterer ikke, eller har blitt slettet!</p>';
         }
     }
 }
@@ -142,10 +142,10 @@ else if(isset($_GET['slett'])){
         if($db->num_rows($g) == 1){
         $m = mysqli_fetch_object($g);
         $db->query("UPDATE `forum` SET `slettet` = '1' WHERE `id` = '$id' LIMIT 1");
-        echo '<p class="lykket">Tråden ble slettet!</p>';
+        echo '<p class="lykket">Tr&aring;den ble slettet!</p>';
         }
         else{
-        echo '<p class="feil">Tråden eksisterer ikke, eller har blitt slettet!</p>';
+        echo '<p class="feil">Tr&aring;den eksisterer ikke, eller har blitt slettet!</p>';
         }
 }
 else{
@@ -191,7 +191,7 @@ echo <<<ENDHTML
 <table class="table" style="width:90%;">
 <tr><th colspan="2">Opprett ny tr&aring;d</th></tr>
 <tr>
-<th>Tema:</th><td><input type="text" value="$txt" name="tema" />
+<th>Tema:</th><td><input type="text" value="$txt" name="tema">
 </tr>
 <tr>
 <th colspan="2">Melding:</th>
@@ -202,7 +202,7 @@ echo <<<ENDHTML
 <th>Innhold:</th><td><select name="type"><option value="0">Generelt</option><option value="1">Salg</option><option value="2">S&oslash;knad</option><option value="3">Off topic</option></select></td>
 </tr>
 <tr>
-<th colspan="2" class="last"><input type="submit" value="Opprett tema!" /></th>
+<th colspan="2" class="last"><input type="submit" value="Opprett tema!"></th>
 </tr>
 </table>
 </form>

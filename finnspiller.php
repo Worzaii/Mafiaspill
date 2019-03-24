@@ -3,13 +3,13 @@
 	startpage("Spillers&oslash;k");
 ?>
 <h1>Finn spiller</h1>
-<br> <center><form method="post"><input type="text" name="soktekst" value="" maxlength="15"/><input type="submit" class="finn" name="finn" value="Finn spiller" /></form></center>
+<br> <center><form method="post"><input type="text" name="soktekst" value="" maxlength="15"/><input type="submit" class="finn" name="finn" value="Finn spiller"></form></center>
 <?php
 if(isset($_POST['finn'])){
 	$soktekst = $db->escape($_POST['soktekst']);
 	if(strlen($soktekst) <= 1){
 		echo '
-		<p class="feil"> Du må søke med mer enn ét tegn!</p>
+		<p class="feil"> Du m&aring; s&oslash;ke med mer enn ét tegn!</p>
 		';
 	}
 	else{

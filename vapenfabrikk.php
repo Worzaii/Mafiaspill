@@ -1,21 +1,21 @@
 <?php
 include("core.php");
-startpage("Våpenhandel");
+startpage("V&aring;penhandel");
 // Starter script
-echo '<h1>Våpenhandel</h1>';
+echo '<h1>V&aring;penhandel</h1>';
 $getowner = firma(2);
 $eier = $getowner[0];
 if($obj->id == $eier){
 /*Viser link til panel for eier*/
 }
 if(isset($_POST['valget'])){
-/*Kjøper våpen*/
+/*Kj&oslash;per v&aring;pen*/
 $vid = $db->escape($_POST['valget']);
 $s = $db->query("SELECT * FROM `vapenhandel` WHERE `id` = '$vid' AND `available` > 0")or die("Feil:".mysqli_error($db->connection_id));
 if($db->num_rows() == 1){
 	$vap = $db->fetch_object();
 	if($obj->hand >= $vap->pricetag && $vap->available >= 1){
-	/*Kjøper...*/
+	/*Kj&oslash;per...*/
 	$db->query("UPDATE `users` SET `weapon` = '$vap->id',`hand` = (`hand` - ".$vap->pricetag.") WHERE `id` = '$obj->id' LIMIT 1")or die("Feil:".mysqli_error($db->connection_id));
 	if($db->affected_rows() == 1){
 	$db->query("UPDATE `vapenhandel` SET `available` = (`available` - 1) WHERE `id` = '$vap->id'");
@@ -25,23 +25,23 @@ if($db->num_rows() == 1){
 	}
 	else{
 	$db->query("INSERT INTO `userwep` (`uid`,`vid`,`num`) VALUES ('$obj->id','$vap->id','1')");
-	echo '<p class="lykket">Du har kjøpt ditt første våpen av denne sorten</p>';
+	echo '<p class="lykket">Du har kj&oslash;pt ditt f&oslash;rste v&aring;pen av denne sorten</p>';
 	}
-	echo '<p class="lykket">Du har kjøpt våpenet!</p>';
-	}
-	else{
-	echo '<p class="feil">Kunne ikke sette våpenet!</p>';
-	}
+	echo '<p class="lykket">Du har kj&oslash;pt v&aring;penet!</p>';
 	}
 	else{
-	echo '<p class="feil">Du har ikke råd, ellers så er det ikke noen våpen inne for salg.</p>';
+	echo '<p class="feil">Kunne ikke sette v&aring;penet!</p>';
+	}
+	}
+	else{
+	echo '<p class="feil">Du har ikke r&aring;d, ellers s&aring; er det ikke noen v&aring;pen inne for salg.</p>';
 	}
 }
 else{
 echo '<p class="feil">Det er ikke flere tilgengelig!</p>';
 }
 }
-/*Henter priser og info for våpen*/
+/*Henter priser og info for v&aring;pen*/
 $g = $db->query("SELECT * FROM `vapenhandel` ORDER BY `id` ASC");
 $get = array();
 while($r = mysqli_fetch_object($g)){
@@ -53,10 +53,10 @@ echo '
 <table style="width:420px;" class="table">
 <thead>
 <tr>
-<th colspan="3">Velg ønsket våpen</th>
+<th colspan="3">Velg &oslash;nsket v&aring;pen</th>
 </tr>
 <tr>
-<th>Våpen</th><th>Kjøpspris</th><th style="width:1px;">Tilgjengelige</th>
+<th>V&aring;pen</th><th>Kj&oslash;pspris</th><th style="width:1px;">Tilgjengelige</th>
 </tr>
 </thead>
 <tbody>
@@ -87,7 +87,7 @@ echo '
 ?>
 <input type="hidden" value="" name="valget" id="valget">
 </form>
-<script type="text/javascript" language="javascript">
+<script language="javascript">
 function sendpost(valg) {
 $('#valget').val(valg);
 $('#vapen').submit();
