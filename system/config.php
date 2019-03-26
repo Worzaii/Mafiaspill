@@ -8,12 +8,12 @@ function safegen($u, $p)
     $ua = $_SERVER["HTTP_USER_AGENT"];
     $l  = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
     $i  = isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : NULL;
-    return md5(sha1($u.$p.$ua.$l.$i."f9f9�Sss9"));
+    return md5(sha1($u.$p.$ua.$l.$i."f9f9�Sss9"));
 }
 
 function gen($t)
 {
-    return str_replace(['&aelig;', '&oslash;', '&aring;', '�', '�', '&aring;'],
+    return str_replace(['æ', 'ø', 'å', 'Æ', 'Ø', 'Å'],
         ['&aelig;', '&oslash;', '&aring;', '&Aelig;', '&Oslash;', '&Aring;'], $t);
 }
 /* Config must be loaded before any other scripts, this must be defined and correct */

@@ -32,20 +32,7 @@ if ($obj->status <= 3 || $obj->status == 6 || $obj->support == 1) {
     }
 
     if ($obj->support == '1' || $obj->status == '1' || $obj->status == '2') {
-        $db->query("SELECT * FROM `support` WHERE `read` = '0'");
-        $nymeldinger = $db->num_rows();
-        if ($nymeldinger == 0) {
-            $nymeldinger = null;
-        } else {
-            if ($nymeldinger >= 2) {
-                $ee = "e";
-            }
-            if ($nymeldinger == 1) {
-                $ee = null;
-            }
-            $nymeldinger = '(<b style="color:#f11;">'.number_format($nymeldinger).' ny'.$ee.'</b>)';
-        }
-        echo '<li><a href="supportpanel.php">Supportsenter'.$nymeldinger.'</a></li>';
+        echo '<li><a href="supportpanel.php">Supportsenter (ute av drift)</a></li>';
     }
     echo '</ul>';
 }
@@ -88,9 +75,7 @@ if ($obj->status <= 3 || $obj->status == 6 || $obj->support == 1) {
 </div>
 </section>
 <?php
-error_log("Including footer... Current dir: ".getcwd());
 include_once './inc/footer.php';
-error_log("Should be included now...");
 ?>
 <script>
     $(document).ready(function () {

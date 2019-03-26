@@ -53,7 +53,7 @@ function startpage($title = NAVN_DOMENE)
     $chat        = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 1");
     if ($db->num_rows() > 0) {
         while ($r = mysqli_fetch_object($chat)) {
-            $teksten = htmlentities($r->mld, ENT_NOQUOTES, 'UTF-8');
+            $teksten = htmlentities($r->message, ENT_NOQUOTES, 'UTF-8');
             $uob     = user($r->uid, 1);
             if ($uob->status == 1) {
                 $teksten = bbcodes($teksten, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -66,11 +66,11 @@ function startpage($title = NAVN_DOMENE)
             if ($r->id % 2) {
                 echo
                 '<div class="chat ct1"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>['.date("H:i:s",
-                    $r->time).']</b> &lt;'.user($r->uid).'&gt;: <span class="chattext">'.$teksten.'</span></a></div>';
+                    $r->timestamp).']</b> &lt;'.user($r->uid).'&gt;: <span class="chattext">'.$teksten.'</span></a></div>';
             } else {
                 echo
                 '<div class="chat ct2"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>['.date("H:i:s",
-                    $r->time).']</b> &lt;'.user($r->uid).'&gt;: <span class="chattext">'.$teksten.'</span></a></div>';
+                    $r->timestamp).']</b> &lt;'.user($r->uid).'&gt;: <span class="chattext">'.$teksten.'</span></a></div>';
             }
         }
     }
@@ -323,11 +323,10 @@ function modkill_check()
 
 function fengsel($timereturn = NULL)
 {
-    global $dir;
     global $obj;
     global $db;
     $now = time();
-    $s   = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` = '0' AND `timeleft` > '$now' ORDER BY `id` DESC LIMIT 1");
+    $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` = '0' AND `timeleft` > '$now' ORDER BY `id` DESC LIMIT 1");
     if ($timereturn == true) {
         $f = $db->fetch_object();
         return ($f->timeleft - $now);
@@ -344,7 +343,7 @@ function bunker($tr = false)
 {
     global $obj;
     global $db;
-    $q = $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '".$obj->id."' AND `accepted` = '1' AND `timeleft` > ".time()." AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+    $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '".$obj->id."' AND `accepted` = '1' AND `timeleft` > ".time()." AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
     if ($db->num_rows() == 1) {
         if ($tr) {
             $g = $db->fetch_object();
@@ -363,7 +362,7 @@ function settinn($uid, $res = "?", $timeleft = 90)
     $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($uid)."'");
     $time = time() + $timeleft;
     if ($db->num_rows() == 1) {
-        if ($db->query("INSERT INTO `mafia_no_net`.`jail`(`time`,`uid`,`reason`,`timeleft`) VALUES('".time()."','".$db->escape($uid)."','".$db->escape($res)."','$time')")) {
+        if ($db->query("INSERT INTO `mafia`.`jail`(`timestamp`,`uid`,`reason`,`timeleft`) VALUES('".time()."','".$db->escape($uid)."','".$db->escape($res)."','$time')")) {
             return true;
         } else {
             return $db->query_error();

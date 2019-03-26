@@ -6,7 +6,7 @@ $sql3        = $db->query("SELECT * FROM `chat`");
 $num2        = $db->num_rows();
 $sql4        = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` = '0' AND `timeleft` > '".time()."' ORDER BY `id` DESC LIMIT 1");
 $ant2        = $db->num_rows();
-$db->query("SELECT * FROM `krimlogg` WHERE `usid` = '$obj->id' AND `time` > '".time()."' ORDER BY `id` DESC LIMIT 0,1");
+$db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
 if ($db->num_rows() == 1) {
     $kt  = $db->fetch_object();
     $ktl = (($kt->time - time()) >= 1) ? ($kt->time - time()) : null;
@@ -106,7 +106,7 @@ $onl = "online.php";
 </ul>
 <h2>Sosialt</h2>
 <ul>
-    <li><a href="Chat">Chat</a> <?php
+    <li><a href="chat.php">Chat</a> <?php
         if ($num2 >= 2) {
             echo "($num2)";
         }

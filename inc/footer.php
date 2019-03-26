@@ -1,5 +1,5 @@
 <footer>
-    <div style="width: 600px; margin: 0 auto 0 auto;">
+    <div style="width: 1000px; margin: 0 auto 0 auto;">
         <div id="spot1">
             Fotkolonne 1
         </div>

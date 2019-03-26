@@ -91,7 +91,7 @@ if (isset($_GET['getaccess'])) {
       </head>
       <body>
       <h1>Klikk p&aring; linken under for &aring; g&aring; til registrering</h1>
-      <p><a href="http://'.DOMENE_NAVN.'/Reginv?code='.$randomseed.'&mail='.urlencode($m).'">http://'.DOMENE_NAVN.'/Reginv?code='.$randomseed.'&mail='.$m.'</a></p>
+      <p><a href="https://'.DOMENE_NAVN.'/registermail.php?code='.$randomseed.'&mail='.urlencode($m).'">https://'.DOMENE_NAVN.'/registermail.php?code='.$randomseed.'&mail='.$m.'</a></p>
       </body>
       </html>
       ');
