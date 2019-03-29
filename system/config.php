@@ -30,19 +30,19 @@ define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_M
 #ini_set('session.use_only_cookies', 0);
 ini_set('session.cookie_secure', 1);
 ini_set('session.use_strict_mode', 1);
-ini_set('session.gc_maxlifetime', 3600);
-session_set_cookie_params(3600, "/", DOMENE_NAVN, TRUE, FALSE);
+ini_set('session.gc_maxlifetime', 60*60*24); /* Implementing a temporary longer time for development purposes */
+session_set_cookie_params(60*60*24, "/", DOMENE_NAVN, TRUE, FALSE);
 ini_set('memory_limit', '32M');
 date_default_timezone_set('Europe/Oslo');
 ini_set("date.timezone", "Europe/Oslo");
 ini_set('max_execution_time', 15);
 date_default_timezone_set("Europe/Oslo");
 ini_set("date.timezone", "Europe/Oslo");
-ini_set("error_log", "/var/www/mafia.werzaire.net/logs/error.log");
 
 /* Error-reporting
  * Everything should just be logged to the file mentioned above...
  */
+ini_set("error_log", "/var/www/mafia.werzaire.net/logs/error.log");
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', FALSE);
 ini_set('display_startup_errors', FALSE);

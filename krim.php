@@ -2,9 +2,16 @@
 include("core.php");
 startpage("Kriminalitet");
 echo '<img alt src="./imgs/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp. Hvis du ikke ser noen valg, kontakt support!</p>';
-if (fengsel()) {
-    header("Location: /fengsel.php");
-    die();
+$jailed = false;
+if (fengsel() == true) {
+    $bu = fengsel(true);
+    echo '
+    <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",
+        (time() + $bu)).'</p>
+    <script>
+    teller('.$bu.',\'fengsel\',false,\'ned\');
+    </script>
+    ';
 } else if (bunker()) {
     $bu = bunker(true);
     echo '
@@ -15,7 +22,7 @@ if (fengsel()) {
     </script>
     ';
 } else {
-    $q = $db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
+    $q = $db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timewait` > UNIX_TIMESTAMP() ORDER BY `timewait` DESC LIMIT 0,1");
     if (!$q) {
         if (r1()) {
             echo '
@@ -29,11 +36,11 @@ if (fengsel()) {
     } else if ($db->num_rows() == 1) {
         /* There's recently been done something: */
         $f = $db->fetch_object($q);
-        if (time() < $f->timestamp) {
+        if (time() < $f->timewait) {
             echo '
-        <p class="feil">Du m&aring; vente <span id="krim">'.($f->timestamp - time()).'</span> f&oslash;r neste krim.</p>
+        <p class="feil">Du m&aring; vente <span id="krim">'.($f->timewait - time()).'</span> f&oslash;r neste krim.</p>
         <script>
-        teller('.($f->timestamp - time()).',\'krim\',true,\'ned\');
+        teller('.($f->timewait - time()).',\'krim\',true,\'ned\');
         </script>
         ';
         }
@@ -63,21 +70,20 @@ if (fengsel()) {
                         $vf = $db->fetch_object($sj);
                         if ($vf->chance >= 74) {
                             $ran2       = rand(10, 46);
-                            $db->query("UPDATE `chance` SET `chance` = (`chance` - $ran2) WHERE `uid` = '".$obj->id."' AND `option` = '".$vf->option."' AND `chance` > '73' LIMIT 1");
+                            $db->query("UPDATE `chance` SET `chance` = (`chance` - $ran2) WHERE `uid` = '".$obj->id."' AND `option` = '".$vf->option."' LIMIT 1");
                             $vf->chance += $ran2;
                         } else if ($vf->chance <= 73) {
                             $ran2       = rand(1, 3);
                             $db->query("UPDATE `chance` SET `chance` = (`chance` + $ran2) WHERE `uid` = '$obj->id' AND `option` = '$vf->option' AND `chance` < '46'");
-                            $vf->chance += $ran;
+                            $vf->chance += $ran2;
                         }
                     }
-                    $sjanse = $vf->chance;
-                    $kr     = mt_rand($v->minm, $v->maxm);
-                    $time   = $v->wait + time();
-                    $time2  = $time - time();
-                    if (mt_rand(0, 100) <= $sjanse) {
+                    $kr       = mt_rand($v->minval, $v->maxval);
+                    $timewait = $v->untilnext + time();
+                    $time2    = $timewait - time();
+                    if (mt_rand(0, 100) <= $vf->chance) {
                         if ($db->query("UPDATE `users` SET `hand` = (`hand` + $kr),`exp` = (`exp` + $v->expgain) WHERE `user`= '$obj->user' LIMIT 1")) {
-                            if ($db->query("INSERT INTO `krimlogg`(`usid`,`time`,`valid`,`resu`,`timelast`) VALUES('$obj->id','$time','{$v->id}','1','".time()."')")) {
+                            if ($db->query("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES('{$obj->id}',UNIX_TIMESTAMP(),'{$v->id}','$kr','$timewait')")) {
                                 /* Removing missions for now... */
                                 /* $db->query("SELECT * FROM `oppuid` WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `oid` = '2' ORDER BY `oid` DESC LIMIT 1");
                                   if ($db->num_rows() == 1) {
@@ -85,7 +91,7 @@ if (fengsel()) {
                                   $db->query("UPDATE `oppuid` SET `tms` = (`tms` + 1) WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `tms` < '250' AND `oid` = '2' LIMIT 1");
                                   }
                                   } */
-                                $time = $time - time();
+                                $time = $timewait - time();
                                 echo '
                                 <p class="lykket">Du var heldig og fikk '.number_format($kr).'kr med deg!</p>
                                 <p class="feil">Tid til neste krim: <span id="krim">'.$time2.'</span>.</p>
@@ -114,7 +120,7 @@ if (fengsel()) {
                             }
                         }
                     } else {
-                        if ($db->query("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`) VALUES('$obj->id',UNIX_TIMESTAMP(),'$val','0')")) {
+                        if ($db->query("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES('$obj->id',UNIX_TIMESTAMP(),'$val','0','$timewait')")) {
                             $fen = rand(0, 1);
                             if ($fen == 1) {
                                 echo '
@@ -126,19 +132,19 @@ if (fengsel()) {
               ';
                             } else {
                                 $time  = time();
-                                $time2 = time() + $v->punishtime;
-                                $q     = $db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('$obj->id','Was a bad boy',UNIX_TIMESTAMP(),'$time2',2500000)");
+                                $time2 = time() + $timewait;
+                                $punish = $time + $v->punishtime;
+                                $q     = $db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('$obj->id','Was a bad boy',UNIX_TIMESTAMP(),'$punish',2500000)");
                                 echo '
-              <p class="feil">Du klarte det ikke, og politiet oppdaget deg! G&aring;r til fengsel om 3 sekunder</p>';
-                                header('Refresh: 3;url=fengsel.php');
-                                die();
+              <p class="feil">Du klarte det ikke, og politiet oppdaget deg!</p>';
                                 if ($db->affected_rows() == 1) {
                                     echo '
-                <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">'.$r->punishtime.'</span>.</p>
+                <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">'.($timewait - time()).'</span>.</p>
                 <script>
-                teller('.$r->punishtime.',\'krim2\',true,\'ned\');
+                teller('.($timewait - time()).',\'krim2\',true,\'ned\');
                 </script>
                 ';
+                                    $jailed = true;
                                 } else {
                                     echo '<p class="feil">Klarte ikke &aring; sette deg i fengsel! S&aring; bra...</p>';
                                 }
@@ -147,64 +153,68 @@ if (fengsel()) {
                     }
                 }
             }
-        }
-        ?>
-        <form name="krim" method="post" id="krim" action="">
-            <table style="width:590px;" class="table">
-                <tr>
-                    <th colspan="4">Krimhandlinger</th>
-                </tr>
-                <tr>
-                    <td style="width:250px;"><b>Handling</b></td>
-                    <td><b>Fortjeneste</b></td>
-                    <td><b>Ventetid</b></td>
-                    <td><b>Sjanse</b></td>
-                </tr>
-                <?php
-                $rank   = rank($obj->exp);
-                $ranknr = $rank[0];
-                $sql    = $db->query("SELECT * FROM `krim` WHERE `levelmin` <= '$ranknr' ORDER BY `levelmin` DESC,`id` DESC");
-                if ($db->num_rows() >= 1) {
-                    while ($r = mysqli_fetch_object($sql)) {
-                        $sql2 = $db->query("SELECT * FROM `chance` WHERE `uid` = '$obj->id' AND `type` = '1' AND `option` = '$r->id'");
+        } else {
+            if (!$jailed) {
+                ?>
+                <form name="krim" method="post" id="krim" action="">
+                    <table style="width:590px;" class="table">
+                        <tr>
+                            <th colspan="5">Krimhandlinger</th>
+                        </tr>
+                        <tr>
+                            <td style="width:250px;"><b>Handling</b></td>
+                            <td><b>Fortjeneste</b></td>
+                            <td><b>Ventetid</b></td>
+                            <td><b>Sjanse</b></td>
+                            <td><b>Straff</b></td>
+                        </tr>
+                        <?php
+                        $rank   = rank($obj->exp);
+                        $ranknr = $rank[0];
+                        $sql    = $db->query("SELECT * FROM `krim` WHERE `levelmin` <= '$ranknr' ORDER BY `levelmin` DESC,`id` DESC");
                         if ($db->num_rows() >= 1) {
-                            $get2   = $db->fetch_object();
-                            $sjanse = $get2->chance.'%';
-                        } else {
-                            $db->query("INSERT INTO `chance`(`uid`,`type`,`option`) VALUES('$obj->id','1','$r->id')");
-                            $sjanse = "0%";
-                        }
-                        echo '
+                            while ($r = mysqli_fetch_object($sql)) {
+                                $sql2 = $db->query("SELECT * FROM `chance` WHERE `uid` = '$obj->id' AND `type` = '1' AND `option` = '$r->id'");
+                                if ($db->num_rows() >= 1) {
+                                    $get2   = $db->fetch_object();
+                                    $sjanse = $get2->chance.'%';
+                                } else {
+                                    $db->query("INSERT INTO `chance`(`uid`,`type`,`option`) VALUES('$obj->id','1','$r->id')");
+                                    $sjanse = "0%";
+                                }
+                                echo '
               <tr class="valg notactive" onclick="sendpost('.$r->id.')">
-              <td>'.htmlentities($r->description, ENT_NOQUOTES | ENT_HTML401, "UTF-8").'</td><td>'.number_format($r->minval).'-'.number_format($r->maxval).'kr</td><td>'.$r->untilnext.' sekunder</td><td>'.$sjanse.'</td>
+              <td>'.htmlentities($r->description, ENT_NOQUOTES | ENT_HTML401, "UTF-8").'</td><td>'.number_format($r->minval).'-'.number_format($r->maxval).'kr</td><td>'.$r->untilnext.' sekunder</td><td>'.$sjanse.'</td><td>'.$r->punishtime.' sekunder</td>
               </tr>
               ';
-                    }
-                } else {
-                    echo '
+                            }
+                        } else {
+                            echo '
             <tr>
             <td colspan="4" style="text-align:center;"><i>Det ser ut til &aring; v&aelig;re tomt for valg... Har du h&oslash;y nok rank til &aring; utf&oslash;re dette da?</i></td>
             </tr>
             ';
-                }
-                ?>
-            </table>
-            <input type="hidden" value="" name="valget" id="valget">
-        </form>
-        <script language="javascript">
-            function sendpost(valg) {
-                $('#valget').val(valg);
-                $('#krim').submit();
+                        }
+                        ?>
+                    </table>
+                    <input type="hidden" value="" name="valget" id="valget">
+                </form>
+                <script language="javascript">
+                    function sendpost(valg) {
+                        $('#valget').val(valg);
+                        $('#krim').submit();
+                    }
+                    $(document).ready(function () {
+                        $('.valg').hover(function () {
+                            $(this).removeClass().addClass('c_2').css('cursor', 'pointer');
+                        }, function () {
+                            $(this).removeClass().addClass('c_1').css('cursor', 'pointer');
+                        });
+                    });
+                </script>
+                <?php
             }
-            $(document).ready(function () {
-                $('.valg').hover(function () {
-                    $(this).removeClass().addClass('c_2').css('cursor', 'pointer');
-                }, function () {
-                    $(this).removeClass().addClass('c_1').css('cursor', 'pointer');
-                });
-            });
-        </script>
-        <?php
+        }
     }
 }
 endpage();

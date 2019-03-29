@@ -4,12 +4,13 @@ $sql         = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN '".(
 $ant         = $db->num_rows();
 $sql3        = $db->query("SELECT * FROM `chat`");
 $num2        = $db->num_rows();
-$sql4        = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` = '0' AND `timeleft` > '".time()."' ORDER BY `id` DESC LIMIT 1");
+$sql4        = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` != NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
 $ant2        = $db->num_rows();
+mysqli_free_result($db->result);
 $db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
 if ($db->num_rows() == 1) {
     $kt  = $db->fetch_object();
-    $ktl = (($kt->time - time()) >= 1) ? ($kt->time - time()) : null;
+    $ktl = (($kt->timewait - time()) >= 1) ? ($kt->timewait - time()) : null;
 } else {
     $ktl = null;
 }
@@ -31,7 +32,7 @@ if ($ranrows >= 1) {
     $rt  = NULL;
     $rtl = NULL;
 }
-$db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `timeleft` > '".time()."' ORDER BY `id` DESC LIMIT 1");
+$db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` = NULL ORDER BY `id` DESC LIMIT 1");
 $jailrow = $db->num_rows();
 if ($jailrow >= 1) {
     $jt  = $db->fetch_object();

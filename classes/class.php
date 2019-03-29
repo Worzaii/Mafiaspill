@@ -92,35 +92,20 @@ if (THRUTT == "Sperrederrp!") {
 
         function connection_error()
         {
-            global $obj;
-            $feil = '
-Bruker som utl&oslash;ste feilen: ('.$obj->user.'{'.$obj->id.'/'.$_SESSION["sessionzar"][0].'})'.date("H:i:s d.m.Y").': Fil ('.$_SERVER["REQUEST_URI"].$_SERVER["argv"].') Databasen kunne ikke tilkobles: '.mysqli_error($this->connection_id).'
-';
-            $fil  = "feil.txt";
-            $f    = fopen($fil, "a+");
-            fwrite($f, $feil);
-            fclose($f);
-            die("<p><b>Feil:</b> Databasen var utilgengelig: (".mysqli_errno($this->connection_id).") (".mysqli_error($this->connection_id).") <a href='loggut.php'>Index</a></p>");
+            $feil = 'MySQL error in file: '.$_SERVER["REQUEST_URI"].': '.mysqli_connect_error();
+            error_log($feil);
+            die('Database utilgjengelig! Sjekk loggen.');
         }
 
         function query_error()
         {
             global $obj;
             if (!isset($obj)) {
-                $feil = '
-Bruker som utl&oslash;ste feilen: (Ingen)'.date("H:i:s d.m.Y").': Fil ('.$_SERVER["REQUEST_URI"].') Det oppstod en feil med f&oslash;lgende sp&oslash;rring: '.mysqli_error($this->connection_id).'
-Sp&oslash;rringen var: "'.$this->last_query.'
-';
+                $feil = 'MySQL error in file: '.$_SERVER["REQUEST_URI"].': '.$this->last_query;
             } else {
-                $feil = '
-Bruker som utl&oslash;ste feilen: ('.$obj->user.'{'.$obj->id.'/'.$_SESSION["sessionzar"][0].'})'.date("H:i:s d.m.Y").': Fil ('.$_SERVER["REQUEST_URI"].') Det oppstod en feil med f&oslash;lgende sp&oslash;rring: '.mysqli_error($this->connection_id).'
-Sp&oslash;rringen var: "'.$this->last_query.'
-';
+                $feil = 'MySQL error in file: '.$_SERVER["REQUEST_URI"].' sent by session ('.$obj->user.', ID: {'.$obj->id.'}): '.mysqli_error($this->connection_id).'. '.PHP_EOL.'Query was: '.$this->last_query;
             }
-            $fil              = "feil.txt";
-            $f                = fopen($fil, "a+");
-            fwrite($f, $feil);
-            fclose($f);
+            error_log($feil);
             $this->last_error = "Det var en feil ved sp&oslash;rringen: &quote;".$this->last_query."&quote;(".mysqli_errno($this->connection_id).")Feil: ".mysqli_error($this->connection_id);
             return false;
         }

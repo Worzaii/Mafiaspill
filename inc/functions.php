@@ -325,11 +325,10 @@ function fengsel($timereturn = NULL)
 {
     global $obj;
     global $db;
-    $now = time();
-    $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` = '0' AND `timeleft` > '$now' ORDER BY `id` DESC LIMIT 1");
+    $db->query("SELECT * FROM `jail` WHERE `uid` = '{$obj->id}' AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1");
     if ($timereturn == true) {
         $f = $db->fetch_object();
-        return ($f->timeleft - $now);
+        return ($f->timeleft - time());
     } else {
         if ($db->num_rows() == 0) {
             return false;
