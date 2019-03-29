@@ -355,13 +355,13 @@ function bunker($tr = false)
     }
 }
 
-function settinn($uid, $res = "?", $timeleft = 90)
+function settinn($uid, $res = "?", $timeleft = 60)
 {
     global $db;
     $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($uid)."'");
-    $time = time() + $timeleft;
     if ($db->num_rows() == 1) {
-        if ($db->query("INSERT INTO `mafia`.`jail`(`timestamp`,`uid`,`reason`,`timeleft`) VALUES('".time()."','".$db->escape($uid)."','".$db->escape($res)."','$time')")) {
+        if ($db->query("INSERT INTO `jail`(`timestamp`,`uid`,`reason`,`timeleft`,`priceout`) VALUES(UNIX_TIMESTAMP(),'".$db->escape($uid)."','".$db->escape($res)."','".(time()
+                + $timeleft)."','1000000')")) {
             return true;
         } else {
             return $db->query_error();
@@ -696,10 +696,10 @@ function weapon($r)
 
 function feil($t)
 {
-    echo'<p class="feil">'.$t.'</p>';
+    return '<p class="feil">'.$t.'</p>';
 }
 
 function lykket($t)
 {
-    echo '<p class="lykket">'.$t.'</p>';
+    return '<p class="lykket">'.$t.'</p>';
 }

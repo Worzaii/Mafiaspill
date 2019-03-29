@@ -7,7 +7,7 @@ session_start();
 if (isset($_GET['g'])) {
     $g = $_GET['g'];
     if ($g == 1) {
-        $_SESSION['grunn'] = '<p>Logg inn for &aring; fortsette!</p>';
+        $_SESSION['grunn'] = '<p>Utlogget p&aring; grunn av inaktivitet over 30 minutter. Logg inn igjen for &aring; fortsette...</p>';
     } elseif ($g == 2) {
         $_SESSION['grunn'] = '<p>Du ble sendt hit fordi databasen ikke var tilgjengelig, pr&oslash;v igjen senere!</p>';
     } elseif ($g == 3) {

@@ -4,9 +4,8 @@ $sql         = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN '".(
 $ant         = $db->num_rows();
 $sql3        = $db->query("SELECT * FROM `chat`");
 $num2        = $db->num_rows();
-$sql4        = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` != NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
+$sql4        = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
 $ant2        = $db->num_rows();
-mysqli_free_result($db->result);
 $db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
 if ($db->num_rows() == 1) {
     $kt  = $db->fetch_object();
@@ -32,7 +31,7 @@ if ($ranrows >= 1) {
     $rt  = NULL;
     $rtl = NULL;
 }
-$db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` = NULL ORDER BY `id` DESC LIMIT 1");
+$db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1");
 $jailrow = $db->num_rows();
 if ($jailrow >= 1) {
     $jt  = $db->fetch_object();
@@ -58,14 +57,14 @@ $onl = "online.php";
         echo '<li><a href="krim.php">Kriminalitet</a> <span style="font-size:10px;" id="krimteller">'.$ktl.'</span><script>loggteller('.$ktl.',"krimteller",false,"ned");</script></li>';
     }
     if ($btl == NULL) {
-        echo '<li><a href="biltyveri.php">Biltyveri</a>';
+        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Jobbes med</span>)</a>';
     } else {
-        echo '<li><a href="biltyveri.php">Biltyveri</a> <span style="font-size:10px;" id="bilteller">'.$btl.'</span><script>loggteller('.$btl.',"bilteller",false,"ned");</script></li>';
+        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Jobbes med</span>)</a> <span style="font-size:10px;" id="bilteller">'.$btl.'</span><script>loggteller('.$btl.',"bilteller",false,"ned");</script></li>';
     }
     if ($rtl == NULL) {
-        echo '<li><a href="stjel.php">Ran Spiller</a>';
+        echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a>';
     } else {
-        echo '<li><a href="stjel.php">Ran Spiller</a> <span style="font-size:10px;" id="ranteller">'.$rtl.'</span><script>loggteller('.$rtl.',"ranteller",false,"ned");</script></li>';
+        echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a> <span style="font-size:10px;" id="ranteller">'.$rtl.'</span><script>loggteller('.$rtl.',"ranteller",false,"ned");</script></li>';
     }
     if ($jte == NULL) {
         echo '<li><a href="fengsel.php">Fengsel</a>';
@@ -76,34 +75,34 @@ $onl = "online.php";
         echo '<li><a href="fengsel.php">Fengsel</a> <span style="font-size:10px;" id="jailteller">'.$jte.'</span><script>loggteller('.$jte.',"jailteller",false,"ned");</script></li>';
     }
     if ($flytid == NULL) {
-        echo '<li><a href="flyplass.php">Flyplass</a></li>';
+        echo '<li><a href="flyplass.php">Flyplass(<span style="color:#f00">ikke klar</span>)</a></li>';
     } else {
-        echo '<li><a href="flyplass.php">Flyplass</a> <span style="font-size:10px;" id="flyteller">'.$fte.'</span><script>loggteller('.$fte.',"flyteller",false,"ned");</script></li>';
+        echo '<li><a href="flyplass.php">Flyplass(<span style="color:#f00">ikke klar</span>)</a> <span style="font-size:10px;" id="flyteller">'.$fte.'</span><script>loggteller('.$fte.',"flyteller",false,"ned");</script></li>';
     }
     ?>
-    <li><a href="#Drap">Drap</a></li>
-    <li><a href="#oppdrag.php">Oppdrag <b style="color:#FFFFFF"></b></a></li>
-    <li><a href="#Ran">Ran</a></li>
+    <li><a href="#Drap">Drap (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#oppdrag.php">Oppdrag (<span style="color:#f00">ikke klar</span></a>)</li>
+    <li><a href="#Ran">Ran (<span style="color:#f00">ikke klar</span>)</a></li>
 </ul>
 <h2>Verdier</h2>
 <ul>
-    <li><a href="#Marked">Svarteb&oslash;rsen</a></li>
-    <li><a href="#Bunker">Bunker</a></li>
-    <li><a href="#Bank">Banken</a></li>
-    <li><a href="#Poeng">Poeng</a></li>
-    <li><a href="#verving.php">Verving</a></li>
-    <li><a href="#Auksjon">Auksjon</a></li>
-    <li><a href="#Firmaer">Firmaer</a></li>
-    <li><a href="#Garasje">Garasje</a></li>
+    <li><a href="#Marked">Svarteb&oslash;rsen (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#Bunker">Bunker (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#Bank">Banken (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#Poeng">Poeng (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#verving.php">Verving (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#Auksjon">Auksjon (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#Firmaer">Firmaer (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#Garasje">Garasje (<span style="color:#f00">ikke klar</span>)</a></li>
 </ul>
 <h2>Kommunikasjon</h2>
 <ul>
-    <li><a href="#Innboks">Innboks</a>(ute av drift)</li>
-    <li><a href="#deputy.php">Send inn s&oslash;knad!</a></li>
-    <li><a href="#support.php">Support</a></li>
+    <li><a href="#Innboks">Innboks (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#deputy.php">Send inn s&oslash;knad! (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#support.php">Support (<span style="color:#f00">ikke klar</span>)</a></li>
     <li><a href="<?= $onl; ?>">Spillere p&aring;logget</a> (<?= $ant; ?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
-    <li><a href="Ledelsen">Ledelsen</a></li>
+    <li><a href="Ledelsen">Ledelsen (<span style="color:#f00">ikke klar</span>)</a></li>
 </ul>
 <h2>Sosialt</h2>
 <ul>
@@ -112,19 +111,19 @@ $onl = "online.php";
             echo "($num2)";
         }
         ?></li>
-    <li><a href="nyforum.php?type=1">Generelt Forum</a></li>
-    <li><a href="nyforum.php?type=2">Salg og S&oslash;knadsforum</a></li>
-    <li><a href="nyforum.php?type=3">Annet</a></li>
+    <li><a href="nyforum.php?type=1">Generelt Forum (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="nyforum.php?type=2">Salg og S&oslash;knadsforum (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="nyforum.php?type=3">Annet (<span style="color:#f00">ikke klar</span>)</a></li>
     <?php
     if ($obj->family != NULL) {
-        echo '<li><a href="familiepanel.php?side=konfam">Gjengen</a></li>';
+        echo '<li><a href="familiepanel.php?side=konfam">Gjengen (<span style="color:#f00">ikke klar</span>)</a></li>';
     } else {
-        echo '<li><a href="Familie">Gjengene</a></li>';
+        echo '<li><a href="Familie">Gjengene (<span style="color:#f00">ikke klar</span>)</a></li>';
     }
     ?>
 </ul>
 <h2>Gambling</h2>
 <ul>
-    <li><a href="Lotto">Lotto</a></li>
-    <li><a href="Blackjack">Blackjack</a></li>
+    <li><a href="Lotto">Lotto (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="Blackjack">Blackjack (<span style="color:#f00">ikke klar</span>)</a></li>
 </ul>

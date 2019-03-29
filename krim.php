@@ -50,7 +50,7 @@ if (fengsel() == true) {
                 echo '<p class="feil">Du m&aring; velge et alternativ f&oslash;rst!</p>';
             } else {
                 $val  = $db->escape($_POST['valget']);
-                $valg = $db->query("SELECT * FROM `krim` WHERE `id` = '$val' LIMIT 0,1");
+                $valg = $db->query("SELECT * FROM `crime` WHERE `id` = '$val' LIMIT 0,1");
                 if (!$valg) {
                     if (r1()) {
                         echo '
@@ -171,7 +171,7 @@ if (fengsel() == true) {
                         <?php
                         $rank   = rank($obj->exp);
                         $ranknr = $rank[0];
-                        $sql    = $db->query("SELECT * FROM `krim` WHERE `levelmin` <= '$ranknr' ORDER BY `levelmin` DESC,`id` DESC");
+                        $sql    = $db->query("SELECT * FROM `crime` WHERE `levelmin` <= '$ranknr' ORDER BY `levelmin` DESC,`id` DESC");
                         if ($db->num_rows() >= 1) {
                             while ($r = mysqli_fetch_object($sql)) {
                                 $sql2 = $db->query("SELECT * FROM `chance` WHERE `uid` = '$obj->id' AND `type` = '1' AND `option` = '$r->id'");
