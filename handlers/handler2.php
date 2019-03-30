@@ -35,8 +35,8 @@ if (isset($_GET['log'])) {
                         $ip                     = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'].$_SERVER['REMOTE_ADDR']
                                 : $_SERVER['REMOTE_ADDR'];
                         $db->query("UPDATE `users` SET `lastactive` = '".time()."',`ip` = '$ip',`hostname`='".gethostbyaddr($ip)."' WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'")or die("Feil".mysqli_error($db->connection_id));
-                        $db->query("INSERT INTO `sessusr`(`uid`,`user_agent`,`ip`,`ip_host`,`security_key_gen`,`time`) VALUES('$uid->id','".$_SERVER['HTTP_USER_AGENT']."','".$_SERVER['REMOTE_ADDR']."','".gethostbyaddr($ip)."','".safegen($uid->user,
-                                $uid->pass)."',UNIX_TIMESTAMP())"); /* Legger inn sikkerhetsn&oslash;kkel unik for n&aring;v&aelig;rende spiller. */
+                        /*$db->query("INSERT INTO `sessusr`(`uid`,`user_agent`,`ip`,`ip_host`,`security_key_gen`,`time`) VALUES('$uid->id','".$_SERVER['HTTP_USER_AGENT']."','".$_SERVER['REMOTE_ADDR']."','".gethostbyaddr($ip)."','".safegen($uid->user,
+                                $uid->pass)."',UNIX_TIMESTAMP())");*/
                     } else {
                         if ($uid->moddet == 1) {
                             $str = array('string' => "<p class='feil'>$uid->user har blitt modkillet av {$uid->modav}.<br>Grunnlag: ".gen($uid->modgrunn)."</p>",

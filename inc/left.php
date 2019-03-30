@@ -57,9 +57,9 @@ $onl = "online.php";
         echo '<li><a href="krim.php">Kriminalitet</a> <span style="font-size:10px;" id="krimteller">'.$ktl.'</span><script>loggteller('.$ktl.',"krimteller",false,"ned");</script></li>';
     }
     if ($btl == NULL) {
-        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Jobbes med</span>)</a>';
+        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Nesten klar</span>)</a>';
     } else {
-        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Jobbes med</span>)</a> <span style="font-size:10px;" id="bilteller">'.$btl.'</span><script>loggteller('.$btl.',"bilteller",false,"ned");</script></li>';
+        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Nesten klar</span>)</a> <span style="font-size:10px;" id="bilteller">'.$btl.'</span><script>loggteller('.$btl.',"bilteller",false,"ned");</script></li>';
     }
     if ($rtl == NULL) {
         echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a>';
@@ -97,7 +97,7 @@ $onl = "online.php";
 </ul>
 <h2>Kommunikasjon</h2>
 <ul>
-    <li><a href="#Innboks">Innboks (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="innboks.php">Innboks (<span style="color:#ff0">jobbes med</span>)</a></li>
     <li><a href="#deputy.php">Send inn s&oslash;knad! (<span style="color:#f00">ikke klar</span>)</a></li>
     <li><a href="#support.php">Support (<span style="color:#f00">ikke klar</span>)</a></li>
     <li><a href="<?= $onl; ?>">Spillere p&aring;logget</a> (<?= $ant; ?>)</li>
