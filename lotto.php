@@ -89,7 +89,7 @@ include("core.php");
     $ant = $db->escape($_POST['antloddkj']);
     if(!is_numeric($ant) || $ant <= 0)
     {
-      $textout .= '<p>Du m&aring; kj&oslash;pe mer enn ét lodd om gangen! Du kan ikke kj&oslash;pe 0 lodd.</p>';
+      $textout .= '<p>Du m&aring; kj&oslash;pe mer enn ï¿½t lodd om gangen! Du kan ikke kj&oslash;pe 0 lodd.</p>';
     }
     else
     {
@@ -250,7 +250,7 @@ include("core.php");
       <td><?=$lotf->pr;?> %</td>
     </tr>
     <tr>
-      <td colspan="2"> <input class="kj&oslash;p" type="submit" value="Kj&oslash;p lodd">  <input style="-webkit-appearance: button;
+        <td colspan="2"><input class="" type="submit" value="Kj&oslash;p lodd"> <input style="-webkit-appearance: button;
 -webkit-padding-end: 20px;border: 1px solid #AAA;color: #555;font-size: inherit;width: 32px;height: 20px;background-color: #aaa;" type="text" name="antloddkj" value="1" min="1" max="<?=$max?>" style="width:50px;"></td><br>
     </tr>
   </table>

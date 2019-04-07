@@ -1,11 +1,11 @@
 <?php
 global $db, $obj, $set;
-$sql         = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN '".(time() - 1800)."' AND '".time()."' ORDER BY `lastactive` DESC");
-$ant         = $db->num_rows();
-$sql3        = $db->query("SELECT * FROM `chat`");
-$num2        = $db->num_rows();
-$sql4        = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
-$ant2        = $db->num_rows();
+$sql = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN '" . (time() - 1800) . "' AND '" . time() . "' ORDER BY `lastactive` DESC");
+$ant = $db->num_rows();
+$sql3 = $db->query("SELECT * FROM `chat`");
+$num2 = $db->num_rows();
+$sql4 = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
+$ant2 = $db->num_rows();
 $db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
 if ($db->num_rows() == 1) {
     $kt  = $db->fetch_object();
