@@ -209,46 +209,18 @@ function timec($sec)
     return($res);
 }
 
-function status($s, $t = 0)
+function status($s)
 {
     global $db;
-    if ($t == 0) {
-        $q = $db->query("SELECT * FROM `users` WHERE `user` = '".$db->escape($s)."' LIMIT 0,1");
-    } else if ($t == 1) {
-        $q = $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($s)."' LIMIT 0,1");
-    } else if ($t == 2) {
-        $q = $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($s)."' LIMIT 0,1");
-    }
+    $db->query("SELECT * FROM `users` WHERE `user` = '".$db->escape($s)."' OR `id` = '".$db->escape($s)."' LIMIT 0,1");
     if ($db->num_rows() == 1) {
-        $f     = $db->fetch_object();
-        $int   = array(1, 2, 3, 4, 5, 6);
-        /*
-          ##1:Administratorstatus
-          ##2:Moderatorstatus
-          ##3:Forum Moderatorstatus
-          ##4:Picmaker
-          ##5:Vanlig spillerstatus
-          ##6:D&oslash;d spillerstatus
-         */
-        $var   = array("<span class='stat1' title='Admin'>", "<span class='stat2' title='Moderator'>", "<span class='stat3' title='Forum moderator'>",
-            NULL, "<span class='stat5' title='Vanlig spiller'>", "<span class='stat6' title='D&oslash;d'>");
-        $names = array('Admin', 'Moderator', 'Forum Moderator', 'Picmaker', 'Vanlig spiller', 'D&oslash;d');
-        $st    = str_replace($int, $var, $f->status);
-        if ($t == 0) {
-            return ($st.$s.'</span>');
-        } else if ($t == 1) {
-            if ($f->status == 4) {
-                return '<span title="Picmaker">'.rainbow($f->user)."</span>";
-            } else {
-                return ($st.$f->user.'</span>');
-            }
-        } else if ($t == 2) {
-            $ulvl = $f->status - 1;
-            echo 'rrrrrrrrrrrrrrrrrrrrr    --()()()()((Her: '.$ulvl.',status:'.$f->status.'))-- rrrrrrrrrrrrr';
-            return($names[$ulvl]);
-        }
+        $user   = $db->fetch_object();
+        $status = ["<span class='stat1' title='Administrator'>", "<span class='stat2' title='Moderator'>", "<span class='stat3' title='Forum moderator'>", "<span class \"stat4\" title=\"Picmaker\">",
+            "<span class='stat5' title='Vanlig spiller'>"];
+        /* $names  = ['Admin', 'Moderator', 'Forum Moderator', 'Picmaker', 'Vanlig spiller']; Seems to have no function at the moment */
+        return $status[$user->status].$user->user."</span>";
     } else {
-        return "<em title='Det finnes ingen bruker med beskrivelsen ".$s."'>Ingen</em>";
+        return feil("Ingen bruker med den iden eller brukernavnet.");
     }
 }
 
@@ -702,4 +674,14 @@ function feil($t)
 function lykket($t)
 {
     return '<p class="lykket">'.$t.'</p>';
+}
+
+function info($t)
+{
+    return '<p class="info">'.$t.'</p>';
+}
+
+function warning($t)
+{
+    return '<p class="warning">'.$t.'</p>';
 }

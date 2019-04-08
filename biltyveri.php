@@ -25,7 +25,7 @@ if (fengsel() == true) {
     if ($db->num_rows() == 1) {
         $qf   = $db->fetch_object($q);
         $left = $qf->timewait - time();
-        echo feil('Du m&aring vente <span id="tid"></span> f&oslash;r neste gang!').'<script>teller('.$left.',"tid",true,"ned");</script>';
+        echo feil('Du m&aring vente <span id="tid"></span> f&oslash;r neste gang!').'<script>teller('.$left.',"tid",false,"ned");</script>';
     } else {
         if (isset($_POST['valget'])) {
             $v = $db->escape($_POST['valget']);
@@ -54,7 +54,7 @@ if (fengsel() == true) {
                                     }
                                     if ($db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('{$obj->id}','Pr&oslash;vde &aring stjele bil',UNIX_TIMESTAMP(),'".(time()
                                             + $se->punishtime)."', 5000)")) {
-                                        echo feil('Tid igjen: <span id="fengsel"></span><script>teller('.$se->punishtime.',"fengsel",true,"ned");</script>');
+                                        echo feil('Tid igjen: <span id="fengsel"></span><script>teller('.$se->punishtime.',"fengsel",false,"ned");</script>');
                                     } else {
                                         echo feil('Pr&oslash;vde &aring; fengsle deg, men klarte det ikke... :7');
                                     }
@@ -67,11 +67,9 @@ if (fengsel() == true) {
                                     $whatcar = (rand($se->bilmin, $se->bilmax) - 1); //Velger biler
                                     echo lykket('Du fikk med deg '.$carz[$whatcar].' med en verdi p&aring '.number_format($prizes[$whatcar]).'!');
                                     if ($db->query("INSERT INTO `garage`(`car_id`,`uid`,`stolen_city`,`current_city`,`timestamp`) VALUES('{$whatcar}','{$obj->id}','{$obj->city}','{$obj->city}',UNIX_TIMESTAMP())")) {
-                                        if ($db->query("INSERT INTO `carslog`(`uid`,`timestamp`,`timewait`,`result`,`choice`) VALUES('$obj->id',UNIX_TIMESTAMP(),UNIX_TIMESTAMP(),'1','$v')")) {
-                                            if ($db->query("UPDATE `users` SET `exp` = (`exp` + {$se->exp}) WHERE `id` = '{$obj->id}' LIMIT 1")) {
-                                                /* Ingen kommentar */
-                                            }
-                                        } 
+                                        if ($db->query("INSERT INTO `carslog`(`uid`,`timestamp`,`timewait`,`result`,`choice`) VALUES('$obj->id',UNIX_TIMESTAMP(),(UNIX_TIMESTAMP() + {$se->timewait}),'1','$v')")) {
+                                            $db->query("UPDATE `users` SET `exp` = (`exp` + {$se->exp}) WHERE `id` = '{$obj->id}' LIMIT 1");
+                                        }
                                     }
                                 }
                             }

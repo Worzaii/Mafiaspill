@@ -15,7 +15,7 @@ if (isset($_SESSION['sessionzar'])) {
 <!DOCTYPE html>
 <html lang="no">
     <head>
-        <title>Mafia-no</title>
+        <title><?= NAVN_DOMENE; ?></title>
         <link rel="stylesheet" href="css/login.css">
         <meta http-equiv="content-type" content="text/html;charset=UTF-8">
         <meta name="description" content="Kommer senere...">
@@ -137,7 +137,7 @@ if (isset($_SESSION['sessionzar'])) {
                                     <li>Du har selv ansvaret for hva du velger &aring; legge ut p&aring; din profil, men det m&aring; p&aring; ingen m&aring;te stride med det norske lovverk. Du m&aring; heller ikke bryte f&oslash;lgende reg(el/ler):
                                         <ul class="regler">
 
-                                            <li>Se §2. Kommunikasjon</li>
+                                            <li>Se ï¿½2. Kommunikasjon</li>
                                         </ul>
                                     </li>
                                 </ol>

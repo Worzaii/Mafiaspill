@@ -3,15 +3,10 @@ include("core.php");
 startpage("Kriminalitet");
 echo '<img alt src="./imgs/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp. Hvis du ikke ser noen valg, kontakt support!</p>';
 $jailed = false;
-if (fengsel() == true) {
+if (fengsel()) {
     $bu = fengsel(true);
-    echo '
-    <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",
-        (time() + $bu)).'</p>
-    <script>
-    teller('.$bu.',\'fengsel\',false,\'ned\');
-    </script>
-    ';
+    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",
+            (time() + $bu))).'<script>teller('.$bu.',\'fengsel\',false,\'ned\');</script>';
 } else if (bunker()) {
     $bu = bunker(true);
     echo '
@@ -40,7 +35,7 @@ if (fengsel() == true) {
             echo '
         <p class="feil">Du m&aring; vente <span id="krim">'.($f->timewait - time()).'</span> f&oslash;r neste krim.</p>
         <script>
-        teller('.($f->timewait - time()).',\'krim\',true,\'ned\');
+        teller('.($f->timewait - time()).',\'krim\',false,\'ned\');
         </script>
         ';
         }
@@ -58,7 +53,7 @@ if (fengsel() == true) {
       ';
                     } else {
                         echo '
-        <p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til en Admin!</p>
+        <p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til support!</p>
         ';
                     }
                 } else {
@@ -80,23 +75,15 @@ if (fengsel() == true) {
                     }
                     $kr       = mt_rand($v->minval, $v->maxval);
                     $timewait = $v->untilnext + time();
-                    $time2    = $timewait - time();
                     if (mt_rand(0, 100) <= $vf->chance) {
                         if ($db->query("UPDATE `users` SET `hand` = (`hand` + $kr),`exp` = (`exp` + $v->expgain) WHERE `user`= '$obj->user' LIMIT 1")) {
                             if ($db->query("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES('{$obj->id}',UNIX_TIMESTAMP(),'{$v->id}','$kr','$timewait')")) {
-                                /* Removing missions for now... */
-                                /* $db->query("SELECT * FROM `oppuid` WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `oid` = '2' ORDER BY `oid` DESC LIMIT 1");
-                                  if ($db->num_rows() == 1) {
-                                  if ($time - time()) {
-                                  $db->query("UPDATE `oppuid` SET `tms` = (`tms` + 1) WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `tms` < '250' AND `oid` = '2' LIMIT 1");
-                                  }
-                                  } */
                                 $time = $timewait - time();
                                 echo '
                                 <p class="lykket">Du var heldig og fikk '.number_format($kr).'kr med deg!</p>
-                                <p class="feil">Tid til neste krim: <span id="krim">'.$time2.'</span>.</p>
+                                <p class="feil">Tid til neste krim: <span id="krim">'.$v->untilnext.'</span>.</p>
                                 <script>
-                                teller('.$time2.',\'krim\',true,\'ned\');
+                                teller('.$v->untilnext.',\'krim\',false,\'ned\');
                                 </script>
                                 ';
                             } else {
@@ -125,28 +112,27 @@ if (fengsel() == true) {
                             if ($fen == 1) {
                                 echo '
               <p class="feil">Du klarte det ikke!</p>
-              <p class="feil">Tid til neste krim: <span id="krim">'.$time2.'</span>.</p>
+              <p class="feil">Tid til neste krim: <span id="krim">'.$v->untilnext.'</span>.</p>
               <script>
-              teller('.$time2.',\'krim\',true,\'ned\');
+              teller('.$v->untilnext.',\'krim\',false,\'ned\');
               </script>
               ';
                             } else {
-                                $time  = time();
-                                $time2 = time() + $timewait;
+                                $time   = time();
+                                $time2  = time() + $timewait;
                                 $punish = $time + $v->punishtime;
-                                $q     = $db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('$obj->id','Was a bad boy',UNIX_TIMESTAMP(),'$punish',2500000)");
-                                echo '
-              <p class="feil">Du klarte det ikke, og politiet oppdaget deg!</p>';
+                                $q      = $db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('$obj->id','Pr&oslash;vde &aring; v&aelig;re litt kriminiminel.',UNIX_TIMESTAMP(),'$punish',2500000)");
+                                echo feil('Du klarte det ikke, og politiet oppdaget deg!</p>');
                                 if ($db->affected_rows() == 1) {
                                     echo '
-                <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">'.($timewait - time()).'</span>.</p>
+                <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">'.($v->punishtime).'</span>.</p>
                 <script>
-                teller('.($timewait - time()).',\'krim2\',true,\'ned\');
+                teller('.($v->punishtime).',\'krim2\',false,\'ned\');
                 </script>
                 ';
                                     $jailed = true;
                                 } else {
-                                    echo '<p class="feil">Klarte ikke &aring; sette deg i fengsel! S&aring; bra...</p>';
+                                    echo feil('Klarte ikke &aring; sette deg i fengsel! S&aring; bra...');
                                 }
                             }
                         }

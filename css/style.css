@@ -642,16 +642,20 @@ footer #spot3 {
 }
 .stat4{
     /* Picmaker */
-    /* color:inherit; */
+    background: linear-gradient(to right, orange , yellow, #00b100, cyan, #7878ff, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
 }
 .stat5{
     /*Vanlig spiller*/
     color:#fff;
 }
-.stat6{
-    /*D&oslash;d spiller*/
+/* Dead player */
+/*.stat6{ 
     color:#f00;
 }
+*/
 
 /* Pagination */
 .pagination {

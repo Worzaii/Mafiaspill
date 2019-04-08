@@ -24,7 +24,8 @@ if (isset($_SESSION['sessionzar'])) {
         die("Kunne ikke koble til db!<br><a href=\"loggut.php?g=2\">Tilbake til innlogging.</a>");
     }
     list($user, $pass, $sss) = $_SESSION['sessionzar'];
-    $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'].$_SERVER['REMOTE_ADDR'] : $_SERVER['REMOTE_ADDR'];
+    $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'].$_SERVER['REMOTE_ADDR']
+            : $_SERVER['REMOTE_ADDR'];
     $db->query("SELECT * FROM `users` WHERE `user` = '".$db->escape($user)."' AND `pass` = '".$db->escape($pass)."'");
     if ($db->num_rows() == 0) {
         header("Location: loggut.php?g=4");
