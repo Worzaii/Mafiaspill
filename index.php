@@ -18,9 +18,9 @@ if (isset($_SESSION['sessionzar'])) {
     <title><?= NAVN_DOMENE; ?></title>
     <link rel="stylesheet" href="css/login.css">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
-    <meta name="description" content="Kommer senere...">
-    <meta name="keywords" content="Kommer senere...">
-    <meta name="author" content="Nicholas Arnesen">
+    <meta name="description" content="<?= DESC; ?>">
+    <meta name="keywords" content="<?= KEYWORDS; ?>">
+    <meta name="author" content="<?= UTVIKLER; ?>">
     <script src="js/jquery.js"></script>
     <script src="js/nyajaxhandler.js"></script>
     <script>
@@ -161,7 +161,7 @@ if (isset($_SESSION['sessionzar'])) {
                                 reg(el/ler):
                                 <ul class="regler">
 
-                                    <li>Se �2. Kommunikasjon</li>
+                                    <li>Se &sect;2. Kommunikasjon</li>
                                 </ul>
                             </li>
                         </ol>
@@ -214,7 +214,7 @@ if (isset($_SESSION['sessionzar'])) {
         <div id="spot1">
             Fotkolonne 1
         </div>
-        <div id="spot2">Mafia-no.net &copy; <?= date("Y", time()); ?> Utvikles av Nicholas Arnesen</div>
+        <div id="spot2"><?= NAVN_DOMENE; ?> &copy; <?= date("Y", time()); ?> Utvikles av Nicholas Arnesen</div>
         <div id="spot3">Fotkolonne 3</div>
     </div>
 </footer>

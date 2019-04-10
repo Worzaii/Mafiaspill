@@ -53,3 +53,4 @@ if (r1() || r2()) {
     echo '<h1>Ingen tilgang!</h1>';
 }
 endpage();
+

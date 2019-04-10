@@ -77,7 +77,7 @@ function startpage($title = NAVN_DOMENE)
 
     /* Slutt p&aring; chat &oslash;verst */
     echo '
-<noscript><p>&Aelig; spille mafia-no uten javascript aktivert vil vise seg &aring; v&aelig;re en ulempe for deg, vennligst aktiver javascript.</p></noscript>
+<noscript><p>&AElig; spille mafia-no uten javascript aktivert vil vise seg &aring; v&aelig;re en ulempe for deg, vennligst aktiver javascript.</p></noscript>
   </div>
   </header>
   <section>

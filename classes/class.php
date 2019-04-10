@@ -35,6 +35,7 @@ if (THRUTT == "Sperrederrp!") {
                 $this->user = "root";
             }
             $mysql = mysqli_init();
+            $mysql->set_charset("utf8mb4");
             mysqli_ssl_set($mysql, "/var/www/mafia.werzaire.net/pemfiles/client-key.pem", "/var/www/mafia.werzaire.net/pemfiles/client-cert.pem", "", NULL, NULL);
             $this->connection_id = mysqli_connect($this->host, $this->user, $this->pass, $this->database);
             if (!$this->connection_id) {
