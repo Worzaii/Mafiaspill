@@ -21,7 +21,7 @@ if (fengsel()) {
     if (!$q) {
         if (r1()) {
             echo '
-        <p class="feil">Tidssp&oslash;rring kunne ikke utf&oslash;res: ' . mysqli_error($db->connection_id) . '</p>
+        <p class="feil">Tidssp&oslash;rring kunne ikke utf&oslash;res: ' . mysqli_error($db->con) . '</p>
         ';
         } else {
             echo '
@@ -49,7 +49,7 @@ if (fengsel()) {
                 if (!$valg) {
                     if (r1()) {
                         echo '
-      <p>Feil i sp&oslash;rring1: ' . mysqli_error($db->connection_id) . '</p>
+      <p>Feil i sp&oslash;rring1: ' . mysqli_error($db->con) . '</p>
       ';
                     } else {
                         echo '
@@ -89,7 +89,7 @@ if (fengsel()) {
                             } else {
                                 if (r1()) {
                                     echo '
-                <p>Feil i sp&oslash;rring2: ' . mysqli_error($db->connection_id) . '</p>
+                <p>Feil i sp&oslash;rring2: ' . mysqli_error($db->con) . '</p>
                 ';
                                 } else {
                                     echo '<p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til support, slik at de kan se i loggen hva som hendte!</p>';
@@ -98,7 +98,7 @@ if (fengsel()) {
                         } else {
                             if (r1()) {
                                 echo '
-              <p>Feil i sp&oslash;rring: ' . mysqli_error($db->connection_id) . '</p>
+              <p>Feil i sp&oslash;rring: ' . mysqli_error($db->con) . '</p>
               ';
                             } else {
                                 echo '

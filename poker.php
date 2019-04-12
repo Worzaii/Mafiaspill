@@ -86,7 +86,7 @@ startpage("Poker");
           $qu = $db->query("INSERT INTO `pokertables`(`id`,`uid`,`ucards`,`rest`,`round`,`time`,`bet`,`result`) "
             . "VALUES(NULL,'{$obj->id}','".serialize($ucards)."','".serialize($deck)."','0',UNIX_TIMESTAMP(),'".$db->escape($bet)."',NULL)");
             if(!$qu){
-              feil('Det hendte en feil ved denne sp&oslash;rringen: '.$db->last_query.'<br>'.  mysql_errno($db->connection_id).' '.mysqli_error($db->connection_id));
+                feil('Det hendte en feil ved denne sp&oslash;rringen: ' . $db->last_query . '<br>' . mysql_errno($db->con) . ' ' . mysqli_error($db->con));
             }
             else{
               lykket("Du har startet en runde!");

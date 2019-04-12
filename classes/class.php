@@ -12,44 +12,28 @@ if (THRUTT == "Sperrederrp!") {
         var $database;
         var $last_query;
         var $result;
-        var $connection_id;
+        var $con;
         var $num_queries = 0;
         var $start_time;
         var $last_error;
 
-        function configure($host = "127.0.0.1", $user = "mafia", $pass = "mafia", $database = "mafia")
-        {
-            $this->host = $host;
-            $this->user = $user;
-            $this->pass = $pass;
-            $this->database = $database;
-            return 1;
-        }
-
         function connect()
         {
-            if (!$this->host) {
-                $this->host = "localhost";
-            }
-            if (!$this->user) {
-                $this->user = "root";
-            }
-            $mysql = mysqli_init();
-            $mysql->set_charset("utf8mb4");
-            mysqli_ssl_set($mysql, "/var/www/mafia.werzaire.net/pemfiles/client-key.pem", "/var/www/mafia.werzaire.net/pemfiles/client-cert.pem", "", NULL, NULL);
-            $this->connection_id = mysqli_connect($this->host, $this->user, $this->pass, $this->database);
-            if (!$this->connection_id) {
+            $this->con = mysqli_init();
+            mysqli_ssl_set($this->con, "/var/www/mafia.werzaire.net/pemfiles/client-key.pem", "/var/www/mafia.werzaire.net/pemfiles/client-cert.pem", "", null, null);
+            $this->con->real_connect("127.0.0.1", "mafia", "mafia", "mafia", null, null, MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
+            if (!$this->con) {
                 $this->connection_error();
             }
-            $this->num_queries++;
-            return $this->connection_id;
+            $this->con->set_charset("utf8mb4");
+            return $this->con;
         }
 
         function disconnect()
         {
-            if ($this->connection_id) {
-                mysqli_close($this->connection_id);
-                $this->connection_id = 0;
+            if ($this->con) {
+                mysqli_close($this->con);
+                $this->con = 0;
                 return 1;
             } else {
                 return 0;
@@ -60,7 +44,7 @@ if (THRUTT == "Sperrederrp!") {
         {
             $this->last_query = $query;
             $this->num_queries++;
-            $this->result = mysqli_query($this->connection_id, $this->last_query) or $this->query_error();
+            $this->result = $this->con->query($this->last_query) or $this->query_error();
             return $this->result;
         }
 
@@ -90,7 +74,7 @@ if (THRUTT == "Sperrederrp!") {
 
         function insert_id()
         {
-            return mysqli_insert_id($this->connection_id);
+            return mysqli_insert_id($this->con);
         }
 
         function connection_error()
@@ -106,10 +90,10 @@ if (THRUTT == "Sperrederrp!") {
             if (!isset($obj)) {
                 $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ': ' . $this->last_query;
             } else {
-                $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ' sent by session (' . $obj->user . ', ID: {' . $obj->id . '}): ' . mysqli_error($this->connection_id) . '. ' . PHP_EOL . 'Query was: ' . $this->last_query;
+                $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ' sent by session (' . $obj->user . ', ID: {' . $obj->id . '}): ' . mysqli_error($this->con) . '. ' . PHP_EOL . 'Query was: ' . $this->last_query;
             }
             error_log($feil);
-            $this->last_error = "Det var en feil ved sp&oslash;rringen: &quote;" . $this->last_query . "&quote;(" . mysqli_errno($this->connection_id) . ")Feil: " . mysqli_error($this->connection_id);
+            $this->last_error = "Det var en feil ved sp&oslash;rringen: &quote;" . $this->last_query . "&quote;(" . mysqli_errno($this->con) . ")Feil: " . mysqli_error($this->con);
             return false;
         }
 
@@ -162,12 +146,12 @@ if (THRUTT == "Sperrederrp!") {
 
         function escape($text)
         {
-            return mysqli_real_escape_string($this->connection_id, $text);
+            return mysqli_real_escape_string($this->con, $text);
         }
 
         function affected_rows()
         {
-            return mysqli_affected_rows($this->connection_id);
+            return mysqli_affected_rows($this->con);
         }
     }
 }

@@ -14,10 +14,10 @@ else{
       $f = $db->fetch_object();
       unset($_SESSION['sessionzar']);
       $_SESSION['sessionzar'] = array($f->user,$f->pass,safegen($f->user,$f->pass));
-      $db->query("UPDATE `users` SET `lastactive` = '".time()."',`ip` = '".$_SERVER['REMOTE_ADDR']."' WHERE `id` = '{$f->id}' AND `pass` = '{$f->pass}'")or die(mysqli_error($db->connection_id));
+        $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '" . $_SERVER['REMOTE_ADDR'] . "' WHERE `id` = '{$f->id}' AND `pass` = '{$f->pass}'") or die(mysqli_error($db->con));
       if($db->affected_rows() != 1){
         $_SESSION['sessionzar'] = $old;
-        $res="<p>Kunne ikke oppdatere db; ".mysqli_error($db->connection_id)."</p>";
+          $res = "<p>Kunne ikke oppdatere db; " . mysqli_error($db->con) . "</p>";
       }
       else{
         //header("Location: /Nyheter");

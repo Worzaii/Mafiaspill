@@ -49,7 +49,7 @@ if ($db->num_rows() == 1) {
                     <div id="reg">
                         <h2>Registrer deg</h2>
                         <div id="ressu"></div>
-                        <form class="loginform" id="brukerreg" action="handlers/handler2.php?brukerreg">
+                        <form class="loginform" id="brukerreg" action="handlers/handler.php?brukerreg">
                             <input type="email" class="text" name="mail" placeholder="Email" readonly value="<?= $mail ?>"><br>
                             <input type="text" class="text" name="code" placeholder="Kode" readonly value="<?= $code ?>"><br>
                             <input type="text" class="text" name="vervetav" placeholder="Hvem ble du vervet av?" tabindex="1"><br>

@@ -72,7 +72,7 @@ startpage("Endre profil",$e);
       }
       else{
         if($obj->status == 1){
-          echo mysqli_error($db->connection_id);
+            echo mysqli_error($db->con);
         }
         else{
           echo '<p class="feil">Det har oppst&aring;tt en feil! Rapporter dette til Support snarest!</p>';

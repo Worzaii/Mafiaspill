@@ -138,7 +138,7 @@ if($db->num_rows($g) >= 1){
             $bel = 0;
             $timeleft = time() + 900;
             echo '<p class="feil">Ranet var ikke vellykket! Dere ble tatt av purken og sitter n&aring; i fengsel!</p>';
-            /*Kaster inn alle som var med i ranet i fengsel i èn query*/
+            /*Kaster inn alle som var med i ranet i fengsel i ï¿½n query*/
             $db->query("INSERT INTO `jail`(`uid`,`reason`,`time`,`timeleft`,`prisut`) VALUES('{$a['leder']}','Mislykket ran!','".time()."','$timeleft',15000000),('{$a['spiller1']}','Mislykket ran!','".time()."','$timeleft',15000000),('{$a['spiller2']}','Mislykket ran!','".time()."','$timeleft',15000000),('{$a['spiller3']}','Mislykket ran!','".time()."','$timeleft',15000000),('{$a['spiller4']}','Mislykket ran!','".time()."','$timeleft',15000000)");
             sysmel(array($a['spiller1'],$a['spiller2'],$a['spiller3'],$a['spiller4']), 'Ran -- Mislykket ran!<br>Dere gjorde alt dere kunne, men klarte det ikke, dere ble satt i fengsel i 15 minutter!');
 
@@ -269,7 +269,7 @@ if(isset($_GET['ran'])){ // Starter ett nytt ran ...
     else{
       if($obj->hand >= 1000000){
         $db->query("UPDATE `users` SET `hand` = (`hand` - 1000000) WHERE `id` = '".$obj->id."' LIMIT 1");
-        $db->query("INSERT INTO `mafia_no_net`.`ran` (`id`, `leder`, `spiller1`, `spiller2`, `spiller3`, `spiller4`, `time`, `active`, `spillervapen1`, `spillervapen2`, `spillervapen3`, `spillervapen4`, `by`, `utfort`, `type`,`fortjeneste`) VALUES (NULL, '$obj->id', '0', '0', '0', '0', UNIX_TIMESTAMP(), '1', '0', '0', '0', '0', '$obj->city', '0', '1','0');")or die(mysqli_error($db->connection_id));
+          $db->query("INSERT INTO `mafia_no_net`.`ran` (`id`, `leder`, `spiller1`, `spiller2`, `spiller3`, `spiller4`, `time`, `active`, `spillervapen1`, `spillervapen2`, `spillervapen3`, `spillervapen4`, `by`, `utfort`, `type`,`fortjeneste`) VALUES (NULL, '$obj->id', '0', '0', '0', '0', UNIX_TIMESTAMP(), '1', '0', '0', '0', '0', '$obj->city', '0', '1','0');") or die(mysqli_error($db->con));
         header("Location: /Ran");
       }
     }
@@ -281,7 +281,7 @@ if(isset($_GET['ran'])){ // Starter ett nytt ran ...
     else{
       if($obj->hand >= 4000000){
         $db->query("UPDATE `users` SET `hand` = (`hand` - 4000000) WHERE `id` = '".$obj->id."' LIMIT 1");
-        $db->query("INSERT INTO `mafia_no_net`.`ran` (`id`, `leder`, `spiller1`, `spiller2`, `spiller3`, `spiller4`, `time`, `active`, `spillervapen1`, `spillervapen2`, `spillervapen3`, `spillervapen4`, `by`, `utfort`, `type`,`fortjeneste`) VALUES (NULL, '$obj->id', '0', '0', '0', '0', UNIX_TIMESTAMP(), '1', '0', '0', '0', '0', '$obj->city', '0', '2','0');")or die(mysqli_error($db->connection_id));
+          $db->query("INSERT INTO `mafia_no_net`.`ran` (`id`, `leder`, `spiller1`, `spiller2`, `spiller3`, `spiller4`, `time`, `active`, `spillervapen1`, `spillervapen2`, `spillervapen3`, `spillervapen4`, `by`, `utfort`, `type`,`fortjeneste`) VALUES (NULL, '$obj->id', '0', '0', '0', '0', UNIX_TIMESTAMP(), '1', '0', '0', '0', '0', '$obj->city', '0', '2','0');") or die(mysqli_error($db->con));
         header("Location: /Ran");
       }
     }

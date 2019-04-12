@@ -1,6 +1,0 @@
-Options +FollowSymLinks -Indexes
-RewriteEngine On
-RewriteRule ^Nyheter$ nyheter.php [NC,L]
-RewriteRule ^Krim$ krim.php [NC,L]
-RewriteRule ^Bil$ biltyveri.php [NC,L]
-RewriteRule ^RegInv?(.*)$ registermail.php?$1

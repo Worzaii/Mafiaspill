@@ -1,210 +1,296 @@
 <?php
-sleep(1);
-header('Content-Type: text/html; charset=iso-8859-1');
 define("BASEPATH", true);
-include("../system/config.php");
-session_start();
-if (isset($_GET['login']) || isset($_GET['reg']) || isset($_GET['pass'])) {
-    include("classes/class.php");
-    $db = new database;
-    if (isset($_GET['login'])) {
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            $db->configure();
-            $db->connect();
-            $u = $db->escape($_POST['username']);
-            $p = md5($_POST['password']);
-            if (strlen($u) <= 1 || strlen($p) <= 1) {
-                echo '<p class="feil">Du m&aring; fylle ut alle feltene.</p>';
-            } else {
-                $db->query("SELECT * FROM `users` WHERE `user` = '$u' AND `pass` = '$p' AND `activated` = '1' AND `status` <> '5'");
-                if ($db->num_rows() == 1) {
-                    $g                      = $db->fetch_object();
-                    $_SESSION['sessionzar'] = array($g->user, $g->pass);
-                    $time                   = time();
-                    $ip                     = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR']
-                            : $_SERVER['REMOTE_ADDR'];
-                    $db->query("UPDATE `users` SET `lastactive` = '$time',`ip` = '$ip' WHERE `id` = '$g->id' AND `pass` = '$p'");
-                    echo <<<END
-<p class="lykket">Du har blitt logget inn, sender deg videre!<br>Om siden ikke lastet inn p&aring; nytt, klikk her: <a href="/Nyheter">Nyheter</a>.</p>
-<script>
-var eventy = '<scr'+'ipt type="text/javascript">window.location.href="http://mafia-no.net/Nyheter";</scr' + 'ipt>';
-eval(eventy);
-</script>
-END;
-                } else {
-                    $db->query("SELECT * FROM `users` WHERE `user` = '$u' AND `pass` = '$p' AND `activated` = '0'");
-                    if ($db->num_rows() == 1) {
-                        echo '<p class="lykket">Din bruker har ikke blitt aktivert enda, aktiver brukeren igjennom emailen du mottok p&aring; mail. Om du har skrevet feil n&aring;r du registrerte deg, ta kontakt med oss! <a href="mailto:system@mafia-no.net">system@mafia-no.net</a>.</p>';
-                    } else {
-                        echo '
-                        <p class="feil">Brukernavnet og passordet stemte ikke, pr&oslash;v igjen. Det kan ogs&aring; v&aelig;re at din bruker er d&oslash;d.</p>
-                        ';
-                    }
-                }
-            }
-        } else {
-            echo '<p>Du m&aring; fylle ut alle feltene,hmm!</p>';
-            exit;
-        }
-    } else if (isset($_GET['reg'])) {
-        #echo '<p>Registrering er ikke klar!</p>';
+include('../system/config.php');
+include('../classes/class.php');
+header('Content-type: application/json'); /* Output til nettleser */
 
-        function randn1($length = 10)
-        {
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-            $string     = null;
-            for ($p = 0; $p < $length; $p++) {
-                $string .= $characters[mt_rand(0, strlen($characters))];
-            }
-            return $string;
-        }
-        if (isset($_GET['code'])) {
-            $code = mysql_real_escape_string($_GET['code']);
-            if (strlen($code) < 9 || strlen($code) >= 12) {//9-11
-                echo '<p>Du kan ikke aktivere brukeren med denne koden. Den er for kort eller for lang.';
-            } else {
-                $r = $db->query("SELECT * FROM `regcodes` WHERE `code` = '$code' ORDER BY `id` DESC LIMIT 1");
-                if ($db->num_rows() >= 1) {
-                    $rr = $db->fetch_object($r);
-                    if ($rr->code == $code) {
-                        if ($db->query("UPDATE `regcodes` SET `used` = '1' WHERE `code` = '$code'")) {
-                            if (mysql_query("UPDATE `users` SET `activated` = '1' WHERE `id` = '$rr->uid'")) {
-                                echo '<p style="color:#0f0;font-size:14px;font-weight:bold;">Din bruker har blitt aktivert! Du kan n&aring; logge inn.</p>';
-                            } else {
-                                echo '<p>Kunne ikke oppdatere din bruker... Du kan rapportere dette til Ledelsen via mail: <a href="mailto:system@mafia-no.net">system@mafia-no.net</a></p>';
-                            }
-                        } else {
-                            echo '<p>Av en grunn vil ikke linken oppdateres i db, dermed vil ikke din bruker heller oppdateres. Pr&oslash;v igjen senere!</p>';
-                        }
-                    } else {
-                        echo '<p>Koden stemte ikke overens med det registrerte.</p>';
-                    }
-                } else {
-                    echo '<p>Denne koden er ikke gyldig. Vennligst sjekk at du brukte riktig link. Har du problemer med aktivering, ta kontakt med <a href="mailto:system@mafia-no.net">system@mafia-no.net</a></p>';
-                }
-            }
-        }
-        //ActiEND
-        if (isset($_POST['user'])) {
-            if (!isset($_POST['email']) || !isset($_POST['pass']) || !isset($_POST['vpass']) || !isset($_POST['captcha_code'])) {
-                echo "<p>Du m&aring; fylle inn alle feltene.</p>";
-            }
-            $db->configure();
+function codegen($length = 12)
+{
+//Kodegenerator
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $string = null;
+    for ($p = 0; $p < $length; $p++) {
+        $string .= $characters[mt_rand(0, strlen($characters))];
+    }
+    return $string;
+}
+
+$str = ['string' => null, 'state' => 0, 'act' => 0];
+if (isset($_GET['log'])) {
+    if (isset($_POST['username']) && isset($_POST['password'])) {
+        if (strlen($_POST['username']) === 0 || strlen($_POST['password']) === 0) {
+            die(json_encode(['string' => "Ingen informasjon ble postet!", "state" => 0]));
+        } else {
+            $db = new database();
             $db->connect();
-            include_once("CaptCha/securimage.php");
-            $image   = new Securimage();
-            $user    = $db->escape($_POST['user']);
-            $mail    = $db->escape($_POST['email']);
-            $pas1    = $db->escape($_POST['pass']);
-            $pas2    = $db->escape($_POST['vpass']);
-            $ip      = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
-            $sqlrad  = $db->query("SELECT * FROM `users` WHERE `user` = '$user'")or die(mysql_error());
-            $sqlrad2 = $db->query("SELECT * FROM `users` WHERE `mail` = '$mail' AND `activated` = '1'")or die(mysql_error());
-            $rad     = $db->num_rows($sqlrad);
-            $rad2    = $db->num_rows($sqlrad2);
-            $res     = null;
-            if ($rad >= 1 || $rad2 >= 1 || strlen($user) <= 3 || strlen($user) >= 16 || !preg_match("/^[a-zA-Z]+[\w-_]*$/i",
-                    $user) || !filter_var($mail, FILTER_VALIDATE_EMAIL) || $pas1 != $pas2 || $image->check($_POST['captcha_code'])
-                == false) {
-                $res .= '
-                <p class="feil">Flere feil funnet ved registrering!</p>
-                ';
-                if ($rad >= 1) {
-                    $res .= '<p class="feil">Brukernavnet er allerede i bruk.</p>';
-                }
-                if ($rad2 >= 1) {
-                    $res .= '<p class="feil">E-posten er allerede i bruk. Vennligst bruk en som er din.</p>';
-                }
-                if (strlen($user) <= 3) {
-                    $res .= '<p class="feil">Brukernavnet du har valgt deg er for kort! Det m&aring; v&aelig;re 4 tegn eller lengre. Max 15 tegn er tillatt for brukernavn.</p>';
-                }
-                if (strlen($user) >= 16) {
-                    $res .= '<p class="feil">Brukernavnet du har valgt deg er for langt! Det m&aring; v&aelig;re 15 tegn eller mindre. Max 15 tegn, minimum 4 tegn, er tillatt for brukernavn.</p>';
-                }
-                if (!preg_match("/^[a-zA-Z]+[\w-_]*$/i", $user)) {
-                    $res .= '<p class="feil">Brukernavnet du valgte er ikke gyldig! Du kan bruke kun disse tegnene: a-Z + 0-9 og _ og - Andre tegn vil ikke tillates.</p>';
-                }
-                if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                    $res .= '<p class="feil">Den emailen du oppgav er ikke gyldig! Vennligst oppgi en gyldig E-mail. Uten din email f&aring;r du ikke aktivert brukeren.</p>';
-                }
-                if ($pas1 != $pas2) {
-                    $res .= '<p class="feil">Passordene du oppgav var ikke like. Pass p&aring; at du har et passord du husker godt og som samtidig ikke er s&aring; vanskelig &aring; gjette seg til.</p>';
-                }
-                if ($image->check($_POST['captcha_code']) == false) {
-                    $res .= '<p class="feil">Du klarte ikke Antibotten!</p>';
-                }
-                echo $res;
-            } else {
-                $pass = md5($pas1);
-                $date = date("H:i:s d.m.y");
-                if ($db->query("INSERT INTO `users`(`user`,`pass`,`mail`,`ip`,`lastdato`,`regdato`) VALUES('$user','$pass','$mail','$ip','0','$date')")) {
-                    $code    = randn1();
-                    $tittel  = 'Registrering - Aktiveringslink';
-                    $melding = '
-                    <html>
-                    <head>
-                    <title>Registrasjon/Aktiveringslink</title>
-                    </head>
-                    <body>
-                    <h1>Takk for at du, '.$user.', registrerte deg hos oss!</h1>
-                    <hr>
-                    <p class="feil">For &aring; aktivere din bruker, klikk p&aring; linken under:<br><a href="http://mafia-no.net/registrerdeg.php?code='.$code.'">Aktiver bruker!</a></p>
-                    <p class="feil">Noen mail-klienter kan ikke klikke p&aring; slike linker. I det tilfellet, s&aring; m&aring; du kopiere denne url-en og lime den inn i nettleseren din:<br>
-                    http://mafia-no.net/registrerdeg.php?code='.$code.'</p>
-                    <br><br>
-                    <p class="feil"><b>Hilsen,</b><br>Mafia-no.net sin ledelse.</p>
-                    </body>
-                    </html>
-                    ';
-                    $headers = 'MIME-Version: 1.0'."\r\n";
-                    $headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-                    $headers .= 'To: '.$user.' <'.$mail.'>'."\r\n";
-                    $headers .= 'From: Mafia-no.net <system@mafia-no.net>'."\r\n";
-                    if (!mail($mail, $tittel, $melding, $headers)) {
-                        echo '<p style="color:#f00;font-size:20px;font-weight:bold;">Mailen kunne ikke sendes! Ta kontakt med Ledelsen, s&aring; du f&aring;r mottat mailen med aktiveringslinken.</p>';
-                    }
-                    $usid = mysql_query("SELECT * FROM `users` WHERE `user` = '$user'");
-                    $uid  = mysql_fetch_object($usid);
-                    if ($db->query("INSERT INTO `regcodes`(`uid`,`code`,`date`) VALUES('$uid->id','$code','$date')")) {
-                        $res .= '
-                        <p style="color:#0f0;font-family:\'Comic Sans MS\',\'Times New Roman\'">Du har blitt registrert! Du skal n&aring; ha mottat en mail med aktiveringslink. Sjekk din s&oslash;ppelpost om du ikke finner mailen med aktiveringslink.Om du ikke mottar eposten innen 5 minutter, s&aring; kan det v&aelig;re at v&aring;r mailserver ikke klarte &aring; sende mailen til deg, da kan du skrive en e-mail til <a href="mailto:system@mafia-no.net">system@mafia-no.net</a> med ditt brukernavn og mailen du registrerte med s&aring; skal vi pr&oslash;ve &aring; hjelpe deg.</p>
-                        ';
+            $us = $db->escape($_POST['username']);
+            $pa = md5(sha1($_POST['password']));
+            $db->query("SELECT * FROM `users` WHERE `user` = '$us'");
+            if ($db->num_rows() == 1) {
+                $uid = $db->fetch_object();
+                if ($uid->pass == $pa) {
+                    if ($uid->health > 0 && $uid->moddet == 0) {
+                        $str = ['string' => "<p class=\"lykket\">Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn til nyheter...</p>",
+                            'state' => 1, 'href' => "https://" . DOMENE_NAVN . "/nyheter.php"];
+                        $_SESSION['sessionzar'] = array($uid->user, $uid->pass, safegen($uid->user, $uid->pass));
+                        $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
+                            : $_SERVER['REMOTE_ADDR'];
+                        $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '$ip',`hostname`='" . gethostbyaddr($ip) . "' WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'") or die("Feil" . mysqli_error($db->con));
+                        /*$db->query("INSERT INTO `sessusr`(`uid`,`user_agent`,`ip`,`ip_host`,`security_key_gen`,`time`) VALUES('$uid->id','".$_SERVER['HTTP_USER_AGENT']."','".$_SERVER['REMOTE_ADDR']."','".gethostbyaddr($ip)."','".safegen($uid->user,
+                                $uid->pass)."',UNIX_TIMESTAMP())");*/
                     } else {
-                        $res .= '<p style="font-family:\'Comic Sans MS\',\'Times New Roman\'">Du har blitt registrert, men det oppstod en feil med aktiveringskoden. Send mail til <a href="mailto:system@mafia-no.net">system@mafia-no.net</a> og varsle om dette. Evt. skriv detaljer om ditt brukernavn, mail og lignende.</p>';
+                        if ($uid->moddet == 1) {
+                            $str = ['string' => "<p class='feil'>$uid->user har blitt modkillet av {$uid->modav}.<br>Grunnlag: " . gen($uid->modgrunn) . "</p>",
+                                "state" => 0];
+                        } else if ($uid->health == 0) {
+                            $str = ['string' => gen("<p class='feil'>Du har blitt drept! For &aring; spille, registrer en ny bruker!</p>"),
+                                "state" => 0];
+                        }
                     }
                 } else {
-                    $res         .= '
-                    <p>Din bruker kunne ikke registreres!</p>
-                    ';
-                    $filename    = '/logger/reglogg.txt';
-                    $somecontent = $db->query_error();
-                    if (is_writable($filename)) {
-                        if (!$handle = fopen($filename, 'a')) {
-                            echo "Cannot open file ($filename)";
-                            exit;
-                        }
-                        if (fwrite($handle, $somecontent) === FALSE) {
-                            echo "Kan ikke skrive til fil: ($filename)";
-                            exit;
-                        }
-                        fclose($handle);
-                    } else {
-                        echo "<p>Filen $filename er ikke skrivbar!</p>";
-                    }
+                    //Feil passord
+                    $str = ['string' => "<p class='feil'>Brukernavnet eller passordet er ikke rett, pr&oslash;v igjen!</p>",
+                        "state" => 0];
                 }
+            } else {
+                //Brukernavnet eksisterer ikke
+                $str = ['string' => '<p class="feil">Brukernavnet finnes ikke!</p>', "state" => 0];
+            }
+            //$str = array('string'=>"Alt er ok!");
+            if (!$str) {
+                $str = array('string' => "Ingen tr&aring;der satt!", "state" => 0);
+            }
+        }
+    } else {
+        $str = ['string' => "Ingen informasjon ble sendt!", "state" => 0];
+    }
+    $str = json_encode(gen($str));
+    print $str;
+}
+if (isset($_GET['getaccess'])) {
+    $db = new database;
+    $db->configure();
+    $db->connect();
+    $m = $db->escape($_POST['email']);
+    if (!filter_var($m, FILTER_VALIDATE_EMAIL)) {
+        $str = array('string' => "<p style=\"color:#f00;\">Email ikke godkjent! Pr&oslash;v igjen!</p>");
+        $str = json_encode(gen($str));
+        print($str);
+    } else {
+        $res = $db->query("SELECT * FROM `invsjekk` WHERE `ip` = '" . $_SERVER['REMOTE_ADDR'] . "' AND `used` = '0' AND `time` > '" . time() . "'") or die(mysqli_error());
+        if ($db->num_rows() == 0) {
+            $used = ($db->query("SELECT * FROM `users` WHERE `mail` = '" . $m . "' AND (`health` = '0' OR `moddet` = '1')"));
+            $subject = 'Registrering';
+            $randomseed = rand();
+            /* $db->query("CREATE TABLE IF NOT EXISTS `invsjekk`(`id` INT NOT NULL AUTO_INCREMENT,`mail` VARCHAR(255) NOT NULL,`code` VARCHAR(255) NOT NULL,`ip` VARCHAR(100) NOT NULL,`time` BIGINT NOT NULL,`used` ENUM('0','1') DEFAULT '0', PRIMARY KEY(`id`))"); */
+            $db->query("INSERT INTO `invsjekk`(`mail`,`time`,`ip`,`code`) VALUES('" . $m . "','" . (time() + 600) . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $randomseed . "')") or die(mysqli_error());
+            // message
+            $message = gen('
+      <html>
+      <head>
+      <title>Invitasjon til registrering</title>
+      </head>
+      <body>
+      <h1>Klikk p&aring; linken under for &aring; g&aring; til registrering</h1>
+      <p><a href="https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . urlencode($m) . '">https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . $m . '</a></p>
+      </body>
+      </html>
+      ');
+
+            // To send HTML mail, the Content-type header must be set
+            $headers = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+
+            // Additional headers
+            $headers .= 'To: ' . $m . ' <' . $m . '>' . "\r\n";
+            $headers .= 'From: ' . NAVN_DOMENE . ' <system@' . MAIL_SENDER . '>' . "\r\n";
+
+            // Mail it
+            if (mail($m, $subject, $message, $headers)) {
+                print(json_encode(gen(array('string' => gen('<p style="color:#008500">Det ble sendt en email til ' . $m . ' fra system@' . MAIL_SENDER . '! Sjekk innboks(mulig s&oslash;ppelpost ogs&aring;). Hvis du bruker Outlook, s&aring; vil du ikke motta mail pga. begrensninger hos dem.</p>')))));
+            } else {
+                print(json_encode(gen(array('string' => gen('<p style="color:#850000">Kunne ikke sende mail! Kan v&aelig;re feilkonfigurasjon i script eller ikke ferdig modul.</p>')))));
             }
         } else {
-            echo '<p>Du m&aring; skrive inn et brukernavn!</p>';
+            /* M&aring; vente f&oslash;r ny mail kan sendes */
+            $f = $db->fetch_object();
+            $left = $f->time - time();
+            print(json_encode(gen(array('string' => '<p>Du m&aring; vente med &aring; motta ny invitasjon, eller bruke den du har mottatt p&aring; ' . $f->mail . '. Det gjenst&aring;r ' . $left . ' sekunder f&oslash;r du kan pr&oslash;ve igjen.</p>'))));
         }
-        echo $res;
-    }//Registrering END
-    else if (isset($_GET['pass'])) {
-        echo '<p>Glemt passord er ikke klart!</p>';
-    }//Glemt pass END
-} else {
-    header('Location: /');
-    echo '<p>Siden du pr&oslash;ver &aring; n&aring; finnes ikke!</p>';
+    }
+    /* GETACCESS END */
 }
-//echo '<p>Dette scriptet fungerer som det skal!</p>';
-//echo '<p>Headers sent:<br>Post:'.print_r($_POST,true).'<br>GET:'.print_r($_GET,true).'</p>';
-?>
+if (isset($_GET['brukerreg'])) {
+    $db = new database;
+    $db->configure();
+    $db->connect();
+    $u = $db->escape($_POST['user']);
+    $p = $db->escape($_POST['pass']);
+    $m = $db->escape($_POST['mail']);
+    $c = $db->escape($_POST['code']);
+    $v = $db->escape($_POST['vervetav']);
+    $db->query("SELECT * FROM `users` WHERE `user` = '" . $u . "'");
+    if (!preg_match("/^[a-z]+[\w._ -]*$/i", $u) || (strlen($u) <= 3 || strlen($u) >= 21) || (strlen($p) <= 3)) {
+        $str = array('string' => '<p class="color:#f00;">Brukernavn ikke godkjent! Sjekk at du oppfyller kriteriene:<br>Bokstaver fra a-z(sm&aring; eller store) Du kan ogs&aring; bruke _(underscore) og mellomrom. Det kan v&aelig;re mellom 4-20 tegn. Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller mer.</p>');
+        if (!preg_match("/^[a-z]+[\w._-]*$/i", $u)) {
+            $str['string'] .= '<p>Brukernavnet ble ikke godkjent!</p>';
+        }
+        if (strlen($u) <= 3 || strlen($u) >= 21) {
+            $str['string'] .= '<p>Brukernavnet m&aring; v&aelig;re mellom 4-20 tegn! Du hadde ' . strlen($u) . ' tegn!</p>';
+        }
+        if (strlen($p) <= 3) {
+            $str['string'] .= '<p>Passordet var for kort, ha minst 4 tegn!</p>';
+        }
+    } else {
+        if ($db->num_rows() == 0) {
+            /* Fortsetter registrering */
+            /* Passord ok */
+            $s = $db->query("SELECT * FROM `invsjekk` WHERE `code` = '" . $c . "' AND `mail` = '" . $m . "' AND `used` = '0'");
+            if ($db->num_rows() == 1) {
+                /* Registrerer brukeren */
+                $vervet = 0;
+                if (strlen($v) >= 1) {
+                    $r = $db->query("SELECT * FROM `users` WHERE `id` = '$v'");
+                    if ($db->num_rows($r) == 1) {
+                        $r = $db->fetch_object();
+                        $vervet = $r->id;
+                    } else {
+                        $error = 1;
+                    }
+                }
+                if (isset($error) && $error === 1) {
+                    $str = ['string' => '<p style="color:#f00;">Brukeren din angav i verving ble ikke godkjent. Pr&oslash;v igjen, eller la feltet st&aring; tomt.</p>'];
+                } else {
+                    $db->query("INSERT INTO `users`(`user`,`pass`,`mail`,`regip`,`reghostname`,regstamp,`lastactive`) VALUES('" . $u . "',MD5('" . sha1($p) . "'),'" . $m . "','" . $_SERVER['REMOTE_ADDR'] . "','" . gethostbyaddr($_SERVER['REMOTE_ADDR']) . "',UNIX_TIMESTAMP(),'0')");
+                    if ($db->affected_rows() == 1) {
+                        $str = ['string' => lykket('Du har blitt registrert, du kan n&aring; logge inn! <a href="http://' . DOMENE_NAVN . '/">Trykk her for &aring; g&aring; til innlogging</a>')];
+                        $db->query("UPDATE `invsjekk` SET `used` = '1' WHERE `mail` = '$m' AND `code` = '$c'");
+                    } else {
+                        $str = ['string' => feil('Brukeren kunne ikke bli lagt inn i databasen, pr&oslash;v igjen, ta gjerne kontakt med support: support@' . MAIL_SENDER . '!<br>Feilen er:<br>' . mysqli_error($db->con))];
+                    }
+                }
+            } else {
+                $str = ['string' => feil('Koden er ikke godkjent! Den kan v&aelig;re brukt allerede, eller mailen har ingen tilknytning til koden.')];
+            }
+        } else {
+            $str = ['string' => feil('Du m&aring; velge et annet brukernavn, da dette er i bruk.')];
+        }
+    }
+    $str = json_encode(gen($str));
+    print $str;
+}
+if (isset($_GET['gpw'])) {
+    $user = $db->escape($_POST['user']);
+    $mail = $db->escape($_POST['mail']);
+    if (strlen($user) >= 4 && strlen($user) <= 20 && filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+        $db = new database;
+        $db->configure();
+        $db->connect();
+        $db->query("SELECT * FROM `users` WHERE `user` = '$user' AND `mail` = '$mail' AND `moddet` = '0'
+                        AND `health` > '0' ORDER BY `id` DESC LIMIT 1");
+        if ($db->num_rows() == 1) {
+            $i = $db->fetch_object();
+            $to = $i->mail;
+            $head = 'Nytt passord';
+            $resgen = rand(1000010, 9999999);
+            $db->query("INSERT INTO `resetpasset`(`uid`,`resgen`,`timemade`)
+ VALUES('{$i->id}','$resgen',UNIX_TIMESTAMP())");
+            $message = '
+      <html>
+      <head>
+      <title>Nytt passord</title>
+      </head>
+      <body>
+      <h1>Gjenopprett din brukerkonto</h1>
+      <div style="width:95%;border-bottom:2px dotted #3e3e3e; margin: 0 auto;"></div>
+      <p>Noen med f&oslash;lgende IP-adresse <i>' . $_SERVER['REMOTE_ADDR'] . '</i> har bedt om at passordet p&aring;
+       brukernavn <b>' . $i->user . '</b> skal tilbakestilles.<br>
+      Klikk p&aring; denne lenken for &aring; tilbakestille passordet:<br>
+      <a href="https://' . DOMENE_NAVN . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '">
+      https://' . DOMENE_NAVN . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '</a><br>
+      Om det ikke var du som ba om at passordet skulle tilbakestilles anbefales det at du ser bort fra denne mailen.
+       Det kan ogs&aring; v&aelig;re det at noen har kontroll p&aring; din e-post og dermed pr&oslash;ver &aring; 
+       f&aring; tilgang til din bruker igjennom din e-post! Hvis du er smart, oppdater ditt passord p&aring; b&aring;de
+        ' . DOMENE_NAVN . ' og hos din e-post-leverand&oslash;r!</p>
+      </body>
+      </html>
+      ';
+            $headers = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+
+            // Additional headers
+            $headers .= 'To: ' . $i->user . ' <' . $i->mail . '>' . "\r\n";
+            $headers .= 'From: ' . MAIL_SENDER . ' <' . HENVEND_MAIL . '>' . "\r\n";
+            if (mail($to, $head, $message, $headers)) {
+                $str = ['string' => gen('<p style="color:#50a850">Det har blitt sendt en mail til mailadressen
+ registrert p&aring; brukeren. Sjekk innboks/s&oslash;ppelpost.</p>')];
+            } else {
+                $str = ['string' => '<p style="color:#f00;">Mailen kunne ikke sendes, beklager. Ta kontakt med 
+Ledelsen via mailadressen: <a href="mailto:system@' . MAIL_SENDER . '">system@' . MAIL_SENDER . '</a>.</p>'];
+            }
+        } else {
+            $str = ['string' => '<p style="color:#f00;">Det ble ikke funnet noen brukere med oppgitt informasjon, 
+sjekk at du har skrevet riktig!</p>'];
+        }
+    } else {
+        $str = ['string' => gen('<p style="color:#f00">Det ble ikke oppgitt noen informasjon, sjekk at du skrev 
+noe i feltene!</p>')];
+    }
+    print(json_encode(gen($str)));
+    /* Glemt passord END */
+}
+if (isset($_GET['respas'])) {
+    #die(print(json_encode(array('string'=>gen('<p style="color:#850000">Utilgjengelig for &oslash;yeblikket!</p>')))));
+    /* Begynner tilbakestilling av passord */
+    $p1 = $_POST['p1'];
+    $p2 = $_POST['p2'];
+    $uid = $db->escape($_POST['uid']);
+    $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ?
+        $_SERVER['HTTP_X_FORWARDED_FOR'] . ' | ' . $_SERVER['REMOTE_ADDR'] : $_SERVER['REMOTE_ADDR'];
+    if (strlen($p1) >= 4 && ($p1 == $p2) && is_numeric($uid)) {
+        $db = new database();
+        $db->connect();
+        if ($db->con) {
+            $s = $db->query("SELECT * FROM `resetpasset` WHERE `uid` = '$uid' AND `used` = '0'
+                              AND `rimming` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
+            if ($db->num_rows() == 1) {
+                $f = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($uid) . "' LIMIT 1");
+                if ($db->num_rows() == 1) {
+                    $obj = $db->fetch_object();
+                    $db->query("UPDATE `users` SET `pass` = '" . md5(sha1($p1)) . "' WHERE
+                     `id` = '" . $db->escape($uid) . "' LIMIT 1");
+                    if ($db->affected_rows() == 1) {
+                        $str = array('string' => gen('<p style="color:#50a850;">Ditt passord har blitt endret! 
+Du kan n&aring; logge inn p&aring; innloggingssiden med det nye passordet ditt!</p>'),
+                            'res' => 1);
+                        $db->query("INSERT INTO `respaslogg`(`uid`,`time`,`oldpass`,`newpass`,`ip`) 
+VALUES('$uid',UNIX_TIMESTAMP(),'{$obj->pass}','" . md5($p1) . "','$ip')");
+                        $db->query("UPDATE `resetpasset` SET `used` = '1' 
+WHERE `uid` = '" . $db->escape($uid) . "' AND `used` = '0' ORDER BY `id` DESC LIMIT 1");
+                        if ($db->affected_rows() == 1) {
+                            $str["ls"] = 1;
+                        } else {
+                            $str["ls"] = 0;
+                        }
+                    } else if ($db->affected_rows() == 0) {
+                        $str = ['string' => gen('<p style="color:#f00;">Kunne ikke oppdatere passordet! 
+2 muligheter st&aring;r:<br>Du pr&oslash;vde &aring; bruke samme passordet<br>Det var en feil i query til databasen! 
+<br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!</p>'),
+                            'res' => 0];
+                    }
+                } else {
+                    $str = ['string' => gen('<p style="color:#f00;">Brukerid-en finnes ikke!</p>'), 'res' => 0];
+                }
+            } else {
+                $str = ['string' => gen('<p class="color:#f00;">Denne koden er ikke lengre tilgjengelig!</p>'), 'res' => 0];
+            }
+        } else {
+            $str = ['string' => gen('<p style="color:#f00;">Databasen er ikke tilgjengelig! Pr&oslash;v igjen senere!</p>'),
+                'res' => 0];
+        }
+    } else {
+        $str = ['string' => gen('<p style="color:#f00">Passordet ditt m&aring; v&aelig;re 4 tegn eller lengre, og v&aelig;re like i begge feltene under! Det kan ogs&aring; v&aelig;re at ikke riktig uid ble postet.</p>'),
+            'res' => 0];
+    }
+    print(json_encode($str));
+}

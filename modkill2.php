@@ -10,7 +10,7 @@
 		$user = $db->escape($_POST['bruker']);
 		$valg = $db->escape($_POST['valg']);
 		$grunn = $db->escape($_POST['grunn']);
-		$s = $db->query("SELECT * FROM `users` WHERE `user` = '$user'")or die(mysqli_error($db->connection_id));
+        $s = $db->query("SELECT * FROM `users` WHERE `user` = '$user'") or die(mysqli_error($db->con));
 		$fet = $db->fetch_object($s);
 		$userid = $fet->id;
     if($user->status == 1 && $obj->status > 1){
@@ -28,7 +28,7 @@
         }
       }
       else{
-      echo "Spilleren kunne ikke bli modkillet, skriver ut databasefeil: ".mysqli_error($db->connection_id);
+          echo "Spilleren kunne ikke bli modkillet, skriver ut databasefeil: " . mysqli_error($db->con);
       }
       }
       if($valg == 2){
@@ -42,7 +42,7 @@
         }
       }
       else{
-      echo "Spilleren kunne ikke bli gjenopplivet, skriver ut databasefeil: ".mysqli_error($db->connection_id);
+          echo "Spilleren kunne ikke bli gjenopplivet, skriver ut databasefeil: " . mysqli_error($db->con);
       }
       }
     }

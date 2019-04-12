@@ -19,7 +19,6 @@ if (defined("LVL") && LVL == TRUE) {
 }
 if (isset($_SESSION['sessionzar'])) {
     $db = new database();
-    $db->configure();
     if (!$db->connect()) {
         die("Kunne ikke koble til db!<br><a href=\"loggut.php?g=2\">Tilbake til innlogging.</a>");
     }
@@ -52,7 +51,7 @@ if (isset($_SESSION['sessionzar'])) {
             } else {
                 if (!$db->query("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(),`ip` = '$ip' WHERE `id` = '{$obj->id}'")) {
                     if ($obj->status == 1) {
-                        die('<p>Kunne ikke sette ny info!<br>'.mysqli_error($db->connection_id).'</p>');
+                        die('<p>Kunne ikke sette ny info!<br>' . mysqli_error($db->con) . '</p>');
                     } else {
                         die('<p>Det har oppst&aring;tt en feil i scriptet!!!</p>');
                     }

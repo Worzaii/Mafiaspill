@@ -24,9 +24,9 @@ teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
             if ($r->autowin == $r->currentbid) {
                 $db->query("SELECT * FROM `budauk` WHERE `aid` = '$r->id' ORDER BY `id` DESC LIMIT 1");/*Henter siste bud*/
                 $usr = $db->fetch_object();
-                $db->query("UPDATE `auksjon` SET `done` = '1' WHERE `id` = '$r->id'") or die(mysqli_error($db->connection_id));
-                $db->query("UPDATE `users` SET `bank` = (`bank` + " . $r->currentbid . ") WHERE `id` = '$r->seller'") or die(mysqli_error($db->connection_id));
-                $db->query("UPDATE `firma` SET `Eier` = '{$usr->uid}' WHERE `id` = '$r->item'") or die(mysqli_error($db->connection_id));
+                $db->query("UPDATE `auksjon` SET `done` = '1' WHERE `id` = '$r->id'") or die(mysqli_error($db->con));
+                $db->query("UPDATE `users` SET `bank` = (`bank` + " . $r->currentbid . ") WHERE `id` = '$r->seller'") or die(mysqli_error($db->con));
+                $db->query("UPDATE `firma` SET `Eier` = '{$usr->uid}' WHERE `id` = '$r->item'") or die(mysqli_error($db->con));
                 $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES('" . $usr->uid . "','" . time() . "','" . $db->slash('--<b>Auksjon!</b><br>Du har mottat et firma, g&aring; hit for &aring; se dine firmaer: <a href="Firmaer">Firmasenter</a>! Du kj&oslash;pte firmaet ifra ' . user($r->seller) . ' til ' . number_format($r->currentbid) . ' kr!') . "'),('" . $r->seller . "','" . time() . "','" . $db->slash('--<b>Auksjon!</b><br>Ditt firma har blitt solgt til ' . user($usr->uid) . ' for ' . number_format($r->currentbid) . ' kr!') . "')");
             } else if ($r->time_left < time()) {
                 if ($r->currentbid == 0) {
@@ -83,7 +83,7 @@ teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
         }
         /*Legge ut noe nytt til salgs*/
         $owning = NULL;
-        $s = $db->query("SELECT * FROM `firma` WHERE `Eier` = '" . $obj->id . "' ORDER BY `id` ASC") or die(mysqli_error($db->connection_id));
+        $s = $db->query("SELECT * FROM `firma` WHERE `Eier` = '" . $obj->id . "' ORDER BY `id` ASC") or die(mysqli_error($db->con));
         if ($db->num_rows() >= 1) {
             $listorder = 0;
             while ($r = mysqli_fetch_object($s)) {

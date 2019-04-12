@@ -82,7 +82,7 @@ else{
               echo '<p class="lykket">'.htmlentities($names[$o]["i"]).' mottok bunkerinvitasjon p&aring; '.$dont_touch_my_tralala[$names[$o]['t']].'!</p>';
             }
             else{
-              echo 'Det oppstod feil med query: '.$db->last_query."<br>".mysqli_error($db->connection_id)."<br>";
+                echo 'Det oppstod feil med query: ' . $db->last_query . "<br>" . mysqli_error($db->con) . "<br>";
             }
           }
         }
@@ -98,7 +98,7 @@ else{
             echo '<p class="lykket">Invitasjonen til '.status($r->tid,1).' ble slettet!</p>';
           }
           else{
-            echo feil("Kunne ikke slette invitasjon!".  mysqli_error($db->connection_id));
+              echo feil("Kunne ikke slette invitasjon!" . mysqli_error($db->con));
           }
         }
         else{
@@ -122,7 +122,7 @@ else{
           echo '<p class="lykket">Du har n&aring; satt deg i bunker i '.$times[$o1->length].'!<br>Du er ute om: <span id="tidforute"></span><script>teller('.(time() + $o1->length).',\'tidforute\',false,\'ned\');</script></p>';
         }
         else{
-          echo '<p class="feil">Kunne ikke sette deg i bunker, queryfeil: '.mysqli_error($db->connection_id).'<br>Query: "'.$db->last_query.'"</p>';
+            echo '<p class="feil">Kunne ikke sette deg i bunker, queryfeil: ' . mysqli_error($db->con) . '<br>Query: "' . $db->last_query . '"</p>';
         }
       }
       else{
@@ -137,7 +137,7 @@ else{
           echo '<p class="lykket">Du slettet invitasjonen!</p>';
         }
         else{
-          echo '<p class="feil">Kunne ikke slette invitasjon: '.mysqli_error($db->connection_id).'<br>Query: "'.$db->last_query.'"</p>';
+            echo '<p class="feil">Kunne ikke slette invitasjon: ' . mysqli_error($db->con) . '<br>Query: "' . $db->last_query . '"</p>';
         }
       }
       else{

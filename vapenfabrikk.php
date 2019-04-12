@@ -11,12 +11,12 @@ if($obj->id == $eier){
 if(isset($_POST['valget'])){
 /*Kj&oslash;per v&aring;pen*/
 $vid = $db->escape($_POST['valget']);
-$s = $db->query("SELECT * FROM `vapenhandel` WHERE `id` = '$vid' AND `available` > 0")or die("Feil:".mysqli_error($db->connection_id));
+    $s = $db->query("SELECT * FROM `vapenhandel` WHERE `id` = '$vid' AND `available` > 0") or die("Feil:" . mysqli_error($db->con));
 if($db->num_rows() == 1){
 	$vap = $db->fetch_object();
 	if($obj->hand >= $vap->pricetag && $vap->available >= 1){
 	/*Kj&oslash;per...*/
-	$db->query("UPDATE `users` SET `weapon` = '$vap->id',`hand` = (`hand` - ".$vap->pricetag.") WHERE `id` = '$obj->id' LIMIT 1")or die("Feil:".mysqli_error($db->connection_id));
+        $db->query("UPDATE `users` SET `weapon` = '$vap->id',`hand` = (`hand` - " . $vap->pricetag . ") WHERE `id` = '$obj->id' LIMIT 1") or die("Feil:" . mysqli_error($db->con));
 	if($db->affected_rows() == 1){
 	$db->query("UPDATE `vapenhandel` SET `available` = (`available` - 1) WHERE `id` = '$vap->id'");
 	$db->query("SELECT FROM `userwep` WHERE `uid` = '.$obj->id.' AND `vid` = '$vap->id'");

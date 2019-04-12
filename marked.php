@@ -57,7 +57,7 @@
               }
               else{
                 if($obj->hand >= $eiendommer[$plus]['price']){
-                  $db->query("UPDATE `users` SET `eigendom` = (`eigendom` + 1),`hand`=(`hand` - ".$eiendommer[$plus]['price'].") WHERE `id` = '".$obj->id."' LIMIT 1") or die(mysqli_error($db->connection_id)."feil($plus): ".$db->last_query);
+                    $db->query("UPDATE `users` SET `eigendom` = (`eigendom` + 1),`hand`=(`hand` - " . $eiendommer[$plus]['price'] . ") WHERE `id` = '" . $obj->id . "' LIMIT 1") or die(mysqli_error($db->con) . "feil($plus): " . $db->last_query);
                   $res= '<p class="lykket">Du kj&oslash;pte '.$eiendommer[$plus]['navn'].'</p>';
                   $obj->eigendom = $plus;
                 }
@@ -114,7 +114,7 @@
                 lykket('V&aring;penet ble kj&oslash;pt!');
               }
               else{
-                feil('Kunne ikke kj&oslash;pe v&aring;penet: '.mysqli_error($db->connection_id).'');
+                  feil('Kunne ikke kj&oslash;pe v&aring;penet: ' . mysqli_error($db->con) . '');
               }
             }
             else{

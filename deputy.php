@@ -167,7 +167,7 @@ else{
         $res= '<p class="lykket">Din s&oslash;knad har blitt sendt inn! N&aring;r Ledelsen har vurdert din s&oslash;knad, s&aring; vil du motta en melding i din systeminnboks om du fikk en stilling. Men om du ikke fikk noe, vil det st&aring; en henvendelse i din innboks fra en i Ledelsen om akkurat hvorfor du ikke ble valgt.</p>';
       }
       else{
-        $res= '<p class="feil">Kunne ikke lagre. Gi dette til en i Ledelsen:<br>'.mysqli_error($db->connection_id).'</p>';
+          $res = '<p class="feil">Kunne ikke lagre. Gi dette til en i Ledelsen:<br>' . mysqli_error($db->con) . '</p>';
       }
     }
   }

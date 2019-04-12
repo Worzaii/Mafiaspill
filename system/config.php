@@ -32,8 +32,6 @@ define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 
 /* Configuration */
-#ini_set('session.use_cookies', 0);
-#ini_set('session.use_only_cookies', 0);
 ini_set('session.cookie_secure', 1);
 ini_set('session.use_strict_mode', 1);
 ini_set('session.gc_maxlifetime', 60 * 60 * 24); /* Implementing a temporary longer time for development purposes */

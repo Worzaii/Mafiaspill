@@ -49,7 +49,7 @@ if ($db->num_rows() == 1) {
                             <p>Tid som gjenst&aring;r med f&oslash;lgende kode: <span id="timeleft"></span><script>teller(<?= $time; ?>, "timeleft", false, "ned");</script></p>
                             <hr>
                             <div id="ressu"></div>
-                            <form class="loginform" id="respas" action="./handlers/handler2.php?respas">
+                            <form class="loginform" id="respas" action="handlers/handler.php?respas">
                                 <?php echo '<input type="text" class="text" value="'.$user->user.'" readonly="">'; ?>
                                 <input type="hidden" name="uid" value="<?= $user->id ?>"><br>
                                 <input type="password" class="text" name="p1" placeholder="Passord" tabindex="1" autofocus="" required=""><br>

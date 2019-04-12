@@ -103,7 +103,7 @@ if(isset($_POST['price'])){
         $timenow = time();
         if(!$db->query("INSERT INTO `bjtables`(`uid`,`ucards`,`dcards`,`decks`,`time`,`price`) VALUES('$obj->id','$handstr','$dealerstr','$deckstr','$timenow','$pris')")){
           if($obj->status==1){
-            echo '<p class="feil">Feil i query... '.mysqli_error($db->connection_id).'</p>';
+              echo '<p class="feil">Feil i query... ' . mysqli_error($db->con) . '</p>';
           }
           else{
             echo '<p class="feil">Det var feil med db, rapporter problemet!</p>';

@@ -32,7 +32,7 @@ if($obj->family != NULL){
     </thead>
     <tbody>
       <?php
-        $n = mysqli_query($db->connection_id,"SELECT * FROM `kulefabrikker`");
+      $n = mysqli_query($db->con, "SELECT * FROM `kulefabrikker`");
         $ir = 0;
         $re = array();
         while($r = mysqli_fetch_assoc($n)){

@@ -26,7 +26,7 @@
         $uid2 = $db->fetch_object($query);
         $db->query("INSERT INTO `stillingslogg`(`uid`,`nyid`,`type`,`dato`) VALUES('$obj->id','$uid2->id','$status',UNIX_TIMESTAMP())");
         if(!$db->query("UPDATE `users` SET `status` = '$status',`support` = '".$support."' WHERE `user` = '$user'")){
-          echo '<p class="feil">Spilleren fikk ikke stillingen! '.mysqli_error($db->connection_id).'</p>';
+            echo '<p class="feil">Spilleren fikk ikke stillingen! ' . mysqli_error($db->con) . '</p>';
         }
         else{
           echo '<p>Spilleren har n&aring; blitt oppdatert!</p>';

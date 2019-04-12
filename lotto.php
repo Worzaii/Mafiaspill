@@ -64,7 +64,7 @@ include("core.php");
           $nyr = $run + 1;
           $db->query("UPDATE `lotto` SET `vinner` = '{$vinner->uid}',`premie` = '$sum',`tid` = '".time()."' WHERE `runde` = '$run' AND `tid` = '$tid'");
           if($db->affected_rows() != 1){
-            echo '<p>Kunne ikke oppdatere lotto! evt feil: '.mysqli_error($db->connection_id).'</p>';
+              echo '<p>Kunne ikke oppdatere lotto! evt feil: ' . mysqli_error($db->con) . '</p>';
             die();
           }
           $db->query("UPDATE `users` SET `hand` = (`hand` + $sum),`exp` = (`exp` + 5) WHERE `id` = '{$vinner->uid}' LIMIT 1");
@@ -122,7 +122,7 @@ include("core.php");
               {
                 if($obj->status == 1)
                 {
-                  echo mysqli_error($db->connection_id);
+                    echo mysqli_error($db->con);
                 }
                 else
                 {
@@ -134,7 +134,7 @@ include("core.php");
             {
               if($obj->status == 1)
               {
-                echo mysqli_error($db->connection_id);
+                  echo mysqli_error($db->con);
               }
               else
               {

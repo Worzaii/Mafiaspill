@@ -15,7 +15,7 @@ if (r1() || r2()) {
             } else {
                 if (!$db->query("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES('$tema','$mel','$obj->user',UNIX_TIMESTAMP(),'1','$lvl')")) {
                     if ($obj->status == 1) {
-                        echo '<p>Feil: ' . mysqli_error($db->connection_id) . '</p>';
+                        echo '<p>Feil: ' . mysqli_error($db->con) . '</p>';
                         /* sysmel(2, '<b>--Nyheter</b></br>En feil skjedde under posting av nyheter!'); */
                     }
                 } else {

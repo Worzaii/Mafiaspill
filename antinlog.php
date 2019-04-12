@@ -20,7 +20,7 @@ if(r1()){
   }
   else{
     echo '<p class="feil">Merkelig, det er ingen innlogginger &aring; vise :S</p>';
-    echo mysqli_error($db->connection_id);
+      echo mysqli_error($db->con);
   }
 }
 else{

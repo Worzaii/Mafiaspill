@@ -88,7 +88,7 @@ echo '</table></div>';
 
 ?><div style="clear:both;"></div>
 <?php
-$srr = $db->query("SELECT * FROM `familier` WHERE `lagtned` = '0' ORDER BY `TimeMade` ASC") or die("Feil: ".mysqli_error($db->connection_id));
+$srr = $db->query("SELECT * FROM `familier` WHERE `lagtned` = '0' ORDER BY `TimeMade` ASC") or die("Feil: " . mysqli_error($db->con));
  echo '
  <div class="familie w500">
  <h1 class="big">Familieoversikt</h1>

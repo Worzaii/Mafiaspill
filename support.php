@@ -83,7 +83,7 @@
                     else{
                         if($obj->status == 1){
 													echo '
-													<p class="feil">Det oppstod en feil!<br>'.mysqli_error($db->connection_id).'</p>
+													<p class="feil">Det oppstod en feil!<br>' . mysqli_error($db->con) . '</p>
 													';
                         }
                         else{

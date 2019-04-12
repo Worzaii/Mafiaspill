@@ -80,7 +80,7 @@ if (isset($_SESSION['sessionzar'])) {
                 <?= $grunn ?>
                 <div id="res1"></div>
                 <noscript><p>Du m&aring; ha javascript aktivert for &aring;& spille!</p></noscript>
-                <form class="loginform" name="logininfo" id="log" action="handlers/handler2.php">
+                <form class="loginform" name="logininfo" id="log" action="handlers/handler.php">
                     Brukernavn: <input type="text" autocomplete="username" disabled name="username" class="text"
                                        required placeholder="Brukernavn"><br>
                     Passord:<input type="password" autocomplete="password" disabled name="password" class="text"
@@ -96,7 +96,7 @@ if (isset($_SESSION['sessionzar'])) {
                 <p>Du kan kun sende &eacute;n mail hver halvtime, s&aring; om du ikke klarer det f&oslash;rste gangen m&aring;
                     du vente en stund, s&aring; pass p&aring; at du skriver riktig email n&aring;r du skal motta
                     registreringslink.</p>
-                <form class="loginform" name="reginfo" id="getaccess" action="handlers/handler2.php">
+                <form class="loginform" name="reginfo" id="getaccess" action="handlers/handler.php">
                     Email:<input type="email" autocomplete="username" class="text" name="email" required
                                  placeholder="E-post"><br>
                     <input type="Submit" value="Registrer" class="button"/>
@@ -107,7 +107,7 @@ if (isset($_SESSION['sessionzar'])) {
             <div id="forgotpassword" style="display: none">
                 <h2>Nytt passord</h2>
                 <div id="res3"></div>
-                <form class="loginform" name="passinfo" id="gpw" action="handlers/handler2.php">
+                <form class="loginform" name="passinfo" id="gpw" action="handlers/handler.php">
                     <input type="text" class="text" name="user" placeholder="Brukernavn"><br>
                     <input type="text" class="text" name="mail" placeholder="E-post"><br>
                     <input type="Submit" value="Tilbakestill passord" class="button"/>

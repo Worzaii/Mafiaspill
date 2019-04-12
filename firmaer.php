@@ -103,7 +103,7 @@ if($db->num_rows() >= 1 || $obj->status == 1){
               $current_value4 = $v4;
             }
             else{
-              echo '<p class="feil">Det oppstod en feil ved oppdatering, ta kontakt med Werzaire og gi han dette: "'.mysqli_error($db->connection_id).'"</p>';
+                echo '<p class="feil">Det oppstod en feil ved oppdatering, ta kontakt med Werzaire og gi han dette: "' . mysqli_error($db->con) . '"</p>';
             }
           }
           else{

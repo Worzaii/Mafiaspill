@@ -550,7 +550,7 @@ function famidtoname($id, $link = 0)
 {
     global $dir;
     global $db;
-    $db->query("SELECT * FROM `familier` WHERE `id` = '$id'")or die(mysqli_error($db->connection_id));
+    $db->query("SELECT * FROM `familier` WHERE `id` = '$id'") or die(mysqli_error($db->con));
     if ($db->num_rows() == 1) {
         $navn = $db->fetch_object();
         if ($link == 1) {
