@@ -24,7 +24,7 @@ function startpage($title = NAVN_DOMENE)
   <script src="js/loggteller.js"></script>
   ';
     $db->query("SELECT * FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` != NULL");
-    $anyjail = ($db->num_rows() > 0) ? $db->num_rows() : NULL;
+    $anyjail = ($db->num_rows() > 0) ? $db->num_rows() : null;
 
     $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
     $late_online = $db->num_rows(); /* Online last 30 minutes */
@@ -280,20 +280,7 @@ function aktiv()
     }
 }
 
-function modkill_check()
-{
-    global $dir;
-    global $obj;
-    global $db;
-    $s = $db->query("SELECT * FROM `users` WHERE `id` = '$obj->id' AND `moddet` = '1'");
-    if ($db->num_rows() >= 1) {
-        return include($dir."moddet.php"); //Henter die fil
-    } else {
-        return;
-    }
-}
-
-function fengsel($timereturn = NULL)
+function fengsel($timereturn = null)
 {
     global $obj;
     global $db;

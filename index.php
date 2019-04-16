@@ -8,7 +8,7 @@ if (isset($_SESSION['sessionzar'])) {
         $grunn = $_SESSION['grunn'];
         unset($_SESSION['grunn']);
     } else {
-        $grunn = NULL;
+        $grunn = null;
     }
 }
 ?>

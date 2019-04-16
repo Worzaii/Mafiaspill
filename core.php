@@ -36,7 +36,6 @@ if (isset($_SESSION['sessionzar'])) {
             echo '<h1>Det kan se ut som du har blitt logget inn p&aring; et annet nettverk. Klikk her for &aring; g&aring; til innloggingssiden: <a href="loggut.php">Index</a></h1>';
             die();
         }
-        modkill_check();
         liv_check();
         ipbanned($ip);
         if ($obj->forceout == 1) {

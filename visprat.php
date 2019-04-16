@@ -1,7 +1,7 @@
 <?php
 include("core.php");
 startpage("Viser hele prat databasen!");
-if (!r1() || !r2() || !r3()) {
+if (!r1() && !r2() && !r3()) {
     echo '<h1>Ingen tilgang!</h1>';
     echo '<p class="feil">Du har ikke tilgang hit!</p>';
 } else {
