@@ -8,78 +8,80 @@ $sql4 = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` 
 $ant2 = $db->num_rows();
 $db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
 if ($db->num_rows() == 1) {
-    $kt  = $db->fetch_object();
+    $kt = $db->fetch_object();
     $ktl = (($kt->timewait - time()) >= 1) ? ($kt->timewait - time()) : null;
 } else {
     $ktl = null;
 }
-$db->query("SELECT * FROM `billogg` WHERE `uid` = '$obj->id' AND `time` > '".time()."' ORDER BY `id` DESC LIMIT 0,1");
+$db->query("SELECT * FROM `billogg` WHERE `uid` = '$obj->id' AND `time` > '" . time() . "' ORDER BY `id` DESC LIMIT 0,1");
 $numrows = $db->num_rows();
 if ($numrows >= 1) {
-    $bt  = $db->fetch_object();
+    $bt = $db->fetch_object();
     $btl = (($bt->time - time()) >= 1) ? ($bt->time - time()) : null;
 } else {
-    $bt  = NULL;
-    $btl = NULL;
+    $bt = null;
+    $btl = null;
 }
 $db->query("SELECT * FROM `rob_log` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
 $ranrows = $db->num_rows();
 if ($ranrows >= 1) {
-    $rt  = $db->fetch_object();
+    $rt = $db->fetch_object();
     $rtl = (($rt->timestamp - time()) >= 1) ? ($rt->timestamp - time()) : null;
 } else {
-    $rt  = NULL;
-    $rtl = NULL;
+    $rt = null;
+    $rtl = null;
 }
 $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1");
 $jailrow = $db->num_rows();
 if ($jailrow >= 1) {
-    $jt  = $db->fetch_object();
+    $jt = $db->fetch_object();
     $jte = (($jt->timeleft - time()) >= 1) ? ($jt->timeleft - time()) : null;
 } else {
-    $jt  = NULL;
-    $jte = NULL;
+    $jt = null;
+    $jte = null;
 }
-if ($obj->airportwait > time()) {
-    $fte    = $obj->airportwait - time();
+/*if ($obj->airportwait > time()) {
+    $fte = $obj->airportwait - time();
     $flytid = 1;
 } else {
-    $flytid = NULL;
-}
+    $flytid = null;
+}*/
 $onl = "online.php";
 ?>
 <h2>Rank</h2>
 <ul>
     <?php
-    if ($ktl == NULL) {
+    if ($ktl == null) {
         echo '<li><a href="krim.php">Kriminalitet</a>';
     } else {
-        echo '<li><a href="krim.php">Kriminalitet</a> <span style="font-size:10px;" id="krimteller">'.$ktl.'</span><script>loggteller('.$ktl.',"krimteller",false,"ned");</script></li>';
+        echo '<li><a href="krim.php">Kriminalitet</a> <span style="font-size:10px;" id="krimteller">' . $ktl . '</span>
+<script>loggteller(' . $ktl . ',"krimteller",false,"ned");</script></li>';
     }
-    if ($btl == NULL) {
-        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Nesten klar</span>)</a>';
+    if ($btl == null) {
+        echo '<li><a href="biltyveri.php">Biltyveri</a>';
     } else {
-        echo '<li><a href="biltyveri.php">Biltyveri (<span style="color:#FF0">Nesten klar</span>)</a> <span style="font-size:10px;" id="bilteller">'.$btl.'</span><script>loggteller('.$btl.',"bilteller",false,"ned");</script></li>';
+        echo '<li><a href="biltyveri.php">Biltyveri</a> <span style="font-size:10px;" id="bilteller">' . $btl . '</span>
+<script>loggteller(' . $btl . ',"bilteller",false,"ned");</script></li>';
     }
-    if ($rtl == NULL) {
+    if ($rtl == null) {
         echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a>';
     } else {
-        echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a> <span style="font-size:10px;" id="ranteller">'.$rtl.'</span><script>loggteller('.$rtl.',"ranteller",false,"ned");</script></li>';
+        echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a> 
+<span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
+<script>loggteller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
     }
-    if ($jte == NULL) {
+    if ($jte == null) {
         echo '<li><a href="fengsel.php">Fengsel</a>';
         if ($ant2 >= 1) {
             echo "($ant2)";
-        } echo '</li>';
+        }
+        echo '</li>';
     } else {
-        echo '<li><a href="fengsel.php">Fengsel</a> <span style="font-size:10px;" id="jailteller">'.$jte.'</span><script>loggteller('.$jte.',"jailteller",false,"ned");</script></li>';
-    }
-    if ($flytid == NULL) {
-        echo '<li><a href="flyplass.php">Flyplass(<span style="color:#f00">ikke klar</span>)</a></li>';
-    } else {
-        echo '<li><a href="flyplass.php">Flyplass(<span style="color:#f00">ikke klar</span>)</a> <span style="font-size:10px;" id="flyteller">'.$fte.'</span><script>loggteller('.$fte.',"flyteller",false,"ned");</script></li>';
+        echo '<li><a href="fengsel.php">Fengsel</a> <span style="font-size:10px;" id="jailteller">' . $jte . '</span>
+<script>loggteller(' . $jte . ',"jailteller",false,"ned");</script></li>';
     }
     ?>
+    <li><a href="#flyplass.php">Flyplass(<span style="color:#f00">ikke klar</span>)</a></li>
     <li><a href="#Drap">Drap (<span style="color:#f00">ikke klar</span>)</a></li>
     <li><a href="#oppdrag.php">Oppdrag (<span style="color:#f00">ikke klar</span></a>)</li>
     <li><a href="#Ran">Ran (<span style="color:#f00">ikke klar</span>)</a></li>
@@ -106,7 +108,7 @@ $onl = "online.php";
 </ul>
 <h2>Sosialt</h2>
 <ul>
-    <li><a href="chat.php">Chat</a> <?php
+    <li><a href="chat.php">Chat</a><?php
         if ($num2 >= 2) {
             echo "($num2)";
         }
@@ -115,7 +117,7 @@ $onl = "online.php";
     <li><a href="nyforum.php?type=2">Salg og S&oslash;knadsforum (<span style="color:#f00">ikke klar</span>)</a></li>
     <li><a href="nyforum.php?type=3">Annet (<span style="color:#f00">ikke klar</span>)</a></li>
     <?php
-    if ($obj->family != NULL) {
+    if ($obj->family != null) {
         echo '<li><a href="familiepanel.php?side=konfam">Gjengen (<span style="color:#f00">ikke klar</span>)</a></li>';
     } else {
         echo '<li><a href="Familie">Gjengene (<span style="color:#f00">ikke klar</span>)</a></li>';

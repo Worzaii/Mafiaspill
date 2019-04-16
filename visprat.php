@@ -14,29 +14,24 @@ if (!r1() && !r2() && !r3()) {
             unset($_SESSION['chatwarning']);
         }
     }
-    while ($r = mysqli_fetch_object($chat)) {
-        $teksten = htmlentities($r->mld, ENT_NOQUOTES, 'UTF-8');
-        $uob     = user($r->uid, 1);
-        if ($r->uid == 0) {
-            $uob = "Systemet";
-        } else {
-            $uob = user($r->uid);
+    if ($chat->num_rows >= 1) {
+        while ($r = $chat->fetch_object()) {
+            $teksten = htmlentities($r->message, ENT_NOQUOTES, 'UTF-8');
+            if ($r->uid == 0) {
+                $uob = "Systemet";
+            } else {
+                $uob = user($r->uid);
+            }
+            if ($r->id % 2) {
+                echo
+                    '<div class="chat ct1"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <br><span class="chattext">' . $teksten . '</span></div>';
+            } else {
+                echo
+                    '<div class="chat ct2"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <br><span class="chattext">' . $teksten . '</span></div>';
+            }
         }
-        if ($uob->status == 1) {
-            $teksten = bbcodes($teksten, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
-        } else if ($uob->status == 2 || $uob->status == 6) {
-            $teksten = bbcodes($teksten, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
-        } else {
-            $teksten = bbcodes($teksten, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0);
-        }
-        //echo '<p>uob: '.$uob->status.'</p>';
-        if ($r->id % 2) {
-            echo
-            '<div class="chat ct1"><b>['.date("H:i:s d.m.y", $r->time).']</b> &lt;'.$uob.'&gt;: <br><span class="chattext">'.$teksten.'</span></div>';
-        } else {
-            echo
-            '<div class="chat ct2"><b>['.date("H:i:s d.m.y", $r->time).']</b> &lt;'.$uob.'&gt;: <br><span class="chattext">'.$teksten.'</span></div>';
-        }
+    } else {
+        echo info('Det var ingen meldinger i praten n&aring;');
     }
 }
 endpage();

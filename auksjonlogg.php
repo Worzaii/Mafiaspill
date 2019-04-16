@@ -16,7 +16,8 @@ if (r1() || r2()) {
             <td>
                 <table class="table">
                     <?php
-                    $s1 = $db->query("SELECT * FROM `auksjon` WHERE `done` = '0' AND `time_left` > UNIX_TIMESTAMP() AND `currentbid` < `autowin` ORDER BY `id` DESC");
+                    $s1 = $db->query("SELECT * FROM `auksjon` WHERE `done` = '0' AND `time_left` > 
+                                               UNIX_TIMESTAMP() AND `currentbid` < `autowin` ORDER BY `id` DESC");
                     if ($db->num_rows() >= 1) {
                         $res = '';
                         while ($r = mysqli_fetch_object($s1)) {
@@ -25,7 +26,8 @@ if (r1() || r2()) {
                             $s2 = $db->query("SELECT * FROM `budauk` WHERE `aid` = '{$r->id}' ORDER BY `id` DESC");
                             if ($db->num_rows() >= 1) {
                                 while ($e = $db->fetch_object($s2)) {
-                                    $ex .= '<tr><td>' . user($e->uid) . '</td><td>' . number_format($e->bid) . ' kr</td><td>' . date("H:i:s d.m.y", $e->time) . '</td></tr>';
+                                    $ex .= '<tr><td>' . user($e->uid) . '</td><td>' . number_format($e->bid) . ' kr</td>
+<td>' . date("H:i:s d.m.y", $e->time) . '</td></tr>';
                                 }
                             } else {
                                 $ex = '<tr><td>Ingen bud har blitt lagt inn!<br></td></tr>';
@@ -53,7 +55,8 @@ if (r1() || r2()) {
                   <td>' . $curbid . '</td>
                   <td>' . number_format($r->autowin) . 'kr</td>
                   <td>' . number_format($r->increasebid) . 'kr</td>
-                  <td><span id="teller' . $r->id . '"></span><script>teller(' . $tidigjen . ',"teller' . $r->id . '",false,"ned");</script></td>
+                  <td><span id="teller' . $r->id . '"></span>
+                  <script>teller(' . $tidigjen . ',"teller' . $r->id . '",false,"ned");</script></td>
                   <td>' . user($r->seller) . '</td>
                   </tr>
                   <tr>

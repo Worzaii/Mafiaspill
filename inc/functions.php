@@ -130,7 +130,6 @@ function city($city, $way = 1)
  */
 function user($i, $obj = 0)
 {
-    global $dir;
     global $db;
     $s = $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($i)."'");
     if ($db->num_rows() == 1) {
@@ -138,7 +137,7 @@ function user($i, $obj = 0)
             return $db->fetch_object($s);
         }
         $obj = $db->fetch_object($s);
-        $res = ($db->num_rows() == 1) ? '<a href="'.$dir.'profil.php?id='.$obj->id.'">'.$obj->user.'</a>' : 'Ingen';
+        $res = '<a href="profil.php?id=' . $obj->id . '">' . $obj->user . '</a>';
         return($res);
     } else {
         return false;
