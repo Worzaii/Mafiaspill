@@ -22,79 +22,49 @@ if (isset($_SESSION['sessionzar'])) {
     <meta name="keywords" content="<?= KEYWORDS; ?>">
     <meta name="author" content="<?= UTVIKLER; ?>">
     <script src="js/jquery.js"></script>
-    <script src="js/nyajaxhandler.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".loginform").find("input").removeAttr("disabled");
-            $(".loginform [name='username']").trigger("focus");
-            $('#content div').hide();
-            $('#content div:first').show();
-            $('#content ul li:first').addClass('active');
-            $('#content ul a').click(function () {
-                $('#content ul li').removeClass('active');
-                $(this).parent().addClass('active');
-                let currentTab = $(this).attr('href');
-                $('#content div').hide();
-                $(currentTab).show();
-                if (currentTab === "#rules") {
-                    $("#rules div").css({display: "block"});
-                }
-                return false;
-            });
-            $('#kontakt a').click(function () {
-                $('#content ul li').removeClass('active');
-                $("#content").parent().addClass('active');
-                var currentTab = $(this).attr('href');
-                $('#content div').hide();
-                $(currentTab).show();
-                if (currentTab === "#rules") {
-                    $("#rules div").css({display: "block"});
-                }
-                return false;
-            });
-        });
-    </script>
+    <script src="js/handler.js"></script>
+    <script src="js/tabs.js"></script>
 </head>
 <body>
 <header>
-    <div id="header">
-    </div>
+    <div id="header"></div>
 </header>
 <section>
     <div class="wrapper">
         <div id="shadow"></div>
-        <div style="display: block;border-radius: 50px; border: 2px solid #f00; z-index: 1; height: auto; width: 100%; background: #888 url('/imgs/warn1.png') repeat; text-align: center; margin-top: -30px;">
-            <p style="margin: 10px 20px 5px 20px">EHHH... SPILLET ER STENGT FOR UTVIKLING KOM TILBAKE SENERE!</p>
+        <div id="information">
+            <p>Informasjon her!</p>
         </div>
-        <div id="content" style="margin-top: 20px;">
+        <div id="content">
             <ul>
                 <li><a href="#login">Innlogging</a></li>
                 <li><a href="#register">Registrering</a></li>
-                <li><a href="#forgotpassword">Nytt passord</a></li>
-                <li><a href="#rules">ToS(Regler)</a></li>
+                <li><a href="#forgotpassword">Glemt passord</a></li>
+                <li><a href="#rules">Regler</a></li>
                 <li><a href="#info">Informasjon</a></li>
                 <li><a href="#kontakt">Kontakt</a></li>
             </ul>
             <div id="login">
                 <h2>Innlogging</h2>
                 <?= $grunn ?>
-                <div id="res1"></div>
+                <div id="loginresult"></div>
                 <noscript><p>Du m&aring; ha javascript aktivert for &aring;& spille!</p></noscript>
-                <form class="loginform" name="logininfo" id="log" action="handlers/handler.php">
-                    Brukernavn: <input type="text" autocomplete="username" disabled name="username" class="text"
-                                       required placeholder="Brukernavn"><br>
-                    Passord:<input type="password" autocomplete="password" disabled name="password" class="text"
-                                   required placeholder="Passord"><br style="height:10px;">
-                    <input type="Submit" disabled value="Logg inn" class="button"/>
+                <form class="loginform" name="logininfo" id="loginform" action="handlers/handler.php?login">
+                    Brukernavn: <input autocomplete="username" class="text" disabled name="username"
+                                       placeholder="Brukernavn"
+                                       required type="text"><br>
+                    Passord:<input autocomplete="password" class="text" disabled name="password" placeholder="Passord"
+                                   required type="password"><br><br>
+                    <input class="button" disabled type="Submit" value="Logg inn"/>
                 </form>
                 <div class="cleanify"></div>
             </div>
-            <div id="register" style="display: none">
+            <div id="register">
                 <h2>Motta Invitasjon</h2>
-                <div id="ressu"></div>
+                <div id="registerresult"></div>
                 <p>&nbsp;</p>
                 <p>Du kan kun sende &eacute;n mail hver halvtime, s&aring; om du ikke klarer det f&oslash;rste gangen m&aring;
-                    du vente en stund, s&aring; pass p&aring; at du skriver riktig email n&aring;r du skal motta
+                    du vente en stund, s&aring; pass p&aring; at du skriver riktig e-postadresse n&aring;r du skal motta
                     registreringslink.</p>
                 <form class="loginform" name="reginfo" id="getaccess" action="handlers/handler.php">
                     Email:<input type="email" autocomplete="username" class="text" name="email" required
@@ -104,9 +74,9 @@ if (isset($_SESSION['sessionzar'])) {
                 <div class="cleanify"></div>
 
             </div>
-            <div id="forgotpassword" style="display: none">
+            <div id="forgotpassword">
                 <h2>Nytt passord</h2>
-                <div id="res3"></div>
+                <div id="forgotpasswordresult"></div>
                 <form class="loginform" name="passinfo" id="gpw" action="handlers/handler.php">
                     <input type="text" class="text" name="user" placeholder="Brukernavn"><br>
                     <input type="text" class="text" name="mail" placeholder="E-post"><br>
@@ -115,7 +85,7 @@ if (isset($_SESSION['sessionzar'])) {
                 <div class="cleanify"></div>
 
             </div>
-            <div id="rules" style="display: none">
+            <div id="rules">
                 <h2>Reglement</h2>
                 <div class="regler">
                     <div class="wrap">
@@ -129,9 +99,7 @@ if (isset($_SESSION['sessionzar'])) {
                                 senere.
                             </li>
                             <li>Du er den eneste som har ansvaret for brukeren, det vil si at du ikke har lov til
-                                &aring; la andre bruke din bruker til &aring; <em
-                                        title="Utf&oslash;re oppgaver for &aring; gj&oslash;re din bruker bedre.">ranke</em>
-                                for deg.
+                                &aring; la andre bruke din bruker til &aring; f&aring; erfaring for deg.
                             </li>
                             <li>Du har ikke p&aring; noen m&aring;te lov &aring; bruke et program/javascript eller
                                 lignende til &aring; f&aring; brukeren din til &aring; ranke opp imens du ikke er
@@ -147,10 +115,7 @@ if (isset($_SESSION['sessionzar'])) {
                                     <li>Du har n&oslash;dt til &aring; f&oslash;lge Norsk lovverk, ingen unntak vil
                                         forekomme.
                                     </li>
-                                    <li>Du har ikke lov &aring; <em
-                                                title="Griseprate, Legge ut linker til pornosider, eller s&oslash;ke etter mindre&aring;rige p&aring; noen m&aring;te.">dele
-                                            seksuelt innhold</em>.
-                                    </li>
+                                    <li>Du har ikke lov &aring; dele seksuelt innhold</li>
                                 </ol>
                             </li>
                         </ol>
@@ -158,7 +123,7 @@ if (isset($_SESSION['sessionzar'])) {
                         <ol>
                             <li>Du har selv ansvaret for hva du velger &aring; legge ut p&aring; din profil, men det m&aring;
                                 p&aring; ingen m&aring;te stride med det norske lovverk. Du m&aring; heller ikke bryte f&oslash;lgende
-                                reg(el/ler):
+                                regler:
                                 <ul class="regler">
 
                                     <li>Se &sect;2. Kommunikasjon</li>
@@ -176,21 +141,19 @@ if (isset($_SESSION['sessionzar'])) {
                     </div>
                 </div>
             </div>
-            <div id="info" style="display: none">
+            <div id="info">
                 <h2>Informasjon</h2>
-                <p>N&aring;r du logger inn eller registrerer deg hos oss vil en del informasjon bli sendt inn til oss. F&oslash;lgende
-                    informasjon vil vi bli &aring; motta:<br></p>
+                <p>N&aring;r du logger inn eller registrerer deg hos oss vil en del informasjon bli sendt inn til oss.
+                    F&oslash;lgende informasjon vil vi bli &aring; motta:<br></p>
                 <ol>
                     <li>Nettleser:</li>
                     <ul class="regler">
                         <li>Nettleseren(Chrome, Firefox, Opera, etc.)</li>
-                        <li>Nettleservinduet(st&oslash;rrelsesforhold)</li>
                     </ul>
                     <li>Igjennom bruk av v&aring;r nettside:</li>
                     <ul class="regler">
                         <li>Aktivitet</li>
                         <li>Forskjellige ip-adresser som blir brukt logges</li>
-                        <li></li>
                     </ul>
                 </ol>
                 <p>Vi bruker denne informasjonen vil bli brukt for &aring; forbedre din opplevelse av spillet, slik at
@@ -198,25 +161,19 @@ if (isset($_SESSION['sessionzar'])) {
                     spiller spillet. Om du har sp&oslash;rsm&aring;l, s&aring; kan du ta kontakt, se denne siden: <a
                             href="#kontakt" title="Kontaktsiden">Kontakt</a></p>
             </div>
-            <div id="kontakt" style="display: none">
+            <div id="kontakt">
                 <h2>Kontakt</h2>
                 <h1>E-post:</h1>
-                <p style="cursor: pointer" title="Klikk for &aring; vise mail url." onclick="javascript:this.title = '';
-                        javascript:this.innerHTML = '<a href=\'mailto:<?= HENVEND_MAIL; ?>\'><?= HENVEND_MAIL; ?></a>'"><?= HENVEND_MAIL_SAFE; ?></p>
+                <p style="cursor: pointer" title="Klikk for &aring; vise mail url." onclick="this.title = '';
+                        this.innerHTML = '<a href=\'mailto:<?= HENVEND_MAIL; ?>\'><?= HENVEND_MAIL; ?></a>'"><?= HENVEND_MAIL_SAFE; ?></p>
 
                 <div class="cleanify"></div>
             </div>
         </div>
     </div>
 </section>
-<footer>
-    <div style="width: 600px; margin: 0 auto 0 auto;">
-        <div id="spot1">
-            Fotkolonne 1
-        </div>
-        <div id="spot2"><?= NAVN_DOMENE; ?> &copy; <?= date("Y", time()); ?> Utvikles av Nicholas Arnesen</div>
-        <div id="spot3">Fotkolonne 3</div>
-    </div>
-</footer>
+<?php
+include './inc/footer.php';
+?>
 </body>
 </html>

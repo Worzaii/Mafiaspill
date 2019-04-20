@@ -8,21 +8,23 @@ html, body {
     font-size: 12px;
     color: #fff;
 }
+
 a {
-	color: #999;
-	font-weight: bold;
-	text-decoration: none;
-	-webkit-transition: all 0.3s ease;
-	-moz-transition: all 0.3s ease;
-	-o-transition: all 0.3s ease;
-	transition: all 0.3s ease;
-}
-a:hover{
-	color: #ccc;
+    color: #999;
+    font-weight: bold;
+    text-decoration: none;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-input[type="text"], input[type="password"], textarea, select { 
-outline : none;
+a:hover {
+    color: #ccc;
+}
+
+input[type="text"], input[type="password"], textarea, select {
+    outline: none;
 }
 
 .wrapper {
@@ -32,32 +34,31 @@ outline : none;
 
 h2 {
     margin: 0;
-    padding: 10px 25px 10px 0px;
+    padding: 10px 25px 10px 0;
     font-size: 14px;
     text-transform: uppercase;
     font-weight: bold;
     color: #111;
     text-align: right;
     border-bottom: 1px solid #999;
-    box-shadow: 0px 1px 0px #fff;
+    box-shadow: 0 1px 0 #fff;
 }
 
 ::selection {
-background-color: #447788;
-color: #fff;
+    background-color: #447788;
+    color: #fff;
 }
 
 
-
-#content{
+#content {
     width: 600px;
     /*height: 400px;*/
     min-height: 400px;
-    margin-top: 10%;
+    margin-top: 20px;
     background: url(/images/headerbg.png) repeat;
     border-radius: 10px;
     color: #333;
-	box-shadow: 1px 1px 2px #000;
+    box-shadow: 1px 1px 2px #000;
 }
 
 #content ul:not(.regler) {
@@ -65,11 +66,11 @@ color: #fff;
     height: 400px;
     background: #ccc;
     border-radius: 10px 0 0 10px;
-    padding: 0px;
+    padding: 0;
     border-right: 1px solid #999;
-    box-shadow: 1px 0px 0px #fff;
-    float:left;
-    margin: 0px;
+    box-shadow: 1px 0 0 #fff;
+    float: left;
+    margin: 0;
 }
 
 #content ul:not(.regler) li {
@@ -79,22 +80,26 @@ color: #fff;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #666;
     background: #bbb;
-    padding: 15px 0px 0px 10px;
+    padding: 15px 0 0 10px;
     text-decoration: none;
     text-transform: uppercase;
-    text-shadow: 0px 1px 0px #ddd;
+    text-shadow: 0 1px 0 #ddd;
 }
-div#rules{
+
+div#rules {
     margin-left: 148px;
 }
-div.regler h3{
+
+div.regler h3 {
     margin-left: 10px;
 }
-div.regler{
-    height:363px;
-    overflow: overlay;
+
+div.regler {
+    height: 363px;
+    overflow: hidden;
 }
-div.regler div.wrap{
+
+div.regler div.wrap {
     margin-left: 20px;
     overflow: scroll;
     height: 363px;
@@ -113,7 +118,7 @@ div.regler div.wrap{
 }
 
 #content ul li:first-child {
-    border-radius: 10px 0px 0px 0px;
+    border-radius: 10px 0 0 0;
     border-top: none;
 }
 
@@ -123,17 +128,19 @@ div.regler div.wrap{
 }
 
 .active {
-    background: #999!important;
-    color: #111!important;
+    background: #999 !important;
+    color: #111 !important;
 }
 
-input { border: none;}
+input {
+    border: none;
+}
 
 input.text {
     height: 25px;
     width: 190px;
     padding-left: 10px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     border-top: 1px solid #000;
     border-bottom: 1px solid #FFF;
     margin-top: 10px;
@@ -147,7 +154,7 @@ input.button {
     height: 25px;
     padding-left: 10px;
     padding-right: 10px;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255, 255, 255, 0.6);
     border-bottom: 1px solid #333;
     border-top: 1px solid #FFF;
     margin-top: 10px;
@@ -164,7 +171,7 @@ input.button:active {
 
 .loginform {
     margin-right: 25px;
-    float:right;
+    float: right;
 }
 
 .cleanify {
@@ -201,7 +208,7 @@ header {
     width: 1000px;
     height: 50px;
     background: url(/images/shadow.png) no-repeat top center;
-	margin-left: -200px;
+    margin-left: -200px;
 }
 
 /* Footer */
@@ -211,14 +218,14 @@ footer {
     margin: 0 auto 0 auto;
     clear: both;
     color: #666;
-    bottom: 0px;
+    bottom: 0;
 }
 
 footer #spot1 {
     width: 125px;
     height: 60px;
     padding-top: 40px;
-    float:left;
+    float: left;
 }
 
 footer #spot2 {
@@ -226,7 +233,7 @@ footer #spot2 {
     height: 60px;
     padding-top: 40px;
     text-align: center;
-    float:left;
+    float: left;
 }
 
 footer #spot3 {
@@ -234,58 +241,36 @@ footer #spot3 {
     height: 60px;
     padding-top: 40px;
     text-align: right;
-    float:left;
-}
-
-/* Feil og lykket */
-
-/*.feil {
-    width: 400px;
-	background: rgb(90,0,0);
-    background-image: linear-gradient(top, rgb(140,0,0) 0%, rgb(90,0,0) 100%);
-    background-image: -o-linear-gradient(top, rgb(140,0,0) 0%, rgb(90,0,0) 100%);
-    background-image: -moz-linear-gradient(top, rgb(140,0,0) 0%, rgb(90,0,0) 100%);
-    background-image: -webkit-linear-gradient(top, rgb(140,0,0) 0%, rgb(90,0,0) 100%);
-    background-image: -ms-linear-gradient(top, rgb(140,0,0) 0%, rgb(90,0,0) 100%);
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, rgb(140,0,0)),
-        color-stop(1, rgb(90,0,0))
-    );
-    color: #fff;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    margin-left: 165px;
-    font-size: 12px;
-    color: #110000;
-    text-shadow: 0px 1px 0px rgb(140,0,0);
-    border-radius: 15px;
+    float: left;
 }
 
 .lykket {
-    width: 400px;
-	background: rgb(0,90,0);
-    background-image: linear-gradient(top, rgb(0,140,0) 0%, rgb(0,90,0) 100%);
-    background-image: -o-linear-gradient(top, rgb(0,140,0) 0%, rgb(0,90,0) 100%);
-    background-image: -moz-linear-gradient(top, rgb(0,140,0) 0%, rgb(0,90,0) 100%);
-    background-image: -webkit-linear-gradient(top, rgb(0,140,0) 0%, rgb(0,90,0) 100%);
-    background-image: -ms-linear-gradient(top, rgb(0,140,0) 0%, rgb(0,90,0) 100%);
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, rgb(0,140,0)),
-        color-stop(1, rgb(0,90,0))
-    );
-    color: #fff;
+    width: 434px;
+    background: rgba(0, 10, 0, 0.2);
+    color: black;
     padding-top: 12px;
     padding-bottom: 12px;
-    margin-left: 165px;
+    margin-left: 166px;
     font-size: 12px;
-    color: #001100;
-    text-shadow: 0px 1px 0px rgb(0,140,0);
-    border-radius: 15px;
-}*/
-.lykket {	width: 434px;	background: rgba(0,10,0,0.2);    color: black;    padding-top: 12px;    padding-bottom: 12px;    margin-left: 166px;    font-size: 12px;	margin-top: none!important;}    
+    margin-top: 0 !important;
+}
+
+#information {
+    display: block;
+    border-radius: 50px;
+    border: 2px solid #f00;
+    z-index: 1;
+    height: auto;
+    width: 100%;
+    background: #888 url('/imgs/warn1.png') repeat;
+    text-align: center;
+    margin-top: -30px;
+}
+
+#information p {
+    margin: 10px 20px 5px 20px
+}
+
+#register, #forgotpassword, #rules, #info, #kontakt {
+    display: none;
+}

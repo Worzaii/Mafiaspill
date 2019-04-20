@@ -11,13 +11,14 @@ function safegen($u, $p)
     return md5(sha1($u . $p . $ua . $l . $i . "g9gr90eGR"));
 }
 
-function gen($t)
+function codegen($length = 12)
 {
-    return str_replace(
-        ['æ', 'ø', 'å', 'Æ', 'Ø', 'Å'],
-        ['&aelig;', '&oslash;', '&aring;', '&Aelig;', '&Oslash;', '&Aring;'],
-        $t
-    );
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $string = null;
+    for ($p = 0; $p < $length; $p++) {
+        $string .= $characters[mt_rand(0, strlen($characters))];
+    }
+    return $string;
 }
 
 /* Config must be loaded before any other scripts, this must be defined and correct */

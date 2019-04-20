@@ -1,54 +1,49 @@
 function updatepage(str, responsediv) {
-    var rese = "#" + responsediv;
+    let rese = "#" + responsediv;
     $(rese).fadeIn(1000);
     document.getElementById(responsediv).innerHTML = str;
     document.getElementById(responsediv).style.display = "block";
     document.getElementById(responsediv).style.color = "red";
 }
+
 $(document).ready(function () {
-    $("#log").submit(function (event) {
+    $("#loginform").submit(function (event) {
         event.preventDefault();
-        var $form = $(this).serialize(), link = $(this).attr('action');
-        link += "?log";
+        let $form = $(this).serialize(), link = $(this).attr('action');
         $.ajax({
             url: link,
             data: $form,
             dataType: "json",
             type: "POST",
             success: function (data) {
-                $res = eval(data);
+                let $res = eval(data);
                 console.log($res);
-                if ($res.state == 1) {
-                    updatepage($res.string, "res1");
-                    var count = 1.5;
-                    console.log('Counting down from ' + count);
-                    countdown = setInterval(function () {
-                        console.log('Counting... Val: ' + count);
+                if ($res.state === 1) {
+                    updatepage($res.string, "loginresult");
+                    let count = 1.5;
+                    setInterval(function () {
                         if (count === 0) {
-                            window.location.href = $res.href;
+                            window.location.href = href;
                         }
                         count -= 0.5;
                     }, 500);
-                } else if ($res.state == 0) {
-                    updatepage($res.string, "res1");
-                }
-                else {
-                    alert("Something went wrong");
+                } else if ($res.state === 0) {
+                    updatepage($res.string, "loginresult");
                 }
             }
         });
     });
-    $("#gpw").submit(function (event) {
+    $("#forgottenpassword").submit(function (event) {
         event.preventDefault();
-        var $form = $(this).serialize(), link = $(this).attr('action');
-        link += "?gpw";
+        let $form = $(this).serialize(), link = $(this).attr('action');
+        link += "?forgotpassword";
         $.ajax({
             url: link,
             data: $form,
             dataType: "json",
             type: "POST"
         }).done(function (data) {
-            $res = eval(data);
+            let $res = eval(data);
             updatepage($res.string, "res3");
         });
     });
@@ -62,11 +57,11 @@ $(document).ready(function () {
             dataType: "json",
             type: "POST"
         }).done(function (data) {
-            $res = eval(data);
+            let $res = eval(data);
             updatepage($res.string, "ressu");
         });
     });
-    $("#brukerreg").submit(function (event) {
+    $("#register").submit(function (event) {
         event.preventDefault();
         var $form = $(this).serialize(), link = $(this).attr('action');
         $.ajax({
@@ -75,11 +70,11 @@ $(document).ready(function () {
             dataType: "json",
             type: "POST"
         }).done(function (data) {
-            $res = eval(data);
+            let $res = eval(data);
             updatepage($res.string, "ressu");
         });
     });
-    $("#respas").submit(function (event) {
+    $("#resetpassword").submit(function (event) {
         event.preventDefault();
         var $form = $(this).serialize(), link = $(this).attr('action');
         $.ajax({
@@ -88,7 +83,7 @@ $(document).ready(function () {
             dataType: "json",
             type: "POST",
             success: function (data) {
-                $res = eval(data);
+                let $res = eval(data);
                 updatepage($res.string, "ressu");
             }
         });

@@ -27,7 +27,7 @@ if ($db->num_rows() == 1) {
         <meta name="author" content="Nicholas Arnesen">
         <link type="text/css" rel="stylesheet" href="./css/login.css">
         <script src="./js/jquery.js" type="text/javascript"></script>
-        <script src="./js/nyajaxhandler.js" type="text/javascript"></script>
+        <script src="js/handler.js" type="text/javascript"></script>
         <script src="./js/teller.js" type="text/javascript"></script>
     </head>
     <body>

@@ -1,137 +1,116 @@
 <?php
 define("BASEPATH", true);
-include('../system/config.php');
-include('../classes/class.php');
-header('Content-type: application/json'); /* Output til nettleser */
+include '../system/config.php';
+include '../classes/class.php';
+include '../inc/functions.php';
+header('Content-type: application/json');
 
-function codegen($length = 12)
-{
-//Kodegenerator
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $string = null;
-    for ($p = 0; $p < $length; $p++) {
-        $string .= $characters[mt_rand(0, strlen($characters))];
-    }
-    return $string;
-}
-
-$str = ['string' => null, 'state' => 0, 'act' => 0];
-if (isset($_GET['log'])) {
+$str = ['string' => feil('Error: Not overwritten!'), 'state' => 0, 'act' => 0];
+$ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
+    : $_SERVER['REMOTE_ADDR'];
+if (isset($_GET['login'])) {
     if (isset($_POST['username']) && isset($_POST['password'])) {
         if (strlen($_POST['username']) === 0 || strlen($_POST['password']) === 0) {
-            die(json_encode(['string' => "Ingen informasjon ble postet!", "state" => 0]));
+            $str['string'] = feil('Ingen informasjon ble postet!');
         } else {
             $db = new database();
             $db->connect();
             $us = $db->escape($_POST['username']);
-            $pa = md5(sha1($_POST['password']));
+            $pa = $_POST['password'];
             $db->query("SELECT * FROM `users` WHERE `user` = '$us'");
             if ($db->num_rows() == 1) {
                 $uid = $db->fetch_object();
-                if ($uid->pass == $pa) {
-                    if ($uid->health > 0 && $uid->moddet == 0) {
-                        $str = ['string' => "<p class=\"lykket\">Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn til nyheter...</p>",
-                            'state' => 1, 'href' => "https://" . DOMENE_NAVN . "/nyheter.php"];
-                        $_SESSION['sessionzar'] = array($uid->user, $uid->pass, safegen($uid->user, $uid->pass));
-                        $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
-                            : $_SERVER['REMOTE_ADDR'];
-                        $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '$ip',`hostname`='" . gethostbyaddr($ip) . "' WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'") or die("Feil" . mysqli_error($db->con));
-                        /*$db->query("INSERT INTO `sessusr`(`uid`,`user_agent`,`ip`,`ip_host`,`security_key_gen`,`time`) VALUES('$uid->id','".$_SERVER['HTTP_USER_AGENT']."','".$_SERVER['REMOTE_ADDR']."','".gethostbyaddr($ip)."','".safegen($uid->user,
-                                $uid->pass)."',UNIX_TIMESTAMP())");*/
+                if (password_verify($pa, $uid->pass)) {
+                    if ($uid->health > 0) {
+                        $str = ['string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
+                        til nyhetssiden...'), 'state' => 1, 'href' => 'https://' . DOMENE_NAVN . '/nyheter.php'];
+                        $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
+                        $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '$ip',
+                        `hostname`='" . gethostbyaddr($ip) . "' 
+                        WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'") or die("Feil" . mysqli_error($db->con));
                     } else {
-                        if ($uid->moddet == 1) {
-                            $str = ['string' => "<p class='feil'>$uid->user har blitt modkillet av {$uid->modav}.<br>Grunnlag: " . gen($uid->modgrunn) . "</p>",
-                                "state" => 0];
-                        } else if ($uid->health == 0) {
-                            $str = ['string' => gen("<p class='feil'>Du har blitt drept! For &aring; spille, registrer en ny bruker!</p>"),
-                                "state" => 0];
+                        if ($uid->health == 0) {
+                            $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
                         }
                     }
                 } else {
-                    //Feil passord
-                    $str = ['string' => "<p class='feil'>Brukernavnet eller passordet er ikke rett, pr&oslash;v igjen!</p>",
-                        "state" => 0];
+                    $str['string'] = feil('Passordet stemte ikke overens med det vi har');
                 }
             } else {
-                //Brukernavnet eksisterer ikke
-                $str = ['string' => '<p class="feil">Brukernavnet finnes ikke!</p>', "state" => 0];
+                $str['string'] = feil('Brukernavnet finnes ikke!');
             }
-            //$str = array('string'=>"Alt er ok!");
             if (!$str) {
-                $str = array('string' => "Ingen tr&aring;der satt!", "state" => 0);
+                $str['string'] = info('Ingen tr&aring;der satt!');
             }
         }
     } else {
-        $str = ['string' => "Ingen informasjon ble sendt!", "state" => 0];
+        $str['string'] = info('Ingen informasjon ble sendt!');
     }
-    $str = json_encode(gen($str));
-    print $str;
 }
 if (isset($_GET['getaccess'])) {
     $db = new database;
-    $db->configure();
     $db->connect();
     $m = $db->escape($_POST['email']);
     if (!filter_var($m, FILTER_VALIDATE_EMAIL)) {
-        $str = array('string' => "<p style=\"color:#f00;\">Email ikke godkjent! Pr&oslash;v igjen!</p>");
-        $str = json_encode(gen($str));
-        print($str);
+        $str['string'] = feil('E-postadressen ikke godkjent! Pr&oslash;v igjen!');
     } else {
-        $res = $db->query("SELECT * FROM `invsjekk` WHERE `ip` = '" . $_SERVER['REMOTE_ADDR'] . "' AND `used` = '0' AND `time` > '" . time() . "'") or die(mysqli_error());
+        $res = $db->query("SELECT * FROM `invsjekk` WHERE `ip` = '" . $_SERVER['REMOTE_ADDR'] . "' 
+        AND `used` = '0' AND `timestamp` > '" . time() . "'");
         if ($db->num_rows() == 0) {
-            $used = ($db->query("SELECT * FROM `users` WHERE `mail` = '" . $m . "' AND (`health` = '0' OR `moddet` = '1')"));
+            $used = ($db->query("SELECT * FROM `users` WHERE `mail` = '$m' AND `health` = '0' LIMIT 1"));
             $subject = 'Registrering';
             $randomseed = rand();
-            /* $db->query("CREATE TABLE IF NOT EXISTS `invsjekk`(`id` INT NOT NULL AUTO_INCREMENT,`mail` VARCHAR(255) NOT NULL,`code` VARCHAR(255) NOT NULL,`ip` VARCHAR(100) NOT NULL,`time` BIGINT NOT NULL,`used` ENUM('0','1') DEFAULT '0', PRIMARY KEY(`id`))"); */
-            $db->query("INSERT INTO `invsjekk`(`mail`,`time`,`ip`,`code`) VALUES('" . $m . "','" . (time() + 600) . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $randomseed . "')") or die(mysqli_error());
-            // message
-            $message = gen('
+            $db->query("INSERT INTO `invsjekk`(`mail`,timestamp,`ip`,`code`) 
+VALUES('" . $m . "','" . (time() + 600) . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $randomseed . "')");
+            $url = 'https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . urlencode($m);
+            $message = '
       <html>
       <head>
       <title>Invitasjon til registrering</title>
       </head>
       <body>
       <h1>Klikk p&aring; linken under for &aring; g&aring; til registrering</h1>
-      <p><a href="https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . urlencode($m) . '">https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . $m . '</a></p>
+      <p><a href="' . $url . '">' . $url . '</a></p>
       </body>
       </html>
-      ');
-
-            // To send HTML mail, the Content-type header must be set
-            $headers = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-
-            // Additional headers
+      ';
+            $headers = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=UTF-8' . "\r\n";
             $headers .= 'To: ' . $m . ' <' . $m . '>' . "\r\n";
-            $headers .= 'From: ' . NAVN_DOMENE . ' <system@' . MAIL_SENDER . '>' . "\r\n";
-
-            // Mail it
+            $headers .= 'From: ' . NAVN_DOMENE . ' <noreply@' . MAIL_SENDER . '>' . "\r\n";
             if (mail($m, $subject, $message, $headers)) {
-                print(json_encode(gen(array('string' => gen('<p style="color:#008500">Det ble sendt en email til ' . $m . ' fra system@' . MAIL_SENDER . '! Sjekk innboks(mulig s&oslash;ppelpost ogs&aring;). Hvis du bruker Outlook, s&aring; vil du ikke motta mail pga. begrensninger hos dem.</p>')))));
+                $str['string'] = lykket('Det ble sendt en email til ' . htmlentities($m) . ' 
+                fra noreply@' . MAIL_SENDER . '! 
+                Sjekk innboks(mulig s&oslash;ppelpost ogs&aring;). 
+                Hvis du bruker Outlook, s&aring; vil du ikke motta mail pga. begrensninger hos dem.');
+                $str['res'] = 1;
             } else {
-                print(json_encode(gen(array('string' => gen('<p style="color:#850000">Kunne ikke sende mail! Kan v&aelig;re feilkonfigurasjon i script eller ikke ferdig modul.</p>')))));
+                $str['string'] = feil('Kunne ikke sende mail! Kan v&aelig;re feilkonfigurasjon 
+                i script eller ikke ferdig modul.');
             }
         } else {
-            /* M&aring; vente f&oslash;r ny mail kan sendes */
             $f = $db->fetch_object();
             $left = $f->time - time();
-            print(json_encode(gen(array('string' => '<p>Du m&aring; vente med &aring; motta ny invitasjon, eller bruke den du har mottatt p&aring; ' . $f->mail . '. Det gjenst&aring;r ' . $left . ' sekunder f&oslash;r du kan pr&oslash;ve igjen.</p>'))));
+            $str['string'] = feil('Du m&aring; vente med &aring; motta ny invitasjon, 
+            eller bruke den du har mottatt p&aring; ' . $f->mail . '. 
+            Det gjenst&aring;r ' . $left . ' sekunder f&oslash;r du kan pr&oslash;ve igjen.');
         }
     }
-    /* GETACCESS END */
 }
 if (isset($_GET['brukerreg'])) {
     $db = new database;
     $db->configure();
     $db->connect();
     $u = $db->escape($_POST['user']);
-    $p = $db->escape($_POST['pass']);
+    $p = $_POST['pass'];
     $m = $db->escape($_POST['mail']);
     $c = $db->escape($_POST['code']);
     $v = $db->escape($_POST['vervetav']);
-    $db->query("SELECT * FROM `users` WHERE `user` = '" . $u . "'");
+    $db->query("SELECT * FROM `users` WHERE `user` = '$u'");
     if (!preg_match("/^[a-z]+[\w._ -]*$/i", $u) || (strlen($u) <= 3 || strlen($u) >= 21) || (strlen($p) <= 3)) {
-        $str = array('string' => '<p class="color:#f00;">Brukernavn ikke godkjent! Sjekk at du oppfyller kriteriene:<br>Bokstaver fra a-z(sm&aring; eller store) Du kan ogs&aring; bruke _(underscore) og mellomrom. Det kan v&aelig;re mellom 4-20 tegn. Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller mer.</p>');
+        $str['string'] = feil('Brukernavn ikke godkjent! Sjekk at du oppfyller kriteriene:<br>
+Bokstaver fra a-z(sm&aring; eller store) Du kan ogs&aring; bruke _(underscore) og mellomrom. 
+Det kan v&aelig;re mellom 4-20 tegn. 
+Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller mer.');
         if (!preg_match("/^[a-z]+[\w._-]*$/i", $u)) {
             $str['string'] .= '<p>Brukernavnet ble ikke godkjent!</p>';
         }
@@ -143,11 +122,8 @@ if (isset($_GET['brukerreg'])) {
         }
     } else {
         if ($db->num_rows() == 0) {
-            /* Fortsetter registrering */
-            /* Passord ok */
-            $s = $db->query("SELECT * FROM `invsjekk` WHERE `code` = '" . $c . "' AND `mail` = '" . $m . "' AND `used` = '0'");
+            $s = $db->query("SELECT * FROM `invsjekk` WHERE `code` = '$c' AND `mail` = '$m' AND `used` = '0'");
             if ($db->num_rows() == 1) {
-                /* Registrerer brukeren */
                 $vervet = 0;
                 if (strlen($v) >= 1) {
                     $r = $db->query("SELECT * FROM `users` WHERE `id` = '$v'");
@@ -159,35 +135,40 @@ if (isset($_GET['brukerreg'])) {
                     }
                 }
                 if (isset($error) && $error === 1) {
-                    $str = ['string' => '<p style="color:#f00;">Brukeren din angav i verving ble ikke godkjent. Pr&oslash;v igjen, eller la feltet st&aring; tomt.</p>'];
+                    $str['string'] = feil('Brukeren din angav i verving ble ikke godkjent. 
+                    Pr&oslash;v igjen, eller la feltet st&aring; tomt.');
                 } else {
-                    $db->query("INSERT INTO `users`(`user`,`pass`,`mail`,`regip`,`reghostname`,regstamp,`lastactive`) VALUES('" . $u . "',MD5('" . sha1($p) . "'),'" . $m . "','" . $_SERVER['REMOTE_ADDR'] . "','" . gethostbyaddr($_SERVER['REMOTE_ADDR']) . "',UNIX_TIMESTAMP(),'0')");
+                    $password = password_hash($p, PASSWORD_BCRYPT);
+                    $db->query("INSERT INTO `users`(`user`,`pass`,`mail`,`regip`,`reghostname`,
+                    regstamp,`lastactive`) 
+                    VALUES('$u','$password','$m','$ip','" . gethostbyaddr($ip) . "',UNIX_TIMESTAMP(),'0')");
                     if ($db->affected_rows() == 1) {
-                        $str = ['string' => lykket('Du har blitt registrert, du kan n&aring; logge inn! <a href="http://' . DOMENE_NAVN . '/">Trykk her for &aring; g&aring; til innlogging</a>')];
+                        $str['string'] = lykket('Du har blitt registrert, du kan n&aring; logge inn! 
+                        <a href="http://' . DOMENE_NAVN . '/">Trykk her for &aring; g&aring; til innlogging</a>');
+                        $str['res'] = 1;
                         $db->query("UPDATE `invsjekk` SET `used` = '1' WHERE `mail` = '$m' AND `code` = '$c'");
                     } else {
-                        $str = ['string' => feil('Brukeren kunne ikke bli lagt inn i databasen, pr&oslash;v igjen, ta gjerne kontakt med support: support@' . MAIL_SENDER . '!<br>Feilen er:<br>' . mysqli_error($db->con))];
+                        $str['string'] = feil('Brukeren kunne ikke bli lagt inn i databasen, pr&oslash;v igjen, 
+                        ta gjerne kontakt med support: support@' . MAIL_SENDER . '!');
                     }
                 }
             } else {
-                $str = ['string' => feil('Koden er ikke godkjent! Den kan v&aelig;re brukt allerede, eller mailen har ingen tilknytning til koden.')];
+                $str['string'] = feil('Koden er ikke godkjent! Den kan v&aelig;re brukt allerede, 
+                eller mailen har ingen tilknytning til koden.');
             }
         } else {
-            $str = ['string' => feil('Du m&aring; velge et annet brukernavn, da dette er i bruk.')];
+            $str['string'] = feil('Du m&aring; velge et annet brukernavn, da dette er i bruk.');
         }
     }
-    $str = json_encode(gen($str));
-    print $str;
 }
 if (isset($_GET['gpw'])) {
     $user = $db->escape($_POST['user']);
     $mail = $db->escape($_POST['mail']);
     if (strlen($user) >= 4 && strlen($user) <= 20 && filter_var($mail, FILTER_VALIDATE_EMAIL)) {
         $db = new database;
-        $db->configure();
         $db->connect();
-        $db->query("SELECT * FROM `users` WHERE `user` = '$user' AND `mail` = '$mail' AND `moddet` = '0'
-                        AND `health` > '0' ORDER BY `id` DESC LIMIT 1");
+        $db->query("SELECT * FROM `users` WHERE `user` = '$user' AND `mail` = '$mail' AND `health` > '0' 
+ORDER BY `id` DESC LIMIT 1");
         if ($db->num_rows() == 1) {
             $i = $db->fetch_object();
             $to = $i->mail;
@@ -222,26 +203,21 @@ if (isset($_GET['gpw'])) {
             $headers .= 'To: ' . $i->user . ' <' . $i->mail . '>' . "\r\n";
             $headers .= 'From: ' . MAIL_SENDER . ' <' . HENVEND_MAIL . '>' . "\r\n";
             if (mail($to, $head, $message, $headers)) {
-                $str = ['string' => gen('<p style="color:#50a850">Det har blitt sendt en mail til mailadressen
- registrert p&aring; brukeren. Sjekk innboks/s&oslash;ppelpost.</p>')];
+                $str['string'] = lykket('Det har blitt sendt en mail til mailadressen
+ registrert p&aring; brukeren. Sjekk innboks/s&oslash;ppelpost.');
             } else {
-                $str = ['string' => '<p style="color:#f00;">Mailen kunne ikke sendes, beklager. Ta kontakt med 
-Ledelsen via mailadressen: <a href="mailto:system@' . MAIL_SENDER . '">system@' . MAIL_SENDER . '</a>.</p>'];
+                $str['string'] = feil('Mailen kunne ikke sendes, beklager. Ta kontakt med 
+Ledelsen via mailadressen: <a href="mailto:system@' . MAIL_SENDER . '">system@' . MAIL_SENDER . '</a>.');
             }
         } else {
-            $str = ['string' => '<p style="color:#f00;">Det ble ikke funnet noen brukere med oppgitt informasjon, 
-sjekk at du har skrevet riktig!</p>'];
+            $str['string'] = feil('Det ble ikke funnet noen brukere med oppgitt informasjon, 
+sjekk at du har skrevet riktig!');
         }
     } else {
-        $str = ['string' => gen('<p style="color:#f00">Det ble ikke oppgitt noen informasjon, sjekk at du skrev 
-noe i feltene!</p>')];
+        $str['string'] = feil('Det ble ikke oppgitt noen informasjon, sjekk at du skrev noe i feltene!');
     }
-    print(json_encode(gen($str)));
-    /* Glemt passord END */
 }
 if (isset($_GET['respas'])) {
-    #die(print(json_encode(array('string'=>gen('<p style="color:#850000">Utilgjengelig for &oslash;yeblikket!</p>')))));
-    /* Begynner tilbakestilling av passord */
     $p1 = $_POST['p1'];
     $p2 = $_POST['p2'];
     $uid = $db->escape($_POST['uid']);
@@ -250,6 +226,7 @@ if (isset($_GET['respas'])) {
     if (strlen($p1) >= 4 && ($p1 == $p2) && is_numeric($uid)) {
         $db = new database();
         $db->connect();
+        $pass = password_hash($p1, PASSWORD_BCRYPT);
         if ($db->con) {
             $s = $db->query("SELECT * FROM `resetpasset` WHERE `uid` = '$uid' AND `used` = '0'
                               AND `rimming` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
@@ -257,12 +234,12 @@ if (isset($_GET['respas'])) {
                 $f = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($uid) . "' LIMIT 1");
                 if ($db->num_rows() == 1) {
                     $obj = $db->fetch_object();
-                    $db->query("UPDATE `users` SET `pass` = '" . md5(sha1($p1)) . "' WHERE
-                     `id` = '" . $db->escape($uid) . "' LIMIT 1");
+                    $db->query("UPDATE `users` SET `pass` = '$pass' WHERE
+                     `id` = '$uid' LIMIT 1");
                     if ($db->affected_rows() == 1) {
-                        $str = array('string' => gen('<p style="color:#50a850;">Ditt passord har blitt endret! 
-Du kan n&aring; logge inn p&aring; innloggingssiden med det nye passordet ditt!</p>'),
-                            'res' => 1);
+                        $str['string'] = lykket('Ditt passord har blitt endret! <br>
+Du kan n&aring; logge inn p&aring; innloggingssiden med det nye passordet ditt!');
+                        $str['res'] = 1;
                         $db->query("INSERT INTO `respaslogg`(`uid`,`time`,`oldpass`,`newpass`,`ip`) 
 VALUES('$uid',UNIX_TIMESTAMP(),'{$obj->pass}','" . md5($p1) . "','$ip')");
                         $db->query("UPDATE `resetpasset` SET `used` = '1' 
@@ -272,25 +249,22 @@ WHERE `uid` = '" . $db->escape($uid) . "' AND `used` = '0' ORDER BY `id` DESC LI
                         } else {
                             $str["ls"] = 0;
                         }
-                    } else if ($db->affected_rows() == 0) {
-                        $str = ['string' => gen('<p style="color:#f00;">Kunne ikke oppdatere passordet! 
+                    } elseif ($db->affected_rows() == 0) {
+                        $str['string'] = feil('Kunne ikke oppdatere passordet! 
 2 muligheter st&aring;r:<br>Du pr&oslash;vde &aring; bruke samme passordet<br>Det var en feil i query til databasen! 
-<br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!</p>'),
-                            'res' => 0];
+<br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!');
                     }
                 } else {
-                    $str = ['string' => gen('<p style="color:#f00;">Brukerid-en finnes ikke!</p>'), 'res' => 0];
+                    $str['string'] = feil('Brukerid-en finnes ikke!');
                 }
             } else {
-                $str = ['string' => gen('<p class="color:#f00;">Denne koden er ikke lengre tilgjengelig!</p>'), 'res' => 0];
+                $str['string'] = feil('Denne koden er ikke lengre tilgjengelig!');
             }
         } else {
-            $str = ['string' => gen('<p style="color:#f00;">Databasen er ikke tilgjengelig! Pr&oslash;v igjen senere!</p>'),
-                'res' => 0];
+            $str['string'] = feil('Databasen er ikke tilgjengelig! Pr&oslash;v igjen senere!');
         }
     } else {
-        $str = ['string' => gen('<p style="color:#f00">Passordet ditt m&aring; v&aelig;re 4 tegn eller lengre, og v&aelig;re like i begge feltene under! Det kan ogs&aring; v&aelig;re at ikke riktig uid ble postet.</p>'),
-            'res' => 0];
+        $str['string'] = feil('Passordet ditt m&aring; v&aelig;re 4 tegn eller lengre, og v&aelig;re like i begge feltene under! Det kan ogs&aring; v&aelig;re at ikke riktig uid ble postet.');
     }
-    print(json_encode($str));
 }
+print(json_encode($str));
