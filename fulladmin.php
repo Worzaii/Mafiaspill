@@ -20,7 +20,9 @@ if($obj->status == 1){ ?>
     <a href="ipban.php"><li>Internet Protocol Adresse blokkering :D</li></a>
     <a href="bankalle.php"><li>Siste bankoverf&oslash;ringer(100 siste)</li></a>
     <a href="endre_spiller.php"><li>Sjekk opp spiller(Ikke klar, arbeides med)</li></a>
-    <a href="actonline.php"><li>Logg ut en spiller!</li></a>
+    <a href="player_logoff.php">
+        <li>Logg ut en spiller!</li>
+    </a>
     <a href="antinlog.php"><li>Se antall innlogginger!</li></a>
     <a href="publiser.php"><li>Legg ut ny nyhet!</li></a>
     <a href="modkill2.php"><li><em>Modkill spiller</em></li></a>

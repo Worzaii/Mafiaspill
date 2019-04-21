@@ -1,41 +1,38 @@
 <?php
   include("core.php");
-  if(!r1()){
+if (!r1()) {
     startpage("Ingen tilgang");
     noaccess();
     endpage();
     die();
-  }
+}
   startpage("Nye meldinger");
 ?>
 <h1>Admin: Multimelding</h1>
 <p>Send en enkel melding til alle noterte spillere</p>
 <?php
 $res = null;
-if(isset($_POST['tuser']) && isset($_POST['theme']) && isset($_POST['smsen'])){
-  $til = $db->escape($_POST['tuser']);
-  $tema = $db->escape($_POST['theme']);
-  $mel = $db->escape($_POST['smsen']);
-  if(strlen($til) <= 2){
-    $res = '<p class="feil">Brukernavnet oppgitt er for kort!</p>';
-    $re = false;
-  }
-  else if(!user_exists($til)){
-    $res = '<p class="feil">Brukeren '.htmlentities($til).' finnes ikke i v&aring;re databaser, sjekk at du har skrevet riktig.</p>';
-    $re = false;
-  }
-  else if(strlen($mel) <= 2){
-    $res = '<p class="feil">Meldingen din er for kort! Du m&aring; minst ha 3 tegn.</p>';
-    $re = false;
-  }
-  else{
-    $userto = user_exists($til, 1);
-    if($db->query("INSERT INTO `mail2`(`tid`,`fid`,`title`,`message`,`time`) VALUES('$userto','$obj->id','$tema','$mel',UNIX_TIMESTAMP())")){
-      $res = '<p class="lykket">Meldingen har blitt sendt til '.  status($userto, 1).'!</p>';
+if (isset($_POST['tuser']) && isset($_POST['theme']) && isset($_POST['smsen'])) {
+    $til = $db->escape($_POST['tuser']);
+    $tema = $db->escape($_POST['theme']);
+    $mel = $db->escape($_POST['smsen']);
+    if (strlen($til) <= 2) {
+        $res = '<p class="feil">Brukernavnet oppgitt er for kort!</p>';
+        $re = false;
+    } else if (!user_exists($til)) {
+        $res = '<p class="feil">Brukeren ' . htmlentities($til) . ' finnes ikke i v&aring;re databaser, sjekk at du har skrevet riktig.</p>';
+        $re = false;
+    } else if (strlen($mel) <= 2) {
+        $res = '<p class="feil">Meldingen din er for kort! Du m&aring; minst ha 3 tegn.</p>';
+        $re = false;
+    } else {
+        $userto = user_exists($til, 1);
+        if ($db->query("INSERT INTO `mail2`(`tid`,`fid`,`title`,`message`,`time`) VALUES('$userto','$obj->id','$tema','$mel',UNIX_TIMESTAMP())")) {
+            $res = '<p class="lykket">Meldingen har blitt sendt til ' . status($userto, 1) . '!</p>';
+        }
     }
-  }
 }
-if(isset($re) && $re == false){/*Feil returnerer verdiene trygt*/
+if (isset($re) && $re == false) {/*Feil returnerer verdiene trygt*/
     $re1 = ' value="'.htmlentities($til).'"';
     $re2 = ' value="'.htmlentities($tema).'"';
     $time = str_replace("<", "&lt;", $_POST['smsen']);

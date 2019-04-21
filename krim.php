@@ -1,19 +1,23 @@
 <?php
 include("core.php");
 startpage("Kriminalitet");
-echo '<img alt src="./imgs/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp. Hvis du ikke ser noen valg, kontakt support!</p>';
+echo '<img alt src="images/headers/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp. Hvis du ikke ser noen valg, kontakt support!</p>';
 $jailed = false;
 if (fengsel()) {
     $bu = fengsel(true);
-    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y",
-                (time() + $bu))) . '<script>teller(' . $bu . ',\'fengsel\',false,\'ned\');</script>';
+    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span><br>Du er ute kl. ' . date(
+                "H:i:s d.m.Y",
+                (time() + $bu)
+            )) . '<script>teller(' . $bu . ')</script>';
 } else if (bunker()) {
     $bu = bunker(true);
     echo '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y",
-            $bu) . '</p>
+    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date(
+            "H:i:s d.m.Y",
+            $bu
+        ) . '</p>
     <script>
-    teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
+    teller(' . ($bu - time()) . ')
     </script>
     ';
 } else {
@@ -35,7 +39,7 @@ if (fengsel()) {
             echo '
         <p class="feil">Du m&aring; vente <span id="krim">' . ($f->timewait - time()) . '</span> f&oslash;r neste krim.</p>
         <script>
-        teller(' . ($f->timewait - time()) . ',\'krim\',false,\'ned\');
+        teller(' . ($f->timewait - time()) . ')
         </script>
         ';
         }
@@ -83,7 +87,7 @@ if (fengsel()) {
                                 <p class="lykket">Du var heldig og fikk ' . number_format($kr) . 'kr med deg!</p>
                                 <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
                                 <script>
-                                teller(' . $v->untilnext . ',\'krim\',false,\'ned\');
+                                teller(' . $v->untilnext . ')
                                 </script>
                                 ';
                             } else {
@@ -114,7 +118,7 @@ if (fengsel()) {
               <p class="feil">Du klarte det ikke!</p>
               <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
               <script>
-              teller(' . $v->untilnext . ',\'krim\',false,\'ned\');
+              teller(' . $v->untilnext . ')
               </script>
               ';
                             } else {
@@ -127,7 +131,7 @@ if (fengsel()) {
                                     echo '
                 <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">' . ($v->punishtime) . '</span>.</p>
                 <script>
-                teller(' . ($v->punishtime) . ',\'krim2\',false,\'ned\');
+                teller(' . ($v->punishtime) . ')
                 </script>
                 ';
                                     $jailed = true;

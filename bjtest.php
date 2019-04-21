@@ -22,7 +22,8 @@ $faces = array (
     "Nine"=>9, "Ten"=>10, "Jack"=>10, "Queen"=>10, "King"=>10, "Ace"=>11
 );
 
-function evaluateHand($hand) {
+function evaluateHand($hand)
+{
     global $faces;
     $value = 0;
     foreach ($hand as $card) {
@@ -55,7 +56,6 @@ shuffle($deck);
 $hand = array();
 
 if (empty($_POST)) {
-    
     for ($i = 0; $i < 2; $i++) {
         $hand[] = array_shift($deck);
         $dealer[] = array_shift($deck);
@@ -68,7 +68,7 @@ if (empty($_POST)) {
     $dealer = unserialize($_POST['dealerstr']);
     $hand = unserialize($_POST['handstr']);
     $deck = unserialize($_POST['deckstr']);
-    while(evaluateHand($dealer) < 17) {
+    while (evaluateHand($dealer) < 17) {
         $dealer[] = array_shift($deck);
     }
     echo "Dealer hit " . evaluateHand($dealer) . "<br>\n";
@@ -83,15 +83,16 @@ if (empty($_POST)) {
     $hand[] = array_shift($deck);
     $dealerstr = $_POST['dealerstr'];
     $handstr = serialize($hand);
-    $deckstr= serialize($deck);}
-    ?>
+    $deckstr = serialize($deck);
+}
+?>
 <form method='post'>
 <input type='hidden' name='handstr' value = '<?php echo $handstr ?>'>
 <input type='hidden' name='deckstr' value = '<?php echo $deckstr ?>'>
 <input type='hidden' name='dealerstr' value = '<?php echo $dealerstr ?>'>
 <?php
 
-foreach ($hand as $index =>$card) {
+foreach ($hand as $index => $card) {
     echo $card['face'] . ' of ' . $card['suit'] . "<br>";
 }
 

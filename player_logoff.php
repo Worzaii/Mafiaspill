@@ -14,7 +14,7 @@ startpage("Logg ut en spiller");
         lignende situasjoner.</p>
 <?php
 if (isset($_GET['usr'])) {
-    echo '<p><a href="actonline.php">Tilbake!</a></p>';
+    echo '<p><a href="player_logoff.php">Tilbake!</a></p>';
     $us = $db->escape($_GET['usr']);
     $s = $db->query("SELECT * FROM `users` WHERE `user` = '$us'");
     if ($db->num_rows() == 1) {
@@ -26,8 +26,8 @@ if (isset($_GET['usr'])) {
             }
         }
         echo '
-    <form method="post" action="actonline.php?usr=' . $u->user . '">
-    Sist aktiv: <span id="utid"></span><script>teller(' . $tid . ',"utid",false,"opp");</script>
+    <form method="post" action="player_logoff.php?usr=' . $u->user . '">
+    Sist aktiv: <span id="utid"></span><script>teller(' . $tid . ',"utid",false,"opp";)</script>
     <input type="submit" name="utlogg" value="Logg ut spilleren!">
     </form>
     ';
@@ -43,4 +43,3 @@ if (isset($_GET['usr'])) {
     <?php
 }
 endpage();
-?>

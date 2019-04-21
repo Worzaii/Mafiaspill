@@ -1,7 +1,7 @@
 <?php
 include("core.php");
 startpage("Biltyveri");
-echo '<img src="imgs/biltyveri.png"><p>N&aring;r du f&oslash;rst starter med biltyveri, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp.</p>';
+echo '<img src="images/headers/biltyveri.png"><p>N&aring;r du f&oslash;rst starter med biltyveri, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp.</p>';
 if (fengsel() == true) {
     $bu = fengsel(true);
     echo '

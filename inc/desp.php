@@ -24,4 +24,3 @@ Klikk linken for &aring; &aring;pne mail-programmet ditt:
 </body>
 </html>
 ');
-?>

@@ -1,7 +1,7 @@
 <?php
 define("BASEPATH", 1);
 include_once './system/config.php';
-include_once './classes/class.php';
+include_once './classes/database.php';
 include_once './inc/functions.php';
 if (isset($_SERVER['X-Requested-With'])) {
     if ($_SERVER['X-Requested-With'] == "XMLHttpRequest") {
@@ -12,10 +12,10 @@ if (isset($_SERVER['X-Requested-With'])) {
 } else {
     define("JSON", 0);
 }
-if (defined("LVL") && LVL == TRUE) {
+if (defined("LVL") && LVL == true) {
     $r = '../';
 } else {
-    $r = NULL;
+    $r = null;
 }
 if (isset($_SESSION['sessionzar'])) {
     $db = new database();
@@ -46,7 +46,6 @@ if (isset($_SESSION['sessionzar'])) {
             header("Location: loggut.php?g=5");
         } else if (($obj->lastactive + 1800) > time()) {
             if (defined("NOUPDATE") && NOUPDATE == 1) {
-
             } else {
                 if (!$db->query("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(),`ip` = '$ip' WHERE `id` = '{$obj->id}'")) {
                     if ($obj->status == 1) {

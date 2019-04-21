@@ -1,174 +1,154 @@
 <?php
 include("core.php");
-	startpage("Banken");
-	if(fengsel() == true){
-	echo '<h1>Bank</h1>
+startpage("Banken");
+if (fengsel() == true) {
+    echo '<h1>Bank</h1>
 	<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.fengsel(true).'</span></p>
 	<script>
 	teller('.fengsel(true).',\'krim\',true,\'ned\');
 	</script>
 	';
-}
-else if(bunker() == true){
-	$bu = bunker(true);
-	echo '<h1>Bank</h1>
-	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">'.$bu.'</span><br>Du er ute kl. '.date("H:i:s d.m.Y",$bu).'</p>
+} else if (bunker() == true) {
+    $bu = bunker(true);
+    echo '<h1>Bank</h1>
+	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
 	<script>
 	teller('.($bu - time()).',\'bunker\',false,\'ned\');
 	</script>
 	';
-}
-else{
-  if(isset($_GET['til'])){
-    $user = $_GET['til'];
-    $tilhvem = 'value="'.htmlentities($user).'" ';
-  }
-  else{
-    $tilhvem=NULL;
-  }
-?>
+} else {
+    if (isset($_GET['til'])) {
+        $user = $_GET['til'];
+        $tilhvem = 'value="' . htmlentities($user) . '" ';
+    } else {
+        $tilhvem = null;
+    }
+    ?>
 <h1>Banken</h1>
-<?php
-  if(isset($_POST['money'])){
-    //Sjekker og utf&oslash;rer
-    $money = $db->escape($_POST['money']);
-    $money = str_replace(",","",$money);
-    $money = str_replace(".","",$money);
-    $money = str_replace(" ","",$money);
-    $money = str_replace("kr","",$money);
-    if($money == NULL){
-      $money = 0;
-    }
-    if(!is_numeric($money) ){
-      $ret = '<p class="feil">Ikke gyldig input, m&aring; kun best&aring; av tall, du kan inkludere mellomrom, punktum, komma og "kr".</p>';
-    }
-    else{
-      if(isset($_POST['withdraw'])){
-        if($_POST['alldo'] == 1){
-          if($obj->bank <= 0){
-            $ret = '<p class="feil">Du m&aring; ta ut mer enn 0kr.</p>';
-          }
-          else{
-            $db->query("UPDATE `users` SET `hand` = (`hand` + `Bank`), `Bank` = '0' WHERE `id` = '$obj->id'");
-            $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','".$db->escape($_POST['money'])."','0','1',UNIX_TIMESTAMP())");
-            $ret = '<p class="lykket">Du har tatt ut '.number_format($obj->bank).'kr!</p>';
-          }
+    <?php
+    if (isset($_POST['money'])) {
+        //Sjekker og utf&oslash;rer
+        $money = $db->escape($_POST['money']);
+        $money = str_replace(",", "", $money);
+        $money = str_replace(".", "", $money);
+        $money = str_replace(" ", "", $money);
+        $money = str_replace("kr", "", $money);
+        if ($money == null) {
+            $money = 0;
         }
-        else{
-          if($money <= 0){
-            $ret = '
+        if (!is_numeric($money)) {
+            $ret = '<p class="feil">Ikke gyldig input, m&aring; kun best&aring; av tall, du kan inkludere mellomrom, punktum, komma og "kr".</p>';
+        } else {
+            if (isset($_POST['withdraw'])) {
+                if ($_POST['alldo'] == 1) {
+                    if ($obj->bank <= 0) {
+                        $ret = '<p class="feil">Du m&aring; ta ut mer enn 0kr.</p>';
+                    } else {
+                        $db->query("UPDATE `users` SET `hand` = (`hand` + `Bank`), `Bank` = '0' WHERE `id` = '$obj->id'");
+                        $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','" . $db->escape($_POST['money']) . "','0','1',UNIX_TIMESTAMP())");
+                        $ret = '<p class="lykket">Du har tatt ut ' . number_format($obj->bank) . 'kr!</p>';
+                    }
+                } else {
+                    if ($money <= 0) {
+                        $ret = '
             <p class="feil">Du m&aring; ta ut mer enn 0 kr.</p>
             ';
-          }
-          else if($money >= 1){
-            //Fortsetter validering
-            if($money <= $obj->bank){
-              if($db->query("UPDATE `users` SET `bank` = (`bank` - $money), `hand` = (`hand` + $money) WHERE `id` = '$obj->id'")){
-                $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','".$db->escape($_POST['money'])."','0','0',UNIX_TIMESTAMP())");
-                $ret = '
+                    } else if ($money >= 1) {
+                        //Fortsetter validering
+                        if ($money <= $obj->bank) {
+                            if ($db->query("UPDATE `users` SET `bank` = (`bank` - $money), `hand` = (`hand` + $money) WHERE `id` = '$obj->id'")) {
+                                $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','" . $db->escape($_POST['money']) . "','0','0',UNIX_TIMESTAMP())");
+                                $ret = '
                 <p class="lykket">Du har tatt ut '.number_format($money).'kr fra banken din.</p>
                 ';
-              }
-              else{
-                //Sp&oslash;rring kunne ikke utf&oslash;res
-                $ret = '<p class="feil">Kunne ikke utf&oslash;re sp&oslash;rringen: '.mysqli_error().'</p>';
-              }
-            }
-            else{
-              $ret = '<p class="feil">Du har ikke s&aring; mye penger i banken!</p>';
-            }
-          }
-        }
-      }//Ta ut end
-      else if(isset($_POST['deposit'])){
-        if($_POST['alldo'] == 1){
-          if($obj->hand <= 0){
-            $ret = '<p class="feil">Du m&aring; sette inn mer enn 0kr.</p>';
-          }
-          else{
-            $db->query("UPDATE `users` SET `Bank` = (`Bank` + `hand`),`hand` = '0' WHERE `id` = '$obj->id'");
-            $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','".$db->escape($_POST['money'])."','1','1',UNIX_TIMESTAMP())");
-            $ret = '<p class="lykket">Du har satt inn '.number_format($obj->hand).'kr!</p>';
-          }
-        }
-        else{
-          if($money <= 0){
-            $ret = '
+                            } else {
+                                //Sp&oslash;rring kunne ikke utf&oslash;res
+                                $ret = '<p class="feil">Kunne ikke utf&oslash;re sp&oslash;rringen: ' . mysqli_error() . '</p>';
+                            }
+                        } else {
+                            $ret = '<p class="feil">Du har ikke s&aring; mye penger i banken!</p>';
+                        }
+                    }
+                }
+            }//Ta ut end
+            else if (isset($_POST['deposit'])) {
+                if ($_POST['alldo'] == 1) {
+                    if ($obj->hand <= 0) {
+                        $ret = '<p class="feil">Du m&aring; sette inn mer enn 0kr.</p>';
+                    } else {
+                        $db->query("UPDATE `users` SET `Bank` = (`Bank` + `hand`),`hand` = '0' WHERE `id` = '$obj->id'");
+                        $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','" . $db->escape($_POST['money']) . "','1','1',UNIX_TIMESTAMP())");
+                        $ret = '<p class="lykket">Du har satt inn ' . number_format($obj->hand) . 'kr!</p>';
+                    }
+                } else {
+                    if ($money <= 0) {
+                        $ret = '
             <p class="feil">Du m&aring; sette inn mer enn 0 kr.</p>
             ';
-          }
-          else if($money >= 1){
-            //Fortsetter validering
-            if($money <= $obj->hand){
-              if($db->query("UPDATE `users` SET `bank` = (`bank` + $money), `hand` = (`hand` - $money) WHERE `id` = '$obj->id'")){
-                $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','".$db->escape($_POST['money'])."','1','0',UNIX_TIMESTAMP())");
-                $ret = '
+                    } else if ($money >= 1) {
+                        //Fortsetter validering
+                        if ($money <= $obj->hand) {
+                            if ($db->query("UPDATE `users` SET `bank` = (`bank` + $money), `hand` = (`hand` - $money) WHERE `id` = '$obj->id'")) {
+                                $db->query("INSERT INTO `banklogg`(`uid`,`sum`,`way`,`all`,`time`) VALUES('$obj->id','" . $db->escape($_POST['money']) . "','1','0',UNIX_TIMESTAMP())");
+                                $ret = '
                 <p class="lykket">Du har satt inn '.number_format($money).'kr i banken din.</p>
                 ';
-              }
-              else{
-                //Sp&oslash;rring kunne ikke utf&oslash;res
-                $ret = '<p class="feil">Kunne ikke utf&oslash;re sp&oslash;rringen: '.mysqli_error().'</p>';
-              }
-            }
-            else{
-              $ret = '
+                            } else {
+                                //Sp&oslash;rring kunne ikke utf&oslash;res
+                                $ret = '<p class="feil">Kunne ikke utf&oslash;re sp&oslash;rringen: ' . mysqli_error() . '</p>';
+                            }
+                        } else {
+                            $ret = '
               <p class="feil">Du har ikke s&aring; mye penger ute p&aring; handa! Du har bare '.number_format($obj->hand).' kr.</p>
               ';
-            }
-          }
-        }
-      }//Sett inn end
-    }//Post END
-  }
-  if(isset($_POST['tilover'])){
-    $user = $db->escape($_POST['tilover']);
-    $bank = $db->escape($_POST['sumover']);
-    $bank = str_replace(",","",$bank);
-    $bank = str_replace(".","",$bank);
-    $bank = str_replace(" ","",$bank);
-    if(is_numeric($bank)){
-      if($bank >= 1){
-        if($bank <= $obj->bank){
-          $usin = $db->query("SELECT * FROM `users` WHERE `user` = '$user'");
-          if($db->num_rows() == 1){
-            $u = $db->fetch_object();
-            if($u->id != $obj->id){
-              if($db->query("UPDATE `users` SET `bank` = (`bank` - $bank) WHERE `id` = '$obj->id' LIMIT 1")){
-                if($db->query("UPDATE `users` SET `bank` = (`bank` + $bank) WHERE `id` = '$u->id' LIMIT 1")){
-                  $ret .= '<p class="lykket">Du har overf&oslash;rt '.number_format($bank).'kr til '.$u->user.'!</p>';
-                  $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$u->id."','".time()."','".$db->slash('--<b>Bank</b><br/>'.$obj->user.' har overf&oslash;rt '.number_format($bank).'kr til deg!')."')");
-                  $time = time();
-                  $db->query("INSERT INTO `bankoverforinger`(`uid`,`tid`,`sum`,`time`) VALUES('$obj->id','$u->id','$bank','$time')");
+                        }
+                    }
                 }
-              }
-              else{
-                $ret .= '<p class="feil">Kunne ikke overf&oslash;re pengene!</p>';
-              }
-            }
-            else{
-              $ret.='<p class="feil">Du kan ikke overf&oslash;re penger til deg selv!</p>';
-            }
-          }
-          else{
-            $ret .= '<p class="feil">Personen du pr&oslash;ver &aring; sende til eksisterer ikke!</p>';
-          }
-        }
-        else{
-        $ret .= '<p class="feil">Du har ikke s&aring; mye penger i banken!</p>';
-        }
-      }
-      else{
-      $ret .= '<p class="feil">Du m&aring; overf&oslash;re mer enn 0 kr!</p>';
-      }
+            }//Sett inn end
+        }//Post END
     }
-    else{
-      $ret .= '<p class="feil">Du m&aring; oppgi en gyldig sum!</p>';
+    if (isset($_POST['tilover'])) {
+        $user = $db->escape($_POST['tilover']);
+        $bank = $db->escape($_POST['sumover']);
+        $bank = str_replace(",", "", $bank);
+        $bank = str_replace(".", "", $bank);
+        $bank = str_replace(" ", "", $bank);
+        if (is_numeric($bank)) {
+            if ($bank >= 1) {
+                if ($bank <= $obj->bank) {
+                    $usin = $db->query("SELECT * FROM `users` WHERE `user` = '$user'");
+                    if ($db->num_rows() == 1) {
+                        $u = $db->fetch_object();
+                        if ($u->id != $obj->id) {
+                            if ($db->query("UPDATE `users` SET `bank` = (`bank` - $bank) WHERE `id` = '$obj->id' LIMIT 1")) {
+                                if ($db->query("UPDATE `users` SET `bank` = (`bank` + $bank) WHERE `id` = '$u->id' LIMIT 1")) {
+                                    $ret .= '<p class="lykket">Du har overf&oslash;rt ' . number_format($bank) . 'kr til ' . $u->user . '!</p>';
+                                    $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $u->id . "','" . time() . "','" . $db->slash('--<b>Bank</b><br/>' . $obj->user . ' har overf&oslash;rt ' . number_format($bank) . 'kr til deg!') . "')");
+                                    $time = time();
+                                    $db->query("INSERT INTO `bankoverforinger`(`uid`,`tid`,`sum`,`time`) VALUES('$obj->id','$u->id','$bank','$time')");
+                                }
+                            } else {
+                                $ret .= '<p class="feil">Kunne ikke overf&oslash;re pengene!</p>';
+                            }
+                        } else {
+                            $ret .= '<p class="feil">Du kan ikke overf&oslash;re penger til deg selv!</p>';
+                        }
+                    } else {
+                        $ret .= '<p class="feil">Personen du pr&oslash;ver &aring; sende til eksisterer ikke!</p>';
+                    }
+                } else {
+                    $ret .= '<p class="feil">Du har ikke s&aring; mye penger i banken!</p>';
+                }
+            } else {
+                $ret .= '<p class="feil">Du m&aring; overf&oslash;re mer enn 0 kr!</p>';
+            }
+        } else {
+            $ret .= '<p class="feil">Du m&aring; oppgi en gyldig sum!</p>';
+        }
     }
-  }
-  if(isset($ret)){
-    echo $ret;
-  } ?>
+    if (isset($ret)) {
+        echo $ret;
+    } ?>
 <form method="post" action="">
   <table style="width:290px;" class="table bank">
     <thead>
@@ -221,17 +201,17 @@ else{
     <th>Sum:</th>
     <th>Tid:</th>
   </tr>
-  <?php
+    <?php
     $fe = $db->query("SELECT * FROM `bankoverforinger` WHERE `uid` = '$obj->id' OR `tid` = '$obj->id' ORDER BY `id` DESC LIMIT 20");
-    while($r = mysqli_fetch_object($fe)){
-      echo '
+    while ($r = mysqli_fetch_object($fe)) {
+        echo '
       <tr>
-      <td>'.user($r->uid).'</td><td>'.user($r->tid).'</td><td>'.number_format($r->sum).'kr</td><td>'.date("H:i:s | d-m-Y",$r->time).'</td>
+      <td>' . user($r->uid) . '</td><td>' . user($r->tid) . '</td><td>' . number_format($r->sum) . 'kr</td><td>' . date("H:i:s | d-m-Y", $r->time) . '</td>
       </tr>
       ';
     } ?>
 </table>
-<?php
-	}
-	endpage();
+    <?php
+}
+endpage();
 ?>

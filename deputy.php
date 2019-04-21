@@ -1,13 +1,10 @@
 <?php
 include("core.php");
-error_reporting(E_ALL);
-$res=NULL;
-if(r1() || r2()){
-  /*Det er en administrator, viser panel for lesning og kommentering*/
-  $ex = '<link href="jui/css/ui-darkness/jquery-ui-1.10.3.custom.css" rel="stylesheet">';
-  startpage("H&aring;ndter s&oslash;knader",$ex);
-  echo '<h1>S&oslash;kepanel for Ledelsen</h1>';
-  ?>
+$res = null;
+if (r1() || r2()) {
+    startpage("H&aring;ndter s&oslash;knader");
+    echo '<h1>S&oslash;kepanel for Ledelsen</h1>';
+    ?>
 <p>Her vil det komme et panel som gj&oslash;r slik at Ledelsen kan se p&aring; s&oslash;knader og stemme for den de tror vil utf&oslash;re stillingen p&aring; best mulig m&aring;te, i henhold til de s&oslash;knadstekstene som er sendt.</p>
 <br>
 <div id="apd" style='display:none;'></div>
@@ -22,26 +19,26 @@ if(r1() || r2()){
     </tr>
   </thead>
   <tbody>
-<?php
-$role = array(
+  <?php
+  $role = array(
     1=>"Moderator",2=>"Forum-Moderator",3=>"Support"
-);
-$s = $db->query("SELECT * FROM `soknads` WHERE `slettet` = '0' ORDER BY `status` ASC,`id` DESC");
-if($db->num_rows() >= 1){
-  /*Lister opp s&oslash;knader i tabell*/
-  while($r = mysqli_fetch_object($s)){
-$a = $db->query("SELECT COUNT(`res`) AS `ned` FROM `vote` WHERE `sid` = '$r->id' AND `res` = '0'");
-$ar= $db->fetch_object();
-$b = $db->query("SELECT COUNT(`res`) AS `opp` FROM `vote` WHERE `sid` = '$r->id' AND `res` = '1'");
-$br= $db->fetch_object();
-$nede = $ar->ned;
-$oppe = $br->opp;
-    echo '<tr><td>'.user($r->uid).'</td><td>'.date("H:i:s d.m.Y",$r->time).'</td><td onclick="javascript:toggler(\'soknad'.$r->id.'\');">Vis s&oslash;knad</td></tr>
+  );
+  $s = $db->query("SELECT * FROM `soknads` WHERE `slettet` = '0' ORDER BY `status` ASC,`id` DESC");
+  if ($db->num_rows() >= 1) {
+      /*Lister opp s&oslash;knader i tabell*/
+      while ($r = mysqli_fetch_object($s)) {
+          $a = $db->query("SELECT COUNT(`res`) AS `ned` FROM `vote` WHERE `sid` = '$r->id' AND `res` = '0'");
+          $ar = $db->fetch_object();
+          $b = $db->query("SELECT COUNT(`res`) AS `opp` FROM `vote` WHERE `sid` = '$r->id' AND `res` = '1'");
+          $br = $db->fetch_object();
+          $nede = $ar->ned;
+          $oppe = $br->opp;
+          echo '<tr><td>' . user($r->uid) . '</td><td>' . date("H:i:s d.m.Y", $r->time) . '</td><td onclick="javascript:toggler(\'soknad' . $r->id . '\');">Vis s&oslash;knad</td></tr>
     <tr><th colspan="4" id="soknad'.$r->id.'" style="font-weight:normal; display:none;">
       <p>';
-      $opp = '<span style="color:red;">'.$nede.'</span>';
-      $ned = '<span style ="color:green;">'.$oppe.'</span>';
-      echo '
+          $opp = '<span style="color:red;">' . $nede . '</span>';
+          $ned = '<span style ="color:green;">' . $oppe . '</span>';
+          echo '
       <button class="button" onclick="voter('.$r->id.',1)">Stem opp</button>
       <button class="button" onclick="voter('.$r->id.',0)">Stem ned</button>
           '.$opp.' '.$ned.'
@@ -49,23 +46,22 @@ $oppe = $br->opp;
       </p>
       <div style="text-align:left;">Navn: '.$r->name.' '.$r->lname.'</br>
         Alder: '.$r->age.'</br>Stilling: '.$role[$r->role].'</br>
-          <b></br></br>'.bbcodes($r->profile,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0).'</b></br>
+          <b></br></br>' . bbcodes($r->profile, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0) . '</b></br>
             </div><p style="font-size:16px;font-weight:bold">Gi tilbakemelding p&aring; s&oslash;knaden:</p>
             <textarea style="display:block;width:90%" name="kommentar" id="kom'.$r->id.'"></textarea>
               <button class="subcom" value="kom'.$r->id.'" data="'.$r->id.'">Legg inn tilbakemelding</button>';
-      $sq = $db->query("SELECT * FROM `soknadkom` WHERE `sid` = '$r->id'");
-      while($q = mysqli_fetch_object($sq)){
-        echo '<div style="border:1px dotted #fff">'.user($q->uid).'<br>Tid: '.date("H:i:s d.m.Y",$q->time).'<br><br>'.
-          htmlentities($q->msg,NULL,"windows-1252").'</div>';
+          $sq = $db->query("SELECT * FROM `soknadkom` WHERE `sid` = '$r->id'");
+          while ($q = mysqli_fetch_object($sq)) {
+              echo '<div style="border:1px dotted #fff">' . user($q->uid) . '<br>Tid: ' . date("H:i:s d.m.Y", $q->time) . '<br><br>' .
+                  htmlentities($q->msg, null, "UTF-8") . '</div>';
+          }
+          echo '</th></tr>';
       }
-      echo'</th></tr>';
+  } else {
+      /*Gir beskjed om at ingen s&oslash;knader har blitt levert*/
+      echo '<tr><td colspan="4">Ingen s&oslash;knader har blitt sendt inn, eller er ubehandlet.</td></tr>';
   }
-}
-else{
-  /*Gir beskjed om at ingen s&oslash;knader har blitt levert*/
-  echo '<tr><td colspan="4">Ingen s&oslash;knader har blitt sendt inn, eller er ubehandlet.</td></tr>';
-}
-?>
+  ?>
   </tbody>
 </table>
 <script>
@@ -130,52 +126,49 @@ function toggler(id){
     });
   });
 </script>
-<?php
-}
-else{
+    <?php
+} else {
   /*Viser en form der brukere kan legge inn en s&oslash;knad til oss i ledelsen.*/
-  if(isset($_POST['realname']) && isset($_POST['realbname']) && isset($_POST['realage']) && isset($_POST['stilling']) && isset($_POST['sokenformore'])){
-    /*Starter gjennomg&aring;ing av informasjon*/
-    $n1=$db->escape($_POST['realname']);
-    $n2=$db->escape($_POST['realbname']);
-    $n3=$db->escape($_POST['realage']);
-    $n4=$db->escape($_POST['stilling']);
-    $n5=$db->escape($_POST['sokenformore']);
-    if(strlen($n1) <= 2 || strlen($n2) <= 1 || !is_numeric($n3) || $n3 <= 0 || !in_array($n4, array(1,2,3)) || strlen($n5) <= 20){
-      /*Noe var feil, og da sl&aring;r denne ut*/
-      $res= '<p class="feil">Du har ikke fyllt ut nok informasjon!</p>';
-      if(strlen($n1) <= 2){
-        $res.='<p class="feil">Du har ikke fyllt inn fornavnet ditt, det m&aring; v&aelig;re minst p&aring; 3 tegn eller mer!</p>';
-      }
-      if(strlen($n2) <= 1){
-        $res.='<p class="feil">Du har ikke fyllt inn etternavnet ditt, det m&aring; v&aelig;re minst p&aring; 3 tegn eller mer!</p>';
-      }
-      if(!is_numeric($n3) || $n3 <= 0){
-        $res.='<p class="feil">Din alder m&aring; v&aelig;re et tall! Og over 0.</p>';
-      }
-      if(!in_array($n4, array(1,2,3))){
-        $res.='<p class="feil">Du har ikke valgt riktig verdi ifra Stillingslista!</p>';
-      }
-      if(strlen($n5) <= 20){
-        $res.='<p class="feil">Din s&oslash;knad er enten mangelfull eller for kort, den m&aring; minst v&aelig;re 20 tegn. Forklar hvorfor du vil v&aelig;re en del av Ledelsen!</p>';
-      }
+    if (isset($_POST['realname']) && isset($_POST['realbname']) && isset($_POST['realage']) && isset($_POST['stilling']) && isset($_POST['sokenformore'])) {
+        /*Starter gjennomg&aring;ing av informasjon*/
+        $n1 = $db->escape($_POST['realname']);
+        $n2 = $db->escape($_POST['realbname']);
+        $n3 = $db->escape($_POST['realage']);
+        $n4 = $db->escape($_POST['stilling']);
+        $n5 = $db->escape($_POST['sokenformore']);
+        if (strlen($n1) <= 2 || strlen($n2) <= 1 || !is_numeric($n3) || $n3 <= 0 || !in_array($n4, array(1, 2, 3)) || strlen($n5) <= 20) {
+            /*Noe var feil, og da sl&aring;r denne ut*/
+            $res = '<p class="feil">Du har ikke fyllt ut nok informasjon!</p>';
+            if (strlen($n1) <= 2) {
+                $res .= '<p class="feil">Du har ikke fyllt inn fornavnet ditt, det m&aring; v&aelig;re minst p&aring; 3 tegn eller mer!</p>';
+            }
+            if (strlen($n2) <= 1) {
+                $res .= '<p class="feil">Du har ikke fyllt inn etternavnet ditt, det m&aring; v&aelig;re minst p&aring; 3 tegn eller mer!</p>';
+            }
+            if (!is_numeric($n3) || $n3 <= 0) {
+                $res .= '<p class="feil">Din alder m&aring; v&aelig;re et tall! Og over 0.</p>';
+            }
+            if (!in_array($n4, array(1, 2, 3))) {
+                $res .= '<p class="feil">Du har ikke valgt riktig verdi ifra Stillingslista!</p>';
+            }
+            if (strlen($n5) <= 20) {
+                $res .= '<p class="feil">Din s&oslash;knad er enten mangelfull eller for kort, den m&aring; minst v&aelig;re 20 tegn. Forklar hvorfor du vil v&aelig;re en del av Ledelsen!</p>';
+            }
+        } else {
+            /*Setter inn i tabell*/
+            $db->query("INSERT INTO `soknads` (`id`, `uid`, `name`, `lname`, `age`, `profile`,`role`, `status`,`time`) VALUES (NULL, '$obj->id', '$n1', '$n2', '$n3', '$n5','$n4', 0,UNIX_TIMESTAMP());");
+            if ($db->affected_rows() == 1) {
+                $res = '<p class="lykket">Din s&oslash;knad har blitt sendt inn! N&aring;r Ledelsen har vurdert din s&oslash;knad, s&aring; vil du motta en melding i din systeminnboks om du fikk en stilling. Men om du ikke fikk noe, vil det st&aring; en henvendelse i din innboks fra en i Ledelsen om akkurat hvorfor du ikke ble valgt.</p>';
+            } else {
+                $res = '<p class="feil">Kunne ikke lagre. Gi dette til en i Ledelsen:<br>' . mysqli_error($db->con) . '</p>';
+            }
+        }
     }
-    else{
-      /*Setter inn i tabell*/
-      $db->query("INSERT INTO `soknads` (`id`, `uid`, `name`, `lname`, `age`, `profile`,`role`, `status`,`time`) VALUES (NULL, '$obj->id', '$n1', '$n2', '$n3', '$n5','$n4', 0,UNIX_TIMESTAMP());");
-      if($db->affected_rows() == 1){
-        $res= '<p class="lykket">Din s&oslash;knad har blitt sendt inn! N&aring;r Ledelsen har vurdert din s&oslash;knad, s&aring; vil du motta en melding i din systeminnboks om du fikk en stilling. Men om du ikke fikk noe, vil det st&aring; en henvendelse i din innboks fra en i Ledelsen om akkurat hvorfor du ikke ble valgt.</p>';
-      }
-      else{
-          $res = '<p class="feil">Kunne ikke lagre. Gi dette til en i Ledelsen:<br>' . mysqli_error($db->con) . '</p>';
-      }
-    }
-  }
-  startpage("S&oslash;k deg inn i Ledelsen...");
-  ?>
+    startpage("S&oslash;k deg inn i Ledelsen...");
+    ?>
 <h1>Ledelsens s&oslash;kesenter</h1>
 <p>Vi i Ledelsen forventer &aring;penhet og &aelig;rlighet, hvis vi f&oslash;ler at vi ikke kan stole p&aring; deg, s&aring; vil din s&oslash;knad muligens avsees. S&aring; forklar s&aring; godt som du kan i din s&oslash;knad. Legg opp for hvorfor akkurat du skal v&aelig;re den ene som kan hjelpe oss, noe som muligens de andre s&oslash;kerne ikke kan.</p>
-<?=$res?>
+    <?= $res ?>
 <form method="post" action="">
   <table class="table">
     <thead>
@@ -216,6 +209,6 @@ else{
     </tbody>
   </table>
 </form>
-<?php
+    <?php
 }
 endpage();

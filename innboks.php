@@ -122,7 +122,7 @@ if (isset($_GET['vis'])) {
             if ($f->read == 0) {
                 $db->query("UPDATE `mail2` SET `read` = '1' WHERE `tid` = '$obj->id' AND `id` = '$id' LIMIT 1");
             }
-            $user = get_user($f->fid);
+            $user = get_userobject($f->fid);
             echo '
                 <table class="table" style="width:90%;margin-top:15px;">
                     <tr><td rowspan="3" style="width:95px;"><div class="shadow"><img id="brukerbilde" src="'.$user->image.'" alt=""></div></td>

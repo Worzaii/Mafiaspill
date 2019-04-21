@@ -5,31 +5,29 @@ startpage("Bildebestillinger");
 ?>
 <h1>S&oslash;k etter bilder/avatarer/profilbilder ++</h1>
 <?php
-if(isset($_POST['stock']) && isset($_POST['type']) && isset($_POST['pris1']) && isset($_POST['pris2']) && isset($_POST['hvem']) && isset($_POST['extra'])){
-$link = mysql_real_escape_string($_POST['stock']);
-$type = mysql_real_escape_string($_POST['type']);
-$pri1 = mysql_real_escape_string($_POST['pris1']);
-$pri2 = mysql_real_escape_string($_POST['pris2']);
-$hvem = mysql_real_escape_string($_POST['hvem']);
-$besk = mysql_real_escape_string($_POST['additional']);
-$excom = mysql_real_escape_string($_POST['extra']);
-$tid = time();
+if (isset($_POST['stock']) && isset($_POST['type']) && isset($_POST['pris1']) && isset($_POST['pris2']) && isset($_POST['hvem']) && isset($_POST['extra'])) {
+    $link = mysql_real_escape_string($_POST['stock']);
+    $type = mysql_real_escape_string($_POST['type']);
+    $pri1 = mysql_real_escape_string($_POST['pris1']);
+    $pri2 = mysql_real_escape_string($_POST['pris2']);
+    $hvem = mysql_real_escape_string($_POST['hvem']);
+    $besk = mysql_real_escape_string($_POST['additional']);
+    $excom = mysql_real_escape_string($_POST['extra']);
+    $tid = time();
 //Herfra blir inputs validert
-$array = array(1,2,3,4);//Verdier som godkjennes.
-if(!filter_var($link, FILTER_VALIDATE_URL) || $type != in_array($array)){
-echo '<p class="feil">Det var noe feil, sjekk at du har fyllt alt inn riktig.</p>';
-}
-else{
-if(mysql_query("INSERT INTO `bildebestilling`(`pm`,`reqid`,`type`,`tb`,`lp`,`hp`,`com`,`stock`,`time`) VALUES('$hvem','{$obj->id}','$type','$beskrivelse','$pri1','$pri2','$excom','$link','$tid')")){
-echo '<p class="lykket">Din bestilling er lagret!</p>';
-}
-else{
-echo '<p class="feil">Det oppstod en feil ved lagring av din bestilling!</p>';
-if($obj->status == 1){
-echo mysql_error();
-}
-}
-}
+    $array = array(1, 2, 3, 4);//Verdier som godkjennes.
+    if (!filter_var($link, FILTER_VALIDATE_URL) || $type != in_array($array)) {
+        echo '<p class="feil">Det var noe feil, sjekk at du har fyllt alt inn riktig.</p>';
+    } else {
+        if (mysql_query("INSERT INTO `bildebestilling`(`pm`,`reqid`,`type`,`tb`,`lp`,`hp`,`com`,`stock`,`time`) VALUES('$hvem','{$obj->id}','$type','$beskrivelse','$pri1','$pri2','$excom','$link','$tid')")) {
+            echo '<p class="lykket">Din bestilling er lagret!</p>';
+        } else {
+            echo '<p class="feil">Det oppstod en feil ved lagring av din bestilling!</p>';
+            if ($obj->status == 1) {
+                echo mysql_error();
+            }
+        }
+    }
 }
 ?>
 <p class="feil">Denne funksjonen er under arbeid! Ikke klar enda!</p>
@@ -65,8 +63,8 @@ echo mysql_error();
 <option value="0" selected="">Hvem som helst</option>
 <?php
 $s = mysql_query("SELECT * FROM `users` WHERE `status` = '6' ORDER BY `id` DESC");
-while($r = mysql_fetch_object($s)){
-echo '
+while ($r = mysql_fetch_object($s)) {
+    echo '
 <option value="'.$r->id.'">'.status($r->user).'</option>
 ';
 }
@@ -110,8 +108,10 @@ $("#pris2").val(p);
 }
 </script>
 <?php
-if($_POST['type'] == 1){'Avatar';}
-if($_POST['submitter']){
+if ($_POST['type'] == 1) {
+    'Avatar';
+}
+if ($_POST['submitter']) {
     echo ' <h2>Din bestilling ser slik ut!</h2></br>
 Stock: '.$_POST['stock'].'</br>
 Type: '.$_POST['type'].'</br>

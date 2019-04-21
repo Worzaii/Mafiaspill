@@ -47,7 +47,7 @@ $(document).ready(function () {
             updatepage($res.string, "forgotpasswordresult");
         });
     });
-    $("#getaccess").submit(function (event) {
+    $("#getaccessform").submit(function (event) {
         event.preventDefault();
         let $form = $(this).serialize(), link = $(this).attr('action');
         link += "?getaccess";
@@ -61,7 +61,7 @@ $(document).ready(function () {
             updatepage($res.string, "ressu");
         });
     });
-    $("#register").submit(function (event) {
+    $("#registerform").submit(function (event) {
         event.preventDefault();
         let $form = $(this).serialize(), link = $(this).attr('action');
         $.ajax({

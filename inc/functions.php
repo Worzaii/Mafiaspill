@@ -1,60 +1,48 @@
 <?php
-if (defined("LVL") && LVL == TRUE) {
-    $dir = '../';
-} else {
-    $dir = "./";
-}
-global $obj;
-
 function startpage($title = NAVN_DOMENE)
 {
-    global $dir;
     global $obj, $db;
     print '<!DOCTYPE html>
 <html lang="no">
   <head>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/style2.css">
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="icon" href="favicon.gif" type="image/gif">
+  <link rel="shortcut icon" href="./favicon.ico">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>'.$title.'</title>
-  <script src="/js/jquery.js"></script>
-  <script src="js/teller.js"></script>
-  <script src="js/loggteller.js"></script>
+  <title>' . $title . '</title>
+  <script src="./js/jquery.js"></script>
+  <script src="./js/teller.js"></script>
+  <script src="./js/loggteller.js"></script>
   ';
-    $db->query("SELECT * FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` != NULL");
-    $anyjail = ($db->num_rows() > 0) ? $db->num_rows() : null;
+    $db->query("SELECT * FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL");
+    $anyjail = ($db->num_rows() > 0) ? " (" . $db->num_rows() . ")" : null;
 
     $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
-    $late_online = $db->num_rows(); /* Online last 30 minutes */
-    $onl         = "online.php";
+    $late_online = $db->num_rows();
     print'
   </head>
   <body>
-  <div id="repro">
+  <div id="navbar_top">
     <div class="content">
       <nav>
         <ul>
-          <li><a href="profil.php?id='.$obj->id.'">Profil</a></li>
+          <li><a href="profil.php?id=' . $obj->id . '">Profil</a></li>
           <li><a href="innboks.php">Innboks (in remake)</a></li>
           <li><a href="statistikk.php">Statistikk</a></li>
-          <li><a href="Fengsel">Fengsel'.$anyjail.'</a></li>
+          <li><a href="fengsel.php">Fengsel' . $anyjail . '</a></li>
           <li><a href="endreprofil.php">Endre Profil</a></li>
-          <li><a href="'.$onl.'">Spillere p&aring;logget ('.$late_online.')</a></li>
+          <li><a href="online.php">Spillere p&aring;logget (' . $late_online . ')</a></li>
         </ul>
       </nav>
     </div>
   </div>
   <header id="headerbg">
   <div id="header">';
-    /* Chat on top of the page */
     global $db;
-    $chat        = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 1");
+    $chat = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 1");
     if ($db->num_rows() > 0) {
         while ($r = mysqli_fetch_object($chat)) {
             $teksten = htmlentities($r->message, ENT_NOQUOTES, 'UTF-8');
-            $uob     = user($r->uid, 1);
+            $uob = user($r->uid, 1);
             if ($uob->status == 1) {
                 $teksten = bbcodes($teksten, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             } else if ($uob->status == 2 || $uob->status == 6) {
@@ -65,19 +53,21 @@ function startpage($title = NAVN_DOMENE)
             $par = null;
             if ($r->id % 2) {
                 echo
-                '<div class="chat ct1"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>['.date("H:i:s",
-                    $r->timestamp).']</b> &lt;'.user($r->uid).'&gt;: <span class="chattext">'.$teksten.'</span></a></div>';
+                    '<div class="chat ct1"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>[' . date(
+                        "H:i:s",
+                        $r->timestamp
+                    ) . ']</b> &lt;' . user($r->uid) . '&gt;: <span class="chattext">' . $teksten . '</span></a></div>';
             } else {
                 echo
-                '<div class="chat ct2"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>['.date("H:i:s",
-                    $r->timestamp).']</b> &lt;'.user($r->uid).'&gt;: <span class="chattext">'.$teksten.'</span></a></div>';
+                    '<div class="chat ct2"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>[' . date(
+                        "H:i:s",
+                        $r->timestamp
+                    ) . ']</b> &lt;' . user($r->uid) . '&gt;: <span class="chattext">' . $teksten . '</span></a></div>';
             }
         }
     }
-
-    /* Slutt p&aring; chat &oslash;verst */
     echo '
-<noscript><p>&AElig; spille mafia-no uten javascript aktivert vil vise seg &aring; v&aelig;re en ulempe for deg, vennligst aktiver javascript.</p></noscript>
+<noscript><p>&Aring; spille ' . NAVN_DOMENE . ' uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig, vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
   </div>
   </header>
   <section>
@@ -131,14 +121,14 @@ function city($city, $way = 1)
 function user($i, $obj = 0)
 {
     global $db;
-    $s = $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($i)."'");
+    $s = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($i) . "'");
     if ($db->num_rows() == 1) {
         if ($obj == 1) {
             return $db->fetch_object($s);
         }
         $obj = $db->fetch_object($s);
         $res = '<a href="profil.php?id=' . $obj->id . '">' . $obj->user . '</a>';
-        return($res);
+        return ($res);
     } else {
         return false;
     }
@@ -148,10 +138,10 @@ function bilde($i)
 {
     global $dir;
     global $db;
-    $s   = $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($i)."'");
+    $s = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($i) . "'");
     $obj = $db->fetch_object($s);
-    $res = ($db->num_rows() >= 1) ? $obj->image : $dir.'/imgs/nopic.png';
-    return($res);
+    $res = ($db->num_rows() >= 1) ? $obj->image : $dir . '/imgs/nopic.png';
+    return ($res);
 }
 
 function ban($id)
@@ -173,7 +163,7 @@ function ban($id)
 function ipbanned($ip)
 {
     global $db;
-    $db->query("SELECT * FROM `ipban` WHERE `ip` = '".ip2long($ip)."' AND `active` = 1");
+    $db->query("SELECT * FROM `ipban` WHERE `ip` = '" . ip2long($ip) . "' AND `active` = 1");
     if ($db->num_rows() == 1) {
         $query = $db->fetch_object();
         die("<p>'.$ip.' er blokkert fra dette stedet, grunnet:<br>'.$query->reason.'</p>");
@@ -183,8 +173,8 @@ function ipbanned($ip)
 function timec($sec)
 {
     /* Vise i minutter og sekunder */
-    $res  = null;
-    $min  = floor($sec / 60);
+    $res = null;
+    $min = floor($sec / 60);
     $seks = floor($sec - ($min * 60)); //Resterende sekunder
     if ($min >= 1) {
         $res .= $min;
@@ -205,7 +195,7 @@ function timec($sec)
             $res .= ' sekund';
         }
     }
-    return($res);
+    return ($res);
 }
 
 function status($s)
@@ -226,7 +216,7 @@ function status($s)
 function user_exists($username, $ret = 0)
 {
     global $db;
-    $db->query("SELECT * FROM `users` WHERE `user` = '".$db->escape($username)."'");
+    $db->query("SELECT * FROM `users` WHERE `user` = '" . $db->escape($username) . "'");
     if ($db->num_rows() == 1) {
         if ($ret == 0) {
             return true;
@@ -246,7 +236,7 @@ function user_exists($username, $ret = 0)
 function firma($id)
 {
     global $db;
-    $db->query("SELECT * FROM `firma` WHERE `id` = '".$db->escape($id)."'");
+    $db->query("SELECT * FROM `firma` WHERE `id` = '" . $db->escape($id) . "'");
     if ($db->num_rows() == 1) {
         $f = $db->fetch_object();
         return array($f->Navn, $f->Eier, $f->Type, $f->Konto, $f->By);
@@ -260,7 +250,7 @@ function liv_check()
     global $dir;
     global $obj;
     if ($obj->health <= 0) {
-        return include($dir."death.php");
+        return include($dir . "death.php");
     } else {
         return;
     }
@@ -273,7 +263,7 @@ function aktiv()
     global $db;
     $db->query("SELECT * FROM `users` WHERE `id` = '$obj->id' AND `activated` = '0'");
     if ($db->num_rows() == 1) {
-        include_once($dir."inc/desp.php");
+        include_once($dir . "inc/desp.php");
     } else {
         return;
     }
@@ -300,7 +290,7 @@ function bunker($tr = false)
 {
     global $obj;
     global $db;
-    $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '".$obj->id."' AND `accepted` = '1' AND `timeleft` > ".time()." AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+    $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '" . $obj->id . "' AND `accepted` = '1' AND `timeleft` > " . time() . " AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
     if ($db->num_rows() == 1) {
         if ($tr) {
             $g = $db->fetch_object();
@@ -316,10 +306,10 @@ function bunker($tr = false)
 function settinn($uid, $res = "?", $timeleft = 60)
 {
     global $db;
-    $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($uid)."'");
+    $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($uid) . "'");
     if ($db->num_rows() == 1) {
-        if ($db->query("INSERT INTO `jail`(`timestamp`,`uid`,`reason`,`timeleft`,`priceout`) VALUES(UNIX_TIMESTAMP(),'".$db->escape($uid)."','".$db->escape($res)."','".(time()
-                + $timeleft)."','1000000')")) {
+        if ($db->query("INSERT INTO `jail`(`timestamp`,`uid`,`reason`,`timeleft`,`priceout`) VALUES(UNIX_TIMESTAMP(),'" . $db->escape($uid) . "','" . $db->escape($res) . "','" . (time()
+                + $timeleft) . "','1000000')")) {
             return true;
         } else {
             return $db->query_error();
@@ -330,9 +320,26 @@ function settinn($uid, $res = "?", $timeleft = 60)
     return false;
 }
 
-function bbcodes($text, $html = 1, $link1 = 1, $link2 = 1, $understrek = 1, $tykk = 1, $kursiv = 1, $midtstilt = 1,
-                 $farge = 1, $bilde = 1, $storrelse = 1, $hr = 1, $linjeskift = 1, $smil = 1, $shadow = 0, $you = 0,
-                 $decode = 0, $entit = 1)
+function bbcodes(
+    $text,
+    $html = 1,
+    $link1 = 1,
+    $link2 = 1,
+    $understrek = 1,
+    $tykk = 1,
+    $kursiv = 1,
+    $midtstilt = 1,
+    $farge = 1,
+    $bilde = 1,
+    $storrelse = 1,
+    $hr = 1,
+    $linjeskift = 1,
+    $smil = 1,
+    $shadow = 0,
+    $you = 0,
+    $decode = 0,
+    $entit = 1
+)
 {
     if ($html == 1) {
         if ($entit == 0) {
@@ -343,12 +350,18 @@ function bbcodes($text, $html = 1, $link1 = 1, $link2 = 1, $understrek = 1, $tyk
         }
     }
     if ($link1 == 1) {
-        $text = preg_replace('#\[link="htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$@&()\'*+,;=%]+)"\ text="(.+)"\]#',
-            '<a href="htt$1$2" title="$1$2">$3</a>', $text);
+        $text = preg_replace(
+            '#\[link="htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$@&()\'*+,;=%]+)"\ text="(.+)"\]#',
+            '<a href="htt$1$2" title="$1$2">$3</a>',
+            $text
+        );
     }
     if ($link2 == 1) {
-        $text = preg_replace('#\[link="htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$@&()\'*+,;=%]+)"\]#i',
-            '<a href="htt$1$2">htt$1$2</a>', $text);
+        $text = preg_replace(
+            '#\[link="htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$@&()\'*+,;=%]+)"\]#i',
+            '<a href="htt$1$2">htt$1$2</a>',
+            $text
+        );
     }
     if ($understrek == 1) {
         $text = preg_replace("/\[u\](.*?)\[\/u\]/is", "<span style='text-decoration:underline;'>$1</span>", $text);
@@ -366,8 +379,11 @@ function bbcodes($text, $html = 1, $link1 = 1, $link2 = 1, $understrek = 1, $tyk
         $text = preg_replace("/\[f=#([0-9a-z]+)\](.*?)\[\/f\]/is", "<span style=color:#$1>$2</span>", $text);
     }
     if ($bilde == 1) {
-        $text = preg_replace("#\[img=htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$@&()\'*+,;=%]+)]#",
-            "<img src=\"htt$1$2\" style=\"max-width:100%;\" alt=\"\">", $text);
+        $text = preg_replace(
+            "#\[img=htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$@&()\'*+,;=%]+)]#",
+            "<img src=\"htt$1$2\" style=\"max-width:100%;\" alt=\"\">",
+            $text
+        );
     }
     if ($storrelse == 1) {
         $text = preg_replace('#\[size=([0-9]+)\](.*?)\[/size\]#s', '<span style="font-size:$1px">$2</span>', $text);
@@ -379,32 +395,43 @@ function bbcodes($text, $html = 1, $link1 = 1, $link2 = 1, $understrek = 1, $tyk
         $text = str_replace("\n", "<br>", $text);
     }
     if ($smil == 1) {
-        $text = str_replace(array(":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"),
+        $text = str_replace(
+            array(":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"),
             array('<img src="smileys/Content.png" alt=":)">', '<img src="smileys/Grin.png" alt=":D">', '<img src="smileys/Yuck.png" alt=":P">',
-            '<img src="smileys/Slant.png" alt=":-/">', '<img src="smileys/Sarcastic.png" alt=";)">', '<img src="smileys/Frown.png" alt=":(">',
-            '<img src="smileys/Gasp.png" alt=":O">', '<img src="smileys/Heart.png" alt="&lt;3">', '<img src="smileys/Confused.png" alt=":S">',
-            '<img src="smileys/Kiss.png" alt=":*">'), $text);
+                '<img src="smileys/Slant.png" alt=":-/">', '<img src="smileys/Sarcastic.png" alt=";)">', '<img src="smileys/Frown.png" alt=":(">',
+                '<img src="smileys/Gasp.png" alt=":O">', '<img src="smileys/Heart.png" alt="&lt;3">', '<img src="smileys/Confused.png" alt=":S">',
+                '<img src="smileys/Kiss.png" alt=":*">'),
+            $text
+        );
     }
     if ($shadow == 1) {
-        $text = preg_replace(array("/\[s1\](.*?)\[\/s1\]/is", "/\[s2 f=\"#(.*?)\"\](.*?)\[\/s2\]/is"),
+        $text = preg_replace(
+            array("/\[s1\](.*?)\[\/s1\]/is", "/\[s2 f=\"#(.*?)\"\](.*?)\[\/s2\]/is"),
             array("<span style=\"text-shadow:none;text-shadow: #000000 2px 2px 2px;\">$1</span>", "<span style=\"text-shadow:none;text-shadow: #$1 2px 2px 2px;\">$2</span>"),
-            $text);
+            $text
+        );
     }
     if ($you) {
-        $text = preg_replace("/\[youtube=([a-z0-9-_]+)\?([0-1])\]/is",
+        $text = preg_replace(
+            "/\[youtube=([a-z0-9-_]+)\?([0-1])\]/is",
             "<iframe width=\"560\" height=\"315\" src=\"http://www.youtube.com/embed/$1?autoplay=$2\" frameborder=\"0\" allowfullscreen></iframe>",
-            $text);
+            $text
+        );
     }
     $text = preg_replace(
         array("/\<3/ix", "/\[li\](.*?)\[\/li\]/is", "/\[ul\](.*?)\[\/ul\]/is", "/\[ol\](.*?)\[\/ol\]/is"),
-        array("&heart;", "<li>$1</li>", "<ul>$1</ul>", "<ol>$1</ol>"), $text);
+        array("&heart;", "<li>$1</li>", "<ul>$1</ul>", "<ol>$1</ol>"),
+        $text
+    );
     if ($decode == 1) {
         $text = utf8_decode($text);
     }
     $text = str_replace(array("æ", "ø", "å"), array("&aelig;", "&oslash;", "&aring;"), $text);
-    $text = preg_replace("#\[spotify=(.+)\]#is",
+    $text = preg_replace(
+        "#\[spotify=(.+)\]#is",
         "<iframe src=\"https://embed.spotify.com/?uri=$1\" width=\"300\" height=\"380\" frameborder=\"0\" allowtransparency=\"true\"></iframe>",
-        $text);
+        $text
+    );
     return ($text);
 }
 
@@ -414,72 +441,72 @@ function rank($xp)
     if ($xp <= 50) {
         $ranknr = 1;
         $rankty = "Soldat"; //Ranknavn
-        $maxxp  = 50;
+        $maxxp = 50;
     } else if ($xp > 50 && $xp < 100) {
-        $xp     = $xp - 50;
+        $xp = $xp - 50;
         $ranknr = 2;
         $rankty = "Capo"; //Ranknavn
-        $maxxp  = 50;
+        $maxxp = 50;
     } else if ($xp >= 100 && $xp < 150) {
-        $xp     = $xp - 100;
+        $xp = $xp - 100;
         $ranknr = 3;
         $rankty = "Underboss"; //Ranknavn
-        $maxxp  = 50;
+        $maxxp = 50;
     } else if ($xp >= 150 && $xp < 250) {
-        $xp     = $xp - 150;
+        $xp = $xp - 150;
         $ranknr = 4;
         $rankty = "Boss"; //Ranknavn
-        $maxxp  = 100;
+        $maxxp = 100;
     } else if ($xp >= 250 && $xp < 350) {
-        $xp     = $xp - 250;
+        $xp = $xp - 250;
         $ranknr = 5;
         $rankty = "Consigliere"; //Ranknavn
-        $maxxp  = 350;
+        $maxxp = 350;
     } else if ($xp >= 350 && $xp < 500) {
-        $xp     = $xp - 350;
+        $xp = $xp - 350;
         $ranknr = 6;
         $rankty = "Don"; //Ranknavn
-        $maxxp  = 500;
+        $maxxp = 500;
     } else if ($xp >= 500 && $xp < 700) {
-        $xp     = $xp - 500;
+        $xp = $xp - 500;
         $ranknr = 7;
         $rankty = "Mafioso"; //Ranknavn
-        $maxxp  = 700;
+        $maxxp = 700;
     } else if ($xp >= 700 && $xp < 950) {
-        $xp     = $xp - 700;
+        $xp = $xp - 700;
         $ranknr = 8;
         $rankty = "Omerta"; //Ranknavn
-        $maxxp  = 950;
+        $maxxp = 950;
     } else if ($xp >= 950 && $xp < 1250) {
-        $xp     = $xp - 950;
+        $xp = $xp - 950;
         $ranknr = 9;
         $rankty = "Vendetta"; //Ranknavn
-        $maxxp  = 1250;
+        $maxxp = 1250;
     } else if ($xp >= 1250 && $xp < 1400) {
-        $xp     = $xp - 1250;
+        $xp = $xp - 1250;
         $ranknr = 10;
         $rankty = "Godfather"; //Ranknavn
-        $maxxp  = 1400;
+        $maxxp = 1400;
     } else if ($xp >= 1400 && $xp < 3000) {
-        $xp     = $xp - 1400;
+        $xp = $xp - 1400;
         $ranknr = 11;
         $rankty = "Legende"; //Ranknavn
-        $maxxp  = 2600;
+        $maxxp = 2600;
     } else if ($xp >= 3000) {
         $ranknr = 12;
         $rankty = "Legendarisk Don"; //Ranknavn
-        $maxxp  = 3000;
+        $maxxp = 3000;
         if (($xp / $maxxp) > 1) {
-            $rankty .= " x".floor($xp / $maxxp);
+            $rankty .= " x" . floor($xp / $maxxp);
         }
     }
-    return array($ranknr, $rankty, $xp, $maxxp);
+    return [$ranknr, $rankty, $xp, $maxxp];
 }
 
-function get_user($in)
+function get_userobject($in)
 {
     global $db;
-    $q = $db->query("SELECT * FROM `users` WHERE `id` = '".$db->escape($in)."'");
+    $q = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($in) . "'");
     if ($db->num_rows($q) == 1) {
         return $db->fetch_object($q);
     } else {
@@ -490,40 +517,25 @@ function get_user($in)
 function r1()
 {
     global $obj;
-    if ($obj->status == 1) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($obj->status === 1);
 }
 
 function r2()
 {
-    global $dir;
     global $obj;
-    if ($obj->status == 2) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($obj->status === 2);
 }
 
 function r3()
 {
-    global $dir;
     global $obj;
-    if ($obj->status == 3) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($obj->status === 3);
 }
 
 function types($a, $b = 0)
 {
-    global $dir;
-    $c = array(0, 1, 2, 3); //Typer i tall
-    $d = array("Om spillet", "Om funksjoner", "Feil i spillet", "Klage", "Forslag"); //Typer definert i tekst
+    $c = [0, 1, 2, 3];
+    $d = ["Om spillet", "Om funksjoner", "Feil i spillet", "Klage", "Forslag"];
     if ($b == 0) {
         $e = str_replace($c, $d, $a); //Bytter om
     } else if ($b == 1) {
@@ -540,7 +552,7 @@ function famidtoname($id, $link = 0)
     if ($db->num_rows() == 1) {
         $navn = $db->fetch_object();
         if ($link == 1) {
-            return '<a href="familievis.php?fam='.$navn->Navn.'">'.$navn->Navn.'</a>';
+            return '<a href="familievis.php?fam=' . $navn->Navn . '">' . $navn->Navn . '</a>';
         } else {
             return $navn->Navn;
         }
@@ -556,110 +568,57 @@ function sysmel($til, $melding)
     if (is_array($til)) {
         $q = "INSERT INTO `sysmail` VALUES";
         foreach ($til as $id) {
-            $q .= "(NULL,'$id',UNIX_TIMESTAMP(),'0','".$db->slash($melding)."'),";
+            $q .= "(NULL,'$id',UNIX_TIMESTAMP(),'0','" . $db->slash($melding) . "'),";
         }
         $q = substr($q, -1);
         $db->query($q);
     } else {
-        $db->query("INSERT INTO `sysmail` VALUES(NULL,'$til','".time()."','0','".$db->slash($melding)."')");
+        $db->query("INSERT INTO `sysmail` VALUES(NULL,'$til','" . time() . "','0','" . $db->slash($melding) . "')");
     }
-}
-
-function famlogg($spiller, $hendelse)
-{
-    global $dir;
-    global $db;
-    global $obj;
-    $db->query("INSERT INTO `familielogg` (`familie`,`hendelse`,`time`,`spiller`) VALUES ('$obj->family','$hendelse',UNIX_TIMESTAMP(),'$spiller')");
 }
 
 function noaccess()
 {
-    ?>
+    echo <<<'NOAC'
     <h1>Ingen tilgang!</h1>
-    <p style="color:#000;">Du har ikke <b style="color: #f00;">TILGANG</b> til denne siden</p>
-    <p>Dersom du mener du skal ha tilgang, kontakt en admin/moderator.</p>
-
-
-    <?php
-}
-
-function rainbow($text)
-{
-    $ret        = '';
-    $colors     = array(
-        'ff0033',
-        'ff0000',
-        'ff3300',
-        'ff6600',
-        'ff9900',
-        'ffcc00',
-        'ffff00',
-        'ccff00',
-        '99ff00',
-        '66ff00',
-        '33ff00',
-        '00ff00',
-        '00ff33',
-        '00ff66',
-        '00ff99',
-        '00ffcc',
-        '00ffff',
-        '00ccff',
-        '0099ff',
-        '0066ff',
-        '0033ff',
-        '0000ff',
-        '3300ff',
-        '6600ff',
-        '9900ff',
-        'cc00ff');
-    $i          = 0;
-    $textlength = strlen($text);
-    while ($i <= $textlength) {
-        foreach ($colors as $value) {
-            if ($text[$i] != "") {
-                $ret .= '<span style="color:#'.$value.';">'.$text[$i]."</span>";
-            }
-            $i++;
-        }
-    }
-    return $ret;
+    <p>Du har ikke <b style="color: #f00;">TILGANG</b> til denne siden</p>
+    <p>Dersom du mener du skal ha tilgang, kontakt en admin/moderator eller send en henvendelse til support.</p>
+NOAC;
 }
 
 function weapons($r)
 {
-    $w = array(0 => "ingen", 1 => "Colt 1911", 2 => ".44 Magnum", 3 => "Beretta 9mm", 4 => "M8A1", 5 => "DSR 50", 6 => "SVT-40",
-        7 => "M4", 8 => "Ak 47", 9 => "M14");
+    $w = [0 => "ingen", 1 => "Colt 1911", 2 => ".44 Magnum", 3 => "Beretta 9mm", 4 => "M8A1", 5 => "DSR 50", 6 => "SVT-40",
+        7 => "M4", 8 => "Ak 47", 9 => "M14"];
     return $w[$r];
 }
 
 function weapon($r)
 {
-    $vapen = array(
-        0 => array('navn' => "Ingen", 'pris' => 0, 'power' => 0),
-        1 => array('navn' => "Colt", 'pris' => 84200, 'power' => 1),
-        2 => array('navn' => "Glock 64", 'pris' => 147400, 'power' => 2),
-        3 => array('navn' => "Dual Berettas", 'pris' => 294800, 'power' => 3),
-        4 => array('navn' => "Desert Eagle", 'pris' => 874200, 'power' => 4),
-        5 => array('navn' => "MP5", 'pris' => 1623000, 'power' => 5),
-        6 => array('navn' => "PP Bizon", 'pris' => 4125000, 'power' => 6),
-        7 => array('navn' => "P90", 'pris' => 8250000, 'power' => 7),
-        8 => array('navn' => "AK-47", 'pris' => 16500000, 'power' => 8),
-        9 => array('navn' => "M4A4", 'pris' => 33000000, 'power' => 9),
-        10 => array('navn' => "Magnum Sniper Rifle", 'pris' => 66000000, 'power' => 10)
-    );
+    $vapen = [
+        0 => ['navn' => "Ingen", 'pris' => 0, 'power' => 0],
+        1 => ['navn' => "Colt", 'pris' => 84200, 'power' => 1],
+        2 => ['navn' => "Glock 64", 'pris' => 147400, 'power' => 2],
+        3 => ['navn' => "Dual Berettas", 'pris' => 294800, 'power' => 3],
+        4 => ['navn' => "Desert Eagle", 'pris' => 874200, 'power' => 4],
+        5 => ['navn' => "MP5", 'pris' => 1623000, 'power' => 5],
+        6 => ['navn' => "PP Bizon", 'pris' => 4125000, 'power' => 6],
+        7 => ['navn' => "P90", 'pris' => 8250000, 'power' => 7],
+        8 => ['navn' => "AK-47", 'pris' => 16500000, 'power' => 8],
+        9 => ['navn' => "M4A4", 'pris' => 33000000, 'power' => 9],
+        10 => ['navn' => "Magnum Sniper Rifle", 'pris' => 66000000, 'power' => 10]
+    ];
     return $vapen[$r]['navn'];
 }
 
 function feil($t)
 {
-    return '<p class="feil">'.$t.'</p>';
+    return '<p class="feil">' . $t . '</p>';
 }
 
 function lykket($t)
 {
-    return '<p class="lykket">'.$t.'</p>';
+    return '<p class="lykket">' . $t . '</p>';
 }
 
 function info($t)

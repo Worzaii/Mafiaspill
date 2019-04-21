@@ -1,7 +1,7 @@
 <?php
 define('BASEPATH', true);
 require_once './system/config.php';
-require_once './classes/class.php';
+require_once './classes/database.php';
 require_once './inc/functions.php';
 $db = new database();
 $db->connect();

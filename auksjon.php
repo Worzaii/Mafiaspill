@@ -5,7 +5,7 @@ if (fengsel() == true) {
     echo '
 <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">' . fengsel(true) . '</span></p>
 <script type= "text/javascript">
-teller(' . fengsel(true) . ',\'krim\',true,\'ned\');
+teller(' . fengsel(true) . ';)
 </script>
 ';
 } else if (bunker() == true) {
@@ -13,7 +13,7 @@ teller(' . fengsel(true) . ',\'krim\',true,\'ned\');
     echo '
 <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
 <script>
-teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
+teller(' . ($bu - time()) . ';)
 </script>
 ';
 } else {
@@ -82,17 +82,17 @@ teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
             }
         }
         /*Legge ut noe nytt til salgs*/
-        $owning = NULL;
+        $owning = null;
         $s = $db->query("SELECT * FROM `firma` WHERE `Eier` = '" . $obj->id . "' ORDER BY `id` ASC") or die(mysqli_error($db->con));
         if ($db->num_rows() >= 1) {
             $listorder = 0;
             while ($r = mysqli_fetch_object($s)) {
                 if ($r->Type == 1 && $r->By == 0) {
-                    $owning .= '<tr class="selge" onclick="velg_verdi(' . $r->id . ',' . $listorder . ');"><td><span title="' . $r->Navn . '">Lottofirma</span></td></tr>';
+                    $owning .= '<tr class="selge" onclick="velg_verdi(' . $r->id . ',' . $listorder . ')"><td><span title="' . $r->Navn . '">Lottofirma</span></td></tr>';
                     $listorder++;
                 } else {
                     if ($r->Type == 2) $type = "Flyplass";
-                    $owning .= '<tr class="selge" onclick="velg_verdi(' . $r->id . ',' . $listorder . ');"><td><span title="' . $r->Navn . '">' . $type . ' i ' . city($r->By) . '</span></td></tr>';
+                    $owning .= '<tr class="selge" onclick="velg_verdi(' . $r->id . ',' . $listorder . ')"><td><span title="' . $r->Navn . '">' . $type . ' i ' . city($r->By) . '</span></td></tr>';
                     $listorder++;
                 }
             }
@@ -101,7 +101,7 @@ teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
         }
         ?>
         <h1>Auksjonshuset - Nytt salg</h1>
-        <img src="imgs/auksjon.png">
+        <img src="images/headers/auksjon.png">
         <p><a href="/Auksjon">Tilbake til Auksjonshuset!</a></p>
         <?= $res ?>
         <form method="post" action="auksjon.php?ny">
@@ -253,29 +253,29 @@ teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
                         $db->query("SELECT * FROM `budauk` WHERE `aid` = '" . $id . "' ORDER BY `id` DESC LIMIT 1");
                         if ($db->num_rows() == 1) {
                             /*Finnes bud fra f&oslash;r*/
-                            $budbefore = TRUE;
+                            $budbefore = true;
                             $bud = $db->fetch_object();
                             if ($obj->id == $bud->uid) {
                                 /*Spiller pr&oslash;ver &aring; legge inn bud enda han er den siste som har lagt inn bud*/
                                 $re = '<p class="feil">Du kan ikke legge inn bud, da du er den siste som la inn budet. Vent til noen andre har lagt inn bud f&oslash;r du pr&oslash;ver igjen.</p>';
-                                $everything_is_ok = FALSE;
+                                $everything_is_ok = false;
                             } else if ($sum <= $bud->bid) {
                                 /*Budet er likt forrige bud, aksepteres ikke*/
-                                $everything_is_ok = FALSE;
+                                $everything_is_ok = false;
                                 $re = '<p class="feil">Du har bydd for lite penger i forhold til n&aring;v&aelig;rende bud. By h&oslash;yere. Neste gyldige bud er p&aring; ' . (number_format(($bud->bid + $resu->increasebid))) . ' kr!</p>';
                             } else if ($sum > $bud->bid && ($bud->bid + $resu->increasebid) > $sum && $resu->autowin != $sum) {
                                 /*Budet er h&oslash;yere, men oppfyller ikke kravet om &aring; &oslash;ke budet en viss sum, men skulle spilleren by aw enda &oslash;kningen ikke fyller kravet, vil budet bli godtatt likevell*/
-                                $everything_is_ok = FALSE;
+                                $everything_is_ok = false;
                                 $re = '<p class="feil">Du har bydd en sum som ikke stemmer overens med bud&oslash;kning. Du m&aring; by minst ' . (number_format(($bud->bid + $resu->increasebid))) . ' kr!</p>';
                             } else {
                                 /*Budet oppfyller kravet, og settes inn evt*/
-                                $everything_is_ok = TRUE;
-                                $budbefore = TRUE;
+                                $everything_is_ok = true;
+                                $budbefore = true;
                             }
                         } else {
                             /*Ingen har lagt inn bud, legger inn sjekk i $every*/
                             $everything_is_ok = true;
-                            $budbefore = FALSE;
+                            $budbefore = false;
                         }
                         if ($everything_is_ok == true) {
                             /*Fortsetter validering av bud*/
@@ -308,14 +308,7 @@ teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
             }
         }/*Issetbud end*/
         startpage("Auksjonshuset");
-        echo '<script>
-/*Script laget av Nicholas Arnesen
-Den fungerer slik at om man ikke har javascript tilgjengelig, s&aring; vil ikke hjelp vises.*/
-  $(document).ready(function(){
-  $("#tog").hover(function(){
-    $(this).css(\'cursor\',\'pointer\');
-  });
-  $("#tog").css(\'display\',\'block\');;
+        echo ');
    $("#tog").click(function(){
     $("#helpinfo").toggle(600);
    }); 
@@ -358,7 +351,7 @@ Den fungerer slik at om man ikke har javascript tilgjengelig, s&aring; vil ikke 
         <td>' . $curbid . '</td>
         <td>' . number_format($r->autowin) . 'kr</td>
         <td>' . number_format($r->increasebid) . 'kr</td>
-        <td><span id="teller' . $r->id . '"></span><script>teller(' . $tidigjen . ',"teller' . $r->id . '",false,"ned");</script></td>
+        <td><span id="teller' . $r->id . '"></span><script>teller(' . $tidigjen . ',"teller' . $r->id . '",false,"ned")</script></td>
         <td>' . user($r->seller) . '</td>
           ' . $addd . '
         </tr>';

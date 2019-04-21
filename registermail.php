@@ -1,7 +1,7 @@
 <?php
 define("BASEPATH", true);
 require_once('system/config.php');
-require_once("classes/class.php");
+require_once("classes/database.php");
 $db = new database;
 $db->configure();
 $db->connect()or$db->connection_error();
@@ -41,7 +41,7 @@ if ($db->num_rows() == 1) {
         <section>
             <div class="wrapper">
                 <div id="shadow"></div>
-                <div style="border-radius: 50px; border: 2px solid #f00; z-index: 1; height: auto; width: 100%; background: #888 url('/imgs/warn1.png') repeat; text-align: center; margin-top: -30px;">
+                <div id="information">
                     <p>Registrer deg idag! :)</p>
                 </div>
                 <div id="content" style="margin-top: 20px;">

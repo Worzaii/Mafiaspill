@@ -2,7 +2,7 @@
 include("core.php");
 include("pagination.php");
 startpage("Garasje");
-echo '<img src="imgs/garasje.png">';
+echo '<img src="images/headers/garasje.png">';
 	if(bunker() == true){
 		$bu = bunker(true);
 		echo '<h1>Garasjen</h1>

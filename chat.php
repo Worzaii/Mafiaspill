@@ -42,9 +42,9 @@ if ($db->num_rows() == 1) {
     echo '
 	<div style="border-width: 2px; border-style: dotted; border-color: red; "><p class="feil"> Du er utestengt fra forumet!</p>
 	</br><b>Du har blitt utestengt av forumet av '.user($f->banner).' og derfor kan du se chatten men uten tilgang til &aring; skrive.</br>
-    Du har </h3><span id="user'.$f->uid.'"></span><script>teller('.$timeleft.',"user'.$f->uid.'","true","ned");</script> igjen av straffen din. Hvis du mener du har f&aring;tt den ved en feiltagelse, kontakt Support!</br>
+    Du har </h3><span id="user' . $f->uid . '"></span><script>teller(' . $timeleft . ',"user' . $f->uid . '","true","ned";)</script> igjen av straffen din. Hvis du mener du har f&aring;tt den ved en feiltagelse, kontakt Support!</br>
 	</br>
-	Grunnen for at du ble utestengt er: '.$f->res.'</b></div></br>
+	Grunnen for at du ble utestengt er: ' . $f->res . '</b></div></br>
 	  
 	';
 } else {

@@ -1,7 +1,7 @@
 <?php
 define("BASEPATH", true);
 include '../system/config.php';
-include '../classes/class.php';
+include '../classes/database.php';
 include '../inc/functions.php';
 header('Content-type: application/json');
 

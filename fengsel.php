@@ -95,7 +95,7 @@ if (bunker() == true) {
         }
     }
     startpage("Fengselet");
-    echo '<img src="imgs/fengsel.png">';
+    echo '<img src="images/headers/fengsel.png">';
     ?>
     <h1>Fengselet</h1>
     <div style="margin: 0 auto;width: auto;text-align: center;">

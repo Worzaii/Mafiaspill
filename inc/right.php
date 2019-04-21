@@ -1,7 +1,7 @@
 <?php
 global $obj;
 global $db;
-if ($obj->image == NULL || $obj->image == '') {
+if ($obj->image == null || $obj->image == '') {
     $img = "imgs/nopic.png";
 } else {
     $img = $obj->image;
@@ -48,7 +48,7 @@ if ($obj->status <= 3 || $obj->status == 6 || $obj->support == 1) {
         if ($obj->family == null) {
             echo "<i>ingen</i>";
         } else {
-            echo '<a href="#">'.famidtoname($obj->family, 1).'</a>';
+            echo '<a href="#">' . famidtoname($obj->family, 1) . '</a>';
         }
         ?></li>
     <li>Kuler: <?= number_format($obj->bullets); ?>
