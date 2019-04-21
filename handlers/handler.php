@@ -34,7 +34,7 @@ if (isset($_GET['login'])) {
                         }
                     }
                 } else {
-                    $str['string'] = feil('Passordet stemte ikke overens med det vi har');
+                    $str['string'] = feil('Passordet stemte ikke overens med det vi har.');
                 }
             } else {
                 $str['string'] = feil('Brukernavnet finnes ikke!');
@@ -161,20 +161,20 @@ Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller
         }
     }
 }
-if (isset($_GET['gpw'])) {
-    $user = $db->escape($_POST['user']);
-    $mail = $db->escape($_POST['mail']);
+if (isset($_GET['forgotpassword'])) {
+    $user = $_POST['user'];
+    $mail = $_POST['mail'];
     if (strlen($user) >= 4 && strlen($user) <= 20 && filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-        $db = new database;
+        $db = new database();
         $db->connect();
-        $db->query("SELECT * FROM `users` WHERE `user` = '$user' AND `mail` = '$mail' AND `health` > '0' 
-ORDER BY `id` DESC LIMIT 1");
+        $user = $db->escape($user);
+        $db->query("SELECT * FROM `users` WHERE `user` = '$user' AND `mail` = '$mail' AND `health` > '0'");
         if ($db->num_rows() == 1) {
             $i = $db->fetch_object();
             $to = $i->mail;
             $head = 'Nytt passord';
             $resgen = rand(1000010, 9999999);
-            $db->query("INSERT INTO `resetpasset`(`uid`,`resgen`,`timemade`)
+            $db->query("INSERT INTO `resetpasset`(`uid`,`resgen`,`timestamp`)
  VALUES('{$i->id}','$resgen',UNIX_TIMESTAMP())");
             $message = '
       <html>
@@ -217,19 +217,20 @@ sjekk at du har skrevet riktig!');
         $str['string'] = feil('Det ble ikke oppgitt noen informasjon, sjekk at du skrev noe i feltene!');
     }
 }
-if (isset($_GET['respas'])) {
+if (isset($_GET['resetpassword'])) {
     $p1 = $_POST['p1'];
     $p2 = $_POST['p2'];
-    $uid = $db->escape($_POST['uid']);
+    $uid = $_POST['uid'];
     $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ?
         $_SERVER['HTTP_X_FORWARDED_FOR'] . ' | ' . $_SERVER['REMOTE_ADDR'] : $_SERVER['REMOTE_ADDR'];
     if (strlen($p1) >= 4 && ($p1 == $p2) && is_numeric($uid)) {
         $db = new database();
         $db->connect();
+        $uid = $db->escape($_POST['uid']);
         $pass = password_hash($p1, PASSWORD_BCRYPT);
         if ($db->con) {
             $s = $db->query("SELECT * FROM `resetpasset` WHERE `uid` = '$uid' AND `used` = '0'
-                              AND `rimming` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
+                              AND (`timestamp` + 3600) > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
             if ($db->num_rows() == 1) {
                 $f = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($uid) . "' LIMIT 1");
                 if ($db->num_rows() == 1) {
@@ -240,14 +241,14 @@ if (isset($_GET['respas'])) {
                         $str['string'] = lykket('Ditt passord har blitt endret! <br>
 Du kan n&aring; logge inn p&aring; innloggingssiden med det nye passordet ditt!');
                         $str['res'] = 1;
-                        $db->query("INSERT INTO `respaslogg`(`uid`,`time`,`oldpass`,`newpass`,`ip`) 
-VALUES('$uid',UNIX_TIMESTAMP(),'{$obj->pass}','" . md5($p1) . "','$ip')");
+                        /*$db->query("INSERT INTO `respaslogg`(`uid`,`time`,`oldpass`,`newpass`,`ip`)
+VALUES('$uid',UNIX_TIMESTAMP(),'{$obj->pass}','" . md5($p1) . "','$ip')"); ** Might reimplement later*/
                         $db->query("UPDATE `resetpasset` SET `used` = '1' 
 WHERE `uid` = '" . $db->escape($uid) . "' AND `used` = '0' ORDER BY `id` DESC LIMIT 1");
                         if ($db->affected_rows() == 1) {
-                            $str["ls"] = 1;
+                            $str['string'] = lykket('Passordet er oppdatert! G&aring; til innlogging for &aring; fortsette!');
                         } else {
-                            $str["ls"] = 0;
+                            $str['string'] = feil('Kunne ikke oppdatere passordet, kontakt admin!');
                         }
                     } elseif ($db->affected_rows() == 0) {
                         $str['string'] = feil('Kunne ikke oppdatere passordet! 

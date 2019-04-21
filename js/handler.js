@@ -1,4 +1,5 @@
-function updatepage(str, responsediv) {
+function updatepage(str, responsediv)
+{
     let rese = "#" + responsediv;
     $(rese).fadeIn(1000);
     document.getElementById(responsediv).innerHTML = str;
@@ -16,14 +17,14 @@ $(document).ready(function () {
             dataType: "json",
             type: "POST",
             success: function (data) {
-                let $res = eval(data);
+                var $res = eval(data);
                 console.log($res);
                 if ($res.state === 1) {
                     updatepage($res.string, "loginresult");
                     let count = 1.5;
                     setInterval(function () {
                         if (count === 0) {
-                            window.location.href = href;
+                            window.location.href = $res.href;
                         }
                         count -= 0.5;
                     }, 500);
@@ -33,10 +34,9 @@ $(document).ready(function () {
             }
         });
     });
-    $("#forgottenpassword").submit(function (event) {
+    $("#forgotpasswordform").submit(function (event) {
         event.preventDefault();
         let $form = $(this).serialize(), link = $(this).attr('action');
-        link += "?forgotpassword";
         $.ajax({
             url: link,
             data: $form,
@@ -44,12 +44,12 @@ $(document).ready(function () {
             type: "POST"
         }).done(function (data) {
             let $res = eval(data);
-            updatepage($res.string, "res3");
+            updatepage($res.string, "forgotpasswordresult");
         });
     });
     $("#getaccess").submit(function (event) {
         event.preventDefault();
-        var $form = $(this).serialize(), link = $(this).attr('action');
+        let $form = $(this).serialize(), link = $(this).attr('action');
         link += "?getaccess";
         $.ajax({
             url: link,
@@ -63,7 +63,7 @@ $(document).ready(function () {
     });
     $("#register").submit(function (event) {
         event.preventDefault();
-        var $form = $(this).serialize(), link = $(this).attr('action');
+        let $form = $(this).serialize(), link = $(this).attr('action');
         $.ajax({
             url: link,
             data: $form,
@@ -74,9 +74,9 @@ $(document).ready(function () {
             updatepage($res.string, "ressu");
         });
     });
-    $("#resetpassword").submit(function (event) {
+    $("#resetpasswordform").submit(function (event) {
         event.preventDefault();
-        var $form = $(this).serialize(), link = $(this).attr('action');
+        let $form = $(this).serialize(), link = $(this).attr('action');
         $.ajax({
             url: link,
             data: $form,
@@ -84,7 +84,7 @@ $(document).ready(function () {
             type: "POST",
             success: function (data) {
                 let $res = eval(data);
-                updatepage($res.string, "ressu");
+                updatepage($res.string, "resetpasswordresult");
             }
         });
     });

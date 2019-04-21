@@ -77,7 +77,8 @@ if (isset($_SESSION['sessionzar'])) {
             <div id="forgotpassword">
                 <h2>Nytt passord</h2>
                 <div id="forgotpasswordresult"></div>
-                <form class="loginform" name="passinfo" id="gpw" action="handlers/handler.php">
+                <form class="loginform" name="passinfo" id="forgotpasswordform"
+                      action="handlers/handler.php?forgotpassword">
                     <input type="text" class="text" name="user" placeholder="Brukernavn"><br>
                     <input type="text" class="text" name="mail" placeholder="E-post"><br>
                     <input type="Submit" value="Tilbakestill passord" class="button"/>
