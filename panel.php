@@ -1,30 +1,33 @@
 <?php
 include("core.php");
 startpage("Paneler");
-if (r1() || r2() || r3() || support()) { ?>
-    <h1 style="text-align: center">Administrasjon</h1>
-    <h3 style="text-align:center"> Test Funksjoner</h3>
-    <ul class="adminpanel">
-        <li><a href="#">Ingen for &oslash;yeblikket.</a></li>
-    </ul>
-    <p class="center"> Admin funksjoner</p>
-    <ul class="adminpanel">
-        <li><a href="ipban.php">Internet Protocol Adresse blokkering :D</a></li>
-        <li><a href="bankalle.php">Siste bankoverf&oslash;ringer(100 siste)</a></li>
-        <li><a href="endre_spiller.php">Sjekk opp spiller(Ikke klar, arbeides med)</a></li>
-        <li><a href="player_logoff.php">Logg ut en spiller!</a></li>
-        <li><a href="antinlog.php">Se antall innlogginger!</a></li>
-        <li><a href="publiser.php">Legg ut ny nyhet!</a></li>
-        <li><a href="modkill2.php"><em>Modkill spiller</em></a></li>
-        <li><a href="/Multizone">Multi-muligheter</a></li>
-        <li><a href="stilling.php">Sett stilling til en spiller!</a></li>
-        <li><a href="endrespiller.php">Endre spillers verdier!</a></li>
-        <li><a href="modkilletvis.php">Se alle som er modkillet</a></li>
-        <li><a href="poenglogg.php">Poenglogg</a></li>
-        <li><a href="auksjonlogg.php">Auksjonslogg</a></li>
-        <li><a href="stillinglogg.php">Stillingslogg</a></li>
-    </ul>
-    <?php
+if (r1() || r2() || r3() || support()) {
+    if (r1()) {
+        ?>
+        <h1 style="text-align: center">Administrasjon</h1>
+        <h3 style="text-align:center"> Test Funksjoner</h3>
+        <ul class="adminpanel">
+            <li><a href="#">Ingen for &oslash;yeblikket.</a></li>
+        </ul>
+        <p class="center"> Admin funksjoner</p>
+        <ul class="adminpanel">
+            <li><a href="ipban.php">Internet Protocol Adresse blokkering :D</a></li>
+            <li><a href="bankalle.php">Siste bankoverf&oslash;ringer(100 siste)</a></li>
+            <li><a href="endre_spiller.php">Sjekk opp spiller(Ikke klar, arbeides med)</a></li>
+            <li><a href="player_logoff.php">Logg ut en spiller!</a></li>
+            <li><a href="antinlog.php">Se antall innlogginger!</a></li>
+            <li><a href="publiser.php">Legg ut ny nyhet!</a></li>
+            <li><a href="modkill2.php"><em>Modkill spiller</em></a></li>
+            <li><a href="/Multizone">Multi-muligheter</a></li>
+            <li><a href="stilling.php">Sett stilling til en spiller!</a></li>
+            <li><a href="endrespiller.php">Endre spillers verdier!</a></li>
+            <li><a href="modkilletvis.php">Se alle som er modkillet</a></li>
+            <li><a href="poenglogg.php">Poenglogg</a></li>
+            <li><a href="auksjonlogg.php">Auksjonslogg</a></li>
+            <li><a href="stillinglogg.php">Stillingslogg</a></li>
+        </ul>
+        <?php
+    }
     if (r1() || r2()) { ?>
         <p class="center">Moderatorpanel</p>
         <ul class="adminpanel">
