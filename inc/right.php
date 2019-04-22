@@ -11,46 +11,29 @@ $rank = rank($obj->exp);
 <h2><?= $obj->user; ?></h2>
 <a href="profil.php?id=<?= $obj->id; ?>"><img id="avatar" src="<?= $img; ?>" alt=""></a>
 <?php
-if ($obj->status <= 3 || $obj->status == 6 || $obj->support == 1) {
-    echo '<h2>Panel</h2><ul>';
-    if ($obj->status == 1) {
-        echo '
-  <li><a href="fulladmin.php">Administrer spillet</a></li>
-  <li><a href="adminjobb.php">Logg for admins</a></li>
-  ';
-    }
-    if ($obj->status <= 2) {
-        echo '
-      <li><a href="moderator_cp.php">Moderator panel</a></li>
-      <li><a href="nyforum.php?type=4">Ledelsens forum</a></li>
-      ';
-    }
-    if ($obj->status <= 3) {
-        echo '
-      <li><a href="forum_cp.php">Forumadministrasjon</a></li>
-      ';
-    }
+if (r1() || r2() || r3() || $obj->support == 1) {
+    echo '<h2>Paneler</h2><ul>';
+    echo '<li><a href="panel.php" title="Paneler du har tilgjengelige vises her">Dine paneler</a></li>';
 
-    if ($obj->support == '1' || $obj->status == '1' || $obj->status == '2') {
-        echo '<li><a href="supportpanel.php">Supportsenter (ute av drift)</a></li>';
+    if (r1() || r2() || support()) {
+        echo '<li><a href="supportpanel.php">Supportsenter <span style="color: #f00;">(Ikke klar)</span></a></li>';
     }
     echo '</ul>';
 }
 ?>
-<h2>Din Bruker</h2>
+<h2><?= htmlentities($obj->user); ?></h2>
 <ul>
     <li>Rank: <?= $rank[1]; ?></li>
-    <li>Penger: <?= number_format($obj->hand); ?>kr</li>
+    <li>H&aring;nd: <?= number_format($obj->hand); ?>kr</li>
     <li>Poeng: <?= number_format($obj->points); ?></li>
     <li>By: <?= city($obj->city); ?></li>
-    <li>Liv: <?= $obj->health; ?>%<br><div style="width:100px;height:4px;background: #f00;"><div style="width:<?= $obj->health ?>%;height:4px;background: #0f0;"></div></div></li>
-    <li>Familie: <?php
-        if ($obj->family == null) {
-            echo "<i>ingen</i>";
-        } else {
-            echo '<a href="#">' . famidtoname($obj->family, 1) . '</a>';
-        }
-        ?></li>
+    <li>Liv: <?= $obj->health; ?>%<br>
+        <div style="width:100px;height:4px;background: #f00;">
+            <div style="width:<?= $obj->health ?>%;height:4px;background: #0f0;"></div>
+        </div>
+    </li>
+    <li>Familie: <?= ($obj->family == null) ? "<i>ingen</i>" :
+            '<a href="#">' . famidtoname($obj->family, 1) . '</a>'; ?></li>
     <li>Kuler: <?= number_format($obj->bullets); ?>
     <li>V&aring;pen: <?= weapon($obj->weapon) ?></li>
 </ul>
@@ -89,7 +72,7 @@ include_once './inc/footer.php';
             var user = split[0];
             var id = split[1];
             $("body")
-                    .append("<div class=\"custom-menu\"><ul><li><a href=\"profil.php?id=" + id + "\">G&aring; til Profil</a></li><li><a href=\"innboks.php?ny&usertoo=" + user + "\">Send melding</a></li><li><a href=\"bank.php?til=" + user + "\">Send penger</a></li></ul></div>");
+                .append("<div class=\"custom-menu\"><ul><li><a href=\"profil.php?id=" + id + "\">G&aring; til Profil</a></li><li><a href=\"innboks.php?ny&usertoo=" + user + "\">Send melding</a></li><li><a href=\"bank.php?til=" + user + "\">Send penger</a></li></ul></div>");
             $("div.custom-menu").css({top: event.pageY + "px", left: event.pageX + "px"});
         });
     });

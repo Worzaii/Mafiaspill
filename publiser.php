@@ -15,14 +15,14 @@ if (r1() || r2()) {
             } else {
                 if (!$db->query("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES('$tema','$mel','$obj->user',UNIX_TIMESTAMP(),'1','$lvl')")) {
                     if ($obj->status == 1) {
-                        echo '<p>Feil: ' . mysqli_error($db->con) . '</p>';
-                        /* sysmel(2, '<b>--Nyheter</b></br>En feil skjedde under posting av nyheter!'); */
+                        echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
                     }
                 } else {
                     echo lykket("Du har publisert en nyhet!");
                     if ($lvl < 4) {
                         /* Only announce news if it's for everyone */
-                        $db->query("INSERT INTO `chat` (`id`, `uid`, `mld`, `time`) VALUES (NULL, '0', 'En ny nyhet ble skrevet', UNIX_TIMESTAMP());");
+                        $db->query("INSERT INTO `chat` (`id`, `uid`, `message`, `timestamp`) 
+VALUES (NULL, '0', 'En ny nyhet ble skrevet', UNIX_TIMESTAMP());");
                     }
                 }
             }
@@ -40,10 +40,10 @@ if (r1() || r2()) {
     </div>
     <script>
         $("#rang").change(function () {
-            var $sp = $("#rankrange");
+            let $sp = $("#rankrange");
 
-            vis = new Array("<span style='color:#f00'>Administrator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span> & <span style='color:#0f0'>Forum-moderator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span> & <span style='color:#0f0'>Forum-moderator</span> & Picmaker", "Alle");
-            var val = $("#rang").val();
+            let vis = ["<span style='color:#f00'>Administrator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span> & <span style='color:#0f0'>Forum-moderator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span> & <span style='color:#0f0'>Forum-moderator</span> & Picmaker", "Alle"];
+            let val = $("#rang").val();
             $sp.html(vis[val - 1]);
         });
     </script>

@@ -6,6 +6,7 @@ html, body {
     font-size: 12px;
     color: #fff;
 }
+
 a {
     text-decoration: none;
     color: #ccc;
@@ -16,28 +17,31 @@ a {
 }
 
 /*MENYBAR VELDIG ROTETE (COPY)*/
-body{padding-bottom:30px}
+body {
+    padding-bottom: 30px
+}
 
 /* Z-index of #mask must lower than #boxes .window */
 #mask {
-    position:absolute;
-    z-index:9000;
-    background-color:#000;
-    display:none;
+    position: absolute;
+    z-index: 9000;
+    background-color: #000;
+    display: none;
 }
 
 #boxes .window {
-    position:fixed;
-    width:440px;
-    height:200px;
-    display:none;
-    z-index:9999;
-    padding:20px;
+    position: fixed;
+    width: 440px;
+    height: 200px;
+    display: none;
+    z-index: 9999;
+    padding: 20px;
 }
+
 /* Customize your modal window here, you can add background image too */
 #boxes #dialog {
     width: 375px;
-    height:203px;
+    height: 203px;
 }
 
 a:hover {
@@ -58,7 +62,7 @@ h1 {
     color: #fff;
     border-bottom: 1px solid #000;
     box-shadow: 0px 1px 0px #313131;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 h2 {
@@ -75,9 +79,9 @@ h2 {
 }
 
 hr {
-    border:none;
+    border: none;
     border-bottom: 3px solid #111;
-    margin:0;
+    margin: 0;
 }
 
 table, tr, td, tbody {
@@ -104,6 +108,7 @@ table, tr, td, tbody {
 .light {
     background: url('../images/headerbg.png') repeat top left;
 }
+
 .dark {
     background: url('../images/headerbgdark.png') repeat top left;
 }
@@ -138,7 +143,7 @@ section {
 #content {
     width: 1000px;
     background: url('../images/mainbg.png') repeat-y top center;
-    float:left;
+    float: left;
     padding-bottom: 50px;
 }
 
@@ -149,14 +154,14 @@ section {
     border: 1px solid #2B2B2B;
 }
 
-#leftmenu ul, #rightmenu ul{
+#leftmenu ul, #rightmenu ul {
     width: 173px;
     padding: 0px 0px 10px 30px;
     font-size: 12px;
     line-height: 1.5;
 }
 
-#leftmenu li, #rightmenu li{
+#leftmenu li, #rightmenu li {
     list-style: none;
     color: #666;
 }
@@ -166,7 +171,7 @@ section {
     color: #AFAFAF;
 }
 
-#leftmenu a:hover, #rightmenu a:hover{
+#leftmenu a:hover, #rightmenu a:hover {
     text-decoration: none;
     color: #999;
 }
@@ -219,8 +224,8 @@ section {
 }
 
 .innlegsdato {
-    clear:right;
-    float:right;
+    clear: right;
+    float: right;
     display: block;
 }
 
@@ -249,9 +254,10 @@ input[type="button"], input[type="submit"], .button {
     vertical-align: top;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -moz-box-shadow: 0 1px 6px rgba(229,221,232,.9), inset 0 1px 0 rgba(249,249,249,.9);
+    -moz-box-shadow: 0 1px 6px rgba(229, 221, 232, .9), inset 0 1px 0 rgba(249, 249, 249, .9);
     -webkit-transition: all 0.5s ease-out;
 }
+
 input[type="submit"].endre:hover {
     padding-left: 10px;
     background-color: #000000;
@@ -269,10 +275,11 @@ input[type="submit"].endre:hover {
     vertical-align: top;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    -moz-box-shadow: 0 1px 6px rgba(229,221,232,.9), inset 0 1px 0 rgba(249,249,249,.9);
+    -moz-box-shadow: 0 1px 6px rgba(229, 221, 232, .9), inset 0 1px 0 rgba(249, 249, 249, .9);
     -webkit-transition: all 0.5s ease-out;
 }
-input[type="text"]:not(.frelst){
+
+input[type="text"]:not(.frelst) {
     background-color: #aaa;
     border: 1px;
     height: 16px;
@@ -286,6 +293,7 @@ input[type="text"]:not(.frelst){
     line-height: 1.2;
     padding: 10px;
 }
+
 .feil2 {
     width: 560px;
     background: #911B1B;
@@ -296,7 +304,7 @@ input[type="text"]:not(.frelst){
     padding-bottom: 4px;
     margin-left: -8px;
     font-size: 11px;
-    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.4);
     border-radius: 4px;
 }
 
@@ -314,13 +322,13 @@ input[type="text"]:not(.frelst){
 }
 
 .feil {
-    width: 580px!important;
-    background: rgba(255,0,0,0.1);
+    width: 580px !important;
+    background: rgba(255, 0, 0, 0.1);
     padding-top: 12px;
     padding-bottom: 12px;
     margin-left: 0px;
     font-size: 12px;
-    color: rgba(255,0,0,1);
+    color: rgba(255, 0, 0, 1);
 }
 
 .lykket {
@@ -330,8 +338,9 @@ input[type="text"]:not(.frelst){
     padding-bottom: 12px;
     margin-left: 0px;
     font-size: 12px;
-    color: rgba(0,255,0,1);
+    color: rgba(0, 255, 0, 1);
 }
+
 .warning {
     width: 580px !important;
     background: rgba(255, 255, 0, 0.1);
@@ -341,6 +350,7 @@ input[type="text"]:not(.frelst){
     font-size: 12px;
     color: rgba(255, 255, 0, 1);
 }
+
 .info {
     width: 580px !important;
     background: rgba(255, 255, 255, 0.1);
@@ -375,7 +385,7 @@ footer #spot1 {
     width: 200px;
     height: 60px;
     padding-top: 40px;
-    float:left;
+    float: left;
 }
 
 footer #spot2 {
@@ -383,7 +393,7 @@ footer #spot2 {
     height: 60px;
     padding-top: 40px;
     text-align: center;
-    float:left;
+    float: left;
 }
 
 footer #spot3 {
@@ -391,39 +401,46 @@ footer #spot3 {
     height: 60px;
     padding-top: 40px;
     text-align: right;
-    float:left;
+    float: left;
 }
+
 /* Tables */
-.table, #garasje{
-    border-collapse:collapse;
-    width:100%;
-    margin:auto;
+.table, #garasje {
+    border-collapse: collapse;
+    width: 100%;
+    margin: auto;
 }
-.table th,.table td, #garasje th, #garasje td{
-    border-right:1px solid #111;
-    border-bottom:1px solid #111;
-    color:#ccc;
-    background:#222;
+
+.table th, .table td, #garasje th, #garasje td {
+    border-right: 1px solid #111;
+    border-bottom: 1px solid #111;
+    color: #ccc;
+    background: #222;
     padding: 3px;
     max-width: 100%;
 }
-.table th:last-child,.table td:last-child, #garasje th:last-child, #garasje td:last-child{
-    border-right:none;
-}
-.table tbody tr:last-child th,.table tbody tr:last-child td, #garasje tbody tr:last-child th,#garasje tbody tr:last-child td{
-    border-bottom:none;
-}
-.table td, #garasje .biler td{
-    background:#666;
-}
-.table tr.c_1 td{
-    background:#666;
-}
-.table tr.c_2 td, .table tr.c_3 td{
-    background:#333;
+
+.table th:last-child, .table td:last-child, #garasje th:last-child, #garasje td:last-child {
+    border-right: none;
 }
 
-.normrad1{
+.table tbody tr:last-child th, .table tbody tr:last-child td, #garasje tbody tr:last-child th, #garasje tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table td, #garasje .biler td {
+    background: #666;
+}
+
+.table tr.c_1 td {
+    background: #666;
+}
+
+.table tr.c_2 td, .table tr.c_3 td {
+    background: #333;
+}
+
+.normrad1 {
     background: #333 !important;
 }
 
@@ -432,7 +449,7 @@ footer #spot3 {
 }
 
 .table.flyplass {
-    width: 400px!important;
+    width: 400px !important;
 }
 
 .table.chat {
@@ -440,13 +457,13 @@ footer #spot3 {
 }
 
 .table.chat2 {
-    width: 80px!important;
-    padding: 10px!important;
+    width: 80px !important;
+    padding: 10px !important;
 }
 
 .table.chat3 {
-    width: 380px!important;
-    padding: 10px!important;
+    width: 380px !important;
+    padding: 10px !important;
 }
 
 .table.tema td {
@@ -455,7 +472,7 @@ footer #spot3 {
 }
 
 .table.bj td {
-    padding: 0px!important;
+    padding: 0px !important;
     text-align: center;
 }
 
@@ -469,11 +486,11 @@ footer #spot3 {
 }
 
 #lotto th {
-    background: #666!important;
+    background: #666 !important;
 }
 
 #lotto th[colspan="2"] {
-    background: #222!important;
+    background: #222 !important;
 }
 
 .bank {
@@ -486,22 +503,21 @@ footer #spot3 {
     padding: 0 !important;
 }
 
-.adminpanel {
-    margin:0;
-    padding:0;
+ul.adminpanel {
+    padding: 0;
     list-style: none;
     width: 100%;
     max-width: 100%;
-    margin-top: 15px;
+    margin: 15px 0 0;
 }
 
-.adminpanel a li {
+ul.adminpanel li {
     width: 50%;
     background: #ccc;
     border-bottom: 1px solid #333;
     border-top: 1px solid #fff;
     margin: 0px auto 0px auto;
-    padding-top: 7px;
+    padding: 5px;
     text-align: center;
     font-weight: normal;
     -webkit-transition: all 0.3s ease;
@@ -510,29 +526,35 @@ footer #spot3 {
     transition: all 0.3s ease;
 }
 
-.adminpanel a li:hover {
+.adminpanel li:hover {
     background: #aaa;
 }
 
-.adminpanel a {
+ul.adminpanel li a {
     color: #111;
+    margin: 0px;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
-.adminpanel a:first-child li {
-    border-radius: 10px 10px 0 0;
+ul.adminpanel li:first-child {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     border-top: none;
 }
 
-.adminpanel a:last-child li {
-    border-radius: 0 0 10px 10px;
+ul.adminpanel li:last-child {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     border-bottom: none;
 }
 
-.profiltekst{
+.profiltekst {
     padding-top: 15px;
 }
 
-.profiltekst a{
+.profiltekst a {
     font-weight: bold;
     text-decoration: underline;
 }
@@ -540,22 +562,25 @@ footer #spot3 {
 .ct1 {
     width: 580px;
     padding: 5px 10px 5px 10px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     font-size: 10px;
     color: #999;
 }
-.ct2{
+
+.ct2 {
     width: 580px;
     padding: 5px 10px 5px 10px;
     font-size: 10px;
     color: #999;
 }
+
 .chattext {
     font-size: 12px;
     color: #fff;
     max-width: 580px;
     margin-top: 5px;
 }
+
 .systeminnboks {
     padding: 10px;
     margin: 10px;
@@ -565,32 +590,36 @@ footer #spot3 {
     border-radius: 13px;
     background: #6B1A1A;
 }
-.systeminnboks a{
+
+.systeminnboks a {
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
-.systemdato{
+
+.systemdato {
     float: right;
     height: 18px;
 }
+
 .faq_1 .faq_2 {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
-    border:1px dotted #666;
+    border: 1px dotted #666;
     background: #202020;
     color: #555555;
     margin: 10px 0 10px 0;
     text-align: justify;
 }
+
 .tema_wrap {
     color: #666666;
     width: 580px;
     margin: 5px auto 20px;
 }
 
-.forumhoyre{
+.forumhoyre {
     width: 190px;
     height: 270px;
     border: 1px dotted;
@@ -598,12 +627,14 @@ footer #spot3 {
     right: 260px;
     top: 251px;
 }
-.forumstart{
+
+.forumstart {
     border: 1px solid #000000;
     display: inline-block;
     width: 597px;
     background-color: #292929;
 }
+
 /*FORUM*/
 .object_one {
     display: block;
@@ -616,40 +647,46 @@ footer #spot3 {
     float: left;
     display: block;
 }
-.object_three{
+
+.object_three {
     width: 401px;
     text-align: center;
     background-color: #474747;
 }
-.object_four{
+
+.object_four {
     background-color: #987A2D;
     display: block;
     width: 401px;
 }
 
 /* Status colors! */
-.stat1{
+.stat1 {
     /* Admin */
-    color:#0ff;
+    color: #0ff;
 }
-.stat2{
+
+.stat2 {
     /* Moderator */
-    color:#0f0;
+    color: #0f0;
 }
-.stat3{
+
+.stat3 {
     /* Forum-moderator */
-    color:#ff0;
+    color: #ff0;
 }
-.stat4{
+
+.stat4 {
     /* Picmaker */
     background: linear-gradient(to right, orange, yellow, #00b100, cyan, #7878ff, violet);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: bold;
 }
-.stat5{
+
+.stat5 {
     /*Vanlig spiller*/
-    color:#fff;
+    color: #fff;
 }
 
 /* Dead player */
@@ -662,6 +699,7 @@ footer #spot3 {
 .pagination {
     text-align: center;
 }
+
 .pagination span, .pagination a {
     margin: 5px 2px 5px 2px;
     padding: 2px;
@@ -671,18 +709,25 @@ footer #spot3 {
     border: solid 1px #333333;
     display: inline-block;
 }
+
 .pagination a:hover, .pagination a.active:hover, .pagination a.active:hover {
     background: darkolivegreen;
 }
-.pagination span { font-style: italic; }
+
+.pagination span {
+    font-style: italic;
+}
+
 .pagination a.active {
     background: darkolivegreen;
 }
+
 .pagination a.seperator {
     background: #161616;
     border-color: #262626;
     color: #555555;
 }
+
 .pagination a.seperator:hover {
     background: #504940;
     color: #111111;
@@ -729,8 +774,8 @@ footer #spot3 {
     position: relative;
     top: 8px;
     left: 9px;
-    background-color: rgba(255,255,255,.2);
-    box-shadow: 0 1px 2px rgba(0,0,0,.7);
+    background-color: rgba(255, 255, 255, .2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .7);
     display: inline-block;
 }
 
@@ -753,6 +798,7 @@ footer #spot3 {
 #navbar_top .artist {
     opacity: 0.8;
 }
+
 #play {
     display: inline-block;
     width: 40px;
@@ -814,34 +860,43 @@ footer #spot3 {
     box-shadow: 0 0 3px 1px #CCC;
     vertical-align: top;
 }
+
 #site, #sidebar {
     vertical-align: top;
     display: inline-block;
     min-height: 300px;
     padding: 10px;
 }
+
 #site {
     width: 748px;
 }
+
 #sidebar {
     width: 340px;
 }
+
 #write::-webkit-input-placeholder {
-    color:    #222;
+    color: #222;
 }
+
 #write:-moz-placeholder {
-    color:    #222;
+    color: #222;
 }
+
 #write::-moz-placeholder {
-    color:    #222;
+    color: #222;
 }
+
 #write:-ms-input-placeholder {
-    color:    #222;
+    color: #222;
 }
+
 #avatar {
     width: 100%;
     margin-bottom: -2px;
 }
+
 .table td {
     border-right: 1px solid #111;
     border-bottom: 1px solid #111;
@@ -852,42 +907,53 @@ footer #spot3 {
     padding: 11px;
     background: #0C0B0B;
 }
+
 .shadow {
-    box-shadow: inset 0px 0px 20px rgba(0,0,0,0.9);
+    box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.9);
     width: 95px;
     height: 95px;
     border-radius: 8px;
 }
-#brukerbilde{
+
+#brukerbilde {
     width: 95px;
     height: 95px;
-    position:relative;
-    z-index:0;
+    position: relative;
+    z-index: 0;
     border-radius: 8px;
 }
+
 .custom-menu {
-    z-index:1000;
+    z-index: 1000;
     position: absolute;
-    background-color:#999999;
+    background-color: #999999;
     border: 2px solid #121212;
     padding: 2px;
 }
-.custom-menu ul{
+
+.custom-menu ul {
     list-style-type: none;
-    padding:0;
+    padding: 0;
     margin: 0;
 }
-.custom-menu ul li{
+
+.custom-menu ul li {
     padding: 5px 0 5px 0;
-    width:100%;
+    width: 100%;
     background: #ffff00;
     color: #990066;
     font-weight: bold;
     text-decoration: underline;
 }
-.custom-menu ul li:hover{
+
+.custom-menu ul li:hover {
     background: #330033;
 }
-.custom-menu ul li a{
-    color:#339900;
+
+.custom-menu ul li a {
+    color: #339900;
+}
+
+.center {
+    text-align: center;
 }

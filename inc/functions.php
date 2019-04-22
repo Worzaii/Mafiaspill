@@ -1,4 +1,7 @@
 <?php
+/**
+ * @param string $title Sets the title of the HTML document. Also starts the first part of the HTML page
+ */
 function startpage($title = NAVN_DOMENE)
 {
     global $obj, $db;
@@ -41,28 +44,27 @@ function startpage($title = NAVN_DOMENE)
     $chat = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 1");
     if ($db->num_rows() > 0) {
         while ($r = mysqli_fetch_object($chat)) {
-            $teksten = htmlentities($r->message, ENT_NOQUOTES, 'UTF-8');
+            $message = htmlentities($r->message, ENT_NOQUOTES, 'UTF-8');
             $uob = user($r->uid, 1);
-            if ($uob->status == 1) {
-                $teksten = bbcodes($teksten, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            } else if ($uob->status == 2 || $uob->status == 6) {
-                $teksten = bbcodes($teksten, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            /* Considering removing text related coding from chat to keep it pure */
+            /* if ($uob->status == 1) {
+              $teksten = bbcodes($teksten, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
+              } else if ($uob->status == 2 || $uob->status == 6) {
+              $teksten = bbcodes($teksten, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
+              } else {
+              $teksten = bbcodes($teksten, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0);
+              } */
+            if (!$uob) {
+                $uob = "Systemet";
             } else {
-                $teksten = bbcodes($teksten, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                $uob = '<a href="profil.php?id=' . $uob->id . '">' . $uob->user . '</a>';
             }
-            $par = null;
             if ($r->id % 2) {
                 echo
-                    '<div class="chat ct1"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>[' . date(
-                        "H:i:s",
-                        $r->timestamp
-                    ) . ']</b> &lt;' . user($r->uid) . '&gt;: <span class="chattext">' . $teksten . '</span></a></div>';
+                    '<div class="chat ct1"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
             } else {
                 echo
-                    '<div class="chat ct2"  style="width: 980px;padding: 5px 10px 5px 10px;font-size: 10px;color: #000;background: rgba(0, 0, 0, 0.66);margin-top: 0px;-moz-box-shadow: inset 0 0 10px #000000;-webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.86);"><a href="chat.php"><b>[' . date(
-                        "H:i:s",
-                        $r->timestamp
-                    ) . ']</b> &lt;' . user($r->uid) . '&gt;: <span class="chattext">' . $teksten . '</span></a></div>';
+                    '<div class="chat ct2"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
             }
         }
     }
@@ -83,6 +85,9 @@ function startpage($title = NAVN_DOMENE)
 ';
 }
 
+/**
+ * Prints out the rest of the page, as necessary
+ */
 function endpage()
 {
     print '
@@ -105,7 +110,7 @@ function city($city, $way = 1)
         $var = array("Oslo", "Bergen", "Trondheim", "Stavanger", "Fredrikstad", "Troms&oslash;", "Sarpsborg", "Lillestr&oslash;m"); //Norske byer ONLY :)
         if ($way == 1) {
             $by = str_replace($int, $var, $city);
-        } else if ($way == 0) {
+        } elseif ($way == 0) {
             $by = str_replace($var, $int, $city);
         }
     }
@@ -339,8 +344,7 @@ function bbcodes(
     $you = 0,
     $decode = 0,
     $entit = 1
-)
-{
+) {
     if ($html == 1) {
         if ($entit == 0) {
             $text = htmlentities($text, ENT_NOQUOTES | ENT_HTML401, 'ISO-8859-1');
@@ -442,57 +446,57 @@ function rank($xp)
         $ranknr = 1;
         $rankty = "Soldat"; //Ranknavn
         $maxxp = 50;
-    } else if ($xp > 50 && $xp < 100) {
+    } elseif ($xp > 50 && $xp < 100) {
         $xp = $xp - 50;
         $ranknr = 2;
         $rankty = "Capo"; //Ranknavn
         $maxxp = 50;
-    } else if ($xp >= 100 && $xp < 150) {
+    } elseif ($xp >= 100 && $xp < 150) {
         $xp = $xp - 100;
         $ranknr = 3;
         $rankty = "Underboss"; //Ranknavn
         $maxxp = 50;
-    } else if ($xp >= 150 && $xp < 250) {
+    } elseif ($xp >= 150 && $xp < 250) {
         $xp = $xp - 150;
         $ranknr = 4;
         $rankty = "Boss"; //Ranknavn
         $maxxp = 100;
-    } else if ($xp >= 250 && $xp < 350) {
+    } elseif ($xp >= 250 && $xp < 350) {
         $xp = $xp - 250;
         $ranknr = 5;
         $rankty = "Consigliere"; //Ranknavn
         $maxxp = 350;
-    } else if ($xp >= 350 && $xp < 500) {
+    } elseif ($xp >= 350 && $xp < 500) {
         $xp = $xp - 350;
         $ranknr = 6;
         $rankty = "Don"; //Ranknavn
         $maxxp = 500;
-    } else if ($xp >= 500 && $xp < 700) {
+    } elseif ($xp >= 500 && $xp < 700) {
         $xp = $xp - 500;
         $ranknr = 7;
         $rankty = "Mafioso"; //Ranknavn
         $maxxp = 700;
-    } else if ($xp >= 700 && $xp < 950) {
+    } elseif ($xp >= 700 && $xp < 950) {
         $xp = $xp - 700;
         $ranknr = 8;
         $rankty = "Omerta"; //Ranknavn
         $maxxp = 950;
-    } else if ($xp >= 950 && $xp < 1250) {
+    } elseif ($xp >= 950 && $xp < 1250) {
         $xp = $xp - 950;
         $ranknr = 9;
         $rankty = "Vendetta"; //Ranknavn
         $maxxp = 1250;
-    } else if ($xp >= 1250 && $xp < 1400) {
+    } elseif ($xp >= 1250 && $xp < 1400) {
         $xp = $xp - 1250;
         $ranknr = 10;
         $rankty = "Godfather"; //Ranknavn
         $maxxp = 1400;
-    } else if ($xp >= 1400 && $xp < 3000) {
+    } elseif ($xp >= 1400 && $xp < 3000) {
         $xp = $xp - 1400;
         $ranknr = 11;
         $rankty = "Legende"; //Ranknavn
         $maxxp = 2600;
-    } else if ($xp >= 3000) {
+    } elseif ($xp >= 3000) {
         $ranknr = 12;
         $rankty = "Legendarisk Don"; //Ranknavn
         $maxxp = 3000;
@@ -517,19 +521,25 @@ function get_userobject($in)
 function r1()
 {
     global $obj;
-    return ($obj->status === 1);
+    return ($obj->status == 1);
 }
 
 function r2()
 {
     global $obj;
-    return ($obj->status === 2);
+    return ($obj->status == 2);
 }
 
 function r3()
 {
     global $obj;
-    return ($obj->status === 3);
+    return ($obj->status == 3);
+}
+
+function support()
+{
+    global $obj;
+    return ($obj->support == 1);
 }
 
 function types($a, $b = 0)
@@ -538,7 +548,7 @@ function types($a, $b = 0)
     $d = ["Om spillet", "Om funksjoner", "Feil i spillet", "Klage", "Forslag"];
     if ($b == 0) {
         $e = str_replace($c, $d, $a); //Bytter om
-    } else if ($b == 1) {
+    } elseif ($b == 1) {
         $e = str_replace($d, $c, $a); //Bytter om
     }
     return ($e);
