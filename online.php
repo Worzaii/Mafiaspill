@@ -41,7 +41,7 @@ ORDER BY `lastactive` DESC");
           <tr>
           <td style="cursor:pointer;" onclick="window.location=\'profil.php?id=' . $r->id . '\'">
           ' . status($r->user) . '</td><td><span id="id' . $r->id . '"></span>
-          <script>teller(' . $newtime . ',\'id' . $r->id . '\',false,\'opp\');</script></td>' . $add2 . $add3 . '
+          <script>teller(' . $newtime . ',\'id' . $r->id . ' . $add2 . $add3 . '
           </tr>
           ';
         }
@@ -49,6 +49,7 @@ ORDER BY `lastactive` DESC");
         ?>
     </table>
 <?php
+/*
 if (r1() || r2()) {
     echo '<table class="table" style="margin-top: 15px;">
 <tr>
@@ -73,5 +74,5 @@ if (r1() || r2()) {
         ';
     }
     echo '</table>';
-}
+}*/
 endpage();
