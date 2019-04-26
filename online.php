@@ -4,7 +4,7 @@ startpage("P&aring;loggede spillere");
 ?>
     <h1>P&aring;loggede spillere</h1>
 <?php
-if (($obj->status == 1 || $obj->status == 2)) {
+if (r1() || r2()) {
     $add1 = "<td>IP-adresse</td>";
     $add3 = "<td>Hostname</td>";
     $cols = 4;
@@ -58,7 +58,7 @@ if (r1() || r2()) {
 <th>Bruker</th><th>Sist aktiv</th><th>Ip</th><th>Hostname</th>
 </tr>';
     $sql2 = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN 
-    '" . strtotime("-30days") . "' AND '" . (time() - 1800) . "' 
+    '" . strtotime("-30days") . "' AND (UNIX_TIMESTAMP() - 1800) 
     ORDER BY `lastactive` DESC");
     while ($r = mysqli_fetch_object($sql2)) {
         $newtime = time() - $r->lastactive;
@@ -66,8 +66,10 @@ if (r1() || r2()) {
         $add3 = "<td>" . (($r->hostname != null) ? (($obj->status > 1 && $r->status == 1) ? "***" : $r->hostname) : "Ikke registrert") . "</td>";
         echo '
         <tr>
-        <td style="cursor:pointer;" onclick="javascript:window.location=\'profil.php?id=' . $r->id . '\'">' . status($r->user) . '</td><td><span id="idx' . $r->id . '"></span><script>teller(' . $newtime . ',\'idx' . $r->id . ' . $add2 . $add3 . '
-        </tr>
+        <td style="cursor:pointer;" onclick="window.location=\'profil.php?id=' . $r->id . '\'">
+          ' . status($r->user) . '</td><td><span id="idx' . $r->id . '"></span>
+          <script>teller(' . $newtime . ',\'idx' . $r->id . ' . $add2 . $add3 . '
+            </tr >
         ';
     }
     echo '</table>';

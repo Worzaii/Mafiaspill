@@ -168,10 +168,11 @@ function ban($id)
 function ipbanned($ip)
 {
     global $db;
-    $db->query("SELECT * FROM `ipban` WHERE `ip` = '" . ip2long($ip) . "' AND `active` = 1");
+    $db->query("SELECT * FROM `ipban` WHERE `ip` = '" . ip2long($ip) . "'
+    AND `active` = 1 ORDER BY `id` DESC LIMIT 1");
     if ($db->num_rows() == 1) {
         $query = $db->fetch_object();
-        die("<p>'.$ip.' er blokkert fra dette stedet, grunnet:<br>'.$query->reason.'</p>");
+        die('<p>' . $ip . ' er blokkert fra dette stedet, grunnet:<br>' . $query->reason . '</p>');
     }
 }
 
@@ -209,10 +210,20 @@ function status($s)
     $db->query("SELECT * FROM `users` WHERE `user` = '" . $db->escape($s) . "' OR `id` = '" . $db->escape($s) . "' LIMIT 0,1");
     if ($db->num_rows() == 1) {
         $user = $db->fetch_object();
-        $status = ["<span class='stat1' title='Administrator'>", "<span class='stat2' title='Moderator'>", "<span class='stat3' title='Forum moderator'>", "<span class \"stat4\" title=\"Picmaker\">",
-            "<span class='stat5' title='Vanlig spiller'>"];
-        /* $names  = ['Admin', 'Moderator', 'Forum Moderator', 'Picmaker', 'Vanlig spiller']; Seems to have no function at the moment */
-        return $status[$user->status] . $user->user . "</span>";
+        if ($user->status == 1) {
+            $span = "stat1";
+        } elseif ($user->status == 2) {
+            $span = "stat2";
+        } elseif ($user->status == 3) {
+            $span = "stat3";
+        } elseif ($user->status == 4 && $user->picmaker == 1 && $user->health > 1) {
+            $span = "stat4";
+        } elseif ($user->status == 4) {
+            $span = "stat5";
+        } else {
+            $span = "";
+        }
+        return "<span class='$span'>$user->user</span>";
     } else {
         return feil("Ingen bruker med den iden eller brukernavnet.");
     }

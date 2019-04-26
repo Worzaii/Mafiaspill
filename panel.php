@@ -4,8 +4,8 @@ startpage("Paneler");
 if (r1() || r2() || r3() || support()) {
     if (r1()) {
         ?>
-        <h1 style="text-align: center">Administrasjon</h1>
-        <h3 style="text-align:center"> Test Funksjoner</h3>
+        <h1 class="center">Administrasjon</h1>
+        <h3 class="center"> Test Funksjoner</h3>
         <ul class="adminpanel">
             <li><a href="#">Ingen for &oslash;yeblikket.</a></li>
         </ul>
