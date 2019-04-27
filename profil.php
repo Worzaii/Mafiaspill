@@ -5,7 +5,7 @@ if (!isset($_GET['id'])) {
     echo '
 <p>Denne profilen kan ikke vises. Vennligst s&oslash;k p&aring; en spiller for &aring; se profilen. S&oslash;kefunksjonen kommer s&aring; snart profilscriptet er klart.</p>
 ';
-} else if (isset($_GET['id'])) {
+} elseif (isset($_GET['id'])) {
 //Profilen fungerer
     $id = $db->escape($_GET['id']);
     if (!is_numeric($id)) {
@@ -62,10 +62,10 @@ if (!isset($_GET['id'])) {
                 echo '<form method="post" action=""><textarea style="height:140px; width:430px;" name="norte">' . ($fetch->note) . '</textarea><input type="submit" value="Lagre"></form>';
             }
             if (r1() || r2()) {
-                echo '<p>' . (($obj->status == 1) ? "<a href=\"stilling.php?nick='.$fetch->user.'\">Sett stilling</a> || " : null) . '<a href="modkill2.php?kill=' . $fetch->id . '">Modkill Spilleren</a> || <a href="forumban.php?ban=' . $fetch->id . '">Forumban Spilleren</a> || <a href="profil.php?id=' . $fetch->id . '&note">Endre notat p&aring; spiller</a>' . (($obj->status == 1) ? " || <a href=\"endrespiller.php?u=" . $fetch->user . "\">Endre verdier</a>" : null) . '</p>';
+                echo '<p>' . (($obj->status == 1) ? "<a href=\"stilling.php?nick='.$fetch->user.'\">Sett stilling</a> || " : null) . '<a href="ban_user.php?kill=' . $fetch->id . '">Modkill Spilleren</a> || <a href="forumban.php?ban=' . $fetch->id . '">Forumban Spilleren</a> || <a href="profil.php?id=' . $fetch->id . '&note">Endre notat p&aring; spiller</a>' . (($obj->status == 1) ? " || <a href=\"endrespiller.php?u=" . $fetch->user . "\">Endre verdier</a>" : null) . '</p>';
 //echo '<a href="profil.php?id='.$fetch->id.'&bank">Se 50 siste bank overf&oslash;ringer fra brukeren</a></br>';
                 $fetch->note = html_entity_decode($fetch->note, null, "ISO-8859-1");
-                echo '<p style="text-align:center;cursor:pointer;font-weight:bold" title="Trykk p&aring; meg!" onclick="javascript:$(\'#togme\').fadeToggle();">Admin/mod notater</p><div id="togme" style="display:none;">' . bbcodes($fetch->note, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0) . '</div>';
+                echo '<p style="text-align:center;cursor:pointer;font-weight:bold" title="Trykk p&aring; meg!" onclick="$(\\' . bbcodes($fetch->note, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0) . '</div>';
             }
             echo "
 
@@ -130,7 +130,6 @@ if (!isset($_GET['id'])) {
 <td colspan="2"><a href="http://browscap.org/ua-lookup">Nettleser:</a><br>' . $harikke . '</td>  
 </tr>
 ';
-
             }
             echo "
 </table>
@@ -143,7 +142,7 @@ if (!isset($_GET['id'])) {
             echo '
 </div>
 <script>
-teller(' . $timeuser . ',\'usertime\',false,\'opp\');
+teller(' . $timeuser . ';)
 </script>
 ';
         } else {
@@ -156,4 +155,3 @@ teller(' . $timeuser . ',\'usertime\',false,\'opp\');
 ?>
 <?php
 endpage();
-?>

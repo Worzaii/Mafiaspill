@@ -5,23 +5,24 @@ if (r1() || r2() || r3() || support()) {
     if (r1()) {
         ?>
         <h1 class="center">Administrasjon</h1>
-        <h3 class="center"> Test Funksjoner</h3>
+        <h3 class="center" style="clear: both"> Test Funksjoner</h3>
         <ul class="adminpanel">
             <li><a href="#">Ingen for &oslash;yeblikket.</a></li>
         </ul>
-        <p class="center"> Admin funksjoner</p>
+        <h3 class="center" style="clear: both"> Admin funksjoner</h3>
         <ul class="adminpanel">
-            <li><a href="ipban.php">Internet Protocol Adresse blokkering :D</a></li>
-            <li><a href="bankalle.php">Siste bankoverf&oslash;ringer(100 siste)</a></li>
-            <li><a href="endre_spiller.php">Sjekk opp spiller(Ikke klar, arbeides med)</a></li>
+            <li><a href="ipban.php">Adresseblokkering</a></li>
+            <li><a href="#">Spill-logger <span style="color: #ff0000;">(Ikke klar)</span></a></li>
+            <li><a href="#">Spiller-informasjon</a></li>
             <li><a href="player_logoff.php">Logg ut en spiller!</a></li>
-            <li><a href="antinlog.php">Se antall innlogginger!</a></li>
-            <li><a href="publiser.php">Legg ut ny nyhet!</a></li>
-            <li><a href="modkill2.php"><em>Modkill spiller</em></a></li>
+            <li><a href="publiser.php">Nyhetsadministrasjon</a></li>
+            <li style="display: inline;float: left;width:50%;border-right: 1px solid #000"><a href="ban_user.php">Ban en
+                    spiller</a></li>
+            <li style="display: inline;float: left;width:50%;"><a href="ban_list.php">Ban-liste</a></li>
             <li><a href="/Multizone">Multi-muligheter</a></li>
             <li><a href="stilling.php">Sett stilling til en spiller!</a></li>
             <li><a href="endrespiller.php">Endre spillers verdier!</a></li>
-            <li><a href="modkilletvis.php">Se alle som er modkillet</a></li>
+            <li><a href="ban_list.php">Se alle som er modkillet</a></li>
             <li><a href="poenglogg.php">Poenglogg</a></li>
             <li><a href="auksjonlogg.php">Auksjonslogg</a></li>
             <li><a href="stillinglogg.php">Stillingslogg</a></li>
@@ -29,14 +30,15 @@ if (r1() || r2() || r3() || support()) {
         <?php
     }
     if (r1() || r2()) { ?>
-        <p class="center">Moderatorpanel</p>
+        <h3 class="center" style="clear: both">Moderatorpanel</h3>
         <ul class="adminpanel">
             <li><a href="bankalle.php">Bankoverf&oslash;ringer</a></li>
             <li><a href="publiser.php">Legge til en nyhet</a></li>
             <li><a href="ipsjekk.php">Sjekk spillere som kan bruke multi</a></li>
-            <li><a href="modkill2.php">Modkill spiller</a></li>
+            <li><a href="ban_user.php">Modkill spiller</a></li>
+            <li><a href="ban_list.php">Ban-liste</a></li>
             <li><a href="poenglogg.php">Poeng-logg</a></li>
-            <li><a href="modkilletvis.php">Se alle som er modkillet</a></li>
+            <li><a href="ban_list.php">Se alle som er modkillet</a></li>
             <li><a href="edityourself.php">Endre egne verdier</a></li>
             <li><a href="faq_panel.php">FAQ Panel</a></li>
         </ul>
@@ -44,7 +46,7 @@ if (r1() || r2() || r3() || support()) {
     }
     if (r1() || r2() || r3()) {
         ?>
-        <p class="center"> Forummod funksjoner</p>
+        <h3 class="center" style="clear: both"> Forummod funksjoner</h3>
         <ul class="adminpanel">
             <li><a href="visprat.php">Vis hele prat databasen!</a></li>
             <li><a href="forumban.php">Forumban spiller</a></li>

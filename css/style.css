@@ -78,6 +78,13 @@ h2 {
     background: rgba(73, 73, 73, 0.29);
 }
 
+h3 {
+    padding-top: 15px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+}
+
 hr {
     border: none;
     border-bottom: 3px solid #111;
@@ -504,26 +511,31 @@ footer #spot3 {
 }
 
 ul.adminpanel {
-    padding: 0;
+    padding: 5px 0;
     list-style: none;
-    width: 100%;
-    max-width: 100%;
-    margin: 15px 0 0;
+    width: 300px;
+    margin: 15px auto 0 auto;
+    clear: both;
 }
 
 ul.adminpanel li {
-    width: 50%;
+    width: 100%;
     background: #ccc;
     border-bottom: 1px solid #333;
     border-top: 1px solid #fff;
-    margin: 0px auto 0px auto;
-    padding: 5px;
+    margin: 0 auto;
+    padding: 5px 0 5px 0;
     text-align: center;
     font-weight: normal;
+    display: inline;
+    float: left;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .adminpanel li:hover {
@@ -560,18 +572,19 @@ ul.adminpanel li:last-child {
 }
 
 .ct1 {
-    width: 580px;
+    /*width: 580px;*/
     padding: 5px 10px 5px 10px;
     background: rgba(0, 0, 0, 0.2);
     font-size: 10px;
-    color: #999;
+    color: #bbb;
 }
 
 .ct2 {
-    width: 580px;
+    /*width: 580px;*/
     padding: 5px 10px 5px 10px;
+    background: rgba(26, 26, 26, 0.2);
     font-size: 10px;
-    color: #999;
+    color: #bbb;
 }
 
 .chattext {

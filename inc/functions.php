@@ -40,20 +40,11 @@ function startpage($title = NAVN_DOMENE)
   </div>
   <header id="headerbg">
   <div id="header">';
-    global $db;
-    $chat = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 1");
+    $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 3");
     if ($db->num_rows() > 0) {
-        while ($r = mysqli_fetch_object($chat)) {
-            $message = htmlentities($r->message, ENT_NOQUOTES, 'UTF-8');
+        while ($r = $db->fetch_object()) {
+            $message = htmlentities($r->message);
             $uob = user($r->uid, 1);
-            /* Considering removing text related coding from chat to keep it pure */
-            /* if ($uob->status == 1) {
-              $teksten = bbcodes($teksten, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
-              } else if ($uob->status == 2 || $uob->status == 6) {
-              $teksten = bbcodes($teksten, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
-              } else {
-              $teksten = bbcodes($teksten, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0);
-              } */
             if (!$uob) {
                 $uob = "Systemet";
             } else {
@@ -61,10 +52,10 @@ function startpage($title = NAVN_DOMENE)
             }
             if ($r->id % 2) {
                 echo
-                    '<div class="chat ct1"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
+                    '<div class="ct1"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
             } else {
                 echo
-                    '<div class="chat ct2"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
+                    '<div class="ct2"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
             }
         }
     }
@@ -145,24 +136,8 @@ function bilde($i)
     global $db;
     $s = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($i) . "'");
     $obj = $db->fetch_object($s);
-    $res = ($db->num_rows() >= 1) ? $obj->image : $dir . '/imgs/nopic.png';
+    $res = ($db->num_rows() >= 1) ? $obj->image : '/images/nopic.png';
     return ($res);
-}
-
-function ban($id)
-{
-    global $db;
-    $db->query("SELECT * FROM `ban` WHERE `uid` = '$id' AND `active` = '1' ORDER BY `id` DESC");
-    if ($db->num_rows() == 1) {
-        $ac = $db->fetch_object();
-        if ($ac->active == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
 }
 
 function ipbanned($ip)
@@ -178,10 +153,9 @@ function ipbanned($ip)
 
 function timec($sec)
 {
-    /* Vise i minutter og sekunder */
     $res = null;
     $min = floor($sec / 60);
-    $seks = floor($sec - ($min * 60)); //Resterende sekunder
+    $seks = floor($sec - ($min * 60));
     if ($min >= 1) {
         $res .= $min;
         if ($min >= 2) {
