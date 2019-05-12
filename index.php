@@ -48,7 +48,7 @@ if (isset($_SESSION['sessionzar'])) {
                 <h2>Innlogging</h2>
                 <?= $grunn ?>
                 <div id="loginresult"></div>
-                <noscript><p>Du m&aring; ha javascript aktivert for &aring;& spille!</p></noscript>
+                <noscript><p>Du m&aring; ha javascript aktivert for &aring; spille!</p></noscript>
                 <form class="loginform" name="logininfo" id="loginform" action="handlers/handler.php?login">
                     Brukernavn: <input autocomplete="username" class="text" disabled name="username"
                                        placeholder="Brukernavn"

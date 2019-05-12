@@ -8,39 +8,46 @@ header('Content-type: application/json');
 $str = ['string' => feil('Error: Not overwritten!'), 'state' => 0, 'act' => 0];
 $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
     : $_SERVER['REMOTE_ADDR'];
+$host = $_SERVER['SERVER_NAME'];
+if ($host !== "mafia.werzaire.net") {
+    define("DOMENE_NAVN", "localhost");
+}
 if (isset($_GET['login'])) {
     if (isset($_POST['username']) && isset($_POST['password'])) {
         if (strlen($_POST['username']) === 0 || strlen($_POST['password']) === 0) {
             $str['string'] = feil('Ingen informasjon ble postet!');
         } else {
             $db = new database();
-            $db->connect();
-            $us = $db->escape($_POST['username']);
-            $pa = $_POST['password'];
-            $db->query("SELECT * FROM `users` WHERE `user` = '$us'");
-            if ($db->num_rows() == 1) {
-                $uid = $db->fetch_object();
-                if (password_verify($pa, $uid->pass)) {
-                    if ($uid->health > 0) {
-                        $str = ['string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
+            if ($db->connect()) {
+                $us = $db->escape($_POST['username']);
+                $pa = $_POST['password'];
+                $db->query("SELECT * FROM `users` WHERE `user` = '$us'");
+                if ($db->num_rows() == 1) {
+                    $uid = $db->fetch_object();
+                    if (password_verify($pa, $uid->pass)) {
+                        if ($uid->health > 0) {
+                            $str = ['string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
                         til nyhetssiden...'), 'state' => 1, 'href' => 'https://' . DOMENE_NAVN . '/nyheter.php'];
-                        $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
-                        $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '$ip',
+                            $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
+                            $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '$ip',
                         `hostname`='" . gethostbyaddr($ip) . "' 
                         WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'") or die("Feil" . mysqli_error($db->con));
-                    } else {
-                        if ($uid->health == 0) {
-                            $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
+                        } else {
+                            if ($uid->health == 0) {
+                                $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
+                            }
                         }
+                    } else {
+                        $str['string'] = feil('Passordet stemte ikke overens med det vi har.');
                     }
                 } else {
-                    $str['string'] = feil('Passordet stemte ikke overens med det vi har.');
+                    $str['string'] = feil('Brukernavnet finnes ikke!');
+                }
+                if (!$str) {
+                    $str['string'] = info('Ingen tr&aring;der satt!');
                 }
             } else {
-                $str['string'] = feil('Brukernavnet finnes ikke!');
-            }
-            if (!$str) {
-                $str['string'] = info('Ingen tr&aring;der satt!');
+                $str['string'] = feil('Kunne ikke koble til databasen. Sjekk error-loggen...');
             }
         }
     } else {
@@ -250,7 +257,7 @@ WHERE `uid` = '" . $db->escape($uid) . "' AND `used` = '0' ORDER BY `id` DESC LI
                         } else {
                             $str['string'] = feil('Kunne ikke oppdatere passordet, kontakt admin!');
                         }
-                    } elseif ($db->affected_rows() == 0) {
+                    } else if ($db->affected_rows() == 0) {
                         $str['string'] = feil('Kunne ikke oppdatere passordet! 
 2 muligheter st&aring;r:<br>Du pr&oslash;vde &aring; bruke samme passordet<br>Det var en feil i query til databasen! 
 <br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!');

@@ -6,27 +6,39 @@ if (THRUTT == "Sperrederrp!") {
 
     class database
     {
-        var $host;
-        var $user;
-        var $pass;
-        var $database;
+        protected $mysql;
+        protected $host = "127.0.0.1";
+        protected $user = "mafia";
+        protected $pass = "mafia";
+        protected $database = "mafia";
         var $last_query;
         var $result;
         var $con;
         var $num_queries = 0;
         var $start_time;
-        var $last_error;
+        protected $last_error;
+        protected $key = "/var/www/mafia.werzaire.net/pemfiles/client-key.pem";
+        protected $cert = "/var/www/mafia.werzaire.net/pemfiles/client-cert.pem";
+        protected $ca = "/var/www/mafia.werzaire.net/pemfiles/ca.pem";
 
         function connect()
         {
-            $this->con = mysqli_init();
-            mysqli_ssl_set($this->con, "/var/www/mafia.werzaire.net/pemfiles/client-key.pem", "/var/www/mafia.werzaire.net/pemfiles/client-cert.pem", "", null, null);
-            $this->con->real_connect("127.0.0.1", "mafia", "mafia", "mafia", null, null, MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
-            if (!$this->con) {
-                $this->connection_error();
+            $connection = mysqli_init();
+            mysqli_ssl_set($connection, $this->key, $this->cert, $this->ca, null, null);
+            if ($connection->real_connect(
+                $this->host,
+                $this->user,
+                $this->pass,
+                $this->database,
+                3306,
+                null,
+                MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT
+            )) {
+                $this->con = $connection;
+                return true;
+            } else {
+                return false;
             }
-            $this->con->set_charset("utf8mb4");
-            return $this->con;
         }
 
         function disconnect()
@@ -79,9 +91,9 @@ if (THRUTT == "Sperrederrp!") {
 
         function connection_error()
         {
-            $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ': ' . mysqli_connect_error();
+            $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ': ' . $this->con->connection_error();
             error_log($feil);
-            die('Database utilgjengelig! Sjekk loggen.');
+            return false;
         }
 
         function query_error()
