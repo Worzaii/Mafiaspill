@@ -9,8 +9,10 @@ $str = ['string' => feil('Error: Not overwritten!'), 'state' => 0, 'act' => 0];
 $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
     : $_SERVER['REMOTE_ADDR'];
 $host = $_SERVER['SERVER_NAME'];
-if ($host !== "mafia.werzaire.net") {
-    define("DOMENE_NAVN", "localhost");
+if ($host != "mafia.werzaire.net") {
+    $domain = "localhost";
+} else {
+    $domain = DOMENE_NAVN;
 }
 if (isset($_GET['login'])) {
     if (isset($_POST['username']) && isset($_POST['password'])) {
@@ -27,7 +29,7 @@ if (isset($_GET['login'])) {
                     if (password_verify($pa, $uid->pass)) {
                         if ($uid->health > 0) {
                             $str = ['string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
-                        til nyhetssiden...'), 'state' => 1, 'href' => 'https://' . DOMENE_NAVN . '/nyheter.php'];
+                        til nyhetssiden...'), 'state' => 1, 'href' => 'https://' . $domain . '/nyheter.php'];
                             $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
                             $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '$ip',
                         `hostname`='" . gethostbyaddr($ip) . "' 
@@ -104,8 +106,7 @@ VALUES('" . $m . "','" . (time() + 600) . "','" . $_SERVER['REMOTE_ADDR'] . "','
     }
 }
 if (isset($_GET['brukerreg'])) {
-    $db = new database;
-    $db->configure();
+    $db = new database();
     $db->connect();
     $u = $db->escape($_POST['user']);
     $p = $_POST['pass'];
@@ -122,7 +123,8 @@ Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller
             $str['string'] .= '<p>Brukernavnet ble ikke godkjent!</p>';
         }
         if (strlen($u) <= 3 || strlen($u) >= 21) {
-            $str['string'] .= '<p>Brukernavnet m&aring; v&aelig;re mellom 4-20 tegn! Du hadde ' . strlen($u) . ' tegn!</p>';
+            $str['string'] .= '<p>Brukernavnet m&aring; v&aelig;re mellom 4-20 tegn! Du hadde 
+' . strlen($u) . ' tegn!</p>';
         }
         if (strlen($p) <= 3) {
             $str['string'] .= '<p>Passordet var for kort, ha minst 4 tegn!</p>';

@@ -1,23 +1,22 @@
 <?php
 include("core.php");
 startpage("Kriminalitet");
-echo '<img alt src="images/headers/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp. Hvis du ikke ser noen valg, kontakt support!</p>';
+echo '<img alt src="images/headers/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet,
+ s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp. 
+ Hvis du ikke ser noen valg, kontakt support!</p>';
 $jailed = false;
 if (fengsel()) {
     $bu = fengsel(true);
-    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span><br>Du er ute kl. ' . date(
-                "H:i:s d.m.Y",
-                (time() + $bu)
-            )) . '<script>teller(' . $bu . ')</script>';
+    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span>
+<br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))) .
+        '<script>teller(' . $bu . ', "fengsel", false, "ned");</script>';
 } else if (bunker()) {
     $bu = bunker(true);
     echo '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date(
-            "H:i:s d.m.Y",
-            $bu
-        ) . '</p>
+    <p class="feil">Du er i bunker, gjenst&aring;ende tid: 
+    <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
     <script>
-    teller(' . ($bu - time()) . ')
+    teller(' . ($bu - time()) . ', "bunker", false, "ned");
     </script>
     ';
 } else {
@@ -173,7 +172,7 @@ if (fengsel()) {
                                     $sjanse = "0%";
                                 }
                                 echo '
-              <tr class="valg notactive" onclick="sendpost(' . $r->id . ')">
+              <tr class="valg" onclick="sendpost(' . $r->id . ')">
               <td>' . htmlentities($r->description, ENT_NOQUOTES | ENT_HTML401, "UTF-8") . '</td><td>' . number_format($r->minval) . '-' . number_format($r->maxval) . 'kr</td><td>' . $r->untilnext . ' sekunder</td><td>' . $sjanse . '</td><td>' . $r->punishtime . ' sekunder</td>
               </tr>
               ';
@@ -199,7 +198,7 @@ if (fengsel()) {
                         $('.valg').hover(function () {
                             $(this).removeClass().addClass('c_2').css('cursor', 'pointer');
                         }, function () {
-                            $(this).removeClass().addClass('c_1').css('cursor', 'pointer');
+                            $(this).removeClass().css('cursor', 'pointer');
                         });
                     });
                 </script>

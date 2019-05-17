@@ -66,7 +66,7 @@ if (isset($_SESSION['sessionzar'])) {
                 <p>Du kan kun sende &eacute;n mail hver halvtime, s&aring; om du ikke klarer det f&oslash;rste gangen m&aring;
                     du vente en stund, s&aring; pass p&aring; at du skriver riktig e-postadresse n&aring;r du skal motta
                     registreringslink.</p>
-                <form class="loginform" name="reginfo" id="getaccess" action="handlers/handler.php">
+                <form class="loginform" name="reginfo" id="getaccessform" action="handlers/handler.php?getaccess">
                     Email:<input type="email" autocomplete="username" class="text" name="email" required
                                  placeholder="E-post"><br>
                     <input type="Submit" value="Registrer" class="button"/>

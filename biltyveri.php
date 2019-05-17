@@ -67,8 +67,11 @@ if (fengsel() == true) {
                                     $whatcar = (rand($se->bilmin, $se->bilmax) - 1); //Velger biler
                                     echo lykket('Du fikk med deg '.$carz[$whatcar].' med en verdi p&aring '.number_format($prizes[$whatcar]).'!');
                                     if ($db->query("INSERT INTO `garage`(`car_id`,`uid`,`stolen_city`,`current_city`,`timestamp`) VALUES('{$whatcar}','{$obj->id}','{$obj->city}','{$obj->city}',UNIX_TIMESTAMP())")) {
-                                        if ($db->query("INSERT INTO `carslog`(`uid`,`timestamp`,`timewait`,`result`,`choice`) VALUES('$obj->id',UNIX_TIMESTAMP(),(UNIX_TIMESTAMP() + {$se->timewait}),'1','$v')")) {
-                                            $db->query("UPDATE `users` SET `exp` = (`exp` + {$se->exp}) WHERE `id` = '{$obj->id}' LIMIT 1");
+                                        if ($db->query("INSERT INTO `carslog`(`uid`,`timestamp`,`timewait`,
+                      `result`,`choice`) 
+                      VALUES('$obj->id',UNIX_TIMESTAMP(),(UNIX_TIMESTAMP() + {$se->timewait}),'1','$v')")) {
+                                            $db->query("UPDATE `users` SET `exp` = (`exp` + {$se->expgain}) 
+WHERE `id` = '{$obj->id}' LIMIT 1");
                                         }
                                     }
                                 }
@@ -107,7 +110,7 @@ if (fengsel() == true) {
                         </tr>
                         <?php
                         $rank = rank($obj->exp);
-                        $s    = $db->query("SELECT * FROM `cars` WHERE `levelmin` >= '".$rank[0]."' ORDER BY `levelmin` DESC,`id` DESC");
+                        $s    = $db->query("SELECT * FROM `cars` WHERE `levelmin` <= '".$rank[0]."' ORDER BY `levelmin` DESC,`id` DESC");
                         if ($db->num_rows() >= 1) {
                             while ($r = mysqli_fetch_object($s)) {
                                 $sql2 = $db->query("SELECT * FROM `chance` WHERE `uid` = '{$obj->id}' AND `type` = '2' AND `option` = '{$r->id}'");
@@ -117,7 +120,7 @@ if (fengsel() == true) {
                                     $db->query("INSERT INTO `chance`(`uid`,`type`,`option`) VALUES('$obj->id','2','$r->id')");
                                 }
                                 echo '
-            <tr class="valg notactive" onclick="sendpost('.$r->id.')">
+            <tr class="valg" onclick="sendpost('.$r->id.')">
             <td>'.htmlentities($r->choice, ENT_NOQUOTES | ENT_HTML401, "UTF-8").'</td><td>'.((!is_numeric($get2->chance))
                                         ? 0 : $get2->chance).'%</td><td>'.timec($r->timewait).'</td>
             </tr>
@@ -140,7 +143,7 @@ if (fengsel() == true) {
                         $('.valg').hover(function () {
                             $(this).removeClass().addClass('c_2').css('cursor', 'pointer');
                         }, function () {
-                            $(this).removeClass().addClass('c_1').css('cursor', 'pointer');
+                            $(this).removeClass().css('cursor', 'pointer');
                         });
                     });
                 </script>

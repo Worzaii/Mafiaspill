@@ -13,7 +13,7 @@ if ($db->num_rows() == 1) {
 } else {
     $ktl = null;
 }
-$db->query("SELECT * FROM `billogg` WHERE `uid` = '$obj->id' AND `time` > '" . time() . "' ORDER BY `id` DESC LIMIT 0,1");
+$db->query("SELECT * FROM `carslog` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1");
 $numrows = $db->num_rows();
 if ($numrows >= 1) {
     $bt = $db->fetch_object();
@@ -40,12 +40,6 @@ if ($jailrow >= 1) {
     $jt = null;
     $jte = null;
 }
-/*if ($obj->airportwait > time()) {
-    $fte = $obj->airportwait - time();
-    $flytid = 1;
-} else {
-    $flytid = null;
-}*/
 $onl = "online.php";
 ?>
 <h2>Rank</h2>

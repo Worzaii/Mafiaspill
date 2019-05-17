@@ -1,28 +1,28 @@
 <?php
-    include("core.php");
-    startpage("Stjel penger");
+include("core.php");
+startpage("Stjel penger");
 echo '<img src="images/headers/Ranspiller.png">';
 ?>
-<h1>Stjel penger fra spillere</h1>
+    <h1>Stjel penger fra spillere</h1>
 <?php
 if (bunker() == true) {
     $bu = bunker(true);
     echo '
 	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
 	<script>
-	teller('.($bu - time()).',\'bunker\',false,\'ned\');
+	teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
 	</script>
 	';
-} else if (fengsel() == true) {
+} elseif (fengsel() == true) {
     echo '
-	<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">'.fengsel(true).'</span></p>
+	<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">' . fengsel(true) . '</span></p>
 	<script>
-	teller('.fengsel(true).',\'krim\',true,\'ned\');
+	teller(' . fengsel(true) . ';)
 	</script>
 	';
 } else {
     $time = time();
-    $time2=$time+900;
+    $time2 = $time + 900;
     $t = $db->query("SELECT * FROM `ransp` WHERE `uid` = '$obj->id' AND `time` > '$time' ORDER BY `id` DESC LIMIT 1");
     if ($db->num_rows() == 1) {
         $l = mysqli_fetch_object($t);
@@ -30,13 +30,13 @@ if (bunker() == true) {
         if ($left >= 1) {
             $kan = 0;
             //M&aring; fortsatt vente
-            echo '<p class="feil">Du m&aring; fortsatt vente i <span id="rantid"></span>!<!--<br>Tid: ' . $l->time . ' - ' . $time . ' = ' . $left . '--></p><script>teller(' . $left . ',"rantid",true,"ned");</script>';
+            echo '<p class="feil">Du m&aring; fortsatt vente i <span id="rantid"></span>!<!--<br>Tid: ' . $l->time . ' - ' . $time . ' = ' . $left . '--></p><script>teller(' . $left . ',"rantid",true,"ned")</script>';
         } else {
             //echo '<p>time: '.$time.'<br>ltime: '.$l->time.'<br>time - ltime = '.$left.'</p>';
             $kan = 1;
         }
     } else {
-    //F&oslash;rste kupp
+        //F&oslash;rste kupp
         $kan = 1;
     }
     if (isset($_POST['spiller'])) {
@@ -52,7 +52,7 @@ if (bunker() == true) {
                     $f = $db->fetch_object();
                     if ($f->status == 1 || $f->status == 2) {
                         echo '<p class="feil">Du kan ikke rane ledelsen!</p>';
-                    } else if ($f->health <= 0) {
+                    } elseif ($f->health <= 0) {
                         echo '<p class="feil">Du kan ikke rane d&oslash;de spillere!</p>';
                     } else {
                         if ($f->city == $obj->city) {
@@ -83,25 +83,26 @@ if (bunker() == true) {
         }
     }
     ?><br>
-<form method="post" action="">
-    <table class="table" style="width: 300px;">
-        <tr>
-            <th colspan="2"><p style="width:300px;">Ran spiller<br><span style="font-size: 10px;">For at du skal klare &aring; stjele penger m&aring; spilleren ha minst 500,000kr ute og v&aelig;re i samme by som du er i, bommer du m&aring; du vente en stund f&oslash;r du kan pr&oslash;ve igjen.</span></p></th>
-        </tr>
-        <tr>
-            <td>Nick:</td>
-            <td>
-                <input type="sumbit" maxlength="15" name="spiller">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: center;">
-                <input class="ran" type="submit" value="Ran spilleren!">
-            </td>
-        </tr>
-    </table>
-</form>
+    <form method="post" action="">
+        <table class="table" style="width: 300px;">
+            <tr>
+                <th colspan="2"><p style="width:300px;">Ran spiller<br><span style="font-size: 10px;">For at du skal klare &aring; stjele penger m&aring; spilleren ha minst 500,000kr ute og v&aelig;re i samme by som du er i, bommer du m&aring; du vente en stund f&oslash;r du kan pr&oslash;ve igjen.</span>
+                    </p></th>
+            </tr>
+            <tr>
+                <td>Nick:</td>
+                <td>
+                    <input type="sumbit" maxlength="15" name="spiller">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input class="ran" type="submit" value="Ran spilleren!">
+                </td>
+            </tr>
+        </table>
+    </form>
     <?php
 }
-    endpage();
+endpage();
 ?>

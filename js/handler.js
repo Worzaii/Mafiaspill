@@ -50,7 +50,6 @@ $(document).ready(function () {
     $("#getaccessform").submit(function (event) {
         event.preventDefault();
         let $form = $(this).serialize(), link = $(this).attr('action');
-        link += "?getaccess";
         $.ajax({
             url: link,
             data: $form,
@@ -58,7 +57,7 @@ $(document).ready(function () {
             type: "POST"
         }).done(function (data) {
             let $res = eval(data);
-            updatepage($res.string, "ressu");
+            updatepage($res.string, "registerresult");
         });
     });
     $("#registerform").submit(function (event) {

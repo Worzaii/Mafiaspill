@@ -5,7 +5,7 @@ if (!isset($_GET['id'])) {
     echo '
 <p>Denne profilen kan ikke vises. Vennligst s&oslash;k p&aring; en spiller for &aring; se profilen. S&oslash;kefunksjonen kommer s&aring; snart profilscriptet er klart.</p>
 ';
-} elseif (isset($_GET['id'])) {
+} else if (isset($_GET['id'])) {
 //Profilen fungerer
     $id = $db->escape($_GET['id']);
     if (!is_numeric($id)) {
@@ -42,36 +42,45 @@ if (!isset($_GET['id'])) {
             $res = $db->fetch_object();
             $havenote = ($res->lengde >= 1) ? 1 : 0;
             $exbut = (r1() || r2()) ? '<a class="button" href="profil.php?id=' . $fetch->id . '&note">Se notater p&aring; bruker!(' . $havenote . ')</a>' : null;
-            $familie = famidtoname($fetch->family, 1);
+            /*$familie = famidtoname($fetch->family, 1);
             if ($fetch->family == null) {
                 $familie = "<i>ingen</i>";
             } else {
                 $familie = famidtoname($fetch->family, 1);
-            }
+            }*/
             if (isset($_GET['note'])) {
                 /*Vis notat p&aring; bruker*/
                 if (isset($_POST['norte'])) {
                     $id = $db->escape($_POST['norte']);
-                    $db->query("UPDATE `users` SET `note` = '" . $db->escape($_POST['norte']) . "' WHERE `id` = '" . $fetch->id . "' LIMIT 1");
-                    $db->query("UPDATE `users` SET `noteav` = '" . $obj->user . "' WHERE `id` = '" . $fetch->id . "' LIMIT 1");
-                    lykket("Notatene ble oppdatert!");
-                    $fetch->note = htmlentities($_POST['norte'], null, "ISO-8859-1");
+                    $db->query("UPDATE `users` SET `note` = '" . $db->escape($_POST['norte']) . "' 
+                    WHERE `id` = '" . $fetch->id . "' LIMIT 1");
+                    $db->query("UPDATE `users` SET `noteav` = '" . $obj->user . "' 
+                    WHERE `id` = '" . $fetch->id . "' LIMIT 1");
+                    echo lykket("Notatene ble oppdatert!");
+                    $fetch->note = htmlentities($_POST['norte'], null, "UTF-8");
                 } else {
-                    echo "<p class=\"feil\">Hold det s&aring; kort som mulig, unng&aring; enter og lang tekst.</br></p>";
+                    echo feil('Hold det s&aring; kort som mulig, unng&aring; enter og lang tekst.');
                 }
-                echo '<form method="post" action=""><textarea style="height:140px; width:430px;" name="norte">' . ($fetch->note) . '</textarea><input type="submit" value="Lagre"></form>';
+                echo '<form method="post" action>
+<textarea style="height:140px; width:430px;" name="norte">' . ($fetch->note) . '</textarea>
+<input type="submit" value="Lagre">
+</form>';
             }
             if (r1() || r2()) {
-                echo '<p>' . (($obj->status == 1) ? "<a href=\"stilling.php?nick='.$fetch->user.'\">Sett stilling</a> || " : null) . '<a href="ban_user.php?kill=' . $fetch->id . '">Modkill Spilleren</a> || <a href="forumban.php?ban=' . $fetch->id . '">Forumban Spilleren</a> || <a href="profil.php?id=' . $fetch->id . '&note">Endre notat p&aring; spiller</a>' . (($obj->status == 1) ? " || <a href=\"endrespiller.php?u=" . $fetch->user . "\">Endre verdier</a>" : null) . '</p>';
-//echo '<a href="profil.php?id='.$fetch->id.'&bank">Se 50 siste bank overf&oslash;ringer fra brukeren</a></br>';
-                $fetch->note = html_entity_decode($fetch->note, null, "ISO-8859-1");
-                echo '<p style="text-align:center;cursor:pointer;font-weight:bold" title="Trykk p&aring; meg!" onclick="$(\\' . bbcodes($fetch->note, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0) . '</div>';
+                echo '<p>';
+                if (r1()) {
+                    echo "<a href=\"stilling.php?nick='.$fetch->user.'\">Sett stilling</a> || ";
+                    echo "<a href=\"ban_user.php?kill=" . $fetch->id . "\">Modkill Spilleren</a> ||";
+                    echo "<a href=\"forumban.php?ban=' . $fetch->id . '\">Forumban Spilleren</a> || ";
+                    echo "<a href=\"profil.php?id=' . $fetch->id . '&note\">Endre notat p&aring; spiller</a>";
+                    echo "<a href=\"endrespiller.php?u=" . $fetch->user . ">Endre verdier </a>";
+                    echo "<a href=\"profil.php?id=".$fetch->id."&bank\">Se 50 siste bank overf&oslash;ringer</a></br>";
+                }
+                $fetch->note = html_entity_decode($fetch->note, null, "UTF-8");
             }
             echo "
 
 <table style=\"width:310px;margin-top: 60px;\" class=\"table ekstra\">
-<tr>
-</tr>
 <tr>
 <td style=\"text-align:center;\" colspan=\"2\" class=\"img\"><img src=\"{$image}\" style=\"width:250px;height:250px;text-align:center\"></td>
 </tr>
@@ -97,11 +106,8 @@ if (!isset($_GET['id'])) {
 <tr>
 <td>Rank:</td><td>{$ranknm}{$experience}</td>
 </tr>
-<!--<tr>
-<td>Pengerank:</td><td>Venter p&aring; sql</td>-->
-</tr>
 <tr>
-<td>Familie:</td><td>$familie</td>
+<td>Familie:</td><td>---</td>
 </tr>
 <tr>
 <td>Status:</td><td>{$status}</td>
@@ -137,12 +143,12 @@ if (!isset($_GET['id'])) {
 
 <div class=\"profiltekst\">
 ";
-            $profil = bbcodes($fetch->profile, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
+            $profil = bbcodes($fetch->profile, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1);
             echo $profil;
             echo '
 </div>
 <script>
-teller(' . $timeuser . ';)
+teller(' . $timeuser . ', "usertime",false,"opp");
 </script>
 ';
         } else {

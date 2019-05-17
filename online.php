@@ -40,7 +40,7 @@ ORDER BY `lastactive` DESC");
           <tr>
           <td style="cursor:pointer;" onclick="window.location=\'profil.php?id=' . $r->id . '\'">
           ' . status($r->user) . '</td><td><span id="id' . $r->id . '"></span>
-          <script>teller(' . $newtime . ',"id' . $r->id . '",false,"opp";)</script>
+          <script>teller(' . $newtime . ',"id' . $r->id . '",false,"opp");</script>
           ' . $add2 . $add3 . '
           </tr>
           ';
@@ -53,13 +53,13 @@ ORDER BY `lastactive` DESC");
 if (r1() || r2()) {
     echo '<table class="table" style="margin-top: 15px;">
 <tr>
-<th colspan="4">Spillere som har v&aelig;rt p&aring;logget siste 30 dager</th>
+<th colspan="4">Spillere som har v&aelig;rt p&aring;logget siste uken</th>
 </tr>
 <tr>
 <th>Bruker</th><th>Sist aktiv</th><th>Ip</th><th>Hostname</th>
 </tr>';
     $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN
-    '" . strtotime("-30days") . "' AND (UNIX_TIMESTAMP() - 1800)
+    (UNIX_TIMESTAMP() - (60*60*24*7)) AND (UNIX_TIMESTAMP() - 1800)
     ORDER BY `lastactive` DESC");
     while ($r = $db->fetch_object()) {
         $newtime = time() - $r->lastactive;
@@ -71,7 +71,7 @@ if (r1() || r2()) {
           <tr>
           <td style="cursor:pointer;" onclick="window.location=\'profil.php?id=' . $r->id . '\'">
           ' . status($r->user) . '</td><td><span id="id' . $r->id . '"></span>
-          <script>teller(' . $newtime . ',"id' . $r->id . '",false,"opp";)</script>
+          <script>teller(' . $newtime . ',"id' . $r->id . '",false,"opp");</script>
           ' . $add2 . $add3 . '
           </tr>
           ';

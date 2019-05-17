@@ -365,7 +365,7 @@ function bbcodes(
         $text = preg_replace("/\[c\](.*?)\[\/c\]/is", "<div style='text-align:center;'>$1</div>", $text);
     }
     if ($farge == 1) {
-        $text = preg_replace("/\[f=#([0-9a-z]+)\](.*?)\[\/f\]/is", "<span style=color:#$1>$2</span>", $text);
+        $text = preg_replace("/\[f=#(([0-9a-f]){3}|([0-9a-f]){6})\](.*?)\[\/f\]/is", "<span style=\"color:#$1\">$4</span>", $text);
     }
     if ($bilde == 1) {
         $text = preg_replace(
