@@ -1,6 +1,6 @@
 <?php
 global $db, $obj, $set;
-$sql = $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN '" . (time() - 1800) . "' AND '" . time() . "' ORDER BY `lastactive` DESC");
+$sql = $db->query("SELECT user FROM `users` WHERE `lastactive` BETWEEN '" . (time() - 1800) . "' AND '" . time() . "' ORDER BY `lastactive` DESC");
 $ant = $db->num_rows();
 $sql3 = $db->query("SELECT * FROM `chat`");
 $num2 = $db->num_rows();

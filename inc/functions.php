@@ -18,8 +18,8 @@ function startpage($title = NAVN_DOMENE)
   ';
     $db->query("SELECT * FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL");
     $anyjail = ($db->num_rows() > 0) ? " (" . $db->num_rows() . ")" : null;
-
-    $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
+    $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800)
+    AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
     $late_online = $db->num_rows();
     print'
   </head>
@@ -40,9 +40,9 @@ function startpage($title = NAVN_DOMENE)
   </div>
   <header id="headerbg">
   <div id="header">';
-    $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 3");
+    $chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
     if ($db->num_rows() > 0) {
-        while ($r = $db->fetch_object()) {
+        while ($r = mysqli_fetch_object($chathead)) {
             $message = htmlentities($r->message);
             $uob = user($r->uid, 1);
             if (!$uob) {
@@ -85,6 +85,8 @@ function endpage()
         </div>
         <div id="rightmenu">';
     include_once './inc/right.php';
+    error_log("Page: " . $_SERVER["REQUEST_URI"] . " used " . $GLOBALS["db"]->clock_end() . " seconds to execute.");
+    error_log("Number of queries on " . $_SERVER["REQUEST_URI"] . ": " . $GLOBALS["db"]->num_queries);
 }
 
 function redirect($url, $wait)
@@ -101,7 +103,7 @@ function city($city, $way = 1)
         $var = array("Oslo", "Bergen", "Trondheim", "Stavanger", "Fredrikstad", "Troms&oslash;", "Sarpsborg", "Lillestr&oslash;m"); //Norske byer ONLY :)
         if ($way == 1) {
             $by = str_replace($int, $var, $city);
-        } elseif ($way == 0) {
+        } else if ($way == 0) {
             $by = str_replace($var, $int, $city);
         }
     }
@@ -186,13 +188,13 @@ function status($s)
         $user = $db->fetch_object();
         if ($user->status == 1) {
             $span = "stat1";
-        } elseif ($user->status == 2) {
+        } else if ($user->status == 2) {
             $span = "stat2";
-        } elseif ($user->status == 3) {
+        } else if ($user->status == 3) {
             $span = "stat3";
-        } elseif ($user->status == 4 && $user->picmaker == 1 && $user->health > 1) {
+        } else if ($user->status == 4 && $user->picmaker == 1 && $user->health > 1) {
             $span = "stat4";
-        } elseif ($user->status == 4) {
+        } else if ($user->status == 4) {
             $span = "stat5";
         } else {
             $span = "";
@@ -329,7 +331,8 @@ function bbcodes(
     $you = 0,
     $decode = 0,
     $entit = 1
-) {
+)
+{
     if ($html == 1) {
         if ($entit == 0) {
             $text = htmlentities($text, ENT_NOQUOTES | ENT_HTML401, 'ISO-8859-1');
@@ -431,57 +434,57 @@ function rank($xp)
         $ranknr = 1;
         $rankty = "Soldat"; //Ranknavn
         $maxxp = 50;
-    } elseif ($xp > 50 && $xp < 100) {
+    } else if ($xp > 50 && $xp < 100) {
         $xp = $xp - 50;
         $ranknr = 2;
         $rankty = "Capo"; //Ranknavn
         $maxxp = 50;
-    } elseif ($xp >= 100 && $xp < 150) {
+    } else if ($xp >= 100 && $xp < 150) {
         $xp = $xp - 100;
         $ranknr = 3;
         $rankty = "Underboss"; //Ranknavn
         $maxxp = 50;
-    } elseif ($xp >= 150 && $xp < 250) {
+    } else if ($xp >= 150 && $xp < 250) {
         $xp = $xp - 150;
         $ranknr = 4;
         $rankty = "Boss"; //Ranknavn
         $maxxp = 100;
-    } elseif ($xp >= 250 && $xp < 350) {
+    } else if ($xp >= 250 && $xp < 350) {
         $xp = $xp - 250;
         $ranknr = 5;
         $rankty = "Consigliere"; //Ranknavn
         $maxxp = 350;
-    } elseif ($xp >= 350 && $xp < 500) {
+    } else if ($xp >= 350 && $xp < 500) {
         $xp = $xp - 350;
         $ranknr = 6;
         $rankty = "Don"; //Ranknavn
         $maxxp = 500;
-    } elseif ($xp >= 500 && $xp < 700) {
+    } else if ($xp >= 500 && $xp < 700) {
         $xp = $xp - 500;
         $ranknr = 7;
         $rankty = "Mafioso"; //Ranknavn
         $maxxp = 700;
-    } elseif ($xp >= 700 && $xp < 950) {
+    } else if ($xp >= 700 && $xp < 950) {
         $xp = $xp - 700;
         $ranknr = 8;
         $rankty = "Omerta"; //Ranknavn
         $maxxp = 950;
-    } elseif ($xp >= 950 && $xp < 1250) {
+    } else if ($xp >= 950 && $xp < 1250) {
         $xp = $xp - 950;
         $ranknr = 9;
         $rankty = "Vendetta"; //Ranknavn
         $maxxp = 1250;
-    } elseif ($xp >= 1250 && $xp < 1400) {
+    } else if ($xp >= 1250 && $xp < 1400) {
         $xp = $xp - 1250;
         $ranknr = 10;
         $rankty = "Godfather"; //Ranknavn
         $maxxp = 1400;
-    } elseif ($xp >= 1400 && $xp < 3000) {
+    } else if ($xp >= 1400 && $xp < 3000) {
         $xp = $xp - 1400;
         $ranknr = 11;
         $rankty = "Legende"; //Ranknavn
         $maxxp = 2600;
-    } elseif ($xp >= 3000) {
+    } else if ($xp >= 3000) {
         $ranknr = 12;
         $rankty = "Legendarisk Don"; //Ranknavn
         $maxxp = 3000;
@@ -533,7 +536,7 @@ function types($a, $b = 0)
     $d = ["Om spillet", "Om funksjoner", "Feil i spillet", "Klage", "Forslag"];
     if ($b == 0) {
         $e = str_replace($c, $d, $a); //Bytter om
-    } elseif ($b == 1) {
+    } else if ($b == 1) {
         $e = str_replace($d, $c, $a); //Bytter om
     }
     return ($e);

@@ -2,6 +2,18 @@
 if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
+function sql_log($query)
+{
+    # [19-May-2019 12:45:39 Europe/Oslo]
+    if ($_SERVER['SERVER_NAME'] == "localhost") {
+        $file = "D:\\PHP\\PHPLOG\\sql.log";
+    } else {
+        $file = "/var/www/mafia.werzaire.net/logs/sql.log";
+    }
+    $f = fopen($file, "a+");
+    fwrite($f, date("[d-M-Y H:i:s e] ").$query . "\n");
+    fclose($f);
+}
 
 function safegen($u, $p)
 {
@@ -23,7 +35,7 @@ function codegen($length = 12)
 
 /* Config must be loaded before any other scripts, this must be defined and correct */
 define('THRUTT', "Sperrederrp!");
-define('DOMENE_NAVN', 'mafia.werzaire.net');
+define('DOMENE_NAVN', $_SERVER["SERVER_NAME"]); /* Name is fetched from the nginx configuration*/
 define('NAVN_DOMENE', 'Werzaire.net');
 define('MAIL_SENDER', 'werzaire.net');
 define('UTVIKLER', 'Nicholas Arnesen');
@@ -32,30 +44,10 @@ define('KEYWORDS', 'mafia, spill');
 define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 
-/* Configuration */
-ini_set('session.cookie_secure', 1);
-ini_set('session.use_strict_mode', 1);
-ini_set('session.gc_maxlifetime', 60 * 60 * 24); /* Implementing a temporary longer time for development purposes */
-session_set_cookie_params(60 * 60 * 24, "/", DOMENE_NAVN, true, false);
-ini_set('memory_limit', '32M');
-date_default_timezone_set('Europe/Oslo');
-ini_set("date.timezone", "Europe/Oslo");
-ini_set('max_execution_time', 15);
-date_default_timezone_set("Europe/Oslo");
-ini_set("date.timezone", "Europe/Oslo");
-
-/* Error-reporting
- * Everything should just be logged to the file mentioned below...
- */
-ini_set("error_log", "/var/www/mafia.werzaire.net/logs/error.log");
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', false);
-ini_set('display_startup_errors', false);
+/* Rest of config has been imported to php.ini file directly. */
 
 /* Starting session */
-session_name("TheGame");
 session_start();
-header("Content-Type: text/html; charset=UTF-8");
 if (isset($_SESSION['HTTP_USER_AGENT'])) {
     if ($_SESSION['HTTP_USER_AGENT'] !== sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'])) {
         header('Location: https://' . DOMENE_NAVN . 'loggut.php?g=8');

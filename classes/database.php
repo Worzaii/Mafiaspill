@@ -12,7 +12,7 @@ if (THRUTT == "Sperrederrp!") {
         protected $pass = "mafia";
         protected $database = "mafia";
         var $last_query;
-        var $result;
+        public $result;
         var $con;
         var $num_queries = 0;
         var $start_time;
@@ -54,9 +54,10 @@ if (THRUTT == "Sperrederrp!") {
 
         function query($query)
         {
+            sql_log("Running a query: ".$query);
             $this->last_query = $query;
             $this->num_queries++;
-            $this->result = $this->con->query($this->last_query) or $this->query_error();
+            $this->result = $this->con->query($this->last_query);
             return $this->result;
         }
 
@@ -68,20 +69,14 @@ if (THRUTT == "Sperrederrp!") {
             return mysqli_fetch_assoc($result);
         }
 
-        function fetch_object($result = 0)
+        function fetch_object()
         {
-            if (!$result) {
-                $result = $this->result;
-            }
-            return mysqli_fetch_object($result);
+            return $this->result->fetch_object();
         }
 
-        function num_rows($result = 0)
+        function num_rows()
         {
-            if (!$result) {
-                $result = $this->result;
-            }
-            return mysqli_num_rows($result);
+            return $this->result->num_rows;
         }
 
         function insert_id()
@@ -107,14 +102,6 @@ if (THRUTT == "Sperrederrp!") {
             error_log($feil);
             $this->last_error = "Det var en feil ved sp&oslash;rringen: &quote;" . $this->last_query . "&quote;(" . mysqli_errno($this->con) . ")Feil: " . mysqli_error($this->con);
             return false;
-        }
-
-        function fetch_single($result = 0)
-        {
-            if (!$result) {
-                $result = $this->result;
-            }
-            return mysqli_result::fetch_field;
         }
 
         function get_last_error()

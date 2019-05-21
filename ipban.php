@@ -19,7 +19,7 @@ if (r1() || r2()) {
                 echo feil('Kunne ikke banne ip-adresse: ' . htmlentities($ip));
             }
         }
-    } elseif (isset($_POST['deleteban'])) {
+    } else if (isset($_POST['deleteban'])) {
         $id = (int)$_POST['deleteban'];
         $db->query("select * from `ipban` WHERE active = 1 and id = '$id' order by id desc limit 1");
         if ($db->num_rows() == 1) {
@@ -34,6 +34,11 @@ if (r1() || r2()) {
             Pr&oslash;v &aring; friske opp siden og pr&oslash;v p&aring; nytt.');
         }
     }
+    if (isset($_GET['ip'])) {
+        $ip = $_GET['ip'];
+    } else {
+        $ip = null;
+    }
     ?>
     <form action="" method="post">
         <table class="table" style="width:300px">
@@ -42,7 +47,7 @@ if (r1() || r2()) {
             </thead>
             <tr class="uhead">
                 <td>IP-adresse:</td>
-                <td><input required="" class="frelst" type="text" name="ip" class="input"></td>
+                <td><input required="" value="<?= $ip; ?>" type="text" name="ip" class="input frelst"></td>
             </tr>
             <tr class="ehead">
                 <td>Grunn:</td>
@@ -72,8 +77,12 @@ if (r1() || r2()) {
             $i = $db->query("SELECT * FROM `ipban` where active = 1 ORDER BY `id` DESC");
             if ($db->num_rows() >= 1) {
                 while ($r = mysqli_fetch_object($i)) {
-                    echo '<tr><td>' . long2ip($r->ip) . '</td><td>' . $r->reason . '</td><td>' . user($r->banner) . '</td>
-<td>' . date("H:i:s d.m.Y", $r->timestamp) . '</td><td><input type="submit" name="deleteban" value="' . $r->id . '"></td></tr>';
+                    echo '<tr>
+<td>' . long2ip($r->ip) . '</td>
+<td>' . $r->reason . '</td><td>' . user($r->banner) . '</td>
+<td>' . date("H:i:s d.m.Y", $r->timestamp) . '</td>
+<td><input type="submit" name="deleteban" value="' . $r->id . '"></td>
+</tr>';
                 }
             } else {
                 echo '<tr><td colspan="5" class="center">Ingen rader &aring; vise.</td></tr>';

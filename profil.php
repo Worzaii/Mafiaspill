@@ -13,7 +13,7 @@ if (!isset($_GET['id'])) {
     } else {
         $profil = $db->query("SELECT * FROM `users` WHERE `id` = '$id' LIMIT 1");
         if ($db->num_rows() == 1) {
-            $fetch = $db->fetch_object($profil);
+            $fetch = $db->fetch_object();
             $timeuser = time() - $fetch->lastactive;
             list($ranknr, $ranknm, $exper) = rank($fetch->exp);
             unset($ranknr);
@@ -38,23 +38,13 @@ if (!isset($_GET['id'])) {
             }
             $lasttime = ($fetch->lastactive == 0) ? "Ingen aktivitet siden registrering!" :
                 date("H:i:s | d-m-Y", $fetch->lastactive);
-            $db->query("SELECT CHAR_LENGTH(`note`) as `lengde`,`note` FROM `users` WHERE `id` = '$fetch->id' LIMIT 1;");
-            $res = $db->fetch_object();
-            $havenote = ($res->lengde >= 1) ? 1 : 0;
-            $exbut = (r1() || r2()) ? '<a class="button" href="profil.php?id=' . $fetch->id . '&note">Se notater p&aring; bruker!(' . $havenote . ')</a>' : null;
-            /*$familie = famidtoname($fetch->family, 1);
-            if ($fetch->family == null) {
-                $familie = "<i>ingen</i>";
-            } else {
-                $familie = famidtoname($fetch->family, 1);
-            }*/
-            if (isset($_GET['note'])) {
-                /*Vis notat p&aring; bruker*/
+            /*if (isset($_GET['note'])) {
+                #Vis notat p&aring; bruker
                 if (isset($_POST['norte'])) {
                     $id = $db->escape($_POST['norte']);
-                    $db->query("UPDATE `users` SET `note` = '" . $db->escape($_POST['norte']) . "' 
+                    $db->query("UPDATE `users` SET `note` = '" . $db->escape($_POST['norte']) . "'
                     WHERE `id` = '" . $fetch->id . "' LIMIT 1");
-                    $db->query("UPDATE `users` SET `noteav` = '" . $obj->user . "' 
+                    $db->query("UPDATE `users` SET `noteav` = '" . $obj->user . "'
                     WHERE `id` = '" . $fetch->id . "' LIMIT 1");
                     echo lykket("Notatene ble oppdatert!");
                     $fetch->note = htmlentities($_POST['norte'], null, "UTF-8");
@@ -65,16 +55,17 @@ if (!isset($_GET['id'])) {
 <textarea style="height:140px; width:430px;" name="norte">' . ($fetch->note) . '</textarea>
 <input type="submit" value="Lagre">
 </form>';
-            }
+            }*/
             if (r1() || r2()) {
                 echo '<p>';
                 if (r1()) {
-                    echo "<a href=\"stilling.php?nick='.$fetch->user.'\">Sett stilling</a> || ";
-                    echo "<a href=\"ban_user.php?kill=" . $fetch->id . "\">Modkill Spilleren</a> ||";
-                    echo "<a href=\"forumban.php?ban=' . $fetch->id . '\">Forumban Spilleren</a> || ";
-                    echo "<a href=\"profil.php?id=' . $fetch->id . '&note\">Endre notat p&aring; spiller</a>";
-                    echo "<a href=\"endrespiller.php?u=" . $fetch->user . ">Endre verdier </a>";
-                    echo "<a href=\"profil.php?id=".$fetch->id."&bank\">Se 50 siste bank overf&oslash;ringer</a></br>";
+                    echo "<a href=\"stilling.php?nick=" . $fetch->user . "\">Sett stilling</a> || ";
+                    echo "<a href=\"ban_user.php?kill=" . $fetch->id . "\">Modkill Spilleren</a> || ";
+                    echo "<a href=\"ipban.php?ip=" . $fetch->ip . "\">IP-ban adressen</a> || ";
+                    echo "<a href=\"forumban.php?ban=" . $fetch->id . "\">Forumban Spilleren</a> || ";
+                    echo "<a href=\"profil.php?id=" . $fetch->id . "&note\">Endre notat p&aring; spiller</a> || ";
+                    echo "<a href=\"endrespiller.php?u=" . $fetch->user . "\">Endre verdier </a> || ";
+                    echo "<a href=\"profil.php?id=" . $fetch->id . "&bank\">Se 50 siste bank overf&oslash;ringer</a></br>";
                 }
                 $fetch->note = html_entity_decode($fetch->note, null, "UTF-8");
             }
@@ -114,28 +105,30 @@ if (!isset($_GET['id'])) {
 </tr>
 ";
             if (r1() || r2()) {
-                $db->query("SELECT `user_agent` FROM `sessusr` WHERE `uid` = '{$fetch->id}' ORDER BY `id` DESC LIMIT 1");
+                /*$db->query("SELECT `user_agent` FROM `sessusr` WHERE `uid` = '{
+                        $fetch->id}' ORDER BY `id` DESC LIMIT 1");
                 if ($db->num_rows() == 1) {
                     $desuyo = $db->fetch_object();
                     $harikke = $desuyo->user_agent;
                 } else {
                     $harikke = "Har ikke logget inn enda.";
                 }
-                $harikke = ($obj->status > 1 && $fetch->status == 1) ? "***" : $harikke;
-                echo '<tr><th colspan="2">Moderator & Admin info</th></tr><tr>
-<td>Mail:</td><td>' . $fetch->mail . '</td></tr>
-<tr><td>By:</td><td>' . city($fetch->city) . '</td></tr>
-<tr><td>Bank:</td><td>' . number_format($fetch->bank) . ' kr</td></tr>
-<tr><td>Liv:</td><td>' . $fetch->health . '%</td></tr>
-<tr><td>Kuler:</td><td>' . $fetch->bullets . '</td></tr>
-<tr><td>Poeng:</td><td>' . $fetch->points . '</td></tr>
-<tr><td>Oppf&oslash;rt IP:</td><td>' . (($obj->status > 1) ? "***" : (($fetch->regip != null) ? $fetch->regip : "<i>Ikke registrert</i>")) . '</td></tr>
-<tr><td>Sist brukte IP:</td><td>' . (($obj->status > 1) ? "***" : (($fetch->ip != null) ? $fetch->ip : "<i>Ikke registrert</i>")) . '</td></tr>
-<tr><td>Oppf&oslash;rt hostname:</td><td>' . (($obj->status > 1) ? "***" : (($fetch->reghostname != null) ? $fetch->reghostname : "<i>Ikke registrert</i>")) . '</td></tr>
-<tr><td>Siste hostname:</td><td>' . (($obj->status > 1) ? "***" : (($fetch->hostname != null) ? $fetch->hostname : "<i>Ikke registrert</i>")) . '</td></tr><tr>
-<td colspan="2"><a href="http://browscap.org/ua-lookup">Nettleser:</a><br>' . $harikke . '</td>  
-</tr>
-';
+                $harikke = ($obj->status > 1 && $fetch->status == 1) ? "***" : $harikke;*/
+                echo ' <tr><th colspan = "2"> Moderator & Admin info </th></tr>
+<tr>
+<td > Mail:</td><td> ' . $fetch->mail . '</td></tr>
+<tr ><td> By:</td><td> ' . city($fetch->city) . '</td></tr>
+<tr ><td> Bank:</td><td> ' . number_format($fetch->bank) . ' kr </td></tr>
+<tr ><td> Liv:</td><td> ' . $fetch->health . ' %</td></tr>
+<tr ><td> Kuler:</td><td> ' . $fetch->bullets . '</td></tr>
+<tr ><td> Poeng:</td><td> ' . $fetch->points . '</td></tr>
+<tr ><td> Oppf&oslash;rt IP:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->regip != null) ? $fetch->regip : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Sist brukte IP:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->ip != null) ? $fetch->ip : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Oppf&oslash;rt hostname:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->reghostname != null) ? $fetch->reghostname : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Siste hostname:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->hostname != null) ? $fetch->hostname : "<i>Ikke registrert</i>")) . '</td ></tr ><tr >
+<!--<td colspan = "2"><a href="http://browscap.org/ua-lookup"> Nettleser:</a><br>???</td>-->  
+</tr >
+                    ';
             }
             echo "
 </table>
@@ -146,18 +139,16 @@ if (!isset($_GET['id'])) {
             $profil = bbcodes($fetch->profile, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1);
             echo $profil;
             echo '
-</div>
-<script>
-teller(' . $timeuser . ', "usertime",false,"opp");
-</script>
-';
+</div >
+<script >
+                    teller(' . $timeuser . ', "usertime", false, "opp");
+</script >
+                    ';
         } else {
             echo '
-<p class="feil">Det var ikke funnet noen bruker med id: ' . htmlentities($id) . '! Bruk s&oslash;kefunksjonen <a href="finnspiller.php">Finn spiller</a> for &aring; finne spillere.</p>
-';
+<p class="feil" > Det var ikke funnet noen bruker med id: ' . htmlentities($id) . '!Bruk s & oslash;kefunksjonen < a href = "finnspiller.php" > Finn spiller </a > for &aring; finne spillere .</p >
+                    ';
         }
     }
 }
-?>
-<?php
 endpage();
