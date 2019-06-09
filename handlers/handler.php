@@ -1,7 +1,7 @@
 <?php
 define("BASEPATH", true);
 include '../system/config.php';
-include '../classes/database.php';
+include '../classes/Database.php';
 include '../inc/functions.php';
 header('Content-type: application/json');
 
@@ -19,7 +19,7 @@ if (isset($_GET['login'])) {
         if (strlen($_POST['username']) === 0 || strlen($_POST['password']) === 0) {
             $str['string'] = feil('Ingen informasjon ble postet!');
         } else {
-            $db = new database();
+            $db = new DatabaseObject\database();
             if ($db->connect()) {
                 $us = $db->escape($_POST['username']);
                 $pa = $_POST['password'];
@@ -31,13 +31,11 @@ if (isset($_GET['login'])) {
                             $str = ['string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
                         til nyhetssiden...'), 'state' => 1, 'href' => 'https://' . $domain . '/nyheter.php'];
                             $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
-                            $db->query("UPDATE `users` SET `lastactive` = '" . time() . "',`ip` = '$ip',
+                            $db->query("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(),`ip` = '$ip',
                         `hostname`='" . gethostbyaddr($ip) . "' 
-                        WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'") or die("Feil" . mysqli_error($db->con));
+                        WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'");
                         } else {
-                            if ($uid->health == 0) {
-                                $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
-                            }
+                            $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
                         }
                     } else {
                         $str['string'] = feil('Passordet stemte ikke overens med det vi har.');
@@ -57,7 +55,7 @@ if (isset($_GET['login'])) {
     }
 }
 if (isset($_GET['getaccess'])) {
-    $db = new database;
+    $db = new DatabaseObject\database();
     $db->connect();
     $m = $db->escape($_POST['email']);
     if (!filter_var($m, FILTER_VALIDATE_EMAIL)) {
@@ -106,7 +104,7 @@ VALUES('" . $m . "','" . (time() + 600) . "','" . $_SERVER['REMOTE_ADDR'] . "','
     }
 }
 if (isset($_GET['brukerreg'])) {
-    $db = new database();
+    $db = new DatabaseObject\database();
     $db->connect();
     $u = $db->escape($_POST['user']);
     $p = $_POST['pass'];
@@ -174,7 +172,7 @@ if (isset($_GET['forgotpassword'])) {
     $user = $_POST['user'];
     $mail = $_POST['mail'];
     if (strlen($user) >= 4 && strlen($user) <= 20 && filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-        $db = new database();
+        $db = new DatabaseObject\database();
         $db->connect();
         $user = $db->escape($user);
         $db->query("SELECT * FROM `users` WHERE `user` = '$user' AND `mail` = '$mail' AND `health` > '0'");
@@ -233,7 +231,7 @@ if (isset($_GET['resetpassword'])) {
     $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ?
         $_SERVER['HTTP_X_FORWARDED_FOR'] . ' | ' . $_SERVER['REMOTE_ADDR'] : $_SERVER['REMOTE_ADDR'];
     if (strlen($p1) >= 4 && ($p1 == $p2) && is_numeric($uid)) {
-        $db = new database();
+        $db = new DatabaseObject\database();
         $db->connect();
         $uid = $db->escape($_POST['uid']);
         $pass = password_hash($p1, PASSWORD_BCRYPT);

@@ -58,9 +58,9 @@ $onl = "online.php";
 <script>loggteller(' . $btl . ',"bilteller",false,"ned");</script></li>';
     }
     if ($rtl == null) {
-        echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a>';
+        echo '<li><a href="stjel.php">Ran Spiller</a>';
     } else {
-        echo '<li><a href="stjel.php">Ran Spiller(<span style="color:#f00">ikke klar</span>)</a> 
+        echo '<li><a href="stjel.php">Ran Spiller</a> 
 <span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
 <script>loggteller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
     }
@@ -75,30 +75,30 @@ $onl = "online.php";
 <script>loggteller(' . $jte . ',"jailteller",false,"ned");</script></li>';
     }
     ?>
-    <li><a href="#flyplass.php">Flyplass(<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#Drap">Drap (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#oppdrag.php">Oppdrag (<span style="color:#f00">ikke klar</span></a>)</li>
-    <li><a href="#Ran">Ran (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#flyplass.php">Flyplass</a></li>
+    <li><a href="#Drap">Drap </a></li>
+    <li><a href="#oppdrag.php">Oppdrag</li>
+    <li><a href="#Ran">Ran </a></li>
 </ul>
 <h2>Verdier</h2>
 <ul>
-    <li><a href="#Marked">Svarteb&oslash;rsen (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#Bunker">Bunker (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#Bank">Banken (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#Poeng">Poeng (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#verving.php">Verving (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#Auksjon">Auksjon (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#Firmaer">Firmaer (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#Garasje">Garasje (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="#Marked">Svarteb&oslash;rsen </a></li>
+    <li><a href="#Bunker">Bunker </a></li>
+    <li><a href="#Bank">Banken </a></li>
+    <li><a href="#Poeng">Poeng </a></li>
+    <li><a href="#verving.php">Verving </a></li>
+    <li><a href="#Auksjon">Auksjon </a></li>
+    <li><a href="#Firmaer">Firmaer </a></li>
+    <li><a href="#Garasje">Garasje </a></li>
 </ul>
 <h2>Kommunikasjon</h2>
 <ul>
     <li><a href="innboks.php">Innboks (<span style="color:#ff0">jobbes med</span>)</a></li>
-    <li><a href="#deputy.php">Send inn s&oslash;knad! (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="#support.php">Support (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="<?= $onl; ?>">Spillere p&aring;logget</a> (<?= $ant; ?>)</li>
+    <li><a href="#deputy.php">Send inn s&oslash;knad! </a></li>
+    <li><a href="#support.php">Support </a></li>
+    <li><a href="<?=$onl;?>">Spillere p&aring;logget</a> (<?=$ant;?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
-    <li><a href="Ledelsen">Ledelsen (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="Ledelsen">Ledelsen </a></li>
 </ul>
 <h2>Sosialt</h2>
 <ul>
@@ -107,19 +107,19 @@ $onl = "online.php";
             echo "($num2)";
         }
         ?></li>
-    <li><a href="nyforum.php?type=1">Generelt Forum (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="nyforum.php?type=2">Salg og S&oslash;knadsforum (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="nyforum.php?type=3">Annet (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="nyforum.php?type=1">Generelt Forum </a></li>
+    <li><a href="nyforum.php?type=2">Salg og S&oslash;knadsforum </a></li>
+    <li><a href="nyforum.php?type=3">Annet </a></li>
     <?php
     if ($obj->family != null) {
-        echo '<li><a href="familiepanel.php?side=konfam">Gjengen (<span style="color:#f00">ikke klar</span>)</a></li>';
+        echo '<li><a href="familiepanel.php?side=konfam">Gjengen </a></li>';
     } else {
-        echo '<li><a href="Familie">Gjengene (<span style="color:#f00">ikke klar</span>)</a></li>';
+        echo '<li><a href="Familie">Gjengene </a></li>';
     }
     ?>
 </ul>
 <h2>Gambling</h2>
 <ul>
-    <li><a href="Lotto">Lotto (<span style="color:#f00">ikke klar</span>)</a></li>
-    <li><a href="Blackjack">Blackjack (<span style="color:#f00">ikke klar</span>)</a></li>
+    <li><a href="Lotto">Lotto </a></li>
+    <li><a href="Blackjack">Blackjack </a></li>
 </ul>

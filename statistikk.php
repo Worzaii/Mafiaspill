@@ -7,7 +7,7 @@ startpage("Spillstatistikk");
 $select = $db->query("SELECT * FROM `users` ORDER BY `id` DESC LIMIT 0,10");
 $select2 = $db->query("SELECT * FROM `users` ORDER BY `id` DESC");
 $select3 = $db->query("SELECT * FROM `users` WHERE `status` <> '1' AND `status` <> '2' AND `health` > '0' ORDER BY `exp` DESC LIMIT 10");
-$select4 = $db->query("SELECT * FROM `users` WHERE `status` <> '1' AND `status` <> '2' AND `health` > '0' ORDER BY `bank` DESC LIMIT 10");
+$select4 = $db->query("SELECT * FROM `users` WHERE `status` <> '1' AND `status` <> '2' AND `health` = '0'");
 echo '<table class="tablemain">
 <tr>
     <td colspan="2">

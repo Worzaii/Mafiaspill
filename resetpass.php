@@ -1,9 +1,9 @@
 <?php
 define('BASEPATH', true);
 require_once './system/config.php';
-require_once './classes/database.php';
+require_once './classes/Database.php';
 require_once './inc/functions.php';
-$db = new database();
+$db = new \DatabaseObject\database();
 $db->connect();
 $s = $db->query("SELECT * FROM `resetpasset` WHERE `resgen` = '" . $db->escape($_GET['resgen']) . "' 
 AND `uid` = '" . $db->escape($_GET['id']) . "' AND `used` = '0'"
@@ -55,7 +55,7 @@ if ($db->num_rows() == 1) {
                     <div id="resetpasswordresult"></div>
                     <form class="loginform" id="resetpasswordform" action="handlers/handler.php?resetpassword">
                         <?= '<input type="text" class="text" value="' . $user->user . '" readonly="">'; ?>
-                        <input type="hidden" name="uid" value="<?= $user->id ?>"><br>
+                        <input type="hidden" name="uid" value="<?= $user->id; ?>"><br>
                         <input autofocus="" class="text" name="p1" placeholder="Passord" required=""
                                tabindex="1" type="password"><br>
                         <input class="text" name="p2" placeholder="Gjenta passord" required="" tabindex="2"

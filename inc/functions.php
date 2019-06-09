@@ -24,26 +24,31 @@ function startpage($title = NAVN_DOMENE)
     print'
   </head>
   <body>
+  <section class="newsection"></section>
   <div id="navbar_top">
     <div class="content">
       <nav>
         <ul>
           <li><a href="profil.php?id=' . $obj->id . '">Profil</a></li>
-          <li><a href="innboks.php">Innboks (in remake)</a></li>
+          <li><a href="innboks.php">Innboks (<span style="color: #ff0;">jobbes med</span>)</a></li>
           <li><a href="statistikk.php">Statistikk</a></li>
           <li><a href="fengsel.php">Fengsel' . $anyjail . '</a></li>
-          <li><a href="endreprofil.php">Endre Profil</a></li>
+          <li><a href="chat.php">Chat</a></li>
           <li><a href="online.php">Spillere p&aring;logget (' . $late_online . ')</a></li>
         </ul>
       </nav>
     </div>
   </div>
+  <div id="information">
+            <p>Spillet har blitt oppdatert. CTRL + F5</p>
+  </div>
   <header id="headerbg">
-  <div id="header">';
+  <div id="header"><div id="ct">';
     $chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
     if ($db->num_rows() > 0) {
         while ($r = mysqli_fetch_object($chathead)) {
-            $message = htmlentities($r->message);
+            $message = smileys(htmlentities($r->message, ENT_NOQUOTES, 'UTF-8'));
+            $message = wordwrap($message, 200, "<br />\n", true);
             $uob = user($r->uid, 1);
             if (!$uob) {
                 $uob = "Systemet";
@@ -59,7 +64,7 @@ function startpage($title = NAVN_DOMENE)
             }
         }
     }
-    echo '
+    echo '</div>
 <noscript><p>&Aring; spille ' . NAVN_DOMENE . ' uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig, vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
   </div>
   </header>
@@ -99,11 +104,11 @@ function city($city, $way = 1)
     if (!is_numeric($city) || empty($city)) {
         $by = "ukjent";
     } else {
-        $int = array(1, 2, 3, 4, 5, 6, 7, 8);
-        $var = array("Oslo", "Bergen", "Trondheim", "Stavanger", "Fredrikstad", "Troms&oslash;", "Sarpsborg", "Lillestr&oslash;m"); //Norske byer ONLY :)
+        $int = [1, 2, 3, 4, 5, 6, 7, 8];
+        $var = ["Oslo", "Bergen", "Trondheim", "Stavanger", "Fredrikstad", "Troms&oslash;", "Sarpsborg", "Lillestr&oslash;m"]; //Norske byer ONLY :)
         if ($way == 1) {
             $by = str_replace($int, $var, $city);
-        } else if ($way == 0) {
+        } elseif ($way == 0) {
             $by = str_replace($var, $int, $city);
         }
     }
@@ -114,6 +119,7 @@ function city($city, $way = 1)
  *
  * @param type $i er IDen vi &oslash;nsker &aring; sjekke opp
  * @param type $obj (<b>0</b>|1) bestemmer om funksjonen skal returnere brukerobjektet om det finnes.
+ *
  * @return boolean or object
  */
 function user($i, $obj = 0)
@@ -188,13 +194,13 @@ function status($s)
         $user = $db->fetch_object();
         if ($user->status == 1) {
             $span = "stat1";
-        } else if ($user->status == 2) {
+        } elseif ($user->status == 2) {
             $span = "stat2";
-        } else if ($user->status == 3) {
+        } elseif ($user->status == 3) {
             $span = "stat3";
-        } else if ($user->status == 4 && $user->picmaker == 1 && $user->health > 1) {
+        } elseif ($user->status == 4 && $user->picmaker == 1 && $user->health > 1) {
             $span = "stat4";
-        } else if ($user->status == 4) {
+        } elseif ($user->status == 4) {
             $span = "stat5";
         } else {
             $span = "";
@@ -231,7 +237,7 @@ function firma($id)
     $db->query("SELECT * FROM `firma` WHERE `id` = '" . $db->escape($id) . "'");
     if ($db->num_rows() == 1) {
         $f = $db->fetch_object();
-        return array($f->Navn, $f->Eier, $f->Type, $f->Konto, $f->By);
+        return [$f->Navn, $f->Eier, $f->Type, $f->Konto, $f->By];
     } else {
         return false;
     }
@@ -331,8 +337,7 @@ function bbcodes(
     $you = 0,
     $decode = 0,
     $entit = 1
-)
-{
+) {
     if ($html == 1) {
         if ($entit == 0) {
             $text = htmlentities($text, ENT_NOQUOTES | ENT_HTML401, 'ISO-8859-1');
@@ -388,18 +393,18 @@ function bbcodes(
     }
     if ($smil == 1) {
         $text = str_replace(
-            array(":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"),
-            array('<img src="smileys/Content.png" alt=":)">', '<img src="smileys/Grin.png" alt=":D">', '<img src="smileys/Yuck.png" alt=":P">',
+            [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "<3", ":S", ":*"],
+            ['<img src="smileys/Content.png" alt=":)">', '<img src="smileys/Grin.png" alt=":D">', '<img src="smileys/Yuck.png" alt=":P">',
                 '<img src="smileys/Slant.png" alt=":-/">', '<img src="smileys/Sarcastic.png" alt=";)">', '<img src="smileys/Frown.png" alt=":(">',
                 '<img src="smileys/Gasp.png" alt=":O">', '<img src="smileys/Heart.png" alt="&lt;3">', '<img src="smileys/Confused.png" alt=":S">',
-                '<img src="smileys/Kiss.png" alt=":*">'),
+                '<img src="smileys/Kiss.png" alt=":*">'],
             $text
         );
     }
     if ($shadow == 1) {
         $text = preg_replace(
-            array("/\[s1\](.*?)\[\/s1\]/is", "/\[s2 f=\"#(.*?)\"\](.*?)\[\/s2\]/is"),
-            array("<span style=\"text-shadow:none;text-shadow: #000000 2px 2px 2px;\">$1</span>", "<span style=\"text-shadow:none;text-shadow: #$1 2px 2px 2px;\">$2</span>"),
+            ["/\[s1\](.*?)\[\/s1\]/is", "/\[s2 f=\"#(.*?)\"\](.*?)\[\/s2\]/is"],
+            ["<span style=\"text-shadow:none;text-shadow: #000000 2px 2px 2px;\">$1</span>", "<span style=\"text-shadow:none;text-shadow: #$1 2px 2px 2px;\">$2</span>"],
             $text
         );
     }
@@ -411,14 +416,14 @@ function bbcodes(
         );
     }
     $text = preg_replace(
-        array("/\<3/ix", "/\[li\](.*?)\[\/li\]/is", "/\[ul\](.*?)\[\/ul\]/is", "/\[ol\](.*?)\[\/ol\]/is"),
-        array("&heart;", "<li>$1</li>", "<ul>$1</ul>", "<ol>$1</ol>"),
+        ["/\<3/ix", "/\[li\](.*?)\[\/li\]/is", "/\[ul\](.*?)\[\/ul\]/is", "/\[ol\](.*?)\[\/ol\]/is"],
+        ["&heart;", "<li>$1</li>", "<ul>$1</ul>", "<ol>$1</ol>"],
         $text
     );
     if ($decode == 1) {
         $text = utf8_decode($text);
     }
-    $text = str_replace(array("æ", "ø", "å"), array("&aelig;", "&oslash;", "&aring;"), $text);
+    $text = str_replace(["æ", "ø", "å"], ["&aelig;", "&oslash;", "&aring;"], $text);
     $text = preg_replace(
         "#\[spotify=(.+)\]#is",
         "<iframe src=\"https://embed.spotify.com/?uri=$1\" width=\"300\" height=\"380\" frameborder=\"0\" allowtransparency=\"true\"></iframe>",
@@ -427,66 +432,79 @@ function bbcodes(
     return ($text);
 }
 
+function smileys($text)
+{
+    $text = str_replace(
+        [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"],
+        ['<img src="smileys/Content.png" alt=":)">', '<img src="smileys/Grin.png" alt=":D">', '<img src="smileys/Yuck.png" alt=":P">',
+            '<img src="smileys/Slant.png" alt=":-/">', '<img src="smileys/Sarcastic.png" alt=";)">', '<img src="smileys/Frown.png" alt=":(">',
+            '<img src="smileys/Gasp.png" alt=":O">', '<img src="smileys/Heart.png" alt="&lt;3">', '<img src="smileys/Confused.png" alt=":S">',
+            '<img src="smileys/Kiss.png" alt=":*">'],
+        $text
+    );
+    return $text;
+}
+
 function rank($xp)
 {
     $xp2 = $xp;
     if ($xp <= 50) {
         $ranknr = 1;
-        $rankty = "Soldat"; //Ranknavn
+        $rankty = "Soldat";
         $maxxp = 50;
-    } else if ($xp > 50 && $xp < 100) {
+    } elseif ($xp > 50 && $xp < 100) {
         $xp = $xp - 50;
         $ranknr = 2;
-        $rankty = "Capo"; //Ranknavn
+        $rankty = "Capo";
         $maxxp = 50;
-    } else if ($xp >= 100 && $xp < 150) {
+    } elseif ($xp >= 100 && $xp < 150) {
         $xp = $xp - 100;
         $ranknr = 3;
-        $rankty = "Underboss"; //Ranknavn
+        $rankty = "Underboss";
         $maxxp = 50;
-    } else if ($xp >= 150 && $xp < 250) {
+    } elseif ($xp >= 150 && $xp < 250) {
         $xp = $xp - 150;
         $ranknr = 4;
-        $rankty = "Boss"; //Ranknavn
+        $rankty = "Boss";
         $maxxp = 100;
-    } else if ($xp >= 250 && $xp < 350) {
+    } elseif ($xp >= 250 && $xp < 350) {
         $xp = $xp - 250;
         $ranknr = 5;
-        $rankty = "Consigliere"; //Ranknavn
+        $rankty = "Consigliere";
         $maxxp = 350;
-    } else if ($xp >= 350 && $xp < 500) {
+    } elseif ($xp >= 350 && $xp < 500) {
         $xp = $xp - 350;
         $ranknr = 6;
-        $rankty = "Don"; //Ranknavn
+        $rankty = "Don";
         $maxxp = 500;
-    } else if ($xp >= 500 && $xp < 700) {
+    } elseif ($xp >= 500 && $xp < 700) {
         $xp = $xp - 500;
         $ranknr = 7;
-        $rankty = "Mafioso"; //Ranknavn
+        $rankty = "Mafioso";
         $maxxp = 700;
-    } else if ($xp >= 700 && $xp < 950) {
+    } elseif ($xp >= 700 && $xp < 950) {
         $xp = $xp - 700;
         $ranknr = 8;
-        $rankty = "Omerta"; //Ranknavn
+        $rankty = "Omerta";
         $maxxp = 950;
-    } else if ($xp >= 950 && $xp < 1250) {
+    } elseif ($xp >= 950 && $xp < 1250) {
         $xp = $xp - 950;
         $ranknr = 9;
-        $rankty = "Vendetta"; //Ranknavn
+        $rankty = "Vendetta";
         $maxxp = 1250;
-    } else if ($xp >= 1250 && $xp < 1400) {
+    } elseif ($xp >= 1250 && $xp < 1400) {
         $xp = $xp - 1250;
         $ranknr = 10;
-        $rankty = "Godfather"; //Ranknavn
+        $rankty = "Godfather";
         $maxxp = 1400;
-    } else if ($xp >= 1400 && $xp < 3000) {
+    } elseif ($xp >= 1400 && $xp < 3000) {
         $xp = $xp - 1400;
         $ranknr = 11;
-        $rankty = "Legende"; //Ranknavn
+        $rankty = "Legende";
         $maxxp = 2600;
-    } else if ($xp >= 3000) {
+    } elseif ($xp >= 3000) {
         $ranknr = 12;
-        $rankty = "Legendarisk Don"; //Ranknavn
+        $rankty = "Legendarisk Don";
         $maxxp = 3000;
         if (($xp / $maxxp) > 1) {
             $rankty .= " x" . floor($xp / $maxxp);
@@ -536,7 +554,7 @@ function types($a, $b = 0)
     $d = ["Om spillet", "Om funksjoner", "Feil i spillet", "Klage", "Forslag"];
     if ($b == 0) {
         $e = str_replace($c, $d, $a); //Bytter om
-    } else if ($b == 1) {
+    } elseif ($b == 1) {
         $e = str_replace($d, $c, $a); //Bytter om
     }
     return ($e);
@@ -611,20 +629,20 @@ function weapon($r)
 
 function feil($t)
 {
-    return '<p class="feil">' . $t . '</p>';
+    return '<div class="boxshape"><p class="feil">' . $t . '</p></div>';
 }
 
 function lykket($t)
 {
-    return '<p class="lykket">' . $t . '</p>';
+    return '<div class="boxshape"><p class="lykket">' . $t . '</p></div>';
 }
 
 function info($t)
 {
-    return '<p class="info">' . $t . '</p>';
+    return '<div class="boxshape"><p class="info">' . $t . '</p></div>';
 }
 
 function warning($t)
 {
-    return '<p class="warning">' . $t . '</p>';
+    return '<div class="boxshape"><p class="warning">' . $t . '</p></div>';
 }

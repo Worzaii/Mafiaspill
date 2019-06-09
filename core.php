@@ -1,7 +1,7 @@
 <?php
 define("BASEPATH", 1);
 include_once './system/config.php';
-include_once './classes/database.php';
+include_once './classes/Database.php';
 include_once './inc/functions.php';
 if (isset($_SERVER['X-Requested-With'])) {
     if ($_SERVER['X-Requested-With'] == "XMLHttpRequest") {
@@ -18,7 +18,7 @@ if (defined("LVL") && LVL == true) {
     $r = null;
 }
 if (isset($_SESSION['sessionzar'])) {
-    $db = new database();
+    $db = new \DatabaseObject\database();
     if (!$db->connect()) {
         die("Kunne ikke koble til db!<br><a href=\"loggut.php?g=2\">Tilbake til innlogging.</a>");
     }
@@ -26,11 +26,11 @@ if (isset($_SESSION['sessionzar'])) {
     list($user, $pass, $sss) = $_SESSION['sessionzar'];
     $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
         : $_SERVER['REMOTE_ADDR'];
-    $db->query("SELECT id,user,pass,ip,forceout,lastactive, health, status, image, exp, hand, points, city, family, bullets, weapon, support FROM `users` WHERE `user` = '".$db->escape($user)."' AND `pass` = '".$db->escape($pass)."'");
+    $db->query("SELECT id,user,pass,ip,forceout,lastactive, health, status, image, exp, hand, points, city, family, bullets, weapon, support, profile FROM `users` WHERE `user` = '" . $db->escape($user) . "' AND `pass` = '" . $db->escape($pass) . "'");
     if ($db->num_rows() == 0) {
         header("Location: loggut.php?g=4");
         die('<a href="loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget p&aring; din bruker.</a>');
-    } else if ($db->num_rows() == 1) {
+    } elseif ($db->num_rows() == 1) {
         $obj = $db->fetch_object();
         if ($obj->ip != $ip) {
             header("Location: loggut.php?g=7&$ip");
@@ -45,7 +45,7 @@ if (isset($_SESSION['sessionzar'])) {
         }
         if (($obj->lastactive + 1800) < time()) {
             header("Location: loggut.php?g=5");
-        } else if (($obj->lastactive + 1800) > time()) {
+        } elseif (($obj->lastactive + 1800) > time()) {
             if (defined("NOUPDATE") && NOUPDATE == 1) {
             } else {
                 if (!$db->query("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP() WHERE `id` = '{$obj->id}'")) {

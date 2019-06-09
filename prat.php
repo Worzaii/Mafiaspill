@@ -44,7 +44,8 @@ if ($ikkevis == false) {
         }
     }
     while ($r = mysqli_fetch_object($chat)) {
-        $message = htmlentities($r->message, ENT_NOQUOTES, 'UTF-8');
+        $message = smileys(htmlentities($r->message, ENT_NOQUOTES, 'UTF-8'));
+        $message = wordwrap($message, 200, "<br />\n", true);
         $uob = user($r->uid, 1);
         if ($r->uid == 0) {
             $uob = "Systemet";

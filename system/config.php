@@ -50,7 +50,7 @@ define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_M
 session_start();
 if (isset($_SESSION['HTTP_USER_AGENT'])) {
     if ($_SESSION['HTTP_USER_AGENT'] !== sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'])) {
-        header('Location: https://' . DOMENE_NAVN . 'loggut.php?g=8');
+        header('Location: https://' . DOMENE_NAVN . '/loggut.php?g=8');
         exit('Cross-network-tilgang avsl&aring;tt!');
     }
 } else {

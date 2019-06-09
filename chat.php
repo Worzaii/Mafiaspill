@@ -27,7 +27,7 @@ if ($db->num_rows() == 1) {
 } else {
     echo <<<HTML
     </br>
-<input style="font-size: 11px;border: 1px solid #aaa;-webkit-border-radius: 4px;height: 17px; width: 568px;margin-left: 9px;margin-top: -6px;margin-bottom: 12px;background: #FFFFFF;padding: 5px;" name="write" type="text" id="write" placeholder="Enter for &aring; skrive">
+<input name="write" type="text" id="write" placeholder="Enter for &aring; skrive">
     </br>
 HTML;
 }

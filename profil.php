@@ -73,11 +73,11 @@ if (!isset($_GET['id'])) {
 
 <table style=\"width:310px;margin-top: 60px;\" class=\"table ekstra\">
 <tr>
-<td style=\"text-align:center;\" colspan=\"2\" class=\"img\"><img src=\"{$image}\" style=\"width:250px;height:250px;text-align:center\"></td>
+<td style=\"text-align:center;\" colspan=\"2\" class=\"img\"><img id='profileuserimage' src=\"{$image}\" style=\"width:250px;height:250px;text-align:center\"></td>
 </tr>
 <tr><th colspan=\"2\">Om</th></tr>
 <tr>
-<td>Nick:</td><td><a href=\"innboks.php?ny&usertoo=$fetch->user\">" . status($fetch->id, 1) . "</a></td>
+<td>Nick:</td><td><a href=\"innboks.php?page=ny&user=$fetch->user\">" . status($fetch->id, 1) . "</a></td>
 </tr>
 <tr>
 <td>Sist p&aring;logget:</td><td>{$lasttime}</td>

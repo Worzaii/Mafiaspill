@@ -28,9 +28,8 @@ if (r1() || r2() || r3() || support()) {
             <li><a href="stillinglogg.php">Stillingslogg</a></li>
         </ul>
         <?php
-    }
-    if (r1() || r2()) { ?>
-        <h3 class="center" style="clear: both">Moderatorpanel</h3>
+    } elseif (r1() || r2()) { ?>
+        <h3 class="center" style="clear: both">Moderering</h3>
         <ul class="adminpanel">
             <li><a href="bankalle.php">Bankoverf&oslash;ringer</a></li>
             <li><a href="publiser.php">Legge til en nyhet</a></li>
@@ -43,9 +42,9 @@ if (r1() || r2() || r3() || support()) {
             <li><a href="faq_panel.php">FAQ Panel</a></li>
         </ul>
         <?php
-    }
-    if (r1() || r2() || r3()) {
+    } elseif (r1() || r2() || r3()) {
         ?>
+        <h1>Forum moderering</h1>
         <h3 class="center" style="clear: both"> Forummod funksjoner</h3>
         <ul class="adminpanel">
             <li><a href="visprat.php">Vis hele prat databasen!</a></li>

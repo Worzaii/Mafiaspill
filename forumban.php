@@ -1,6 +1,6 @@
 <?php
 include("core.php");
-if (r1() || r2()) {
+if (r1() || r2() || r3()) {
     startpage("Forumpanel");
     if (isset($_GET['edit']) || isset($_GET['del'])) {
         if (isset($_GET['edit'])) {

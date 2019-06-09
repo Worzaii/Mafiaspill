@@ -11,7 +11,7 @@ startpage("Nyheter");
                 if ($obj->status == 1 || $obj->status == 2) {
                     echo '<p class="button2"><a href="publiser.php">Skriv en ny nyhet!</a></p>';
                 }
-                $sql = $db->query("SELECT * FROM `news` WHERE `showing` = '1' AND `userlevel` >= '" . $obj->status . "' ORDER BY `id` DESC LIMIT 0,5");
+                $sql = $db->query("SELECT * FROM `news` WHERE `showing` = '1' AND `userlevel` >= '" . $obj->status . "' ORDER BY `id` DESC LIMIT 0,10");
                 if ($db->num_rows() == 0) {
                     echo '<p class="feil">Ingen nyheter er publisert!</p>';
                 } elseif ($db->num_rows() >= 1) {

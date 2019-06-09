@@ -91,4 +91,3 @@ if (isset($_POST['bilde']) && isset($_POST['profil'])) {
     </style>
 <?php
 endpage();
-?>

@@ -5,26 +5,28 @@ startpage("P&aring;loggede spillere");
     <h1>P&aring;loggede spillere</h1>
 <?php
 if (r1() || r2()) {
-    $add1 = "<td>IP-adresse</td>";
-    $add3 = "<td>Hostname</td>";
+    $add1 = "<th>IP-adresse</th>";
+    $add3 = "<th>Hostname</th>";
     $cols = 4;
 } else {
     $add1 = null;
     $cols = 2;
     $add3 = null;
 }
-$online = $db->query("SELECT id,user,lastactive,ip,hostname FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP()
+$online = $db->query("SELECT id,user,lastactive,ip,hostname,status FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP()
 ORDER BY `lastactive` DESC");
-echo '<p class="info">Det er ' . $online->num_rows . ' spillere p&aring;logget akkurat n&aring;</p>';
 ?>
-    <table class="table">
+    <table class="table online">
+        <thead>
         <tr>
-            <th colspan="<?= $cols; ?>">P&aring;logget n&aring;:</th>
+            <th colspan="<?=$cols;?>">P&aring;logget n&aring;:</th>
         </tr>
         <tr>
-            <td style="width:95px;">Spiller:</td>
-            <td>Sist aktiv:</td><?= $add1 . $add3; ?>
+            <th style="width:95px;">Spiller:</th>
+            <th>Sist aktiv:</th><?=$add1 . $add3;?>
         </tr>
+        </thead>
+        <tbody>
         <?php
         while ($r = mysqli_fetch_object($online)) {
             $newtime = time() - $r->lastactive;
@@ -50,17 +52,25 @@ echo '<p class="info">Det er ' . $online->num_rows . ' spillere p&aring;logget a
         echo 'Testing some more: '.$r->user;*/
         $db->result->close();
         ?>
+        </tbody>
     </table>
 <?php
 
 if (r1() || r2()) {
-    echo '<table class="table" style="margin-top: 15px;">
-<tr>
-<th colspan="4">Spillere som har v&aelig;rt p&aring;logget siste uken</th>
-</tr>
-<tr>
-<th>Bruker</th><th>Sist aktiv</th><th>Ip</th><th>Hostname</th>
-</tr>';
+    echo '<table class="table extra">
+    <thead>
+    <tr>
+        <th colspan="4">Spillere som har v&aelig;rt p&aring;logget siste uken</th>
+    </tr>
+    <tr>
+        <th>Bruker</th>
+        <th>Sist aktiv</th>
+        <th>Ip</th>
+        <th>Hostname</th>
+    </tr>
+    </thead>
+    <tbody>
+';
     $lately = $db->query("SELECT id,`user`,lastactive,ip,hostname FROM `users` WHERE `lastactive` BETWEEN
     (UNIX_TIMESTAMP() - (60*60*24*7)) AND (UNIX_TIMESTAMP() - 1800)
     ORDER BY `lastactive` DESC");
@@ -83,7 +93,7 @@ if (r1() || r2()) {
     } else {
         echo '<tr><td colspan="' . $cols . '" class="center">Det er ingenting &aring; vise.</td></tr>';
     }
-
-    echo '</table>';
+    
+    echo '</tbody></table>';
 }
 endpage();

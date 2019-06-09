@@ -1,8 +1,8 @@
 <?php
 define("BASEPATH", true);
 require_once('system/config.php');
-require_once("classes/database.php");
-$db = new database();
+require_once("classes/Database.php");
+$db = new \DatabaseObject\database();
 $db->connect();
 $disa1 = null;
 $disa2 = null;

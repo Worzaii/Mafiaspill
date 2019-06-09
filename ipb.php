@@ -1,7 +1,7 @@
 <?php
 define("BASEPATH", true);
 include './system/config.php';
-include("./classes/database.php");
+include("./classes/Database.php");
 $db  = new database;
 $db->configure();
 $db->connect();

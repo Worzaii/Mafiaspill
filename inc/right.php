@@ -16,7 +16,7 @@ if (r1() || r2() || r3() || $obj->support == 1) {
     echo '<li><a href="panel.php" title="Paneler du har tilgjengelige vises her">Dine paneler</a></li>';
 
     if (r1() || r2() || support()) {
-        echo '<li><a href="supportpanel.php">Supportsenter <span style="color: #f00;">(Ikke klar)</span></a></li>';
+        echo '<li><a href="supportpanel.php">Supportsenter</a></li>';
     }
     echo '</ul>';
 }
@@ -50,7 +50,7 @@ if (r1() || r2() || r3() || $obj->support == 1) {
     <li><a href="endre.php">Endre innstillinger</a></li>
     <li><a href="finnspiller.php">Finn spiller</a></li>
     <li><a href="endreprofil.php">Endre profil</a></li>
-    <li><a href="/Passord">Endre passord</a></li>
+    <li><a href="nypassord.php">Endre passord</a></li>
     <li><a href="loggut.php" onclick="return confirm('Er du sikker p&aring; at du vil logge ut? ')">Logg ut</a></li>
 </ul>
 </div>
@@ -67,13 +67,14 @@ include_once './inc/footer.php';
         });
         $("a.user_menu").bind("contextmenu", function (event) {
             event.preventDefault();
-            var thevalue = event.delegateTarget.attributes[1].value;
-            var split = thevalue.split(";");
-            var user = split[0];
-            var id = split[1];
+            let id = $(this).attr("data-id");
+            let user = $(this).attr("data-user");
             $("body")
                 .append("<div class=\"custom-menu\"><ul><li><a href=\"profil.php?id=" + id + "\">G&aring; til Profil</a></li><li><a href=\"innboks.php?ny&usertoo=" + user + "\">Send melding</a></li><li><a href=\"bank.php?til=" + user + "\">Send penger</a></li></ul></div>");
             $("div.custom-menu").css({top: event.pageY + "px", left: event.pageX + "px"});
+        });
+        $("#ct").on("click", function () {
+            window.location.href = "https://mafia.werzaire.net/chat.php";
         });
     });
 </script>

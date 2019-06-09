@@ -1,3 +1,5 @@
+@import "https://mikeandrew.co/style.css";
+
 html, body {
     margin: 0;
     padding: 0;
@@ -295,10 +297,11 @@ input[type="text"]:not(.frelst) {
 /* Functions */
 
 #main p, #main pre {
-    padding-left: 15px;
-    width: 560px;
+    padding: 15px;
+    /* width: 560px; */
     line-height: 1.2;
-    padding: 10px;
+    /* padding: 10px; */
+    /* padding-inline-start: 10px; */
 }
 
 .feil2 {
@@ -359,11 +362,11 @@ input[type="text"]:not(.frelst) {
 }
 
 .info {
-    width: 580px !important;
+    /* width: 100%; */
     background: rgba(255, 255, 255, 0.1);
     padding-top: 12px;
     padding-bottom: 12px;
-    margin-left: 0px;
+    /* margin-left: 0px; */
     font-size: 12px;
     color: rgba(255, 255, 255, 1);
 }
@@ -414,7 +417,7 @@ footer #spot3 {
 /* Tables */
 .table, #garasje {
     border-collapse: collapse;
-    /*width: 100%;*/
+    /* width: 100%; */
     margin: auto;
 }
 
@@ -572,19 +575,19 @@ ul.adminpanel li:last-child {
 }
 
 .ct1 {
-    /*width: 580px;*/
+    /* width: 580px; */
     padding: 5px 10px 5px 10px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.5);
     font-size: 10px;
-    color: #bbb;
+    color: #fff;
 }
 
 .ct2 {
     /*width: 580px;*/
     padding: 5px 10px 5px 10px;
-    background: rgba(26, 26, 26, 0.2);
+    background: rgba(26, 26, 26, 0.5);
     font-size: 10px;
-    color: #bbb;
+    color: #fff;
 }
 
 .chattext {
@@ -752,10 +755,10 @@ ul.adminpanel li:last-child {
     width: 100%;
     height: 68px;
     top: 0px;
-    background: rgba(54, 54, 54, 0.48);
-    vertical-align: top;
-    color: #FFF;
-    -webkit-user-select: none;
+    /* background: rgba(54, 54, 54, 0.48); */
+    /* vertical-align: top; */
+    /* color: #FFF; */
+    /* -webkit-user-select: none; */
     background: #333333;
     -moz-box-shadow: inset 0 0 10px #000000;
     -webkit-box-shadow: inset 0 0 10px #000000;
@@ -889,20 +892,21 @@ ul.adminpanel li:last-child {
     width: 340px;
 }
 
-#write::-webkit-input-placeholder {
-    color: #222;
+#write::-webkit-input-placeholder, #write:-moz-placeholder, #write::-moz-placeholder, #write:-ms-input-placeholder {
+    color: #4a4a4a;
 }
 
-#write:-moz-placeholder {
-    color: #222;
-}
-
-#write::-moz-placeholder {
-    color: #222;
-}
-
-#write:-ms-input-placeholder {
-    color: #222;
+#write {
+    font-size: 11px;
+    border: 1px solid #aaa;
+    -webkit-border-radius: 4px;
+    height: 17px;
+    width: 568px;
+    margin-left: 9px;
+    margin-top: -6px;
+    margin-bottom: 12px;
+    background: #FFFFFF;
+    padding: 5px;
 }
 
 #avatar {
@@ -917,7 +921,7 @@ ul.adminpanel li:last-child {
     border-right: 1px solid rgba(253, 253, 253, 0.03);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     color: #999;
-    padding: 11px;
+    padding: 0;
     background: #0C0B0B;
 }
 
@@ -969,4 +973,81 @@ ul.adminpanel li:last-child {
 
 .center {
     text-align: center;
+}
+
+div#main ul.nav li {
+    float: left;
+}
+
+div#main ul.nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+div#main ul.nav {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    text-align: center;
+}
+
+div#main ul.nav li a:hover {
+    background-color: #111;
+}
+
+/*div#main ul.nav li:first-child a {
+    color: red;
+}*/
+div.boxshape {
+    margin: auto;
+}
+
+input, textarea {
+    box-sizing: border-box;
+    min-height: 22px;
+    padding: 0;
+    margin: 0;
+}
+
+td input, td textarea {
+    width: 100%;
+}
+
+table.online {
+    width: 90%;
+}
+
+table.extra {
+    margin-top: 15px;
+    width: 90%;
+}
+
+table.online thead th, table.extra thead th {
+    font-weight: bold;
+    padding: 5px;
+    font-size: 14px;
+    color: #ccc;
+    background: #222;
+}
+
+table.online tbody td, table.extra tbody td {
+    padding: 5px;
+    font-size: 12px;
+}
+
+#information {
+    display: block;
+    /* border-radius: 50px; */
+    border: 2px solid #f00;
+    z-index: 20;
+    height: auto;
+    width: 100%;
+    background: #888 url('/imgs/warn1.png') repeat;
+    text-align: center;
+    margin-top: 70px;
 }

@@ -19,10 +19,10 @@ if (r1() || r2()) {
                     }
                 } else {
                     echo lykket("Du har publisert en nyhet!");
-                    if ($lvl < 4) {
+                    if ($lvl == 5) {
                         /* Only announce news if it's for everyone */
                         $db->query("INSERT INTO `chat` (`id`, `uid`, `message`, `timestamp`) 
-VALUES (NULL, '0', 'En ny nyhet ble skrevet', UNIX_TIMESTAMP());");
+VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen ".$tema."', UNIX_TIMESTAMP());");
                     }
                 }
             }
