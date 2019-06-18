@@ -9,14 +9,14 @@ if (fengsel()) {
     $bu = fengsel(true);
     echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span>
 <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))) .
-        '<script>teller(' . $bu . ', "fengsel", false, "ned");</script>';
-} else if (bunker()) {
+        '<script>teller(' . $bu . ', "fengsel", \'ned\', false);</script>';
+} elseif (bunker()) {
     $bu = bunker(true);
     echo '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid: 
+    <p class="feil">Du er i bunker, gjenst&aring;ende tid:
     <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
     <script>
-    teller(' . ($bu - time()) . ', "bunker", false, "ned");
+    teller(' . ($bu - time()) . ', "bunker", \'ned\', false);
     </script>
     ';
 } else {
@@ -31,7 +31,7 @@ if (fengsel()) {
         <p class="feil">Det har oppst&aring;tt en feil, vennligst kontakt Admin via Support for &aring; f&aring; rettet p&aring; dette!</p>
         ';
         }
-    } else if ($db->num_rows() == 1) {
+    } elseif ($db->num_rows() == 1) {
         /* There's recently been done something: */
         $f = $db->fetch_object($q);
         if (time() < $f->timewait) {
@@ -42,7 +42,7 @@ if (fengsel()) {
         </script>
         ';
         }
-    } else if ($db->num_rows() == 0) {
+    } elseif ($db->num_rows() == 0) {
         if (isset($_POST['valget'])) {
             if (empty($_POST['valget'])) {
                 echo '<p class="feil">Du m&aring; velge et alternativ f&oslash;rst!</p>';
@@ -70,7 +70,7 @@ if (fengsel()) {
                             $ran2 = rand(10, 46);
                             $db->query("UPDATE `chance` SET `chance` = (`chance` - $ran2) WHERE `uid` = '" . $obj->id . "' AND `option` = '" . $vf->option . "' LIMIT 1");
                             $vf->chance += $ran2;
-                        } else if ($vf->chance <= 73) {
+                        } elseif ($vf->chance <= 73) {
                             $ran2 = rand(1, 3);
                             $db->query("UPDATE `chance` SET `chance` = (`chance` + $ran2) WHERE `uid` = '$obj->id' AND `option` = '$vf->option' AND `chance` < '46'");
                             $vf->chance += $ran2;
@@ -86,7 +86,7 @@ if (fengsel()) {
                                 <p class="lykket">Du var heldig og fikk ' . number_format($kr) . 'kr med deg!</p>
                                 <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
                                 <script>
-                                teller(' . $v->untilnext . ')
+                                teller(' . $v->untilnext . ', "krim", \'ned\', false);
                                 </script>
                                 ';
                             } else {
@@ -117,7 +117,7 @@ if (fengsel()) {
               <p class="feil">Du klarte det ikke!</p>
               <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
               <script>
-              teller(' . $v->untilnext . ')
+              teller(' . $v->untilnext . ', "krim", \'ned\', false);
               </script>
               ';
                             } else {
@@ -130,7 +130,7 @@ if (fengsel()) {
                                     echo '
                 <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">' . ($v->punishtime) . '</span>.</p>
                 <script>
-                teller(' . ($v->punishtime) . ')
+                teller(' . $v->punishtime . ', "krim2", \'ned\', false);
                 </script>
                 ';
                                     $jailed = true;
@@ -145,8 +145,12 @@ if (fengsel()) {
         } else {
             if (!$jailed) {
                 ?>
-                <form name="krim" method="post" id="krim" action="">
-                    <table style="width:590px;" class="table">
+                <form name="krim"
+                      method="post"
+                      id="krim"
+                      action="">
+                    <table style="width:590px;"
+                           class="table">
                         <tr>
                             <th colspan="5">Krimhandlinger</th>
                         </tr>
@@ -186,7 +190,10 @@ if (fengsel()) {
                         }
                         ?>
                     </table>
-                    <input type="hidden" value="" name="valget" id="valget">
+                    <input type="hidden"
+                           value=""
+                           name="valget"
+                           id="valget">
                 </form>
                 <script>
                     function sendpost(valg) {

@@ -33,7 +33,7 @@ function startpage($title = NAVN_DOMENE)
           <li><a href="innboks.php">Innboks (<span style="color: #ff0;">jobbes med</span>)</a></li>
           <li><a href="statistikk.php">Statistikk</a></li>
           <li><a href="fengsel.php">Fengsel' . $anyjail . '</a></li>
-          <li><a href="chat.php">Chat</a></li>
+          <li><a href="bj.php">BlackJack</a></li>
           <li><a href="online.php">Spillere p&aring;logget (' . $late_online . ')</a></li>
         </ul>
       </nav>
@@ -198,7 +198,7 @@ function status($s)
             $span = "stat2";
         } elseif ($user->status == 3) {
             $span = "stat3";
-        } elseif ($user->status == 4 && $user->picmaker == 1 && $user->health > 1) {
+        } elseif ($user->status == 4 || $user->status == 5 && $user->picmaker == 1 && $user->health > 1) {
             $span = "stat4";
         } elseif ($user->status == 4) {
             $span = "stat5";

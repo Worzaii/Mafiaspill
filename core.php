@@ -26,7 +26,7 @@ if (isset($_SESSION['sessionzar'])) {
     list($user, $pass, $sss) = $_SESSION['sessionzar'];
     $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
         : $_SERVER['REMOTE_ADDR'];
-    $db->query("SELECT id,user,pass,ip,forceout,lastactive, health, status, image, exp, hand, points, city, family, bullets, weapon, support, profile FROM `users` WHERE `user` = '" . $db->escape($user) . "' AND `pass` = '" . $db->escape($pass) . "'");
+    $db->query("SELECT id,user,pass,ip,forceout,lastactive, health, status, image, exp, bank, hand, points, city, family, bullets, weapon, support, profile FROM `users` WHERE `user` = '" . $db->escape($user) . "' AND `pass` = '" . $db->escape($pass) . "'");
     if ($db->num_rows() == 0) {
         header("Location: loggut.php?g=4");
         die('<a href="loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget p&aring; din bruker.</a>');

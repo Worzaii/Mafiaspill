@@ -4,7 +4,8 @@
  *Scriptet ble designet for bruk p&aring; http://mafia-no.net
  *For &aring; kunne bruke dette scriptet en annen plass, ta kontakt med overnevnt p&aring; mail: nicholas@mafia-no.net
  **/
-function teller(tid, span, redir, oppned) {
+function teller(tid, span, redir, oppned)
+{
     skriv = '';
     id = document.getElementById(span);
     week = Math.floor(tid / 604800);/*Antall uker inaktiv*/

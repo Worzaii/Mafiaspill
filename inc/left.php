@@ -84,7 +84,7 @@ $onl = "online.php";
 <ul>
     <li><a href="#Marked">Svarteb&oslash;rsen </a></li>
     <li><a href="#Bunker">Bunker </a></li>
-    <li><a href="#Bank">Banken </a></li>
+    <li><a href="bank.php">Banken </a></li>
     <li><a href="#Poeng">Poeng </a></li>
     <li><a href="#verving.php">Verving </a></li>
     <li><a href="#Auksjon">Auksjon </a></li>
@@ -121,5 +121,5 @@ $onl = "online.php";
 <h2>Gambling</h2>
 <ul>
     <li><a href="Lotto">Lotto </a></li>
-    <li><a href="Blackjack">Blackjack </a></li>
+    <li><a href="bj.php">Blackjack </a></li>
 </ul>

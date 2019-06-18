@@ -50,6 +50,12 @@ define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_M
 session_start();
 if (isset($_SESSION['HTTP_USER_AGENT'])) {
     if ($_SESSION['HTTP_USER_AGENT'] !== sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'])) {
+        error_log("Seems the agent isn't correctly defined. Here's the comparements:");
+        error_log("Session value: '".$_SESSION['HTTP_USER_AGENT']."' and the value it's compared to: ");
+        error_log("Server-value:  '".$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']."'");
+        error_log("Removing the information so it can be set anew...");
+        unset($_SESSION['HTTP_USER_AGENT']);
+        error_log("Result of removal: ".((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
         header('Location: https://' . DOMENE_NAVN . '/loggut.php?g=8');
         exit('Cross-network-tilgang avsl&aring;tt!');
     }

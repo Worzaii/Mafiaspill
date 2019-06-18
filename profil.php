@@ -25,14 +25,14 @@ if (!isset($_GET['id'])) {
             } else {
                 $image = htmlentities(filter_var($fetch->image, FILTER_SANITIZE_URL));
             }
-            $regd = ($fetch->regdato != 0) ? date("H:i:s | d-m-Y", $fetch->regdato) : '<em>Ukjent registreringsdato</em>';
+            $regd = ($fetch->regstamp != 0) ? date("H:i:s | d-m-Y", $fetch->regstamp) : '<em>Ukjent registreringsdato</em>';
             $var = [1 => "<span class='stat1' title='Admin'>Admin</span>", 2 => "<span class='stat2' title='Moderator'>Moderator</span>", 3 => "<span class='stat3' title='Forum moderator'>Forum Moderator</span>", 4 => "<span class='stat4'>Picmaker</span>", 5 => "<span class='stat5' title='Vanlig spiller'>Vanlig spiller</span>", 6 => "<span class='stat6' title='D&oslash;d'>D&oslash;d</span>"];
             $status = $var[$fetch->status];
             if ($fetch->health == 0) {
                 $status = '<span style="color:#ff0000">D&oslash;d</span>';
             }
             $ute = number_format($fetch->hand);
-            $sendtmld = number_format($fetch->sendtmld);
+            $sendtmld = 0;/*number_format($fetch->sendtmld);*/
             if ($sendtmld == 0) {
                 $sendtmld = 'Ingen meldinger sendt';
             }
@@ -67,7 +67,7 @@ if (!isset($_GET['id'])) {
                     echo "<a href=\"endrespiller.php?u=" . $fetch->user . "\">Endre verdier </a> || ";
                     echo "<a href=\"profil.php?id=" . $fetch->id . "&bank\">Se 50 siste bank overf&oslash;ringer</a></br>";
                 }
-                $fetch->note = html_entity_decode($fetch->note, null, "UTF-8");
+                #$fetch->note = html_entity_decode($fetch->note, null, "UTF-8");
             }
             echo "
 

@@ -6,23 +6,25 @@ if (r1() || r2() || r3()) {
     if (!file_exists("chatlog/")) {
         mkdir("chatlog");
     }
-    $fp = fopen('chatlog/chat_' . $dato2 . '.txt', 'a');
+    $filename = 'chatlog/chat_' . $dato2 . '.txt';
+    $fp = fopen($filename, 'a');
     $g = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC");
     $d = date("H:i:s d.m.y");
     $string = "T\u{00F8}mming av prat klokken {$dato2} av {$obj->user}!";
     while ($r = mysqli_fetch_object($g)) {
-        $i = $r->mld;
+        $i = $r->message;
         $ubj = user($r->uid);
         $string .= "
-[" . date('H:i:s d.m.y', $r->time) . "] {$ubj->user}: {$i}";
+[" . date('H:i:s d.m.y', $r->timestamp) . "] {$ubj->user}: {$i}";
     }
     fwrite($fp, $string);
     fclose($fp);
+    chmod($filename, 0774);
     if (!$db->query("TRUNCATE TABLE `chat`")) {
         echo feil("Det var et problem ved t\u{00F8}mming av praten!");
     } else {
         $db->query("INSERT INTO `chat`(uid,message,timestamp) 
-VALUES ('0','" . "Praten ble t\u{00F8}mt av " . $obj->user . "!" . "','" . date("H.i.s d-m-Y") . "')");
+VALUES ('0','Praten ble t\u{00F8}mt av " . $obj->user . "!',UNIX_TIMESTAMP())");
         echo '
 <h1>Chatten har blitt t&oslash;mt!</h1>
 <p>Du har n&aring; renset chatten, og en melding ble skrevet i prat for deg.</br>';
