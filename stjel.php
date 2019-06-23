@@ -10,7 +10,7 @@ if (bunker() == true) {
     echo '
 	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
 	<script>
-	teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
+	teller(' . ($bu - time()) . ',\'bunker\',\'ned\',false);
 	</script>
 	';
 } elseif (fengsel() == true) {
@@ -23,14 +23,15 @@ if (bunker() == true) {
 } else {
     $time = time();
     $time2 = $time + 900;
-    $t = $db->query("SELECT * FROM `ransp` WHERE `uid` = '$obj->id' AND `time` > '$time' ORDER BY `id` DESC LIMIT 1");
+    $t = $db->query("SELECT * FROM `robbery` WHERE `uid` = '$obj->id' AND `timestamp` > '$time' ORDER BY `id` DESC LIMIT 1");
     if ($db->num_rows() == 1) {
         $l = mysqli_fetch_object($t);
-        $left = $l->time - $time;
+        $left = $l->timestamp - $time;
         if ($left >= 1) {
             $kan = 0;
             //M&aring; fortsatt vente
-            echo '<p class="feil">Du m&aring; fortsatt vente i <span id="rantid"></span>!<!--<br>Tid: ' . $l->time . ' - ' . $time . ' = ' . $left . '--></p><script>teller(' . $left . ',"rantid",true,"ned")</script>';
+            echo '<p class="feil">Du m&aring; fortsatt vente i <span id="rantid"></span>!<!--<br>Tid: ' . $l->time .
+                ' - ' . $time . ' = ' . $left . '--></p><script>teller(' . $left . ',"rantid",false,"ned")</script>';
         } else {
             //echo '<p>time: '.$time.'<br>ltime: '.$l->time.'<br>time - ltime = '.$left.'</p>';
             $kan = 1;
@@ -41,43 +42,42 @@ if (bunker() == true) {
     }
     if (isset($_POST['spiller'])) {
         if ($kan == 0) {
-            echo '<p class="feil">Du kan ikke stjele fra noen enda!</p>';
+            echo feil('Du kan ikke stjele fra noen enda!');
         } else {
             $sp = $db->escape($_POST['spiller']);
             if (strtolower($sp) == strtolower($obj->user)) {
-                echo '<p class="feil">Du kan ikke rane deg selv! :)</p>';
+                echo warning('Du kan ikke rane deg selv! :)');
             } else {
                 $s = $db->query("SELECT * FROM `users` WHERE `user` = '$sp' LIMIT 1");
                 if ($db->num_rows() == 1) {
                     $f = $db->fetch_object();
                     if ($f->status == 1 || $f->status == 2) {
-                        echo '<p class="feil">Du kan ikke rane ledelsen!</p>';
+                        echo warning('Du kan ikke rane ledelsen!');
                     } elseif ($f->health <= 0) {
-                        echo '<p class="feil">Du kan ikke rane d&oslash;de spillere!</p>';
+                        echo warning('Du kan ikke rane d&oslash;de spillere!');
                     } else {
                         if ($f->city == $obj->city) {
-                            if ($f->hand >= 500000) {//Om spiller har over 500,000kr ute, s&aring; kan han bli bestj&aring;let
+                            if ($f->hand >= 500000) {
                                 $rand = rand(100000, $f->hand);
                                 $db->query("UPDATE `users` SET `hand` = (`hand` - $rand) WHERE `id` = '$f->id' LIMIT 1");
                                 $db->query("UPDATE `users` SET `hand` = (`hand` + $rand),`exp` = (`exp` + 2.0) WHERE `id` = '$obj->id' LIMIT 1");
-                                $db->query("INSERT INTO `ransp`(`uid`,`aid`,`us`,`as`,`kl`,`time`) VALUES('$obj->id','$f->id','$obj->city','$f->city','$rand','$time2')");
-                                $db->query("SELECT * FROM `oppuid` WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `oid` = '4' ORDER BY `oid` DESC LIMIT 1");
-                                if ($db->num_rows() == 1 && $obj->city == 1) {/*Sjekker om oppdrag 4 er aktivt*/
-                                    $db->query("UPDATE `oppuid` SET `tms` = (`tms` + 1) WHERE `uid` = '{$obj->id}' AND `done` = '0' AND `tms` < '30' AND `oid` = '4' LIMIT 1");
-                                }
-                                $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $f->id . "','" . time() . "','" . $db->slash('--<b>Ran Spiller</b><br/>' . $obj->user . ' ranet ' . number_format($rand) . 'kr fra deg!') . "')");
-                                echo '<p class="lykket">Du klarte &aring; rane ' . status($f->user) . ' for ' . number_format($rand) . ' kr!</p>';
+                                $db->query("INSERT INTO `robbery`(`uid`,`tid`,`ucity`,`tcity`,`amount`,`timestamp`) VALUES('$obj->id','$f->id','$obj->city','$f->city','$rand','$time2')");
+                                /*$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $f->id . "','" .
+                                    time() . "','" . $db->slash('--<b>Ran Spiller</b><br/>' . $obj->user . ' ranet '
+                                . number_format($rand) . 'kr fra deg!') . "')");*/
+                                echo lykket('Du klarte &aring; rane ' . status($f->user) . ' for ' . number_format($rand) . ' kr!');
                             } else {
-                                echo '<p class="feil">Mafiaen har ikke nok penger ute! ' . $f->user . ' har bare ' . number_format($f->hand) . ' kr ute!</p>';
+                                echo warning('Spilleren har ikke nok penger ute! ' . $f->user . ' har bare ' .
+                                    number_format($f->hand) . ' kr ute!');
                             }
                         } else {
-                            echo '<p class="feil">Du var ikke i samme byen som mafiaen, du klarte det ikke!</p>';
+                            echo warning('Du var ikke i samme byen som mafiaen, du klarte det ikke!');
                             $rand = 0;
-                            $db->query("INSERT INTO `ransp`(`uid`,`aid`,`us`,`as`,`kl`,`time`) VALUES('$obj->id','$f->id','$obj->city','$f->city','$rand','$time2')");
+                            $db->query("INSERT INTO `robbery`(`uid`,`tid`,`ucity`,`tcity`,`amount`,`timestamp`) VALUES('$obj->id','$f->id','$obj->city','$f->city','$rand','$time2')");
                         }
                     }
                 } else {
-                    echo '<p class="feil">Spilleren eksisterer ikke!</p>';
+                    echo feil('Spilleren eksisterer ikke!');
                 }
             }
         }
@@ -105,4 +105,3 @@ if (bunker() == true) {
     <?php
 }
 endpage();
-?>

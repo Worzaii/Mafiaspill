@@ -9,14 +9,14 @@ if (fengsel()) {
     $bu = fengsel(true);
     echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span>
 <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))) .
-        '<script>teller(' . $bu . ', "fengsel", \'ned\', false);</script>';
+        '<script>teller(' . $bu . ', "fengsel", false, \'ned\');</script>';
 } elseif (bunker()) {
     $bu = bunker(true);
     echo '
     <p class="feil">Du er i bunker, gjenst&aring;ende tid:
     <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
     <script>
-    teller(' . ($bu - time()) . ', "bunker", \'ned\', false);
+    teller(' . ($bu - time()) . ', "bunker", false, \'ned\');
     </script>
     ';
 } else {
@@ -38,7 +38,7 @@ if (fengsel()) {
             echo '
         <p class="feil">Du m&aring; vente <span id="krim">' . ($f->timewait - time()) . '</span> f&oslash;r neste krim.</p>
         <script>
-        teller(' . ($f->timewait - time()) . ')
+        teller(' . ($f->timewait - time()) . ', "krim", false, "ned");
         </script>
         ';
         }
