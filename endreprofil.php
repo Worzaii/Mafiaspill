@@ -9,6 +9,7 @@ startpage("Endre profil");
 if (isset($_POST['bilde']) && isset($_POST['profil'])) {
     $i = $db->escape($_POST['bilde']);
     $url = get_headers($i, 1);
+    error_log(var_export($url, true));
     $val = null;
     switch ($url['Content-Type']) {
         case "text/html":
@@ -31,7 +32,6 @@ if (isset($_POST['bilde']) && isset($_POST['profil'])) {
             $val = false;
             $ret = "Linken du oppgav er ikke et gyldig bilde! Det var et " . $url['Content-Type'] . "-format";
             break;
-
     }
     $p = $db->escape($_POST['profil']);
     if (!$val && !empty($i)) {

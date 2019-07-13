@@ -86,7 +86,7 @@ if (fengsel()) {
                                 <p class="lykket">Du var heldig og fikk ' . number_format($kr) . 'kr med deg!</p>
                                 <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
                                 <script>
-                                teller(' . $v->untilnext . ', "krim", \'ned\', false);
+                                teller(' . $v->untilnext . ', "krim", false, \'ned\');
                                 </script>
                                 ';
                             } else {
@@ -117,7 +117,7 @@ if (fengsel()) {
               <p class="feil">Du klarte det ikke!</p>
               <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
               <script>
-              teller(' . $v->untilnext . ', "krim", \'ned\', false);
+              teller(' . $v->untilnext . ', "krim", false, \'ned\');
               </script>
               ';
                             } else {
@@ -130,7 +130,7 @@ if (fengsel()) {
                                     echo '
                 <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">' . ($v->punishtime) . '</span>.</p>
                 <script>
-                teller(' . $v->punishtime . ', "krim2", \'ned\', false);
+                teller(' . $v->punishtime . ', "krim2", false, \'ned\');
                 </script>
                 ';
                                     $jailed = true;

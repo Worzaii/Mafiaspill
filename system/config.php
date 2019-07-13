@@ -43,6 +43,7 @@ define('DESC', 'Kommer senere...');
 define('KEYWORDS', 'mafia, spill');
 define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
+$timeout = (60* (120));
 
 /* Rest of config has been imported to php.ini file directly. */
 

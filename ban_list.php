@@ -1,6 +1,6 @@
 <?php
 include("core.php");
-startpage("Se alle spillere som er modkillet");
+startpage();
 if (r1() || r2()) {
     $db->query("select
     users.id,users.user,users.lastactive,users.regstamp,banlog.timestamp,banlog.reason,banlog.banner

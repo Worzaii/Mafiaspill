@@ -89,7 +89,7 @@ $onl = "online.php";
     <li><a href="#verving.php">Verving </a></li>
     <li><a href="#Auksjon">Auksjon </a></li>
     <li><a href="#Firmaer">Firmaer </a></li>
-    <li><a href="#Garasje">Garasje </a></li>
+    <li><a href="garasje.php">Garasje </a></li>
 </ul>
 <h2>Kommunikasjon</h2>
 <ul>

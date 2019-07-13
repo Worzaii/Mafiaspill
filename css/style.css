@@ -684,30 +684,30 @@ ul.adminpanel li:last-child {
 /* Status colors! */
 .stat1 {
     /* Admin */
-    color: #0ff;
+    color: #0ff !important;
 }
 
 .stat2 {
     /* Moderator */
-    color: #0f0;
+    color: #0f0 !important;
 }
 
 .stat3 {
     /* Forum-moderator */
-    color: #ff0;
+    color: #ff0 !important;
 }
 
 .stat4 {
     /* Picmaker */
-    background: linear-gradient(to right, orange, yellow, #00b100, cyan, #7878ff, violet);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: bold;
+    background: linear-gradient(to right, orange, yellow, #00b100, cyan, #7878ff, violet)  !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-weight: bold !important;
 }
 
 .stat5 {
     /*Vanlig spiller*/
-    color: #fff;
+    color: #fff !important;
 }
 
 /* Dead player */
