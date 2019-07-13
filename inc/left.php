@@ -75,7 +75,7 @@ $onl = "online.php";
 <script>loggteller(' . $jte . ',"jailteller",false,"ned");</script></li>';
     }
     ?>
-    <li><a href="#flyplass.php">Flyplass</a></li>
+    <li><a href="flyplass.php">Flyplass</a></li>
     <li><a href="#Drap">Drap </a></li>
     <li><a href="#oppdrag.php">Oppdrag</li>
     <li><a href="#Ran">Ran </a></li>

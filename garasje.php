@@ -29,12 +29,11 @@ if (fengsel()) {
         isset($_POST['checkbil'])) {
         $biler = $_POST['checkbil'];
         if (isset($_POST['selgbil'])) {
-            $errors = ["num" => 0, "res" => feil('Kunne ikke selge valgte biler')];
+            $errors = ["num" => 0, "res" => 'Kunne ikke selge valgte biler'];
             $success = ["num" => 0, "sum" => 0, "res" => null];
             foreach ($biler as $bil) {
                 $bil = $db->escape($bil);
-                $gc = null;
-                $gc = $db->query("SELECT * FROM `garage` WHERE `id` = '{$bil}' AND `uid` = '{$obj->id}'");
+                $gc = $db->query("SELECT * FROM `garage` WHERE `id` = '{$bil}' AND `uid` = '{$obj->id}' AND `sold` = '0'");
                 if ($db->num_rows() == 1) {
                     $f = $db->fetch_object();
                     if ($obj->city == $f->current_city) {
@@ -59,7 +58,8 @@ WHERE `uid` = '{$obj->id}' AND
                                 $success['num'] += 1;
                                 $success['sum'] += $pris;
                             } else {
-                                $errors['res'] .= ', fordi bilen ikke eksisterer';
+                                $errors['res'] .= ', fordi bilen muligens flyttes';
+                                $errors['num'] += 1;
                             }
                         }
                     } else {
@@ -71,7 +71,7 @@ WHERE `uid` = '{$obj->id}' AND
                     $errors['num'] += 1;
                 }
             }/*Foreach for flere biler END*/
-            $errors['res'] .= '</p>';
+            $errors['res'] .= '.</p>';
             if ($success['num'] >= 1) {/*Kommer med successtekst og resultat*/
                 $ant = ($success >= 2) ? " biler" : " bil";
                 echo lykket('Du solgte ' . $success['num'] . $ant . ' til verdien av ' . number_format($success["sum"]) . 'kr!');
@@ -79,7 +79,7 @@ WHERE `uid` = '{$obj->id}' AND
             }
             if ($errors['num'] >= 1) {
                 $ant = ($success >= 2) ? " bilene dine" : " bilen din";
-                echo 'Det oppstod ' . $errors["num"] . ' feil' . ' da du pr&oslash;vde &aring; selge ' . $ant . '!';
+                echo feil('Det oppstod ' . $errors["num"] . ' feil' . ' da du pr&oslash;vde &aring; selge ' . $ant . '!<br>'.$errors['res']);
             }
             /*Selg bil END*/
         } elseif (isset($_POST['sendbil'])) {
