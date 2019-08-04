@@ -53,7 +53,7 @@ if (isset($_GET['do'])) {
 <p class="feil">Meldingsinnholdet var ikke stort nok! Du m&aring; ha mer enn 1 tegn.</p>
 ';
             } else if (strlen($usto) <= 3) {
-                echo '<p class="feil">Brukernavnet er ikke gyldig, det er for kort!</p>';
+                echo feil('Brukernavnet er ikke gyldig, det er for kort!');
             } else if (strlen($tema) == 0) {
                 $tema = 'Uten tema';
             } else {//Fortsetter sendingen av melding
@@ -61,7 +61,7 @@ if (isset($_GET['do'])) {
                 if (mysql_num_rows($q) == 1) {
                     $u = mysql_fetch_object($q);
                     if (mysql_query("INSERT INTO `mail`(`id`,`UId`,`TId`,`theme`,`message`,`time`,`date`) VALUES(NULL,'$obj->id','$u->id','$tema','$sms','$time','$dato')")) {
-                        echo '<p class="lykket">Meldingen er blitt sendt!</p>';
+                        echo lykket('Meldingen er blitt sendt!');
                     } else {
                         if ($obj->status == 1) {
                             echo '
@@ -74,7 +74,7 @@ if (isset($_GET['do'])) {
                         }
                     }
                 } else {
-                    echo '<p class="feil">Brukeren var ikke funnet!</p>';
+                    echo feil('Brukeren var ikke funnet!');
                 }
             }
         }
@@ -106,16 +106,16 @@ END;
         echo '<a href="inbox.php">Tilbake til innboks</a>';
         $id = mysql_real_escape_string($_GET['id']);
         if (!is_numeric($id)) {
-            echo '<p class="feil">Meldingens id er ikke gyldig!</p>';
+            echo feil('Meldingens id er ikke gyldig!');
         } else if ($id <= 0) {
-            echo '<p class="feil">Pr&oslash;ver du hack eller noe? xD</p>';
+            echo feil('Pr&oslash;ver du hack eller noe? xD');
         } else if (is_numeric($id) && $id >= 1) {
             $sql = mysql_query("SELECT * FROM `mail` WHERE `UId` = '$obj->id' AND `id` = '$id' OR `TId` = '$obj->id' AND `id` = '$id'") or die(mysql_error());
             $sql2 = mysql_fetch_object($sql) or die(mysql_error());
             $sql3 = mysql_query("SELECT * FROM `mail` WHERE `theme` = '$sql2->theme' AND `UId` = '$obj->id' OR `theme` = '$sql2->theme' AND `TId` = '$obj->id' ORDER BY `id` DESC") or die(mysql_error());
             if (!mysql_query("UPDATE `mail` SET `read` = '1' WHERE `theme` = '$sql2->theme' AND `TId` = '$obj->id'")) {
                 if ($obj->status == 1) {
-                    echo '<p class="feil">Kunne ikke oppdatere "lest/ulest". Feil: ' . mysql_error() . '</p>';
+                    echo feil('Kunne ikke oppdatere "lest/ulest". Feil: ' . mysql_error() . '');
                 }
             }
             if (isset($_POST['svar1'])) {
@@ -131,7 +131,7 @@ END;
                 $time = time();
                 $dato = date("H:i:s d.m.Y");
                 if (mysql_query("INSERT INTO `mail`(`id`,`UId`,`TId`,`theme`,`message`,`time`,`date`) VALUES(NULL,'$obj->id','$till','$tema','$svar','$time','$dato')")) {
-                    echo '<p class="lykket">Meldingen er blitt sendt!</p>';
+                    echo lykket('Meldingen er blitt sendt!');
                 } else {
                     if ($obj->status == 1) {
                         echo '

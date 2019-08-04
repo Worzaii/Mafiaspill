@@ -45,12 +45,12 @@ if (isset($_POST['bilde']) && isset($_POST['profil'])) {
         $qu = "UPDATE `users` SET `profile` = '$p',`image` = '$i' WHERE `id` = '$obj->id' LIMIT 1";
     }
     if ($db->query($qu)) {
-        echo '<p class="lykket">' . $what . ' har blitt oppdatert.</p>';
+        echo lykket('' . $what . ' har blitt oppdatert.');
     } else {
         if ($obj->status == 1) {
             echo mysqli_error($db->con);
         } else {
-            echo '<p class="feil">Det har oppst&aring;tt en feil! Rapporter dette til Support snarest!</p>';
+            echo feil('Det har oppst&aring;tt en feil! Rapporter dette til Support snarest!');
         }
     }
     $bilde = htmlentities($_POST['bilde']);

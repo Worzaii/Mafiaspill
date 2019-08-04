@@ -23,46 +23,46 @@ teller(' . ($bu - time()) . ')
         startpage("Poengkj&oslash;p", $style);
         if (isset($_GET['hundremill'])) {
             if ($obj->points < 200) {
-                echo '<p class="feil">Du har ikke nok poeng!</p>';
+                echo feil('Du har ikke nok poeng!');
             } else {
                 $db->query("UPDATE `users` SET `points` = (`points` - 200) WHERE `user`= '$obj->user' LIMIT 1");
                 $db->query("UPDATE `users` SET `hand` = (`hand` + 100000000) WHERE `user`= '$obj->user' LIMIT 1");
                 $db->query("INSERT INTO `poenglogg`(`uid`,`hva`,`tid`) VALUES ('.$obj->id.','Hundre millioner','" . time() . "')");
-                echo '<p class="lykket">Du har kj&oslash;pt 100,000,000kr for 200 poeng!</p>';
+                echo lykket('Du har kj&oslash;pt 100,000,000kr for 200 poeng!');
             }
         } else if (isset($_GET['kuler'])) {
             if ($obj->points < 150) {
-                echo '<p class="feil">Du har ikke nok poeng!</p>';
+                echo feil('Du har ikke nok poeng!');
             } else {
                 $db->query("UPDATE `users` SET `points` = (`points` - 150) WHERE `user`= '$obj->user' LIMIT 1");
                 $db->query("UPDATE `users` SET `bullets` = (`bullets` + 100) WHERE `user`= '$obj->user' LIMIT 1");
                 $db->query("INSERT INTO `poenglogg`(`uid`,`hva`,`tid`) VALUES ('.$obj->id.','Hundre kuler','" . time() . "')");
-                echo '<p class="lykket">Du har kj&oslash;pt 100 kuler for 150 poeng!</p>';
+                echo lykket('Du har kj&oslash;pt 100 kuler for 150 poeng!');
             }
         } else if (isset($_GET['fulltliv'])) {
             if ($obj->points < 20) {
-                echo '<p class="feil">Du har ikke nok poeng!</p>';
+                echo feil('Du har ikke nok poeng!');
             } else if ($obj->health == 100) {
-                echo '<p class="feil">Du har allerede full helse!</p>';
+                echo feil('Du har allerede full helse!');
             } else {
                 $db->query("UPDATE `users` SET `points` = (`points` - 20) WHERE `user`= '$obj->user' LIMIT 1");
                 $db->query("UPDATE `users` SET `health` = '100' WHERE `user`= '$obj->user' LIMIT 1");
                 $db->query("INSERT INTO `poenglogg`(`uid`,`hva`,`tid`) VALUES ('.$obj->id.','Liv p&aring;fyll (100% Liv)','" . time() . "')");
-                echo '<p class="lykket">Du har n&aring; fullt liv!</p>';
+                echo lykket('Du har n&aring; fullt liv!');
             }
         } else if (isset($_GET['skipen'])) {
             if ($obj->points < 20) {
-                echo '<p class="feil">Du har ikke nok poeng!</p>';
+                echo feil('Du har ikke nok poeng!');
             } else {
                 $sjekk1 = $db->query("SELECT * FROM `oppuid` WHERE `oid` = '1' AND `done` AND `tms` AND `uid` = {$obj->id}");
                 $hent1 = $db->fetch_object($sjekk1);
                 if ($hent1->tms >= 25) {
-                    echo '<p class="feil">Du har allerede fullf&oslash;rt dette oppdraget!</p>';
+                    echo feil('Du har allerede fullf&oslash;rt dette oppdraget!');
                 } else {
                     $db->query("UPDATE `users` SET `points` = (`points` - 20) WHERE `user`= '$obj->user' LIMIT 1");
                     $db->query("UPDATE `oppuid` SET `tms` = '25' WHERE `oid` = '1' AND `uid` = {$obj->id} LIMIT 1");
                     $db->query("INSERT INTO `poenglogg`(`uid`,`hva`,`tid`) VALUES ('.$obj->id.','Skippet oppdrag 1','" . time() . "')");
-                    echo '<p class="lykket">Du har n&aring; skippet oppdrag 1 for 20 Poeng! (Husk &aring; g&aring; til oppdrag og fullf&oslash;r oppdraget, f&oslash;r du skipper neste.)</p>';
+                    echo lykket('Du har n&aring; skippet oppdrag 1 for 20 Poeng! (Husk &aring; g&aring; til oppdrag og fullf&oslash;r oppdraget, f&oslash;r du skipper neste.)');
                 }
             }
         }
@@ -70,7 +70,7 @@ teller(' . ($bu - time()) . ')
         $hent = $db->fetch_object($sjekk);
         if (isset($_GET['skipto'])) {
             if ($obj->points < 50) {
-                echo '<p class="feil">Du har ikke nok poeng!</p>';
+                echo feil('Du har ikke nok poeng!');
             } else {
                 $sjekk1 = $db->query("SELECT * FROM `oppuid` WHERE `oid` = '1' AND `done` AND `tms` AND `uid` = {$obj->id}");
                 $hent1 = $db->fetch_object($sjekk1);
@@ -78,22 +78,22 @@ teller(' . ($bu - time()) . ')
                     echo '<p class="feil">Du kan ikke skippe oppdrag 2, f&oslash;r du har skippet oppdrag 1!</br>';
                 }
                 if ($hent->tms == 750) {
-                    echo '<p class="feil">Du har allerede fullf&oslash;rt dette oppdraget!</p>';
+                    echo feil('Du har allerede fullf&oslash;rt dette oppdraget!');
                 }
                 if ($hent->tms < 750) {
                     $db->query("UPDATE `users` SET `points` = (`points` - 50) WHERE `user`= '$obj->user' LIMIT 1");
                     $db->query("UPDATE `oppuid` SET `tms` = '750' WHERE `oid`= '2' AND `uid` = {$obj->id} LIMIT 1");
                     $db->query("INSERT INTO `poenglogg`(`uid`,`hva`,`tid`) VALUES ('.$obj->id.','Skippet oppdrag 2','" . time() . "')");
-                    echo '<p class="lykket">Du har skippet oppdrag 2 for 50 Poeng!(Husk &aring; g&aring; til oppdrag og fullf&oslash;r oppdraget, f&oslash;r du skipper neste.)</p>';
+                    echo lykket('Du har skippet oppdrag 2 for 50 Poeng!(Husk &aring; g&aring; til oppdrag og fullf&oslash;r oppdraget, f&oslash;r du skipper neste.)');
                 }
             }
         } else if (isset($_GET['ranstats'])) {
             if ($obj->points < 20) {
-                echo '<p class="feil">Du har ikke nok poeng!</p>';
+                echo feil('Du har ikke nok poeng!');
             } else {
                 $db->query("UPDATE `users` SET `points` = (`points` - 20) WHERE `user`= '$obj->user' LIMIT 1");
                 $db->query("INSERT INTO `poenglogg`(`uid`,`hva`,`tid`) VALUES ('.$obj->id.','Ran-statistikk','" . time() . "')");
-                echo '<p class="lykket">Viser 10 spillere med over 500,000 ute!</p>';
+                echo lykket('Viser 10 spillere med over 500,000 ute!');
                 ?> 
 <table class="table">
     <tr>

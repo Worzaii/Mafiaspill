@@ -255,7 +255,7 @@ input[type="button"], input[type="submit"], .button {
     color: #61586a;
     cursor: pointer;
     font: bold 11px 'helvetica-neue', sans-serif;
-    margin: 20px;
+    margin: 0;
     padding: 5px;
     position: relative;
     text-decoration: none;

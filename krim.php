@@ -45,7 +45,7 @@ if (fengsel()) {
     } elseif ($db->num_rows() == 0) {
         if (isset($_POST['valget'])) {
             if (empty($_POST['valget'])) {
-                echo '<p class="feil">Du m&aring; velge et alternativ f&oslash;rst!</p>';
+                echo feil('Du m&aring; velge et alternativ f&oslash;rst!');
             } else {
                 $val = $db->escape($_POST['valget']);
                 $valg = $db->query("SELECT * FROM `crime` WHERE `id` = '$val' LIMIT 0,1");

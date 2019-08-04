@@ -15,11 +15,11 @@ if(isset($_POST['bet'])){
     $winning = $innsats * 2;
     $random = mt_rand(1,100);
     if($innsats <= 0){
-        echo '<p class="feil">Du m&aring; satse mer enn 0kr!</p>';
+        echo feil('Du m&aring; satse mer enn 0kr!');
     }elseif($innsats >= 200000000){
-        echo '<p class="feil">Du kan ikke satse mer enn 200,000,000r</p>';
+        echo feil('Du kan ikke satse mer enn 200,000,000r');
     }elseif($obj->hand <= $innsats){
-        echo '<p class="feil">Du m&aring; ha penger ute p&aring; h&aring;nden.</p>';
+        echo feil('Du m&aring; ha penger ute p&aring; h&aring;nden.');
     }elseif($obj->hand >= $innsats){
     if($random <=50){
         echo '<p class="feil"`>Du satset '.number_format($innsats).'kr og tapte!</p>';
@@ -27,7 +27,7 @@ if(isset($_POST['bet'])){
         $db->query("INSERT INTO `kastmynt_logg` (`uid`,`innsats`,`gevinst`,`time`,`name`,) VALUES ('$obj->id','$innsats','-$innsats',UNIX_TIMESTAMP(),'$obj->user')");
         $db->query("UPDATE `kastmynt_logg` SET `total_win_loss` = (`total_win_loss` - $innsats) WHERE `id` = '".$db->insert_id()."'");
     }elseif($random >=50){
-        echo '<p class="lykket">Du vant '.number_format($winning).'kr</p>';
+        echo lykket('Du vant '.number_format($winning).'kr');
         $db->query("UPDATE `users` SET `hand` = (`hand` + $winning) WHERE `id` = '$obj->id'");
         $db->query("INSERT INTO `kastmynt_logg` (`uid`,`innsats`,`gevinst`,`time`,`name`) VALUES
                 ('$obj->id','$innsats','$winning',UNIX_TIMESTAMP(),'$obj->user')");

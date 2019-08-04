@@ -5,7 +5,7 @@ startpage("Forum-mod stats");
 // Scriptet
 $query = $db->query("SELECT * FROM `users` WHERE `status` = '3'");
 if($db->num_rows($query) == 0){
-    echo '<p class="feil">Ingen forum-moderatorer har gjort noe som helst..</p>';
+    echo feil('Ingen forum-moderatorer har gjort noe som helst..');
 }else{
  ?>
 <form action="" method="post">

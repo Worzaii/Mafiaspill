@@ -10,40 +10,32 @@ startpage("Innboks");
         <li><a href="./innboks.php">Innboks</a></li>
         <li><a href="./innboks.php?page=utboks">Utboks</a></li>
         <li><a href="./innboks.php?page=sperringer">Sperringer</a></li>
-        <li><a href="./innboks.php?page=sperringer">Support</a></li>
+        <li><a href="./innboks.php?page=support">Support</a></li>
         <li><a href="./innboks.php?page=ny">Ny melding</a></li>
     </ul>
 <?php
-if (!isset($_GET['page']))
-{
+if (!isset($_GET['page'])) {
     /* Showing inbox as a natural first page*/
     $q = $db->query("select * from mafia.mails where tid = '{$obj->id}' and deleted = '0' order by id desc ");
-    if ($q->num_rows == 0)
-    {
+    if ($q->num_rows == 0) {
         echo info("Du har ingen meldinger.");
-    } else
-    {
+    } else {
         echo '<table class="table"><tr><th>Tema</th><th>Avsender</th><th>Dato</th></tr>';
-        while ($r = mysqli_fetch_object($q))
-        {
+        while ($r = mysqli_fetch_object($q)) {
             echo "<tr>
-<td onclick='goto(" . $r->id . ")'>$r->title</td>
+<td onclick='goto(" . $r->id . ";)'>$r->title</td>
 <td><a href='profil.php?id=" . $r->uid . "' data-id='" . $r->uid . "' data-user='' class='user_menu'>" . status($r->uid) . "</a></td>
 <td>" . date("d.m.y H:i:s", $r->timestamp) . "</td></tr>";
         }
         echo '</table>';
     }
-} else
-{
+} else {
     $page = (string)$_GET['page'];
-    if (in_array($page, ['utboks', 'sperringer', 'support', 'les', 'ny']))
-    {
-        if ($page === 'les')
-        {
+    if (in_array($page, ['utboks', 'sperringer', 'support', 'les', 'ny'])) {
+        if ($page === 'les') {
             $id = (int)$_GET['id'];
             $q = $db->query("select * from mafia.mails where tid = '" . $obj->id . "' and id = '$id'");
-            if ($q->num_rows == 1)
-            {
+            if ($q->num_rows == 1) {
                 $res = mysqli_fetch_object($q);
                 $user = user($res->uid, 1)->user;
                 $title = $res->title;
@@ -65,25 +57,19 @@ if (!isset($_GET['page']))
 </table>
 
 END;
-            } else
-            {
+            } else {
                 echo feil('Det finnes ingen melding til deg med den IDen. 
                 Er du sikker på at den ikke er slettet?');
             }
-        } elseif ($page === 'ny')
-        {
-            if (isset($_GET['user']))
-            {
+        } elseif ($page === 'ny') {
+            if (isset($_GET['user'])) {
                 $user = $_GET['user'];
-                if (is_string($user) || is_int($user))
-                {
+                if (is_string($user) || is_int($user)) {
                     $to = user_exists($user, 2)->user;
-                } else
-                {
+                } else {
                     echo warning("Feil bruker, finnes ikke... Trykket feil?");
                 }
-            } else
-            {
+            } else {
                 $to = null;
             }
             echo <<<END
@@ -124,38 +110,33 @@ END;
     </table>
 </form>
 END;
-        } elseif ($page === "utboks")
-        {
+        } elseif ($page === "utboks") {
             /* Showing inbox as a natural first page*/
             $q = $db->query("select * from mafia.mails where uid = '{$obj->id}' order by id desc ");
-            if ($q->num_rows == 0)
-            {
+            if ($q->num_rows == 0) {
                 echo info("Du har ikke sendt noen meldinger.");
-            } else
-            {
+            } else {
                 echo '<table class="table"><tr><th>Tema</th><th>Mottaker</th><th>Dato</th></tr>';
-                while ($r = mysqli_fetch_object($q))
-                {
+                while ($r = mysqli_fetch_object($q)) {
                     echo "<tr>
-<td onclick='goto(" . $r->id . ")'>$r->title</td>
-<td><a href='profil.php?id=" . $r->tid . "' data-id='" . $r->tid . "' data-user='' class='user_menu'>" . status
-                        ($r->tid) . "</a></td>
-<td>" . date("d.m.y H:i:s", $r->timestamp) . "</td></tr>";
+    <td onclick='goto(" . $r->id . ")'>$r->title</td>
+    <td><a class='user_menu'" . $r->tid . " data-id='" . $r->tid . "' data-user='' href='profil.php?id=%name'>" . status($r->tid) . "</a></td>
+    <td>" . date("d.m.y H:i:s", $r->timestamp) . "</td>
+</tr>";
                 }
                 echo '</table>';
             }
         }
         /* Add more handlers for the page here... */
-    } else
-    {
+    } else {
         echo warning('Innboks inneholder ikke en slik side, prøv igjen.');
     }
 }
 ?>
     <script>
-        function goto(id) {
-            window.location.href = "innboks.php?page=les&id=" + id;
-        }
+      function goto(id) {
+        window.location.href = 'innboks.php?page=les&id=' + id;
+      }
     </script>
 <?php
 endpage();

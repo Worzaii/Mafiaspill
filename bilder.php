@@ -17,12 +17,12 @@ if (isset($_POST['stock']) && isset($_POST['type']) && isset($_POST['pris1']) &&
 //Herfra blir inputs validert
     $array = array(1, 2, 3, 4);//Verdier som godkjennes.
     if (!filter_var($link, FILTER_VALIDATE_URL) || $type != in_array($array)) {
-        echo '<p class="feil">Det var noe feil, sjekk at du har fyllt alt inn riktig.</p>';
+        echo feil('Det var noe feil, sjekk at du har fyllt alt inn riktig.');
     } else {
         if (mysql_query("INSERT INTO `bildebestilling`(`pm`,`reqid`,`type`,`tb`,`lp`,`hp`,`com`,`stock`,`time`) VALUES('$hvem','{$obj->id}','$type','$beskrivelse','$pri1','$pri2','$excom','$link','$tid')")) {
-            echo '<p class="lykket">Din bestilling er lagret!</p>';
+            echo lykket('Din bestilling er lagret!');
         } else {
-            echo '<p class="feil">Det oppstod en feil ved lagring av din bestilling!</p>';
+            echo feil('Det oppstod en feil ved lagring av din bestilling!');
             if ($obj->status == 1) {
                 echo mysql_error();
             }

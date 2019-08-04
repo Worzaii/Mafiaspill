@@ -41,7 +41,8 @@ if (fengsel()) {
                                     echo feil('Du klarte det ikke!');
                                     if (!$db->query("INSERT INTO `carslog`(`uid`,`timestamp`,`timewait`,`result`,`choice`) VALUES('$obj->id',UNIX_TIMESTAMP(),'" . (time()
                                             + $se->timewait) . "','0','$v')")) {
-                                        echo '<p>Det var feil med en sp&oslash;rring, og det ble lagret i loggen. Varsle Ledelsen om dette snarest, slik at de kan se igjennom det.</p>';
+                                        echo feil('Det var feil med en sp&oslash;rring, og det ble lagret i loggen. 
+                                        Varsle Ledelsen om dette snarest, slik at de kan se igjennom det.');
                                     }
                                 } else {
                                     echo feil('Du klarte det ikke og havnet i fengselet!');

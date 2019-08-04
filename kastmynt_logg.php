@@ -4,14 +4,14 @@ include("pagination.php");
 startpage("Kast Mynt Logg");
 $query = $db->query("SELECT * FROM `kastmynt_logg`");
 if($db->num_rows($query) == 0){
-    echo '<p class="feil">Ingen tabeller ble funnet.</p>';
+    echo feil('Ingen tabeller ble funnet.');
 }else{
     $fetch = $db->fetch_object($query);
     if(isset($_POST['search_post'])){
         $search = $db->escape($_POST['search']);
         $query = $db->query("SELECT * FROM `kastmynt_logg` WHERE `name` = '$search'");
         if($db->num_rows($query) == 0){
-            echo '<p class="feil">Ingen tabeller ble funnet!</p>';
+            echo feil('Ingen tabeller ble funnet!');
         }else{
             $fetch = $db->fetch_object($query);
               $sql = "SELECT * FROM `kastmynt_logg` WHERE `name` = '$search' ORDER BY `id` DESC";

@@ -13,13 +13,14 @@ namespace DatabaseObject {
             protected $database = "mafia";
             var $last_query;
             public $result;
-            var $con;
+            public $con;
             var $num_queries = 0;
             var $start_time;
             protected $last_error;
             protected $key = "/var/www/mafia.werzaire.net/pemfiles/client-key.pem";
             protected $cert = "/var/www/mafia.werzaire.net/pemfiles/client-cert.pem";
             protected $ca = "/var/www/mafia.werzaire.net/pemfiles/ca.pem";
+            public static $connection;
 
             function connect()
             {
@@ -151,6 +152,9 @@ namespace DatabaseObject {
             function affected_rows()
             {
                 return mysqli_affected_rows($this->con);
+            }
+            function PDO_query(){
+
             }
         }
     }

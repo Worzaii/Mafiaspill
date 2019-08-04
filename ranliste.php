@@ -20,7 +20,7 @@ echo '<table class="table">
 <tr><td>Offer</td><td>Bel&oslash;p(om lyktes)</td><td>Mafia</td><td>Tidspunkt</td></tr>';
 $sql = $db->query("SELECT * FROM `ransp` ORDER BY `time` DESC LIMIT 0,$lim");
 if($db->num_rows() == 0){
-echo '<p class="feil">Ingen har pr&oslash;vet &aring; rane enda!</p>';
+echo feil('Ingen har pr&oslash;vet &aring; rane enda!');
 }
 else{
 while($r = mysqli_fetch_object($sql)){

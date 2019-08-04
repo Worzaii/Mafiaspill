@@ -22,7 +22,7 @@ if (isset($_GET['usr'])) {
         $tid = time() - $u->lastactive;
         if (isset($_POST['utlogg'])) {
             if ($db->query("UPDATE `users` SET `forceout` = '1' WHERE `id` = '{$u->id}'")) {
-                echo '<p class="lykket">Neste gang ' . status($u->user) . ' oppdaterer siden blir personen logget ut!</p>';
+                echo lykket('Neste gang ' . status($u->user) . ' oppdaterer siden blir personen logget ut!');
             }
         }
         echo '
@@ -32,7 +32,7 @@ if (isset($_GET['usr'])) {
     </form>
     ';
     } else {
-        echo '<p class="feil">Spilleren finnes ikke! Pr&oslash;v igjen:</p>';
+        echo feil('Spilleren finnes ikke! Pr&oslash;v igjen:');
     }
 } else {
     ?>

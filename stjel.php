@@ -48,7 +48,7 @@ if (bunker() == true) {
             if (strtolower($sp) == strtolower($obj->user)) {
                 echo warning('Du kan ikke rane deg selv! :)');
             } else {
-                $s = $db->query("SELECT * FROM `users` WHERE `user` = '$sp' LIMIT 1");
+                $s = $db->query("SELECT * FROM `users` WHERE `user` = '$sp' LIMIT 1 FOR UPDATE ");
                 if ($db->num_rows() == 1) {
                     $f = $db->fetch_object();
                     if ($f->status == 1 || $f->status == 2) {

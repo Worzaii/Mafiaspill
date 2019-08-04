@@ -25,20 +25,20 @@ if($db->num_rows() == 1){
 	}
 	else{
 	$db->query("INSERT INTO `userwep` (`uid`,`vid`,`num`) VALUES ('$obj->id','$vap->id','1')");
-	echo '<p class="lykket">Du har kj&oslash;pt ditt f&oslash;rste v&aring;pen av denne sorten</p>';
+	echo lykket('Du har kj&oslash;pt ditt f&oslash;rste v&aring;pen av denne sorten');
 	}
-	echo '<p class="lykket">Du har kj&oslash;pt v&aring;penet!</p>';
-	}
-	else{
-	echo '<p class="feil">Kunne ikke sette v&aring;penet!</p>';
-	}
+	echo lykket('Du har kj&oslash;pt v&aring;penet!');
 	}
 	else{
-	echo '<p class="feil">Du har ikke r&aring;d, ellers s&aring; er det ikke noen v&aring;pen inne for salg.</p>';
+	echo feil('Kunne ikke sette v&aring;penet!');
+	}
+	}
+	else{
+	echo feil('Du har ikke r&aring;d, ellers s&aring; er det ikke noen v&aring;pen inne for salg.');
 	}
 }
 else{
-echo '<p class="feil">Det er ikke flere tilgengelig!</p>';
+echo feil('Det er ikke flere tilgengelig!');
 }
 }
 /*Henter priser og info for v&aring;pen*/

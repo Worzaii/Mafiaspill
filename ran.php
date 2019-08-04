@@ -54,17 +54,17 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                 if ($leder) {
                     $db->query("UPDATE `ran` SET `active` = '0' WHERE `id` = '{$a['id']}'");
                     $db->query("UPDATE `raninv` SET `active` = '0' WHERE `ranid` = '{$a['id']}'");
-                    echo '<p class="lykket">Du har forlatt ranet, alle som var med mistet utstyret sitt!</br>Oppdater siden for &aring; komme deg bort.</p>';
+                    echo lykket('Du har forlatt ranet, alle som var med mistet utstyret sitt!</br>Oppdater siden for &aring; komme deg bort.');
                 } else {
                     $db->query("UPDATE `ran` SET `spiller$spiller` = '0',`spillervapen$spiller` = '0' WHERE `id` = '{$a['id']}'");
-                    echo '<p class="lykket">Du har forlatt ranet! <a href="/Ran">Klikk her for &aring; g&aring; tilbake til Ran.</a></p>';
+                    echo lykket('Du har forlatt ranet! <a href="/Ran">Klikk her for &aring; g&aring; tilbake til Ran.</a>');
                 }
             }
             if (isset($_GET['kast']) && (isset($_GET['s1']) || isset($_GET['s2']) || isset($_GET['s3']) || isset($_GET['s4'])) && $_GET['kast'] != 0) {
                 $id = $_GET['kast'];
                 $inq = (isset($_GET['s1'])) ? 1 : ((isset($_GET['s2'])) ? 2 : ((isset($_GET['s3'])) ? 3 : (isset($_GET['s4']) ? 4 : 0)));
                 if ($inq == 0) {
-                    echo '<p class="feil">Det var en feil i valg av bruker som skulle kastes ut!</p>';
+                    echo feil('Det var en feil i valg av bruker som skulle kastes ut!');
                 }
                 $db->query("SELECT * FROM `ran` WHERE `id` = '$a->id' AND ``");
             }
@@ -128,9 +128,9 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                         }
                     }
                     if ($allespillere == false) {
-                        echo '<p class="feil">Du mangler fortsatt noen til ranet.</p>';
+                        echo feil('Du mangler fortsatt noen til ranet.');
                     } else if ($allevapen == false) {
-                        echo '<p class="feil">Ikke alle har utstyr enn&aring;.</p>';
+                        echo feil('Ikke alle har utstyr enn&aring;.');
                     }
                     if ($allespillere && $allevapen) {// utf&oslash;r ranet
                         $rand = mt_rand(0, 100);
@@ -144,7 +144,7 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                         if ($rand <= 50) {
                             $bel = 0;
                             $timeleft = time() + 900;
-                            echo '<p class="feil">Ranet var ikke vellykket! Dere ble tatt av purken og sitter n&aring; i fengsel!</p>';
+                            echo feil('Ranet var ikke vellykket! Dere ble tatt av purken og sitter n&aring; i fengsel!');
                             /*Kaster inn alle som var med i ranet i fengsel i �n query*/
                             $db->query("INSERT INTO `jail`(`uid`,`reason`,`time`,`timeleft`,`prisut`) VALUES('{$a['leder']}','Mislykket ran!','" . time() . "','$timeleft',15000000),('{$a['spiller1']}','Mislykket ran!','" . time() . "','$timeleft',15000000),('{$a['spiller2']}','Mislykket ran!','" . time() . "','$timeleft',15000000),('{$a['spiller3']}','Mislykket ran!','" . time() . "','$timeleft',15000000),('{$a['spiller4']}','Mislykket ran!','" . time() . "','$timeleft',15000000)");
                             sysmel(array($a['spiller1'], $a['spiller2'], $a['spiller3'], $a['spiller4']), 'Ran -- Mislykket ran!<br>Dere gjorde alt dere kunne, men klarte det ikke, dere ble satt i fengsel i 15 minutter!');
@@ -156,7 +156,7 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                                 3 => "Moren din ringte mens du var i ranet. Heldigvis hadde du handsfree og m&oslash;tte ingen flere hindringer!</br>Dere fikk med dere",
                                 4 => "Daglig leder hadde glemt &aring; l&aring;se safen. Dette var lett!</br>Dere fikk med dere"
                             );
-                            echo '<p class="lykket">' . $lykket[array_rand($lykket)] . ' ' . number_format($bel) . 'kr!</p>';
+                            echo lykket('' . $lykket[array_rand($lykket)] . ' ' . number_format($bel) . 'kr!');
                             $db->query("UPDATE `users` SET `hand` = (`hand` + $bel),`exp` = (`exp` + 5) WHERE `id` = '{$a['leder']}' LIMIT 1");
                             $db->query("UPDATE `users` SET `exp` = (`exp` + 7.5) WHERE `id` IN(" . $a['spiller1'] . "," . $a['spiller2'] . "," . $a['spiller3'] . "," . $a['spiller4'] . ")");/*Gir de som var med p&aring; ranet exp.*/
                             sysmel(array($a['spiller1'], $a['spiller2'], $a['spiller3'], $a['spiller4']), 'Ran -- Vellykket ran!<br>Dere fikk med dere <b>' . number_format() . '</b>kr! Du fikk ogs&aring; litt XP!');
@@ -169,14 +169,14 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                     $idd = strtolower($db->escape($_POST['invite']));
                     $afs = $db->query("SELECT * FROM `raninv` WHERE `ranid` = '{$a['id']}' AND `to` = '$idd' AND `active` = '1'");
                     if ($db->num_rows() >= 1) {
-                        echo '<p class="feil">Spilleren ' . $idd . ' er allerede invitert.</p>';
+                        echo feil('Spilleren ' . $idd . ' er allerede invitert.');
                     } else if ($idd == strtolower($obj->user)) {
-                        echo '<p class="feil">Du kan ikke invitere deg selv.</p>';
+                        echo feil('Du kan ikke invitere deg selv.');
                     } else if (!user_exists($idd)) {
-                        echo '<p class="feil">Brukeren eksisterer ikke!</p>';
+                        echo feil('Brukeren eksisterer ikke!');
                     } else {
                         $db->query("INSERT INTO `raninv` (`from`,`to`,`city`,`time`,`ranid`,`active`) VALUES ('$obj->user','$idd','$obj->city','" . time() . "','{$a['id']}','1')");
-                        echo '<p class="lykket">Spilleren ' . $idd . ' ble invitert.</p>';
+                        echo lykket('Spilleren ' . $idd . ' ble invitert.');
                     }
                 }
             }
@@ -185,7 +185,7 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                 $id = intval($_POST['utstyrvelg']);
                 if (isset($utstyr[$id]['name'])) {
                     if ($obj->hand < $utstyr[$id]['pris']) {
-                        echo '<p class="feil">Du har ikke r&aring;d til dette!</p>';
+                        echo feil('Du har ikke r&aring;d til dette!');
                     } else {
                         $db->query("UPDATE `ran` SET `spillervapen$spiller` = '$id'");
                         $db->query("UPDATE `users` SET `hand` = (`hand` - '" . $utstyr[$id]['pris'] . "') WHERE `id` = '$obj->id' LIMIT 1");
@@ -194,7 +194,7 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                 }
             }
 
-            echo '<p class="lykket">Du har et ran ventende p&aring; deg, eller du har ikke valgt utstyr!</p>';
+            echo lykket('Du har et ran ventende p&aring; deg, eller du har ikke valgt utstyr!');
             ?>
 <form action="" method="POST">
   <table style="text-align:center;" class="table">
@@ -232,30 +232,30 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
                                 }
                             }
                             if ($use == 0) {
-                                echo '<p class="feil">Ranet er fullt!</p>';
+                                echo feil('Ranet er fullt!');
                             } else {
                                 $db->query("UPDATE `ran` SET `spiller$use` = '$obj->id' WHERE `id` = '$jkl->ranid' LIMIT 1");
                                 $db->query("UPDATE `raninv` SET `active` = '0' WHERE `id` = '$jkl->id' LIMIT 1");
                                 header("Location: /Ran");
                             }
                         } else {
-                            echo '<p class="feil">Du m&aring; v&aelig;re i samme by som ranet ble startet!<br>Ranet befinner seg i ' . city($b['by'], 1) . ', mens du er i ' . city($obj->city, 1) . '.</p>';
+                            echo feil('Du m&aring; v&aelig;re i samme by som ranet ble startet!<br>Ranet befinner seg i ' . city($b['by'], 1) . ', mens du er i ' . city($obj->city, 1) . '.');
                         }
                     } else {
-                        echo '<p class="feil">Beklager, men det ser ut som ranet var utf&oslash;rt f&oslash;r du kunne bli med!</p>';
+                        echo feil('Beklager, men det ser ut som ranet var utf&oslash;rt f&oslash;r du kunne bli med!');
                     }
                 } else {
-                    echo '<p class="feil">Finner ikke invitasjonen din! Om du mener dette er feil, ta kontakt med <a href="support.php">Support!</a></p>';
+                    echo feil('Finner ikke invitasjonen din! Om du mener dette er feil, ta kontakt med <a href="support.php">Support!</a>');
                 }
             } else {
-                echo '<p class="feil">Id stemmer ikke!</p>';
+                echo feil('Id stemmer ikke!');
             }
         }
         if (isset($_GET['ran'])) { // Starter ett nytt ran ...
             $id = $db->escape($_GET['ran']);
             if ($id == 1) {
                 if ($obj->exp < 100) {
-                    echo '<p class="feil">Du m&aring; v&aelig;re Underboss eller h&oslash;yere for &aring; starte dette ranet!</p>';
+                    echo feil('Du m&aring; v&aelig;re Underboss eller h&oslash;yere for &aring; starte dette ranet!');
                 } else {
                     if ($obj->hand >= 1000000) {
                         $db->query("UPDATE `users` SET `hand` = (`hand` - 1000000) WHERE `id` = '" . $obj->id . "' LIMIT 1");
@@ -266,7 +266,7 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
             }
             if ($id == 2) {
                 if ($obj->exp < 350) {
-                    echo '<p class="feil">Du m&aring; v&aelig;re Don eller h&oslash;yere for &aring; starte dette ranet!</p>';
+                    echo feil('Du m&aring; v&aelig;re Don eller h&oslash;yere for &aring; starte dette ranet!');
                 } else {
                     if ($obj->hand >= 4000000) {
                         $db->query("UPDATE `users` SET `hand` = (`hand` - 4000000) WHERE `id` = '" . $obj->id . "' LIMIT 1");

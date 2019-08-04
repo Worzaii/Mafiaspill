@@ -13,7 +13,7 @@ startpage("Nyheter");
                 }
                 $sql = $db->query("SELECT * FROM `news` WHERE `showing` = '1' AND `userlevel` >= '" . $obj->status . "' ORDER BY `id` DESC LIMIT 0,10");
                 if ($db->num_rows() == 0) {
-                    echo '<p class="feil">Ingen nyheter er publisert!</p>';
+                    echo feil('Ingen nyheter er publisert!');
                 } elseif ($db->num_rows() >= 1) {
                     while ($r = mysqli_fetch_object($sql)) {
                         $statuss = null;

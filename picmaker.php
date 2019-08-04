@@ -21,7 +21,7 @@ ENDHTML;
 if(isset($_GET['s'])){
 $s = $_GET['s'];
 //if(!is_numeric($s)){
-//echo '<p class="feil">Siden er ikke gyldig!</p>';
+//echo feil('Siden er ikke gyldig!');
 //}
 //else{
 if($s == 1){//Administrasjon

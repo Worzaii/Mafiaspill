@@ -57,7 +57,7 @@
                         $eigendom = $eiendommer[$obj->eigendom]['id'];
                         if($_POST['eigendoms']){
                         if($obj->eigendom >= 9){
-                            echo '<p class="feil">Du har allerede beste eiendom.</p>';
+                            echo feil('Du har allerede beste eiendom.');
                         }else{
                         $db->query("UPDATE `users` SET `eigendom` = (`eigendom` + 1) WHERE `id` = '$obj->id' LIMIT 1") or die(mysqli_error($db->connection_id));
                             echo 'Du kj&oslash;pte '.$eiendommer[$obj->eigendom]['navn'].'';

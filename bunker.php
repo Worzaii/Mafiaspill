@@ -59,21 +59,21 @@ if (fengsel() == true) {
                     $names[$b] = array("i" => $inv_inf[$a]["i"], "t" => $inv_inf[$a]["t"]);
                     $b++;
                 } else {
-                    echo '<p class="feil">' . htmlentities($inv_inf[$a]["i"]) . ' eksisterer ikke!</p>';
+                    echo feil('' . htmlentities($inv_inf[$a]["i"]) . ' eksisterer ikke!');
                 }
             }
             //echo 'Utf&oslash;rer siste beregninger<br>';/*Skriveribugfiksetingtang*/
             for ($o = 0; $o < count($names); $o++) {
                 $t = $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '" . user_exists($names[$o]["i"], 1) . "' AND `uid` = '{$obj->id}' AND `used` = '0' AND `accepted` = '0' AND `declined` = '0' AND `gone` = '0'");
                 if ($db->num_rows() >= 1) {/*Spiller har allerede f&aring;tt bunker*/
-                    echo '<p class="feil">Kan ikke sende bunker til ' . user(user_exists($names[$o]["i"], 1)) . ' da du allerede har invitert spilleren!</p>';
+                    echo feil('Kan ikke sende bunker til ' . user(user_exists($names[$o]["i"], 1)) . ' da du allerede har invitert spilleren!');
                 } else {
                     if (user_exists($names[$o]["i"], 1) == $obj->id) { /*Kan ikke sende til seg selv*/
-                        echo '<p class="feil">Du kan ikke sende bunker til deg selv!</p>';
+                        echo feil('Du kan ikke sende bunker til deg selv!');
                     } else {
                         if ($db->query("INSERT INTO `bunkerinv`(`uid`,`tid`,`time`,`timeleft`,`length`) "
                             . "VALUES('" . $obj->id . "','" . user_exists($names[$o]["i"], 1) . "',UNIX_TIMESTAMP(),NULL,'" . $names[$o]['t'] . "')")) {
-                            echo '<p class="lykket">' . htmlentities($names[$o]["i"]) . ' mottok bunkerinvitasjon p&aring; ' . $dont_touch_my_tralala[$names[$o]['t']] . '!</p>';
+                            echo lykket('' . htmlentities($names[$o]["i"]) . ' mottok bunkerinvitasjon p&aring; ' . $dont_touch_my_tralala[$names[$o]['t']] . '!');
                         } else {
                             echo 'Det oppstod feil med query: ' . $db->last_query . "<br>" . mysqli_error($db->con) . "<br>";
                         }
@@ -87,7 +87,7 @@ if (fengsel() == true) {
                 $r = $db->fetch_object();
                 if ($db->num_rows() == 1) {
                     if ($db->query("UPDATE `bunkerinv` SET `gone` = '1' WHERE `id` = '$id' LIMIT 1")) {
-                        echo '<p class="lykket">Invitasjonen til ' . status($r->tid, 1) . ' ble slettet!</p>';
+                        echo lykket('Invitasjonen til ' . status($r->tid, 1) . ' ble slettet!');
                     } else {
                         echo feil("Kunne ikke slette invitasjon!" . mysqli_error($db->con));
                     }
@@ -95,7 +95,7 @@ if (fengsel() == true) {
                     echo feil("Invitasjonen du har valgt eksisterer ikke lengre, eller har blitt tatt i bruk!");
                 }
             } else {
-                echo '<p class="feil">Feil valg, pr&oslash;v igjen!</p>';
+                echo feil('Feil valg, pr&oslash;v igjen!');
             }
         }
     }
@@ -108,24 +108,24 @@ if (fengsel() == true) {
             if ($db->num_rows() == 1) {
                 $o1 = $db->fetch_object();
                 if ($db->query("UPDATE `bunkerinv` SET `accepted`='1',`timeleft`='" . (time() + $o1->length) . "',`used`='1' WHERE `id` = '$id'")) {
-                    echo '<p class="lykket">Du har n&aring; satt deg i bunker i ' . $times[$o1->length] . '!<br>Du er ute om: <span id="tidforute"></span><script>teller(' . (time() + $o1->length) . ')</script></p>';
+                    echo lykket('Du har n&aring; satt deg i bunker i ' . $times[$o1->length] . '!<br>Du er ute om: <span id="tidforute"></span><script>teller(' . (time() + $o1->length) . ')</script>');
                 } else {
-                    echo '<p class="feil">Kunne ikke sette deg i bunker, queryfeil: ' . mysqli_error($db->con) . '<br>Query: "' . $db->last_query . '"</p>';
+                    echo feil('Kunne ikke sette deg i bunker, queryfeil: ' . mysqli_error($db->con) . '<br>Query: "' . $db->last_query . '"');
                 }
             } else {
-                echo '<p class="feil">Invitasjon finnes ikke.</p>';
+                echo feil('Invitasjon finnes ikke.');
             }
         } else if (isset($_POST['slettinv'])) {
             $db->query("SELECT * FROM `bunkerinv` WHERE `id` = '$id' AND `tid` = '{$obj->id}' AND `used` = '0' AND `declined` = '0' AND `gone` = '0'");
             if ($db->num_rows() == 1) {
                 $o1 = $db->fetch_object();
                 if ($db->query("UPDATE `bunkerinv` SET `declined`='1' WHERE `id` = '$id' AND `tid` = '" . $obj->id . "'")) {
-                    echo '<p class="lykket">Du slettet invitasjonen!</p>';
+                    echo lykket('Du slettet invitasjonen!');
                 } else {
-                    echo '<p class="feil">Kunne ikke slette invitasjon: ' . mysqli_error($db->con) . '<br>Query: "' . $db->last_query . '"</p>';
+                    echo feil('Kunne ikke slette invitasjon: ' . mysqli_error($db->con) . '<br>Query: "' . $db->last_query . '"');
                 }
             } else {
-                echo '<p class="feil">Invitasjon finnes ikke.</p>';
+                echo feil('Invitasjon finnes ikke.');
             }
         }
     }

@@ -63,15 +63,15 @@
                     /*Alle mulige feil sjekkes, dermed sjekkes
                      * hver enkelt om noen er feil og skriver ut
                      */
-                    echo '<p class="feil">Du har kanskje ikke fylt ut skjemaet helt:</p>';
+                    echo feil('Du har kanskje ikke fylt ut skjemaet helt:');
                     if(strlen($n) <= 3){
-                        echo '<p class="feil">Temaet er for kort!</p>';
+                        echo feil('Temaet er for kort!');
                     }
                     if($t >= 4 || $t < 0){
-                        echo '<p class="feil">Feil i valg!</p>';
+                        echo feil('Feil i valg!');
                     }
                     if(strlen($i) <= 9){
-                        echo '<p class="feil">Supportmeldingen er for kort. Det er minimum 10 tegn!</p>';
+                        echo feil('Supportmeldingen er for kort. Det er minimum 10 tegn!');
                     }
                 }
                 else{
