@@ -53,9 +53,11 @@ if (r1() || r2() || r3() || support()) {
             <li><a href="chatlog.php">Vis loggf&oslash;rte chat logger</a></li>
         </ul>
         <?php
-    }
-    if (r1() || r2() || support()) {
+    } elseif (r1() || r2() || support()) {
         /* Soon implementing the support panel feature here. */
+        ?>
+        <h1>This is a very serious support page, like fucking really, don't you dare oppose me senpai-sama! &gt;.w.&lt;</h1>
+        <?php
     }
     echo '<br>'; /* Creating some spacing under the last table, whichever shows for the user */
 } else {

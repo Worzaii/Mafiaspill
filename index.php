@@ -33,8 +33,7 @@ if (isset($_SESSION['sessionzar'])) {
     <div class="wrapper">
         <div id="shadow"></div>
         <div id="information">
-            <p>Spillet er under utvikling og vil fortl&oslash;pende bli oppdatert via b&aring;de Git og online her.<br>
-            Om der er noen sp&oslash;rsm&aring;l, gjerne send en melding p&aring; telegram eller Facebook.</p>
+            <p>Dette er en melding for &aring; vise varsler i forhold til spillet.</p>
         </div>
         <div id="content">
             <ul>

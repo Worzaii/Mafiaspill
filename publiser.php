@@ -13,7 +13,8 @@ if (r1() || r2()) {
             if (strlen($mel) <= 2) {
                 echo '<p>Meldingen er for kort!</p>';
             } else {
-                if (!$db->query("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES('$tema','$mel','$obj->user',UNIX_TIMESTAMP(),'1','$lvl')")) {
+                if (!$db->query("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) 
+VALUES('" . $tema . "','" . $mel . "','" . $obj->user . "',UNIX_TIMESTAMP(),'1','" . $lvl . "')")) {
                     if ($obj->status == 1) {
                         echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
                     }
@@ -22,7 +23,7 @@ if (r1() || r2()) {
                     if ($lvl == 5) {
                         /* Only announce news if it's for everyone */
                         $db->query("INSERT INTO `chat` (`id`, `uid`, `message`, `timestamp`) 
-VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen ".$tema."', UNIX_TIMESTAMP());");
+VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen " . $tema . "', UNIX_TIMESTAMP());");
                     }
                 }
             }
@@ -39,13 +40,18 @@ VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen ".$tema."',
         </form>
     </div>
     <script>
-        $("#rang").change(function () {
-            let $sp = $("#rankrange");
+      $('#rang').change(function() {
+        let $sp = $('#rankrange');
 
-            let vis = ["<span style='color:#f00'>Administrator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span> & <span style='color:#0f0'>Forum-moderator</span>", "<span style='color:#f00'>Administrator</span> & <span style='color:#5151ff'>Moderator</span> & <span style='color:#0f0'>Forum-moderator</span> & Picmaker", "Alle"];
-            let val = $("#rang").val();
-            $sp.html(vis[val - 1]);
-        });
+        let vis = [
+          '<span style=\'color:#f00\'>Administrator</span>',
+          '<span style=\'color:#f00\'>Administrator</span> & <span style=\'color:#5151ff\'>Moderator</span>',
+          '<span style=\'color:#f00\'>Administrator</span> & <span style=\'color:#5151ff\'>Moderator</span> & <span style=\'color:#0f0\'>Forum-moderator</span>',
+          '<span style=\'color:#f00\'>Administrator</span> & <span style=\'color:#5151ff\'>Moderator</span> & <span style=\'color:#0f0\'>Forum-moderator</span> & Picmaker',
+          'Alle'];
+        let val = $('#rang').val();
+        $sp.html(vis[val - 1]);
+      });
     </script>
     <?php
 } else {

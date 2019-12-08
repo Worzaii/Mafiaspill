@@ -6,7 +6,7 @@ function sql_log($query)
 {
     # [19-May-2019 12:45:39 Europe/Oslo]
     if ($_SERVER['SERVER_NAME'] == "localhost") {
-        $file = "D:\\PHP\\PHPLOG\\sql.log";
+        $file = $_SERVER["DOCUMENT_ROOT"]."\\logs\\sql.log";
     } else {
         $file = "/var/www/mafia.werzaire.net/logs/sql.log";
     }

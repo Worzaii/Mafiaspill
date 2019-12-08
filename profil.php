@@ -61,7 +61,6 @@ if (!isset($_GET['id'])) {
                 if (r1()) {
                     echo "<a href=\"stilling.php?nick=" . $fetch->user . "\">Sett stilling</a> || ";
                     echo "<a href=\"ban_user.php?kill=" . $fetch->id . "\">Modkill Spilleren</a> || ";
-                    echo "<a href=\"ipban.php?ip=" . $fetch->ip . "\">IP-ban adressen</a> || ";
                     echo "<a href=\"forumban.php?ban=" . $fetch->id . "\">Forumban Spilleren</a> || ";
                     echo "<a href=\"profil.php?id=" . $fetch->id . "&note\">Endre notat p&aring; spiller</a> || ";
                     echo "<a href=\"endrespiller.php?u=" . $fetch->user . "\">Endre verdier </a> || ";
@@ -122,10 +121,10 @@ if (!isset($_GET['id'])) {
 <tr ><td> Liv:</td><td> ' . $fetch->health . ' %</td></tr>
 <tr ><td> Kuler:</td><td> ' . $fetch->bullets . '</td></tr>
 <tr ><td> Poeng:</td><td> ' . $fetch->points . '</td></tr>
-<tr ><td> Oppf&oslash;rt IP:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->regip != null) ? $fetch->regip : "<i>Ikke registrert</i>")) . '</td ></tr >
-<tr ><td> Sist brukte IP:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->ip != null) ? $fetch->ip : "<i>Ikke registrert</i>")) . '</td ></tr >
-<tr ><td> Oppf&oslash;rt hostname:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->reghostname != null) ? $fetch->reghostname : "<i>Ikke registrert</i>")) . '</td ></tr >
-<tr ><td> Siste hostname:</td ><td > ' . (($obj->status > 1) ? "***" : (($fetch->hostname != null) ? $fetch->hostname : "<i>Ikke registrert</i>")) . '</td ></tr ><tr >
+<tr ><td> Oppf&oslash;rt IP:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->regip != null) ? $fetch->regip : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Sist brukte IP:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->ip != null) ? $fetch->ip : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Oppf&oslash;rt hostname:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->reghostname != null) ? $fetch->reghostname : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Siste hostname:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->hostname != null) ? $fetch->hostname : "<i>Ikke registrert</i>")) . '</td ></tr ><tr >
 <!--<td colspan = "2"><a href="http://browscap.org/ua-lookup"> Nettleser:</a><br>???</td>-->  
 </tr >
                     ';
@@ -138,7 +137,8 @@ if (!isset($_GET['id'])) {
 ";
             $profil = bbcodes($fetch->profile, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1);
             echo $profil;
-            echo '
+            echo /** @lang javascript */
+                '
 </div >
 <script >
                     teller(' . $timeuser . ', "usertime", false, "opp");

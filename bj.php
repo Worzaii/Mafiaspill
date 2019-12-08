@@ -10,7 +10,8 @@ if (fengsel()) {
         '<script>teller(' . $bu . ', "fengsel", false, "ned");</script>';
 } elseif (bunker()) {
     $bu = bunker(true);
-    echo '
+    echo /** @lang JavaScript */
+        '
     <p class="feil">Du er i bunker, gjenst&aring;ende tid:
     <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
     <script>
@@ -19,11 +20,25 @@ if (fengsel()) {
     ';
 } else {
     $suits = [
-        "Spar", "Hjerter", "Kl&oslash;ver", "Ruter"
+        "Spar",
+        "Hjerter",
+        "Kl&oslash;ver",
+        "Ruter"
     ];
     $faces = [
-        "To" => 2, "Tre" => 3, "Fire" => 4, "Fem" => 5, "Seks" => 6, "Syv" => 7, "&Aring;tte" => 8,
-        "Ni" => 9, "Ti" => 10, "Knekt" => 10, "Dame" => 10, "Konge" => 10, "Ess" => 1
+        "To" => 2,
+        "Tre" => 3,
+        "Fire" => 4,
+        "Fem" => 5,
+        "Seks" => 6,
+        "Syv" => 7,
+        "&Aring;tte" => 8,
+        "Ni" => 9,
+        "Ti" => 10,
+        "Knekt" => 10,
+        "Dame" => 10,
+        "Konge" => 10,
+        "Ess" => 1
     ];
     function evaluateHand($hand)
     {
@@ -48,7 +63,7 @@ if (fengsel()) {
         }
         return $value;
     }
-    
+
     $deck = [];
     foreach ($suits as $suit) {
         $keys = array_keys($faces);
@@ -80,9 +95,9 @@ if (fengsel()) {
             } elseif (!is_numeric($pris)) {
                 echo feil('Du har ikke oppgitt en gyldig verdi! Tall er godkjent om f&oslash;lgende
                 tegn er blant tallene: "kr", ",", "." og mellomrom.');
-            } elseif ($pris > 750000000) {
-                echo feil('Maks innsats per runde er p&aring; 750,000,000kr!');
-            } elseif ($pris >= 100 && is_numeric($pris) && $pris <= 750000000) {
+            } elseif ($pris > 1000000000) {
+                echo feil('Maks innsats per runde er p&aring; 1,000,000,000kr!');
+            } elseif ($pris >= 100 && is_numeric($pris) && $pris <= 1000000000) {
                 if ($obj->hand <= ($pris - 1)) {
                     echo feil('Du har ikke s&aring; mye penger &aring; spille for. Sjekk at du har
                     minst 100 kr ute p&aring; handa!');
@@ -237,9 +252,21 @@ WHERE `uid` = '$obj->id' AND `active` = '1' ORDER BY `id` DESC LIMIT 1")) {
                                             }
                                         }
                                     }
-                                    $tastatur = ["Ess" => 1, "To" => 2, "Tre" => 3, "Fire" => 4, "Fem" => 5,
-                                        "Seks" => 6, "Syv" => 7, "&Aring;tte" => 8, "Ni" => 9, "Ti" => 10,
-                                        "Knekt" => 11, "Dame" => 12, "Konge" => 13];
+                                    $tastatur = [
+                                        "Ess" => 1,
+                                        "To" => 2,
+                                        "Tre" => 3,
+                                        "Fire" => 4,
+                                        "Fem" => 5,
+                                        "Seks" => 6,
+                                        "Syv" => 7,
+                                        "&Aring;tte" => 8,
+                                        "Ni" => 9,
+                                        "Ti" => 10,
+                                        "Knekt" => 11,
+                                        "Dame" => 12,
+                                        "Konge" => 13
+                                    ];
                                     foreach ($hand as $index => $card) {
                                         if ($card['suit'] == "Hjerter") {
                                             $img = '<img src="spillkort/h' . $tastatur[$card['face']] . '.png"

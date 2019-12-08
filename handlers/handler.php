@@ -28,9 +28,14 @@ if (isset($_GET['login'])) {
                     $uid = $db->fetch_object();
                     if (password_verify($pa, $uid->pass)) {
                         if ($uid->health > 0) {
-                            $str = ['string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
-                        til nyhetssiden...'), 'state' => 1, 'href' => 'https://' . $domain . '/nyheter.php'];
+                            $str = [
+                                'string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
+                        til nyhetssiden...'),
+                                'state' => 1,
+                                'href' => 'https://' . $domain . '/nyheter.php'
+                            ];
                             $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
+                            $db->query("insert into sessions(id, uid, user_agent, user_ip, timestamp) VALUES (NULL, '{$uid->id}', '{$_SERVER["HTTP_USER_AGENT"]}','" . ip2long($ip) . "',UNIX_TIMESTAMP())");
                             $db->query("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(),`ip` = '$ip',
                         `hostname`='" . gethostbyaddr($ip) . "' 
                         WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'");
@@ -257,10 +262,12 @@ WHERE `uid` = '" . $db->escape($uid) . "' AND `used` = '0' ORDER BY `id` DESC LI
                         } else {
                             $str['string'] = feil('Kunne ikke oppdatere passordet, kontakt admin!');
                         }
-                    } else if ($db->affected_rows() == 0) {
-                        $str['string'] = feil('Kunne ikke oppdatere passordet! 
+                    } else {
+                        if ($db->affected_rows() == 0) {
+                            $str['string'] = feil('Kunne ikke oppdatere passordet! 
 2 muligheter st&aring;r:<br>Du pr&oslash;vde &aring; bruke samme passordet<br>Det var en feil i query til databasen! 
 <br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!');
+                        }
                     }
                 } else {
                     $str['string'] = feil('Brukerid-en finnes ikke!');

@@ -19,11 +19,11 @@ ORDER BY `lastactive` DESC");
     <table class="table online">
         <thead>
         <tr>
-            <th colspan="<?=$cols;?>">P&aring;logget n&aring;:</th>
+            <th colspan="<?= $cols; ?>">P&aring;logget n&aring;:</th>
         </tr>
         <tr>
             <th style="width:95px;">Spiller:</th>
-            <th>Sist aktiv:</th><?=$add1 . $add3;?>
+            <th>Sist aktiv:</th><?= $add1 . $add3; ?>
         </tr>
         </thead>
         <tbody>
@@ -31,9 +31,10 @@ ORDER BY `lastactive` DESC");
         while ($r = mysqli_fetch_object($online)) {
             $newtime = time() - $r->lastactive;
             if (r1() || r2()) {
+                error_log("Listed user result: " . var_export((!r1() && ($r->status == 1 || $r->status == 2)), true));
                 $add2 = "<td><span class=\"added-ip\">" . (($r->ip != null) ?
-                        ((!r1() && $r->status === 1) ? "***" : $r->ip) : "Ikke registrert") . "</span></td>";
-                $add3 = "<td>" . (($r->hostname != null) ? (($obj->status > 1 && $r->status == 1) ?
+                        ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $r->ip) : "Ikke registrert") . "</span></td>";
+                $add3 = "<td>" . (($r->hostname != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ?
                         "***" : $r->hostname) : "Ikke registrert") . "</td>";
             } else {
                 $add2 = null;
@@ -71,15 +72,15 @@ if (r1() || r2()) {
     </thead>
     <tbody>
 ';
-    $lately = $db->query("SELECT id,`user`,lastactive,ip,hostname FROM `users` WHERE `lastactive` BETWEEN
+    $lately = $db->query("SELECT id,`user`,lastactive,ip,hostname,status FROM `users` WHERE `lastactive` BETWEEN
     (UNIX_TIMESTAMP() - (60*60*24*7)) AND (UNIX_TIMESTAMP() - 1800)
     ORDER BY `lastactive` DESC");
     if ($lately->num_rows >= 1) {
         while ($s = mysqli_fetch_object($lately)) {
             $newtime = time() - $s->lastactive;
-            $add2 = "<td>" . (($s->ip != null) ? (($obj->status > 1 && $s->status == 1) ? "***" : $s->ip) :
+            $add2 = "<td>" . (($s->ip != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $s->ip) :
                     "Ikke registrert") . "</td>";
-            $add3 = "<td>" . (($s->hostname != null) ? (($obj->status > 1 && $s->status == 1) ? "***" : $s->hostname) :
+            $add3 = "<td>" . (($s->hostname != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $s->hostname) :
                     "Ikke registrert") . "</td>";
             echo '
           <tr>
@@ -93,7 +94,7 @@ if (r1() || r2()) {
     } else {
         echo '<tr><td colspan="' . $cols . '" class="center">Det er ingenting &aring; vise.</td></tr>';
     }
-    
+
     echo '</tbody></table>';
 }
 endpage();

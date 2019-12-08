@@ -1,11 +1,16 @@
 <?php
 include("core.php");
+function linejump($text)
+{
+    return str_replace("\n", "<br>", $text);
+}
+
 startpage("Innboks");
 ?>
     <h1>Innboks</h1>
-    <p class="info">Her har du mulighet til å komme i privat kontakt med andre spillere, hvis de ikke har blokkert deg.
-        Du har også muligheten til å blokkere spillere som er til plage eller ellers her. Om du har spørsmål, gjerne ta
-        kontakt med support så hjelper vi så godt vi kan.</p>
+    <p class="info">Her har du mulighet til &aring; komme i privat kontakt med andre spillere, hvis de ikke har blokkert deg.
+        Du har ogs&aring; muligheten til &aring; blokkere spillere som er til plage eller ellers her. Om du har sp&oslash;rsm&aring;l, gjerne ta
+        kontakt med support s&aring; hjelper vi s&aring; godt vi kan.</p>
     <ul class="nav">
         <li><a href="./innboks.php">Innboks</a></li>
         <li><a href="./innboks.php?page=utboks">Utboks</a></li>
@@ -23,7 +28,7 @@ if (!isset($_GET['page'])) {
         echo '<table class="table"><tr><th>Tema</th><th>Avsender</th><th>Dato</th></tr>';
         while ($r = mysqli_fetch_object($q)) {
             echo "<tr>
-<td onclick='goto(" . $r->id . ";)'>$r->title</td>
+<td onclick=\"goto({$r->id});\">$r->title</td>
 <td><a href='profil.php?id=" . $r->uid . "' data-id='" . $r->uid . "' data-user='' class='user_menu'>" . status($r->uid) . "</a></td>
 <td>" . date("d.m.y H:i:s", $r->timestamp) . "</td></tr>";
         }
@@ -39,7 +44,7 @@ if (!isset($_GET['page'])) {
                 $res = mysqli_fetch_object($q);
                 $user = user($res->uid, 1)->user;
                 $title = $res->title;
-                $message = $res->message;
+                $message = linejump($res->message);
                 $date = date("H:i:s d.m.Y", $res->timestamp);
                 echo <<<END
 <table class="table" style="margin-top: 15px;">
@@ -58,8 +63,8 @@ if (!isset($_GET['page'])) {
 
 END;
             } else {
-                echo feil('Det finnes ingen melding til deg med den IDen. 
-                Er du sikker på at den ikke er slettet?');
+                echo feil('Det finnes ingen melding til deg med den IDen. <br>
+                Er du sikker på at den ikke er slettet? <br> Gjerne kontakt support for &aring; sjekke opp dette.');
             }
         } elseif ($page === 'ny') {
             if (isset($_GET['user'])) {

@@ -30,7 +30,7 @@ function startpage($title = NAVN_DOMENE)
       <nav>
         <ul>
           <li><a href="profil.php?id=' . $obj->id . '">Profil</a></li>
-          <li><a href="innboks.php">Innboks (<span style="color: #ff0;">jobbes med</span>)</a></li>
+          <li><a href="innboks.php">Innboks</a></li>
           <li><a href="statistikk.php">Statistikk</a></li>
           <li><a href="fengsel.php">Fengsel' . $anyjail . '</a></li>
           <li><a href="bj.php">BlackJack</a></li>
