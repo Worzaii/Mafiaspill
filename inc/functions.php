@@ -16,11 +16,14 @@ function startpage($title = NAVN_DOMENE)
   <script src="./js/teller.js"></script>
   <script src="./js/loggteller.js"></script>
   ';
-    $db->query("SELECT * FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL");
-    $anyjail = ($db->num_rows() > 0) ? " (" . $db->num_rows() . ")" : null;
-    $db->query("SELECT * FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800)
+    $jail = $db->query("SELECT COUNT(*) as `numrows` FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL");
+    $numrows = $jail->fetchColumn();
+    $GLOBALS["stored_queries"]["jail"] = $numrows;
+    $anyjail = ($numrows > 0) ? " (" . $numrows . ")" : null;
+    $online = $db->query("SELECT COUNT(*) as `numrows` FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800)
     AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
-    $late_online = $db->num_rows();
+    $late_online = $online->fetchColumn();
+    $GLOBALS["stored_queries"]["online"] = $numrows;
     print'
   </head>
   <body>
@@ -31,7 +34,7 @@ function startpage($title = NAVN_DOMENE)
         <ul>
           <li><a href="profil.php?id=' . $obj->id . '">Profil</a></li>
           <li><a href="innboks.php">Innboks</a></li>
-          <li><a href="statistikk.php">Statistikk</a></li>
+          <li><a href="nyheter.php">Nyheter</a></li>
           <li><a href="fengsel.php">Fengsel' . $anyjail . '</a></li>
           <li><a href="bj.php">BlackJack</a></li>
           <li><a href="online.php">Spillere p&aring;logget (' . $late_online . ')</a></li>
@@ -45,23 +48,23 @@ function startpage($title = NAVN_DOMENE)
   <header id="headerbg">
   <div id="header"><div id="ct">';
     $chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
-    if ($db->num_rows() > 0) {
-        while ($r = mysqli_fetch_object($chathead)) {
-            $message = smileys(htmlentities($r->message, ENT_NOQUOTES, 'UTF-8'));
-            $message = wordwrap($message, 200, "<br />\n", true);
-            $uob = user($r->uid, 1);
-            if (!$uob) {
-                $uob = "Systemet";
-            } else {
-                $uob = '<a href="profil.php?id=' . $uob->id . '">' . $uob->user . '</a>';
-            }
-            if ($r->id % 2) {
-                echo
-                    '<div class="ct1"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
-            } else {
-                echo
-                    '<div class="ct2"><b>[' . date("H:i:s d.m.y", $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
-            }
+    while ($r = $chathead->fetchObject()) {
+        $message = smileys(htmlentities($r->message, ENT_NOQUOTES, 'UTF-8'));
+        $message = wordwrap($message, 200, "<br>\n", true);
+        $uob = user($r->uid, 1);
+        if (!$uob) {
+            $uob = "Systemet";
+        } else {
+            $uob = '<a href="profil.php?id=' . $uob->id . '">' . $uob->user . '</a>';
+        }
+        if ($r->id % 2) {
+            echo
+                '<div class="ct1"><b>[' . date("H:i:s d.m.y",
+                    $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
+        } else {
+            echo
+                '<div class="ct2"><b>[' . date("H:i:s d.m.y",
+                    $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
         }
     }
     echo '</div>
@@ -90,7 +93,10 @@ function endpage()
         </div>
         <div id="rightmenu">';
     include_once './inc/right.php';
-    error_log("Page: " . $_SERVER["REQUEST_URI"] . " used " . $GLOBALS["db"]->clock_end() . " seconds to execute.");
+    $m = explode(" ", microtime());
+    $end = $m[0] + $m[1];
+    error_log("Page: " . $_SERVER["REQUEST_URI"] . " used " . round($end - $GLOBALS["start"],
+            7) . " seconds to execute.");
     error_log("Number of queries on " . $_SERVER["REQUEST_URI"] . ": " . $GLOBALS["db"]->num_queries);
 }
 
@@ -105,7 +111,16 @@ function city($city, $way = 1)
         $by = "ukjent";
     } else {
         $int = [1, 2, 3, 4, 5, 6, 7, 8];
-        $var = ["Oslo", "Bergen", "Trondheim", "Stavanger", "Fredrikstad", "Troms&oslash;", "Sarpsborg", "Lillestr&oslash;m"]; //Norske byer ONLY :)
+        $var = [
+            "Oslo",
+            "Bergen",
+            "Trondheim",
+            "Stavanger",
+            "Fredrikstad",
+            "Troms&oslash;",
+            "Sarpsborg",
+            "Lillestr&oslash;m"
+        ]; //Norske byer ONLY :)
         if ($way == 1) {
             $by = str_replace($int, $var, $city);
         } elseif ($way == 0) {
@@ -125,14 +140,13 @@ function city($city, $way = 1)
 function user($i, $obj = 0)
 {
     global $db;
-    $s = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($i) . "'");
-    if ($db->num_rows() == 1) {
+    $s = $db->prepare("SELECT * FROM `users` WHERE `id` = ?");
+    $s->execute([$i]);
+    if ($user = $s->fetchObject()) {
         if ($obj == 1) {
-            return $db->fetch_object($s);
+            return $user;
         }
-        $obj = $db->fetch_object($s);
-        $res = '<a href="profil.php?id=' . $obj->id . '">' . $obj->user . '</a>';
-        return ($res);
+        return '<a href="profil.php?id=' . $user->id . '">' . $user->user . '</a>';
     } else {
         return false;
     }
@@ -151,11 +165,11 @@ function bilde($i)
 function ipbanned($ip)
 {
     global $db;
-    $db->query("SELECT * FROM `ipban` WHERE `ip` = '" . ip2long($ip) . "'
-    AND `active` = 1 ORDER BY `id` DESC LIMIT 1");
-    if ($db->num_rows() == 1) {
-        $query = $db->fetch_object();
-        die('<p>' . $ip . ' er blokkert fra dette stedet, grunnet:<br>' . $query->reason . '</p>');
+    $st = $db->prepare("SELECT COUNT(*) AS `numrows`,`reason` FROM `ipban` WHERE `ip` = ? AND `active` = 1 ORDER BY `id` DESC LIMIT 1");
+    $st->execute([ip2long($ip)]);
+    $ipban = $st->fetchObject();
+    if ($ipban->numrows >= 1) {
+        die('<p>' . $ip . ' er blokkert fra dette stedet, grunnet:<br>' . $ipban->reason . '</p>');
     }
 }
 
@@ -189,9 +203,11 @@ function timec($sec)
 function status($s)
 {
     global $db;
-    $db->query("SELECT * FROM `users` WHERE `user` = '" . $db->escape($s) . "' OR `id` = '" . $db->escape($s) . "' LIMIT 0,1");
-    if ($db->num_rows() == 1) {
-        $user = $db->fetch_object();
+    $pre = $db->prepare("SELECT * FROM `users` WHERE `user` = :val1 OR `id` = :val2 LIMIT 0,1");
+    $pre->bindParam(":val1", $s);
+    $pre->bindParam(":val2", $s);
+    $pre->execute();
+    if ($user = $pre->fetchObject()) {
         if ($user->status == 1) {
             $span = "stat1";
         } elseif ($user->status == 2) {
@@ -373,7 +389,8 @@ function bbcodes(
         $text = preg_replace("/\[c\](.*?)\[\/c\]/is", "<div style='text-align:center;'>$1</div>", $text);
     }
     if ($farge == 1) {
-        $text = preg_replace("/\[f=#(([0-9a-f]){3}|([0-9a-f]){6})\](.*?)\[\/f\]/is", "<span style=\"color:#$1\">$4</span>", $text);
+        $text = preg_replace("/\[f=#(([0-9a-f]){3}|([0-9a-f]){6})\](.*?)\[\/f\]/is",
+            "<span style=\"color:#$1\">$4</span>", $text);
     }
     if ($bilde == 1) {
         $text = preg_replace(
@@ -394,17 +411,28 @@ function bbcodes(
     if ($smil == 1) {
         $text = str_replace(
             [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "<3", ":S", ":*"],
-            ['<img src="smileys/Content.png" alt=":)">', '<img src="smileys/Grin.png" alt=":D">', '<img src="smileys/Yuck.png" alt=":P">',
-                '<img src="smileys/Slant.png" alt=":-/">', '<img src="smileys/Sarcastic.png" alt=";)">', '<img src="smileys/Frown.png" alt=":(">',
-                '<img src="smileys/Gasp.png" alt=":O">', '<img src="smileys/Heart.png" alt="&lt;3">', '<img src="smileys/Confused.png" alt=":S">',
-                '<img src="smileys/Kiss.png" alt=":*">'],
+            [
+                '<img src="smileys/Content.png" alt=":)">',
+                '<img src="smileys/Grin.png" alt=":D">',
+                '<img src="smileys/Yuck.png" alt=":P">',
+                '<img src="smileys/Slant.png" alt=":-/">',
+                '<img src="smileys/Sarcastic.png" alt=";)">',
+                '<img src="smileys/Frown.png" alt=":(">',
+                '<img src="smileys/Gasp.png" alt=":O">',
+                '<img src="smileys/Heart.png" alt="&lt;3">',
+                '<img src="smileys/Confused.png" alt=":S">',
+                '<img src="smileys/Kiss.png" alt=":*">'
+            ],
             $text
         );
     }
     if ($shadow == 1) {
         $text = preg_replace(
             ["/\[s1\](.*?)\[\/s1\]/is", "/\[s2 f=\"#(.*?)\"\](.*?)\[\/s2\]/is"],
-            ["<span style=\"text-shadow:none;text-shadow: #000000 2px 2px 2px;\">$1</span>", "<span style=\"text-shadow:none;text-shadow: #$1 2px 2px 2px;\">$2</span>"],
+            [
+                "<span style=\"text-shadow:none;text-shadow: #000000 2px 2px 2px;\">$1</span>",
+                "<span style=\"text-shadow:none;text-shadow: #$1 2px 2px 2px;\">$2</span>"
+            ],
             $text
         );
     }
@@ -436,10 +464,18 @@ function smileys($text)
 {
     $text = str_replace(
         [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"],
-        ['<img src="smileys/Content.png" alt=":)">', '<img src="smileys/Grin.png" alt=":D">', '<img src="smileys/Yuck.png" alt=":P">',
-            '<img src="smileys/Slant.png" alt=":-/">', '<img src="smileys/Sarcastic.png" alt=";)">', '<img src="smileys/Frown.png" alt=":(">',
-            '<img src="smileys/Gasp.png" alt=":O">', '<img src="smileys/Heart.png" alt="&lt;3">', '<img src="smileys/Confused.png" alt=":S">',
-            '<img src="smileys/Kiss.png" alt=":*">'],
+        [
+            '<img src="smileys/Content.png" alt=":)">',
+            '<img src="smileys/Grin.png" alt=":D">',
+            '<img src="smileys/Yuck.png" alt=":P">',
+            '<img src="smileys/Slant.png" alt=":-/">',
+            '<img src="smileys/Sarcastic.png" alt=";)">',
+            '<img src="smileys/Frown.png" alt=":(">',
+            '<img src="smileys/Gasp.png" alt=":O">',
+            '<img src="smileys/Heart.png" alt="&lt;3">',
+            '<img src="smileys/Confused.png" alt=":S">',
+            '<img src="smileys/Kiss.png" alt=":*">'
+        ],
         $text
     );
     return $text;
@@ -604,8 +640,18 @@ NOAC;
 
 function weapons($r)
 {
-    $w = [0 => "ingen", 1 => "Colt 1911", 2 => ".44 Magnum", 3 => "Beretta 9mm", 4 => "M8A1", 5 => "DSR 50", 6 => "SVT-40",
-        7 => "M4", 8 => "Ak 47", 9 => "M14"];
+    $w = [
+        0 => "ingen",
+        1 => "Colt 1911",
+        2 => ".44 Magnum",
+        3 => "Beretta 9mm",
+        4 => "M8A1",
+        5 => "DSR 50",
+        6 => "SVT-40",
+        7 => "M4",
+        8 => "Ak 47",
+        9 => "M14"
+    ];
     return $w[$r];
 }
 

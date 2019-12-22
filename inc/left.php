@@ -1,41 +1,37 @@
 <?php
-global $db, $obj, $set;
-$sql = $db->query("SELECT user FROM `users` WHERE `lastactive` BETWEEN '" . (time() - 1800) . "' AND '" . time() . "' ORDER BY `lastactive` DESC");
-$ant = $db->num_rows();
-$sql3 = $db->query("SELECT * FROM `chat`");
-$num2 = $db->num_rows();
-$sql4 = $db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
-$ant2 = $db->num_rows();
-$db->query("SELECT * FROM `krimlogg` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
-if ($db->num_rows() == 1) {
-    $kt = $db->fetch_object();
-    $ktl = (($kt->timewait - time()) >= 1) ? ($kt->timewait - time()) : null;
+global $db, $obj;
+$ant = $GLOBALS["stored_queries"]["online"];
+$sql3 = $db->query("SELECT COUNT(*) as `numrows` FROM `chat`");
+$num2 = $sql3->fetchObject()->numrows;
+$ant2 = $GLOBALS["stored_queries"]["jail"];
+error_log("Antall i fengsel lagret i array: ".$ant2);
+$klpre = $db->prepare("SELECT timewait FROM `krimlogg` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
+$klpre->execute([$obj->id]);
+if ($res = $klpre->fetchColumn()) {
+    $ktl = (($res - time()) >= 1) ? ($res - time()) : null;
 } else {
     $ktl = null;
 }
-$db->query("SELECT * FROM `carslog` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1");
-$numrows = $db->num_rows();
-if ($numrows >= 1) {
-    $bt = $db->fetch_object();
-    $btl = (($bt->time - time()) >= 1) ? ($bt->time - time()) : null;
+$clpre = $db->prepare("SELECT `timewait` FROM `carslog` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1");
+$clpre->execute([$obj->id]);
+if ($wait = $clpre->fetchColumn()) {
+    $btl = (($wait - time()) >= 1) ? ($wait - time()) : null;
 } else {
     $bt = null;
     $btl = null;
 }
-$db->query("SELECT * FROM `rob_log` WHERE `uid` = '$obj->id' AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
-$ranrows = $db->num_rows();
-if ($ranrows >= 1) {
-    $rt = $db->fetch_object();
-    $rtl = (($rt->timestamp - time()) >= 1) ? ($rt->timestamp - time()) : null;
+$rlpre = $db->prepare("SELECT timestamp FROM `rob_log` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
+$rlpre->execute([$obj->id]);
+if ($wait = $rlpre->fetchColumn()) {
+    $rtl = (($wait - time()) >= 1) ? ($wait - time()) : null;
 } else {
     $rt = null;
     $rtl = null;
 }
-$db->query("SELECT * FROM `jail` WHERE `uid` = '$obj->id' AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1");
-$jailrow = $db->num_rows();
-if ($jailrow >= 1) {
-    $jt = $db->fetch_object();
-    $jte = (($jt->timeleft - time()) >= 1) ? ($jt->timeleft - time()) : null;
+$jailself = $db->prepare("SELECT timeleft FROM `jail` WHERE `uid` = ? AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1");
+$jailself->execute([$obj->id]);
+if ($jail = $jailself->fetchObject()) {
+    $jte = (($jail->timeleft - time()) >= 1) ? ($jail->timeleft - time()) : null;
 } else {
     $jt = null;
     $jte = null;
@@ -96,7 +92,7 @@ $onl = "online.php";
     <li><a href="innboks.php">Innboks (<span style="color:#ff0">jobbes med</span>)</a></li>
     <li><a href="#deputy.php">Send inn s&oslash;knad! </a></li>
     <li><a href="#support.php">Support </a></li>
-    <li><a href="<?=$onl;?>">Spillere p&aring;logget</a> (<?=$ant;?>)</li>
+    <li><a href="<?= $onl; ?>">Spillere p&aring;logget</a> (<?= $ant; ?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
     <li><a href="Ledelsen">Ledelsen </a></li>
 </ul>

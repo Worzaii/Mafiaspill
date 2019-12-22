@@ -1,20 +1,21 @@
 {
-    "name": "werzaire.net/mafia.werzaire.net",
-    "description": "Mafiaspillet",
-    "type": "project",
-    "authors": [
-        {
-            "name": "Worzaii",
-            "email": "baretester@live.no"
-        }
-    ],
-    "require": {
-        "squizlabs/php_codesniffer": "3.5.3",
-        "ext-mysqli": "*",
-        "ext-json": "*",
-        "ext-gd": "*"
-    },
-    "scripts": {
-        "phpcs": "phpcs --standard=PSR2"
+  "name": "werzaire.net/mafia.werzaire.net",
+  "description": "Mafiaspillet",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Worzaii",
+      "email": "baretester@live.no"
     }
+  ],
+  "require": {
+    "squizlabs/php_codesniffer": "3.5.3",
+    "ext-mysqli": "*",
+    "ext-json": "*",
+    "ext-gd": "*",
+    "ext-pdo": "*"
+  },
+  "scripts": {
+    "phpcs": "phpcs --standard=PSR2"
+  }
 }

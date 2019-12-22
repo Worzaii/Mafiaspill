@@ -1,7 +1,7 @@
 <?php
 define("BASEPATH", true);
 include '../system/config.php';
-include '../classes/Database.php';
+//include '../classes/Database.php';
 include '../inc/functions.php';
 header('Content-type: application/json');
 
@@ -19,40 +19,48 @@ if (isset($_GET['login'])) {
         if (strlen($_POST['username']) === 0 || strlen($_POST['password']) === 0) {
             $str['string'] = feil('Ingen informasjon ble postet!');
         } else {
-            $db = new DatabaseObject\database();
-            if ($db->connect()) {
-                $us = $db->escape($_POST['username']);
-                $pa = $_POST['password'];
-                $db->query("SELECT * FROM `users` WHERE `user` = '$us'");
-                if ($db->num_rows() == 1) {
-                    $uid = $db->fetch_object();
-                    if (password_verify($pa, $uid->pass)) {
-                        if ($uid->health > 0) {
-                            $str = [
-                                'string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
+            try {
+                $db = new PDO("mysql:dbname=mafia;host=127.0.0.1", "mafia", "mafia", [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                    PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
+                    PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
+                    PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
+                ]);
+            } catch (PDOException $PDOException) {
+                error_log("Couldn't connect to database. Error: " . $PDOException->getMessage());
+                die();
+            }
+            $us = $_POST['username'];
+            $pa = $_POST['password'];
+            $st = $db->prepare("SELECT * FROM `users` WHERE `user` = ?");
+            $st->execute([$us]);
+            if ($st->rowCount() === 1) {
+                $uid = $st->fetchObject();
+                if (password_verify($pa, $uid->pass) && $uid->health > 0) {
+                    $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
+                    $st2 = $db->prepare("insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())");
+                    $st2->execute([1 => $uid->id, 2 => $_SERVER["HTTP_USER_AGENT"], 3 => ip2long($ip)]);
+
+                    $st3 = $db->prepare("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(), `ip` = ?, `hostname` = ? where `id` = ? AND `pass` = ?");
+                    $st3->execute([$ip, gethostbyaddr($ip), $uid->id, $uid->pass]);
+
+                    $str = [
+                        'string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
                         til nyhetssiden...'),
-                                'state' => 1,
-                                'href' => 'https://' . $domain . '/nyheter.php'
-                            ];
-                            $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
-                            $db->query("insert into sessions(id, uid, user_agent, user_ip, timestamp) VALUES (NULL, '{$uid->id}', '{$_SERVER["HTTP_USER_AGENT"]}','" . ip2long($ip) . "',UNIX_TIMESTAMP())");
-                            $db->query("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(),`ip` = '$ip',
-                        `hostname`='" . gethostbyaddr($ip) . "' 
-                        WHERE `id` = '{$uid->id}' AND `pass` = '{$uid->pass}'");
-                        } else {
-                            $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
-                        }
-                    } else {
-                        $str['string'] = feil('Passordet stemte ikke overens med det vi har.');
-                    }
+                        'state' => 1,
+                        'href' => 'https://' . $domain . '/nyheter.php'
+                    ];
+                    /*} else {
+                        $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
+                    }*/
                 } else {
-                    $str['string'] = feil('Brukernavnet finnes ikke!');
-                }
-                if (!$str) {
-                    $str['string'] = info('Ingen tr&aring;der satt!');
+                    $str['string'] = feil('Feil passord');
                 }
             } else {
-                $str['string'] = feil('Kunne ikke koble til databasen. Sjekk error-loggen...');
+                $str['string'] = feil('Konto eksisterer ikke');
             }
         }
     } else {

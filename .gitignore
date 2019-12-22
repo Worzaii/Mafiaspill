@@ -17,3 +17,6 @@ nbproject/project.xml
 /images/WerzyWitch.png
 /.idea/
 /logs/
+/rootSSL.key
+/rootSSL.pem
+/rootSSL_nopass.key

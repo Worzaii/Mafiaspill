@@ -8,14 +8,19 @@ startpage("Nyheter");
         <tr>
             <td>
                 <?php
-                if ($obj->status == 1 || $obj->status == 2) {
+                if (r1() || r2()) {
                     echo '<p class="button2"><a href="publiser.php">Skriv en ny nyhet!</a></p>';
                 }
-                $sql = $db->query("SELECT * FROM `news` WHERE `showing` = '1' AND `userlevel` >= '" . $obj->status . "' ORDER BY `id` DESC LIMIT 0,10");
-                if ($db->num_rows() == 0) {
+                $np = $db->prepare("SELECT COUNT(*) as `numrows` FROM `news` WHERE `showing` = '1' AND `userlevel` >= ? ORDER BY `id` DESC LIMIT 0,10");
+                $np->execute([$obj->status]);
+                $count = $np->fetchColumn();
+
+                if ($count == 0) {
                     echo feil('Ingen nyheter er publisert!');
-                } elseif ($db->num_rows() >= 1) {
-                    while ($r = mysqli_fetch_object($sql)) {
+                } else {
+                    $news = $db->prepare("SELECT * FROM `news` WHERE `showing` = '1' AND `userlevel` >= ? ORDER BY `id` DESC LIMIT 0,10");
+                    $news->execute([$obj->status]);
+                    while ($r = $news->fetchObject()) {
                         $statuss = null;
                         print '
             <table class="';
@@ -31,8 +36,8 @@ startpage("Nyheter");
                         }
 
                         $newres = bbcodes($r->text, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-                        $q = $db->query("SELECT * FROM `users` WHERE `user` = '$r->author'");
-                        $f = $db->fetch_object($q);
+                        /*$q = $db->query("SELECT * FROM `users` WHERE `user` = '$r->author'");
+                        $f = $db->fetch_object($q);*/
                         print '
             <tr>
             <td class="linkstyle"' . $statuss . '><b>' . htmlentities($r->title, ENT_NOQUOTES | ENT_HTML401, 'UTF-8')
