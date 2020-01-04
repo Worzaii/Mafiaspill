@@ -18,7 +18,7 @@ function sql_log($query)
 function safegen($u, $p)
 {
     $ua = $_SERVER["HTTP_USER_AGENT"];
-    $l = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
+    #$l = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
     $i = isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : null;
     return md5(sha1($u . $p . $ua . $l . $i . "g9gr90eGR"));
 }
@@ -44,6 +44,13 @@ define('KEYWORDS', 'mafia, spill');
 define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 $timeout = (60* (120));
+
+/* Database connection parametres START */
+define("HOST", "127.0.0.1");
+define("DATABASE", "mafia");
+define("USERNAME", "mafia");
+define("PASSWORD", "mafia");
+/* Database connection parametres END */
 
 /* Rest of config has been imported to php.ini file directly. */
 

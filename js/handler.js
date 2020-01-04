@@ -10,6 +10,7 @@ $(document).ready(function() {
   $('#loginform').submit(function(event) {
     event.preventDefault();
     let $form = $(this).serialize(), link = $(this).attr('action');
+    console.log($form);
     $.ajax({
       url: link,
       data: $form,

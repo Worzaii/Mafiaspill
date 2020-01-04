@@ -7,24 +7,24 @@ if (r1() || r2()) {
     <div style="margin:0 auto;text-align:center;width:90%;">
         <?php
         if (isset($_POST['melding'])) {
-            $tema = $db->escape($_POST['tema']);
-            $mel = $db->escape($_POST['melding']);
-            $lvl = $db->escape($_POST['rangerank']);
+            $tema = $_POST['tema'];
+            $mel = $_POST['melding'];
+            $lvl = $_POST['rangerank'];
             if (strlen($mel) <= 2) {
                 echo '<p>Meldingen er for kort!</p>';
             } else {
-                if (!$db->query("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) 
-VALUES('" . $tema . "','" . $mel . "','" . $obj->user . "',UNIX_TIMESTAMP(),'1','" . $lvl . "')")) {
-                    if ($obj->status == 1) {
-                        echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
-                    }
-                } else {
+                $new = $db->prepare("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES(?,?,?,UNIX_TIMESTAMP(),1,?)");
+                try {
+                    $new->execute([$tema, $mel, $obj->id, $lvl]);
                     echo lykket("Du har publisert en nyhet!");
                     if ($lvl == 5) {
                         /* Only announce news if it's for everyone */
                         $db->query("INSERT INTO `chat` (`id`, `uid`, `message`, `timestamp`) 
 VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen " . $tema . "', UNIX_TIMESTAMP());");
                     }
+                } catch (PDOException $ex) {
+                    error_log("Couldn't execute this query: " . $new->queryString . ". Got this error: " . $ex->getMessage() . " in " . $ex->getFile() . " on line " . $ex->getLine());
+                    echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
                 }
             }
         }

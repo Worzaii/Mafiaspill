@@ -236,6 +236,7 @@ section {
     clear: right;
     float: right;
     display: block;
+    margin-left: 3px;
 }
 
 .news2 b, .news1 b {

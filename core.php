@@ -1,8 +1,13 @@
 <?php
 define("BASEPATH", 1);
-include_once './system/config.php';
-include_once './classes/Database.php';
-include_once './inc/functions.php';
+if (defined("LVL") && LVL == true) {
+    $r = '../';
+} else {
+    $r = './';
+}
+include_once $r.'system/config.php';
+//include_once $r.'classes/Database.php';
+include_once $r.'inc/functions.php';
 if (isset($_SERVER['X-Requested-With'])) {
     if ($_SERVER['X-Requested-With'] == "XMLHttpRequest") {
         define("JSON", 1);
@@ -11,11 +16,6 @@ if (isset($_SERVER['X-Requested-With'])) {
     }
 } else {
     define("JSON", 0);
-}
-if (defined("LVL") && LVL == true) {
-    $r = '../';
-} else {
-    $r = null;
 }
 if (isset($_SESSION['sessionzar'])) {
     try {
@@ -30,7 +30,7 @@ if (isset($_SESSION['sessionzar'])) {
         ]);
     } catch (PDOException $PDOException) {
         error_log("Couldn't connect to database. Error: " . $PDOException->getMessage());
-        die("Kunne ikke koble til db!<br><a href=\"loggut.php?g=2\">Tilbake til innlogging.</a>");
+        die("Kunne ikke koble til db!<br><a href=\"${r}loggut.php?g=2\">Tilbake til innlogging.</a>");
     }
     $m = explode(" ", microtime());
     $start = $m[0] + $m[1];
@@ -41,26 +41,26 @@ if (isset($_SESSION['sessionzar'])) {
     $st1->execute([$user, $pass]);
     $obj = $st1->fetchObject();
     if (!$obj) {
-        header("Location: loggut.php?g=4");
-        die('<a href="loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget p&aring; din bruker.</a>');
+        header("Location: ${r}loggut.php?g=4");
+        die('<a href="'.$r.'loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget p&aring; din bruker.</a>');
     } else {
         $stored_queries = [
             "online" => 0,
             "jail" => 0
         ];
         if ($obj->ip != $ip) {
-            header("Location: loggut.php?g=7&currentip=$ip&dbip={$obj->ip}");
-            echo '<h1>Det kan se ut som du har blitt logget inn p&aring; et annet nettverk. Klikk her for &aring; g&aring; til innloggingssiden: <a href="loggut.php">Index</a></h1>';
+            header("Location: ${r}loggut.php?g=7&currentip=$ip&dbip={$obj->ip}");
+            echo '<h1>Det kan se ut som du har blitt logget inn p&aring; et annet nettverk. Klikk her for &aring; g&aring; til innloggingssiden: <a href="'.$r.'loggut.php">Index</a></h1>';
             die();
         }
         liv_check();
         ipbanned($ip);
         if ($obj->forceout == 1) {
             $db->query("UPDATE `users` SET `forceout` = '0' WHERE `id` = '{$obj->id}'");
-            die('<a href="loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn p&aring; nytt for &aring; fortsette &aring; spille.</a>');
+            die('<a href="'.$r.'loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn p&aring; nytt for &aring; fortsette &aring; spille.</a>');
         }
         if (($obj->lastactive + $timeout) < time()) {
-            header("Location: loggut.php?g=5");
+            header("Location: ${r}loggut.php?g=5");
         } elseif (($obj->lastactive + $timeout) > time()) {
             if (defined("NOUPDATE") && NOUPDATE == 1) {
             } else {
@@ -76,5 +76,5 @@ if (isset($_SESSION['sessionzar'])) {
         }
     }
 } else {
-    header("Location: loggut.php?g=1");
+    header("Location: ${r}loggut.php?g=1");
 }

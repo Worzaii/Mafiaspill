@@ -9,7 +9,7 @@ startpage("Nyheter");
             <td>
                 <?php
                 if (r1() || r2()) {
-                    echo '<p class="button2"><a href="publiser.php">Skriv en ny nyhet!</a></p>';
+                    echo '<p class="button2"><a href="publiser.php">Skriv en ny nyhet!</a></p><p class="button2"><a href="nyhetspanel.php">Behandle nyheter!</a></p>';
                 }
                 $np = $db->prepare("SELECT COUNT(*) as `numrows` FROM `news` WHERE `showing` = '1' AND `userlevel` >= ? ORDER BY `id` DESC LIMIT 0,10");
                 $np->execute([$obj->status]);
@@ -41,7 +41,7 @@ startpage("Nyheter");
                         print '
             <tr>
             <td class="linkstyle"' . $statuss . '><b>' . htmlentities($r->title, ENT_NOQUOTES | ENT_HTML401, 'UTF-8')
-                            . '</b> skrevet av ' . status($r->author) . '<div class="innlegsdato">' . date("H:i:s | d.m.Y", $r->timestamp) . '</div></td>
+                            . '</b> skrevet av ' . status($r->author) . ' <div class="innlegsdato">' . date("H:i:s | d.m.Y", $r->timestamp) . '</div></td>
             </tr>
             <tr>
             <td colspan="2">

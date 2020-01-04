@@ -97,7 +97,8 @@ function endpage()
     $end = $m[0] + $m[1];
     error_log("Page: " . $_SERVER["REQUEST_URI"] . " used " . round($end - $GLOBALS["start"],
             7) . " seconds to execute.");
-    error_log("Number of queries on " . $_SERVER["REQUEST_URI"] . ": " . $GLOBALS["db"]->num_queries);
+    /*error_log("Number of queries on " . $_SERVER["REQUEST_URI"] . ": " . $GLOBALS["db"]->num_queries);*/
+    /* This is no longer valid because I haven't implemented PDO as some other class or function than the core itself */
 }
 
 function redirect($url, $wait)
@@ -165,11 +166,10 @@ function bilde($i)
 function ipbanned($ip)
 {
     global $db;
-    $st = $db->prepare("SELECT COUNT(*) AS `numrows`,`reason` FROM `ipban` WHERE `ip` = ? AND `active` = 1 ORDER BY `id` DESC LIMIT 1");
+    $st = $db->prepare("SELECT `reason` FROM `ipban` WHERE `ip` = ? AND `active` = 1 ORDER BY `id` DESC LIMIT 1");
     $st->execute([ip2long($ip)]);
-    $ipban = $st->fetchObject();
-    if ($ipban->numrows >= 1) {
-        die('<p>' . $ip . ' er blokkert fra dette stedet, grunnet:<br>' . $ipban->reason . '</p>');
+    if ($reason = $st->fetchColumn()) {
+        die('<p>' . $ip . ' er blokkert fra dette stedet, grunnet:<br>' . $reason . '</p>');
     }
 }
 
@@ -203,6 +203,9 @@ function timec($sec)
 function status($s)
 {
     global $db;
+    if($s == 0){
+        return "System";
+    }
     $pre = $db->prepare("SELECT * FROM `users` WHERE `user` = :val1 OR `id` = :val2 LIMIT 0,1");
     $pre->bindParam(":val1", $s);
     $pre->bindParam(":val2", $s);
@@ -222,8 +225,8 @@ function status($s)
             $span = "";
         }
         return "<span class='$span'>$user->user</span>";
-    } else {
-        return feil("Ingen bruker med den iden eller brukernavnet.");
+    } else{
+        return "Ukjent bruker...";
     }
 }
 

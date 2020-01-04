@@ -1,7 +1,6 @@
 <?php
 define("BASEPATH", true);
 include '../system/config.php';
-//include '../classes/Database.php';
 include '../inc/functions.php';
 header('Content-type: application/json');
 
@@ -14,25 +13,29 @@ if ($host != "mafia.werzaire.net") {
 } else {
     $domain = DOMENE_NAVN;
 }
+if (!(isset($_GET['login']) || isset($_GET['getaccess']) || isset($_GET['brukerreg']) || isset($_GET['forgotpassword']) || isset($_GET['resetpassword']))) {
+    die(json_encode($str)); /* Saving some time, hopefully */
+}
+/* Setting up database for usage within the rest of the script scope */
+try {
+    $db = new PDO("mysql:dbname=" . DATABASE . ";host=" . HOST, USERNAME, PASSWORD, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_STRINGIFY_FETCHES => false,
+        PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
+        PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
+        PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
+    ]);
+} catch (PDOException $PDOException) {
+    error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
+    die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
+}
 if (isset($_GET['login'])) {
     if (isset($_POST['username']) && isset($_POST['password'])) {
         if (strlen($_POST['username']) === 0 || strlen($_POST['password']) === 0) {
             $str['string'] = feil('Ingen informasjon ble postet!');
         } else {
-            try {
-                $db = new PDO("mysql:dbname=mafia;host=127.0.0.1", "mafia", "mafia", [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
-                    PDO::ATTR_STRINGIFY_FETCHES => false,
-                    PDO::ATTR_EMULATE_PREPARES => false,
-                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-                    PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
-                    PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
-                    PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
-                ]);
-            } catch (PDOException $PDOException) {
-                error_log("Couldn't connect to database. Error: " . $PDOException->getMessage());
-                die();
-            }
             $us = $_POST['username'];
             $pa = $_POST['password'];
             $st = $db->prepare("SELECT * FROM `users` WHERE `user` = ?");
@@ -42,7 +45,7 @@ if (isset($_GET['login'])) {
                 if (password_verify($pa, $uid->pass) && $uid->health > 0) {
                     $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
                     $st2 = $db->prepare("insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())");
-                    $st2->execute([1 => $uid->id, 2 => $_SERVER["HTTP_USER_AGENT"], 3 => ip2long($ip)]);
+                    $st2->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
 
                     $st3 = $db->prepare("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(), `ip` = ?, `hostname` = ? where `id` = ? AND `pass` = ?");
                     $st3->execute([$ip, gethostbyaddr($ip), $uid->id, $uid->pass]);
