@@ -25,15 +25,17 @@ if (isset($_POST["action"]) && isset($_POST["id"])) {
         } elseif ($ac == 3) {
             /* Visibility command sent */
             #$str['string'] = "Synlighet ikke implementert";
-            $get = $db->prepare("SELECT showing from news where id = ? and userlevel >= ?");
-            $get->execute([$id, $obj->status]);
+            $get = $db->prepare("SELECT showing from news where id = :id and userlevel >= :ul");
+            $get->bindParam(":id", $id, PDO::PARAM_INT);
+            $get->bindParam(":ul", $obj->status, PDO::PARAM_INT);
+            $get->execute();
             $showing = $get->fetchColumn();
             $change = ($showing == 1) ? 0 : 1;
             $switch = $db->prepare("UPDATE news SET showing = ? WHERE id = ? and showing = ? and userlevel >= ? LIMIT 1");
             error_log("Query for updating the news: ".$switch->queryString);
             $switch->execute([$change, $id, $showing, $obj->status]);
             if ($switch->rowCount() == 1) {
-                $str['string'] = "Nyheten har blitt satt som " . (($change == 1) ? "synlig" : "skjult") . "!";
+                $str['string'] = "Nyheten med ID $id har blitt satt som " . (($change == 1) ? "synlig" : "skjult") . "!";
                 $str['state'] = 1;
             } else{
                 $str['string'] = "Kunne ikke endre synlighet p&aring; nyheten!";

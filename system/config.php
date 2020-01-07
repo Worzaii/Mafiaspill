@@ -20,7 +20,7 @@ function safegen($u, $p)
     $ua = $_SERVER["HTTP_USER_AGENT"];
     #$l = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
     $i = isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : null;
-    return md5(sha1($u . $p . $ua . $l . $i . "g9gr90eGR"));
+    return md5(sha1($u . $p . $ua . $i . "tissbajs194\""));
 }
 
 function codegen($length = 12)
