@@ -28,7 +28,7 @@ ORDER BY `lastactive` DESC");
         </thead>
         <tbody>
         <?php
-        while ($r = mysqli_fetch_object($online)) {
+        while ($r = $online->fetchObject()) {
             $newtime = time() - $r->lastactive;
             if (r1() || r2()) {
                 error_log("Listed user result: " . var_export((!r1() && ($r->status == 1 || $r->status == 2)), true));
@@ -49,9 +49,6 @@ ORDER BY `lastactive` DESC");
           </tr>
           ';
         }
-        /*$r = $db->fetch_object();
-        echo 'Testing some more: '.$r->user;*/
-        $db->result->close();
         ?>
         </tbody>
     </table>
@@ -72,11 +69,12 @@ if (r1() || r2()) {
     </thead>
     <tbody>
 ';
-    $lately = $db->query("SELECT id,`user`,lastactive,ip,hostname,status FROM `users` WHERE `lastactive` BETWEEN
+    $lately = $db->query("SELECT COUNT(*) as numrows FROM `users` WHERE `lastactive` BETWEEN
     (UNIX_TIMESTAMP() - (60*60*24*7)) AND (UNIX_TIMESTAMP() - 1800)
     ORDER BY `lastactive` DESC");
-    if ($lately->num_rows >= 1) {
-        while ($s = mysqli_fetch_object($lately)) {
+    if ($lately->fetchColumn() >= 1) {
+        $lately2= $db->query("SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - (60*60*24*7)) and (unix_timestamp() - 1800)");
+        while ($s = $lately2->fetchObject()) {
             $newtime = time() - $s->lastactive;
             $add2 = "<td>" . (($s->ip != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $s->ip) :
                     "Ikke registrert") . "</td>";
