@@ -64,7 +64,7 @@ if (!isset($_GET['page'])) {
 END;
             } else {
                 echo feil('Det finnes ingen melding til deg med den IDen. <br>
-                Er du sikker på at den ikke er slettet? <br> Gjerne kontakt support for &aring; sjekke opp dette.');
+                Er du sikker p&aring; at den ikke er slettet? <br> Gjerne kontakt support for &aring; sjekke opp dette.');
             }
         } elseif ($page === 'ny') {
             if (isset($_GET['user'])) {
@@ -134,7 +134,7 @@ END;
         }
         /* Add more handlers for the page here... */
     } else {
-        echo warning('Innboks inneholder ikke en slik side, prøv igjen.');
+        echo warning('Innboks inneholder ikke en slik side, pr&oslash;v igjen.');
     }
 }
 ?>

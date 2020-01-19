@@ -8,7 +8,7 @@ function startpage($title = NAVN_DOMENE)
     print '<!DOCTYPE html>
 <html lang="no">
   <head>
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/style_old.css">
   <link rel="shortcut icon" href="./favicon.ico">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>' . $title . '</title>
@@ -202,15 +202,17 @@ function timec($sec)
 
 function status($s)
 {
+    error_log("Status function called, working... Value passed: \"" . $s . "\"");
     global $db;
-    if($s == 0){
+    if (!is_string($s) && $s == 0) {
         return "System";
     }
-    $pre = $db->prepare("SELECT * FROM `users` WHERE `user` = :val1 OR `id` = :val2 LIMIT 0,1");
+    $pre = $db->prepare("SELECT id,user,status,picmaker,health FROM `users` WHERE `user` = :val1 OR `id` = :val2 LIMIT 0,1");
     $pre->bindParam(":val1", $s);
     $pre->bindParam(":val2", $s);
-    $pre->execute();
+    error_log("Result of execution: " . (($pre->execute()) ? "Successful!" : "Failed!!"));
     if ($user = $pre->fetchObject()) {
+        error_log("Status function called, values: " . var_export($user, true));
         if ($user->status == 1) {
             $span = "stat1";
         } elseif ($user->status == 2) {
@@ -225,7 +227,7 @@ function status($s)
             $span = "";
         }
         return "<span class='$span'>$user->user</span>";
-    } else{
+    } else {
         return "Ukjent bruker...";
     }
 }

@@ -14,18 +14,18 @@ if (r1() || r2()) {
                 echo '<p>Meldingen er for kort!</p>';
             } else {
                 $new = $db->prepare("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES(?,?,?,UNIX_TIMESTAMP(),1,?)");
-                try {
-                    $new->execute([$tema, $mel, $obj->id, $lvl]);
+                if ($new->execute([$tema, $mel, $obj->id, $lvl])) {
                     echo lykket("Du har publisert en nyhet!");
                     if ($lvl == 5) {
                         /* Only announce news if it's for everyone */
                         $db->query("INSERT INTO `chat` (`id`, `uid`, `message`, `timestamp`) 
 VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen " . $tema . "', UNIX_TIMESTAMP());");
                     }
-                } catch (PDOException $ex) {
-                    error_log("Couldn't execute this query: " . $new->queryString . ". Got this error: " . $ex->getMessage() . " in " . $ex->getFile() . " on line " . $ex->getLine());
+                } else {
+                    error_log("Couldn't execute this query: " . $new->queryString . ". Got this error: " . $new->errorInfo()[2]);
                     echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
                 }
+
             }
         }
         ?>

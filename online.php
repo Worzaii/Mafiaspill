@@ -1,10 +1,29 @@
 <?php
 include("core.php");
+if (isset($_GET['timespan']) && r1()) {
+    $time = (int) $_GET['timespan'];
+    if ($time === 1) {
+        /* One day limit */
+        $t = 60 * 60 * 24;
+    } elseif ($time === 2) {
+        /* One week limit */
+        $t = 60 * 60 * 24 * 7;
+    } elseif ($time === 3) {
+        /* One month-ish */
+        $t = 60 * 60 * 24 * 31;
+    } elseif ($time === 4) {
+        /* One year */
+        $t = 60 * 60 * 24 * 365;
+    } else {
+        error_log("Couldn't do it, type and value of GET is: ". gettype($time) . " ".$time);
+    }
+}
 startpage("P&aring;loggede spillere");
 ?>
     <h1>P&aring;loggede spillere</h1>
 <?php
 if (r1() || r2()) {
+    echo '<p>Tabell 2 tidsjusteringer: <a href="online.php?timespan=1">En dag</a> | <a href="online.php?timespan=2">En uke (standard)</a> | <a href="online.php?timespan=3">En m&aring;ned</a> | <a href="online.php?timespan=4">Ett &aring;r</a></p>';
     $add1 = "<th>IP-adresse</th>";
     $add3 = "<th>Hostname</th>";
     $cols = 4;
@@ -31,7 +50,7 @@ ORDER BY `lastactive` DESC");
         while ($r = $online->fetchObject()) {
             $newtime = time() - $r->lastactive;
             if (r1() || r2()) {
-                error_log("Listed user result: " . var_export((!r1() && ($r->status == 1 || $r->status == 2)), true));
+                error_log("Listed user result: " . ((!r1() && ($r->status == 1 || $r->status == 2)) ? "No" : "Yes"));
                 $add2 = "<td><span class=\"added-ip\">" . (($r->ip != null) ?
                         ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $r->ip) : "Ikke registrert") . "</span></td>";
                 $add3 = "<td>" . (($r->hostname != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ?
@@ -69,11 +88,18 @@ if (r1() || r2()) {
     </thead>
     <tbody>
 ';
+    if (isset($t)) {
+        $timequery = $t;
+    } else {
+        /* Defaults to a week */
+        $timequery = 60 * 60 * 24 * 7;
+    }
+    error_log("online.php timequery changed by GET method. Query became: SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - ($timequery)) and (unix_timestamp() - 1800)");
     $lately = $db->query("SELECT COUNT(*) as numrows FROM `users` WHERE `lastactive` BETWEEN
-    (UNIX_TIMESTAMP() - (60*60*24*7)) AND (UNIX_TIMESTAMP() - 1800)
+    (UNIX_TIMESTAMP() - ($timequery)) AND (UNIX_TIMESTAMP() - 1800)
     ORDER BY `lastactive` DESC");
     if ($lately->fetchColumn() >= 1) {
-        $lately2= $db->query("SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - (60*60*24*7)) and (unix_timestamp() - 1800)");
+        $lately2 = $db->query("SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - ($timequery)) and (unix_timestamp() - 1800)");
         while ($s = $lately2->fetchObject()) {
             $newtime = time() - $s->lastactive;
             $add2 = "<td>" . (($s->ip != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $s->ip) :

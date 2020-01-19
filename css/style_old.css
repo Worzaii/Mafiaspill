@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700&display=swap'); /*@import "https://mikeandrew.co/style.css";*/
+@import "https://mikeandrew.co/style.css";
 
 html, body {
     margin: 0;
     padding: 0;
     background: url('../images/footerbg.png') repeat top left;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, Sans-Serif;
     font-size: 12px;
     color: #fff;
 }
@@ -12,6 +12,9 @@ html, body {
 a {
     text-decoration: none;
     color: #ccc;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
@@ -54,23 +57,24 @@ a:hover {
 
 h1 {
     margin: 0;
-    padding: 7px 0 5px 27px;
+    padding: 7px 0px 5px 27px;
     font-size: 16px;
     text-transform: uppercase;
     font-weight: bold;
     color: #fff;
     border-bottom: 1px solid #000;
-    box-shadow: 0 1px 0 #313131;
+    box-shadow: 0px 1px 0px #313131;
     background: rgba(0, 0, 0, 0.2);
 }
 
 h2 {
     margin: 0;
+    padding: 4px 0px 3px 25px;
     font-size: 14px;
     text-transform: uppercase;
     font-weight: bold;
     color: #FFF;
-    box-shadow: 0 1px 0 #313131;
+    box-shadow: 0px 1px 0px #313131;
     border-top: 1px solid rgba(211, 211, 211, 0.12);
     padding: 6px;
     background: rgba(73, 73, 73, 0.29);
@@ -123,6 +127,8 @@ table, tr, td, tbody {
     height: 150px;
     background: url('../images/header3.png') no-repeat top left;
     border: solid 1px #FFFFFF;
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #B8B8B8;
     box-shadow: inset 0 0 27px #AFAFAF;
     margin: -15px auto 0;
 }
@@ -134,7 +140,7 @@ section {
     background: url(/images/bg.png) repeat top left;
     float: left;
     border-bottom: 1px solid #333;
-    box-shadow: 0 2px 5px #060606;
+    box-shadow: 0px 2px 5px #060606;
 }
 
 #shadow {
@@ -159,7 +165,7 @@ section {
 
 #leftmenu ul, #rightmenu ul {
     width: 173px;
-    padding: 0 0 10px 30px;
+    padding: 0px 0px 10px 30px;
     font-size: 12px;
     line-height: 1.5;
 }
@@ -207,7 +213,7 @@ section {
 .news2 td[colspan], .news1 td[colspan] {
     text-align: left;
     background: #333;
-    padding: 10px 0 10px 10px;
+    padding: 10px 0px 10px 10px;
     font-size: 12px;
     color: #ccc;
 }
@@ -238,11 +244,13 @@ section {
     color: #fff;
     font-size: 14px;
     text-transform: capitalize;
-    padding: 7px 0 10px 10px
+    padding: 7px 0px 10px 10px
 }
 
 input[type="button"], input[type="submit"], .button {
-    background: #FFF;
+    padding-left: 10px;
+    background-color: #3D3A3A;
+    background: #FFFFFF;
     border: 1px solid #c0c0c0;
     border-bottom: 1px solid #FFD3D3;
     color: #61586a;
@@ -254,11 +262,15 @@ input[type="button"], input[type="submit"], .button {
     text-decoration: none;
     text-shadow: 0 1px 0 #fff;
     vertical-align: top;
+    -moz-border-radius: 5px;
     border-radius: 5px;
-    transition: all 0.5s ease-out;
+    -moz-box-shadow: 0 1px 6px rgba(229, 221, 232, .9), inset 0 1px 0 rgba(249, 249, 249, .9);
+    -webkit-transition: all 0.5s ease-out;
 }
 
 input[type="submit"].endre:hover {
+    padding-left: 10px;
+    background-color: #000000;
     background: #000000;
     border: 1px solid #000000;
     color: #FFFFFF;
@@ -271,9 +283,10 @@ input[type="submit"].endre:hover {
     text-decoration: none;
     text-shadow: none;
     vertical-align: top;
+    -moz-border-radius: 5px;
     border-radius: 5px;
-    box-shadow: 0 1px 6px rgba(229, 221, 232, .9), inset 0 1px 0 rgba(249, 249, 249, .9);
-    transition: all 0.5s ease-out;
+    -moz-box-shadow: 0 1px 6px rgba(229, 221, 232, .9), inset 0 1px 0 rgba(249, 249, 249, .9);
+    -webkit-transition: all 0.5s ease-out;
 }
 
 input[type="text"]:not(.frelst) {
@@ -302,45 +315,61 @@ input[type="text"]:not(.frelst) {
     padding-bottom: 4px;
     margin-left: -8px;
     font-size: 11px;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.4);
     border-radius: 4px;
 }
 
 .feil3 {
-    padding: 8px 0 8px 14px;
+    padding: 8px 0px 8px 14px;
     margin-left: 12px;
     margin-bottom: 20px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     background-color: rgb(34, 139, 34);
     border: 1px solid #eed3d7;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
     border-radius: 4px;
     color: #b94a48;
 }
 
 .feil {
+    width: 580px !important;
     background: rgba(255, 0, 0, 0.1);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-left: 0px;
+    font-size: 12px;
     color: rgba(255, 0, 0, 1);
 }
 
 .lykket {
+    width: 580px !important;
     background: rgba(0, 255, 0, 0.1);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-left: 0px;
+    font-size: 12px;
     color: rgba(0, 255, 0, 1);
 }
 
 .warning {
+    width: 580px !important;
     background: rgba(255, 255, 0, 0.1);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-left: 0px;
+    font-size: 12px;
     color: rgba(255, 255, 0, 1);
 }
 
 .info {
+    /* width: 100%; */
     background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 1);
-}
-
-.info, .feil, .warning, .lykket {
     padding-top: 12px;
     padding-bottom: 12px;
+    /* margin-left: 0px; */
     font-size: 12px;
+    color: rgba(255, 255, 255, 1);
 }
 
 /* Footer */
@@ -427,7 +456,7 @@ footer #spot3 {
 }
 
 #bilfrakt input {
-    margin: 5px 20px 5px 0;
+    margin: 5px 20px 5px 0px;
 }
 
 .table.flyplass {
@@ -454,12 +483,12 @@ footer #spot3 {
 }
 
 .table.bj td {
-    padding: 0 !important;
+    padding: 0px !important;
     text-align: center;
 }
 
 .table.bj {
-    margin: 15px 0 15px 0;
+    margin: 15px 0px 15px 0px;
 }
 
 .table.stats {
@@ -504,7 +533,12 @@ ul.adminpanel li {
     font-weight: normal;
     display: inline;
     float: left;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -514,7 +548,7 @@ ul.adminpanel li {
 
 ul.adminpanel li a {
     color: #111;
-    margin: 0;
+    margin: 0px;
     display: block;
     width: 100%;
     height: 100%;
@@ -591,6 +625,8 @@ ul.adminpanel li:last-child {
 }
 
 .faq_1 .faq_2 {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
     border-radius: 3px;
     border: 1px dotted #666;
     background: #202020;
@@ -664,7 +700,7 @@ ul.adminpanel li:last-child {
 
 .stat4 {
     /* Picmaker */
-    background: linear-gradient(to right, orange, yellow, #00b100, cyan, #7878ff, violet) !important;
+    background: linear-gradient(to right, orange, yellow, #00b100, cyan, #7878ff, violet)  !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     font-weight: bold !important;
@@ -724,8 +760,14 @@ ul.adminpanel li:last-child {
     position: fixed;
     width: 100%;
     height: 68px;
-    top: 0;
+    top: 0px;
+    /* background: rgba(54, 54, 54, 0.48); */
+    /* vertical-align: top; */
+    /* color: #FFF; */
+    /* -webkit-user-select: none; */
     background: #333333;
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
     box-shadow: inset 0 0 27px #000000;
     margin-top: -15px;
     z-index: 333;
@@ -818,7 +860,7 @@ ul.adminpanel li:last-child {
     text-decoration: none;
     font-size: 100%;
     opacity: 0.8;
-    transition: all 100ms ease-in-out;
+    -webkit-transition: all 100ms ease-in-out;
     display: block;
     width: 100%;
     height: 100%;
@@ -863,7 +905,7 @@ ul.adminpanel li:last-child {
 #write {
     font-size: 11px;
     border: 1px solid #aaa;
-    border-radius: 4px;
+    -webkit-border-radius: 4px;
     height: 17px;
     width: 568px;
     margin-left: 9px;
@@ -884,12 +926,13 @@ ul.adminpanel li:last-child {
     color: #999;
     border-right: 1px solid rgba(253, 253, 253, 0.03);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: #999;
     padding: 0;
     background: #0C0B0B;
 }
 
 .shadow {
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
+    box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.9);
     width: 95px;
     height: 95px;
     border-radius: 8px;
@@ -1013,240 +1056,4 @@ table.online tbody td, table.extra tbody td {
     background: #888 url('/imgs/warn1.png') repeat;
     text-align: center;
     margin-top: 70px;
-}
-/* MIKKAL CSS */
-
-.profiltekst {
-    padding: 15px 3em 3em !important;
-}
-
-body {
-    font-family: 'PT Sans', sans-serif !important;
-}
-
-#headerbg {
-    background: #2d2d2d !important;
-}
-
-#information {
-    display: none !important;
-}
-
-.table td {
-    padding: 5px !important;
-}
-
-#header {
-    box-shadow: none !important;
-    border: none !important;
-}
-
-#leftmenu a, #rightmenu a {
-    text-decoration: none !important;
-    letter-spacing: 0.2px !important;
-}
-
-#header {
-    background: url(https://mikeandrew.co/banner_test.svg) no-repeat top left !important;
-}
-
-.ct1 {
-    padding: 5px !important;
-    background: none !important;
-    color: #606060 !important;
-}
-
-.ct2 {
-    padding: 5px !important;
-    background: none !important;
-    color: #606060 !important;
-}
-
-.ct3 {
-    padding: 5px !important;
-    background: none !important;
-    color: #606060 !important;
-}
-
-.chattext {
-    color: #4a4a4a !important;
-}
-
-div#ct {
-    padding-top: 10px;
-    opacity: 0.6 !important;
-    transition: all 0.5s ease;
-}
-
-div#ct:hover {
-    opacity: 0.9 !important;
-    transition: all 0.5s ease;
-
-}
-
-#headerbg {
-    margin-top: 110px;
-    padding-top: 0 !important;
-}
-
-#header {
-    overflow: hidden !important;
-    height: 70px !important;
-}
-
-img#profileuserimage {
-    padding: 2em;
-    opacity: 0.4 !important;
-    transition: all 0.5s ease;
-}
-
-img#profileuserimage:hover {
-    padding: 2em;
-    opacity: 0.9 !important;
-    transition: all 0.5s ease;
-}
-
-section.newsection {
-    background: url(https://mikeandrew.co/banner_test.svg) #242424 center;
-    height: 7em !important;
-    background-repeat: no-repeat !important;
-}
-
-#header {
-    background: none !important;
-}
-
-#headerbg {
-    width: 100% !important;
-    height: 80px !important;
-    padding-top: 82px !important;
-}
-
-#navbar_top {
-    position: relative !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-input#write {
-    outline: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding: 9px !important;
-    background: #565656 !important;
-}
-
-#headerbg {
-    width: 100% !important;
-    height: 80px !important;
-    padding-top: 23px !important;
-}
-
-#navbar_top {
-    margin-top: 0 !important;
-
-}
-
-#headerbg {
-    background: #2d2d2d !important;
-    margin-top: 71px !important;
-}
-
-#navbar_top nav ul {
-    height: 54px !important;
-    position: relative !important;
-    top: -13px !important;
-}
-
-#navbar_top nav a {
-    color: #636363 !important;
-    padding-top: 3px !important;
-}
-
-table.online {
-    width: 100% !important;
-}
-
-table.online tbody td, table.extra tbody td {
-    padding: 10px !important;
-}
-
-div#ct {
-    padding-top: 0 !important;
-}
-
-div#ct {
-    padding-top: 0 !important;
-    position: absolute !important;
-    top: 149px !important;
-}
-
-h2 {
-    padding-left: 2em !important;
-}
-
-.table, #garasje {
-    border-collapse: collapse;
-    margin: auto;
-    width: 100%;
-}
-
-#leftmenu a, #rightmenu a {
-    transition: all 0.5s ease;
-    color: #5d5d5d !important;
-
-}
-
-#leftmenu a:hover, #rightmenu a:hover {
-    color: #cecece !important;
-    transition: all 0.5s ease;
-}
-
-#leftmenu li, #rightmenu li {
-    padding-bottom: 4px !important;
-    padding-top: 4px !important;
-}
-
-div#praten {
-    padding: 15px !important;
-}
-
-input#write {
-    outline: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding: 18px !important;
-    background: #262626 !important;
-    margin-left: 0 !important;
-    width: 100% !important;
-}
-
-#write {
-    color: #fff !important;
-}
-
-#write::-webkit-input-placeholder {
-    color: #4a4a4a !important;
-}
-
-#write:-moz-placeholder {
-    color: #4a4a4a !important;
-}
-
-#write::-moz-placeholder {
-    color: #4a4a4a !important;
-}
-
-#write:-ms-input-placeholder {
-    color: #4a4a4a !important;
-}
-
-table.tablemain {
-    margin: 0 auto;
-    width: 100%;
-}
-
-table.tablemain {
-    margin: 0 auto;
-    width: 100% !important;
 }

@@ -29,7 +29,7 @@ if (r1() || r2()) {
 $rows
 </tbody>
 </table>
-<p class="info">Eneste funksjonen som er implmenentert så langt er sletting av nyheter. Den vil ikke stille spørsmål, men vil slette nyheten direkte.</p>
+<p class="info">Eneste funksjonen som er implmenentert s&aring; langt er sletting av nyheter. Den vil ikke stille sp&oslash;rsm&aring;l, men vil slette nyheten direkte.</p>
 HTML;
 
 } else {

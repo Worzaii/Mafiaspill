@@ -46,7 +46,7 @@ if (isset($_SESSION['sessionzar'])) {
             </ul>
             <div id="login">
                 <h2>Innlogging</h2>
-                <?= $grunn ?>
+                <?=(isset($grunn) ? $grunn : "")?>
                 <div id="loginresult"></div>
                 <noscript><p>Du m&aring; ha javascript aktivert for &aring; spille!</p></noscript>
                 <form class="loginform" name="logininfo" id="loginform" action="handlers/handler.php?login">
