@@ -33,20 +33,20 @@ if($obj->har_fabrikk == 0){
     );
     $kapp = array("sal"=>1,"svo"=>2,"tre"=>3,"kop"=>4,"stal"=>5);
 
-    //TODO: KJØP / SELG AV KRUTT OG HYLSER
-    // TODO: KJØP / SALG AV INGREDIENSER
+    //TODO: KJï¿½P / SELG AV KRUTT OG HYLSER
+    // TODO: KJï¿½P / SALG AV INGREDIENSER
     // TODO: BANK FOR FABRIKK
     $page = $_GET['page'];
     if($page == 1){
      // Bank
         header("Location: /fabrikk.php");
     }elseif($page == 2){
-        // KJØP / SELG AV KRUTT OG HYLSER 
+        // KJï¿½P / SELG AV KRUTT OG HYLSER 
         ?>
 
 <?php
     }elseif($page == 3){
-        // KJØP R&aring;VARER
+        // KJï¿½P R&aring;VARER
         $curr = unserialize($obj->fabrikk_ingredienser);
         $total = 0;
         foreach($curr as $type => $ant){

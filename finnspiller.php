@@ -9,7 +9,7 @@ if(isset($_POST['finn'])){
 	$soktekst = $db->escape($_POST['soktekst']);
 	if(strlen($soktekst) <= 1){
 		echo '
-		<p class="feil"> Du m&aring; s&oslash;ke med mer enn ét tegn!</p>
+		<p class="feil"> Du m&aring; s&oslash;ke med mer enn ï¿½t tegn!</p>
 		';
 	}
 	else{
