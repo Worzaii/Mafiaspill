@@ -71,44 +71,57 @@ if (isset($_GET['login'])) {
     }
 }
 if (isset($_GET['getaccess'])) {
-    $db = new DatabaseObject\database();
-    $db->connect();
-    $m = $db->escape($_POST['email']);
+    try {
+        $db = new PDO("mysql:dbname=" . DATABASE . ";host=" . HOST, USERNAME, PASSWORD, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_STRINGIFY_FETCHES => false,
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
+            PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
+            PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
+        ]);
+    } catch (PDOException $PDOException) {
+        error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
+        die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
+    }
+    $m = $_POST['email'];
     if (!filter_var($m, FILTER_VALIDATE_EMAIL)) {
         $str['string'] = feil('E-postadressen ikke godkjent! Pr&oslash;v igjen!');
     } else {
-        $res = $db->query("SELECT * FROM `invsjekk` WHERE `ip` = '" . $_SERVER['REMOTE_ADDR'] . "' 
+        $res = $db->query("SELECT COUNT(*) as numrows FROM `invsjekk` WHERE `ip` = '" . $_SERVER['REMOTE_ADDR'] . "' 
         AND `used` = '0' AND `timestamp` > '" . time() . "'");
-        if ($db->num_rows() == 0) {
-            $used = ($db->query("SELECT * FROM `users` WHERE `mail` = '$m' AND `health` = '0' LIMIT 1"));
+        if ($res->fetchColumn() == 0) {
+            //$used = $db->query("SELECT * FROM `users` WHERE `mail` = '$m' AND `health` = '0' LIMIT 1"); /* Apparely not in use? */
             $subject = 'Registrering';
             $randomseed = rand();
-            $db->query("INSERT INTO `invsjekk`(`mail`,timestamp,`ip`,`code`) 
-VALUES('" . $m . "','" . (time() + 600) . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $randomseed . "')");
-            $url = 'https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . urlencode($m);
-            $message = '
-      <html>
-      <head>
-      <title>Invitasjon til registrering</title>
-      </head>
-      <body>
-      <h1>Klikk p&aring; linken under for &aring; g&aring; til registrering</h1>
-      <p><a href="' . $url . '">' . $url . '</a></p>
-      </body>
-      </html>
-      ';
-            $headers = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=UTF-8' . "\r\n";
-            $headers .= 'To: ' . $m . ' <' . $m . '>' . "\r\n";
-            $headers .= 'From: ' . NAVN_DOMENE . ' <noreply@' . MAIL_SENDER . '>' . "\r\n";
-            if (mail($m, $subject, $message, $headers)) {
-                $str['string'] = lykket('Det ble sendt en email til ' . htmlentities($m) . ' 
+            $ins = $db->prepare("INSERT INTO `invsjekk`(`mail`,timestamp,`ip`,`code`) 
+VALUES(?,(UNIX_TIMESTAMP() + 600),?,?)");
+            if ($ins->execute([$m, $ip, $randomseed])) {
+                $url = 'https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . urlencode($m);
+                $message = "
+                    <html>
+                    <head>
+                    <title>Invitasjon til registrering</title>
+                    </head>
+                    <body>
+                    <h1>Klikk p&aring; linken under for &aring; g&aring; til registrering</h1>
+                    <p><a href=\"{$url}\">{$url}</a></p>
+                    </body>
+                    </html>
+                    ";
+                $headers = 'MIME-Version: 1.0' . "\r\n" . 'Content-type: text/html; charset=UTF-8' . "\r\n";
+                $headers .= 'To: ' . $m . ' <' . $m . '>' . "\r\n";
+                $headers .= 'From: ' . NAVN_DOMENE . ' <noreply@' . MAIL_SENDER . '>' . "\r\n";
+                if (mail($m, $subject, $message, $headers)) {
+                    $str['string'] = lykket('Det ble sendt en email til ' . htmlentities($m) . ' 
                 fra noreply@' . MAIL_SENDER . '! 
-                Sjekk innboks(mulig s&oslash;ppelpost ogs&aring;). 
-                Hvis du bruker Outlook, s&aring; vil du ikke motta mail pga. begrensninger hos dem.');
-                $str['res'] = 1;
-            } else {
-                $str['string'] = feil('Kunne ikke sende mail! Kan v&aelig;re feilkonfigurasjon 
+                Sjekk innboks(mulig s&oslash;ppelpost ogs&aring;).');
+                    $str['res'] = 1;
+                } else {
+                    $str['string'] = feil('Kunne ikke sende mail! Kan v&aelig;re feilkonfigurasjon 
                 i script eller ikke ferdig modul.');
+                }
             }
         } else {
             $f = $db->fetch_object();
@@ -120,39 +133,59 @@ VALUES('" . $m . "','" . (time() + 600) . "','" . $_SERVER['REMOTE_ADDR'] . "','
     }
 }
 if (isset($_GET['brukerreg'])) {
-    $db = new DatabaseObject\database();
-    $db->connect();
-    $u = $db->escape($_POST['user']);
+    try {
+        $db = new PDO("mysql:dbname=" . DATABASE . ";host=" . HOST, USERNAME, PASSWORD, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_STRINGIFY_FETCHES => false,
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
+            PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
+            PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
+        ]);
+    } catch (PDOException $PDOException) {
+        error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
+        die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
+    }
+    $u = $_POST['user'];
     $p = $_POST['pass'];
-    $m = $db->escape($_POST['mail']);
-    $c = $db->escape($_POST['code']);
-    $v = $db->escape($_POST['vervetav']);
-    $db->query("SELECT * FROM `users` WHERE `user` = '$u'");
-    if (!preg_match("/^[a-z]+[\w._ -]*$/i", $u) || (strlen($u) <= 3 || strlen($u) >= 21) || (strlen($p) <= 3)) {
-        $str['string'] = feil('Brukernavn ikke godkjent! Sjekk at du oppfyller kriteriene:<br>
-Bokstaver fra a-z(sm&aring; eller store) Du kan ogs&aring; bruke _(underscore) og mellomrom. 
+    $m = $_POST['mail'];
+    $c = $_POST['code'];
+    $v = $_POST['vervetav'];
+    $check = $db->prepare("SELECT count(*) FROM `users` WHERE `user` = ?");
+    $check->execute([$u]);
+    if ($check->fetchColumn() != 1) {
+        /* No users go by that name, continuing... */
+        if (!preg_match("/^[a-z]+[\w._-]*$/i", $u) || (strlen($u) <= 3 || strlen($u) >= 21) || (strlen($p) <= 3)) {
+            $str['string'] = feil('Brukernavn ikke godkjent! Sjekk at du oppfyller kriteriene:<br>
+Bokstaver fra a-z(sm&aring; eller store) Du kan ogs&aring; bruke _(underscore). 
 Det kan v&aelig;re mellom 4-20 tegn. 
 Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller mer.');
-        if (!preg_match("/^[a-z]+[\w._-]*$/i", $u)) {
-            $str['string'] .= '<p>Brukernavnet ble ikke godkjent!</p>';
-        }
-        if (strlen($u) <= 3 || strlen($u) >= 21) {
-            $str['string'] .= '<p>Brukernavnet m&aring; v&aelig;re mellom 4-20 tegn! Du hadde 
+            if (!preg_match("/^[a-z]+[\w._-]*$/i", $u)) {
+                $str['string'] .= '<p>Brukernavnet ble ikke godkjent!</p>';
+            }
+            if (strlen($u) <= 3 || strlen($u) >= 21) {
+                $str['string'] .= '<p>Brukernavnet m&aring; v&aelig;re mellom 4-20 tegn! Du hadde 
 ' . strlen($u) . ' tegn!</p>';
-        }
-        if (strlen($p) <= 3) {
-            $str['string'] .= '<p>Passordet var for kort, ha minst 4 tegn!</p>';
-        }
-    } else {
-        if ($db->num_rows() == 0) {
-            $s = $db->query("SELECT * FROM `invsjekk` WHERE `code` = '$c' AND `mail` = '$m' AND `used` = '0'");
-            if ($db->num_rows() == 1) {
+            }
+            if (strlen($p) <= 3) {
+                $str['string'] .= '<p>Passordet var for kort, ha minst 4 tegn!</p>';
+            }
+        } else {
+            $s = $db->prepare("SELECT count(*) FROM `invsjekk` WHERE `code` = ? AND `mail` = ? AND `used` = '0'");
+            $s->execute([$c, $m]);
+            if ($s->fetchColumn() == 1) {
+                $s2 = $db->prepare("SELECT * FROM `invsjekk` WHERE `code` = ? AND `mail` = ? AND `used` = '0'");
+                $s2->execute([$c, $m]);
                 $vervet = 0;
                 if (strlen($v) >= 1) {
-                    $r = $db->query("SELECT * FROM `users` WHERE `id` = '$v'");
-                    if ($db->num_rows($r) == 1) {
-                        $r = $db->fetch_object();
-                        $vervet = $r->id;
+                    $r = $db->prepare("SELECT count(*) FROM `users` WHERE `id` = ?");
+                    $r->execute([$v]);
+
+                    if ($r->fetchColumn() == 1) {
+                        $r = $db->prepare("SELECT id FROM `users` WHERE `id` = ?");
+                        $r->execute([$v]);
+                        $vervet = $r->fetchColumn();
                     } else {
                         $error = 1;
                     }
@@ -162,14 +195,29 @@ Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller
                     Pr&oslash;v igjen, eller la feltet st&aring; tomt.');
                 } else {
                     $password = password_hash($p, PASSWORD_BCRYPT);
-                    $db->query("INSERT INTO `users`(`user`,`pass`,`mail`,`regip`,`reghostname`,
+                    $newuser = $db->prepare("INSERT INTO `users`(`user`,`pass`,`mail`,`regip`,`reghostname`,
                     regstamp,`lastactive`) 
-                    VALUES('$u','$password','$m','$ip','" . gethostbyaddr($ip) . "',UNIX_TIMESTAMP(),'0')");
-                    if ($db->affected_rows() == 1) {
+                    VALUES(?,?,?,?,?,UNIX_TIMESTAMP(),'0')");
+                    $newuser->execute([
+                        $u,
+                        $password,
+                        $m,
+                        $ip,
+                        gethostbyaddr($ip)
+                    ]);
+                    if ($newuser->rowCount() == 1) {
                         $str['string'] = lykket('Du har blitt registrert, du kan n&aring; logge inn! 
                         <a href="http://' . DOMENE_NAVN . '/">Trykk her for &aring; g&aring; til innlogging</a>');
                         $str['res'] = 1;
-                        $db->query("UPDATE `invsjekk` SET `used` = '1' WHERE `mail` = '$m' AND `code` = '$c'");
+                        $inv = $db->prepare("UPDATE `invsjekk` SET `used` = '1' WHERE `mail` = ? AND `code` = ?");
+                        $inv->execute([
+                            $m,
+                            $c
+                        ]);
+                        if ($inv->rowCount() == 0) {
+                            error_log("ERROR! Couldn't update invsjekk! Error?\n" . var_export($inv->errorInfo(),
+                                    true));
+                        }
                     } else {
                         $str['string'] = feil('Brukeren kunne ikke bli lagt inn i databasen, pr&oslash;v igjen, 
                         ta gjerne kontakt med support: support@' . MAIL_SENDER . '!');
@@ -179,10 +227,11 @@ Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller
                 $str['string'] = feil('Koden er ikke godkjent! Den kan v&aelig;re brukt allerede, 
                 eller mailen har ingen tilknytning til koden.');
             }
-        } else {
-            $str['string'] = feil('Du m&aring; velge et annet brukernavn, da dette er i bruk.');
         }
+    } else {
+        $str['string'] = feil('Du m&aring; velge et annet brukernavn, da dette er i bruk.');
     }
+
 }
 if (isset($_GET['forgotpassword'])) {
     $user = $_POST['user'];

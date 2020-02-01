@@ -3,7 +3,7 @@ function updatepage(str, responsediv) {
   $(rese).
   fadeIn(1000).
   html(str).
-  css({'display': 'block', 'color': 'red', 'word-break':'break-all'});
+  css({'display': 'block', 'color': 'red', 'word-break': 'break-all'});
 }
 
 $(document).ready(function() {

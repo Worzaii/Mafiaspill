@@ -12,7 +12,7 @@ startpage("Multi/IP-sjekk");
 <th colspan="2">Spillere, og ip:</th><th>Antall:</th>
 </tr>
 <?php
-$s = $db->query("SELECT  `ip` , COUNT(  `ip` ) AS  `antc` FROM  `users` WHERE `activated` = '1' AND `status` IN (1,2,3,4,5,6) AND `ip` <> '' GROUP BY  `ip` HAVING COUNT(`ip`) > 1 ORDER BY `lastactive` DESC LIMIT 0 , 30");
+$s = $db->query("SELECT  `ip` , COUNT(  `ip` ) AS  `antc`,lastactive FROM  `users` WHERE `status` IN (1,2,3,4,5,6) AND `ip` <> '' GROUP BY  `ip` HAVING COUNT(`ip`) > 1 ORDER BY `lastactive` DESC LIMIT 0 , 30");
 $p = $db->query("SELECT  `pass` , COUNT(  `pass` ) AS  `antp` FROM  `users` WHERE `activated` = '1' AND `status` IN (3,4,5,6) GROUP BY  `pass` HAVING COUNT(`pass`) > 1 ORDER BY `antp` DESC LIMIT 0 , 30");
 if($db->num_rows($s) >= 1){
 while($r = mysqli_fetch_object($s)){

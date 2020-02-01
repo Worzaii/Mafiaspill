@@ -155,7 +155,6 @@ function user($i, $obj = 0)
 
 function bilde($i)
 {
-    global $dir;
     global $db;
     $s = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($i) . "'");
     $obj = $db->fetch_object($s);
@@ -369,7 +368,7 @@ function bbcodes(
     }
     if ($link1 == 1) {
         $text = preg_replace(
-            '#\[link="htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$@&()\'*+,;=%]+)"\ text="(.+)"\]#',
+            '#\[link="htt(p://|ps://)([A-Za-z0-9\-._~:/?\#[\]@!$&()\'*+,;=%]+)" text="(.+)"\]#',
             '<a href="htt$1$2" title="$1$2">$3</a>',
             $text
         );
@@ -488,7 +487,6 @@ function smileys($text)
 
 function rank($xp)
 {
-    $xp2 = $xp;
     if ($xp <= 50) {
         $ranknr = 1;
         $rankty = "Soldat";
@@ -603,7 +601,6 @@ function types($a, $b = 0)
 
 function famidtoname($id, $link = 0)
 {
-    global $dir;
     global $db;
     $db->query("SELECT * FROM `familier` WHERE `id` = '$id'") or die(mysqli_error($db->con));
     if ($db->num_rows() == 1) {
@@ -620,7 +617,6 @@ function famidtoname($id, $link = 0)
 
 function sysmel($til, $melding)
 {
-    global $dir;
     global $db;
     if (is_array($til)) {
         $q = "INSERT INTO `sysmail` VALUES";

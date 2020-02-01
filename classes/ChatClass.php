@@ -15,7 +15,7 @@ class ChatClass
         $this->result = $GLOBALS["db"]->query("select * from mafia.chat order by id desc limit 0,$num_messages");
         return true;
     }
-    
+
     public function generateChatHeader()
     {
         $holder = "";
