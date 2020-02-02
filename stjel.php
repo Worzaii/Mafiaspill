@@ -63,7 +63,7 @@ if (bunker() == true) {
                                 $db->query("UPDATE `users` SET `hand` = (`hand` + $rand),`exp` = (`exp` + 2.0) WHERE `id` = '$obj->id' LIMIT 1");
                                 $db->query("INSERT INTO `robbery`(`uid`,`tid`,`ucity`,`tcity`,`amount`,`timestamp`) VALUES('$obj->id','$f->id','$obj->city','$f->city','$rand','$time2')");
                                 /*$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $f->id . "','" .
-                                    time() . "','" . $db->slash('--<b>Ran Spiller</b><br/>' . $obj->user . ' ranet '
+                                    time() . "','" . $db->slash('--<b>Ran Spiller</b><br>' . $obj->user . ' ranet '
                                 . number_format($rand) . 'kr fra deg!') . "')");*/
                                 echo lykket('Du klarte &aring; rane ' . status($f->user) . ' for ' . number_format($rand) . ' kr!');
                             } else {

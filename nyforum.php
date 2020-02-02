@@ -33,12 +33,12 @@ if (isset($_GET['type'])) {
     } // Ingen tilgang til ledelsen forumet om man ikke er admin/mod.
     if ($db->num_rows($db->query($sql)) == 0) {
         echo '<form action="" method="POST">
-  <input type="submit" name="sopprett" value="Opprett tr&aring;d!"/>
+  <input type="submit" name="sopprett" value="Opprett tr&aring;d!">
 </form><p class="feil">Ingen tr&aring;der er opprettet i forumet.</p>';
     } else {
         ?>
         <form action="" method="POST">
-            <input type="submit" name="sopprett" value="Opprett tr&aring;d!"/>
+            <input type="submit" name="sopprett" value="Opprett tr&aring;d!">
         </form>
         <table class="table">
             <tr>
@@ -76,17 +76,17 @@ if (isset($_GET['trad'])) {
         } else {
             ?>
             <form action="nyforum.php?svar=<?= $trad ?>" method="POST">
-                <input type="submit" name="svar" value="Besvar Tr&aring;den"/>
+                <input type="submit" name="svar" value="Besvar Tr&aring;den">
             </form>
             <?php
             if ($obj->status == 1 || $obj->status == 2) {
                 ?>
                 <form action="nyforum.php?slett_trad=<?= $trad ?>" method="POST">
                     <input type="submit" onclick="return confirm('Er du sikker?')" name="slett"
-                           value="Slett Tr&aring;den"/>
+                           value="Slett Tr&aring;den">
                 </form>
                 <form action="nyforum.php?flytt_trad=<?= $trad ?>" method="POST">
-                    <input type="submit" name="flytt" value="Flytt Tr&aring;den"/>
+                    <input type="submit" name="flytt" value="Flytt Tr&aring;den">
                 </form>
 
                 <?php
@@ -94,7 +94,7 @@ if (isset($_GET['trad'])) {
             $if_rediger_trad = "|| <a href=\"nyforum.php?rediger_trad=" . $hent->id . "\">Rediger Tr&aring;d</a>";
             $rediger_trad = ($hent->uid == $obj->id) ? $if_rediger_trad : null;
             echo '<div class="forumstart">  
-  <div class="object_one"><img src="' . bilde(htmlentities($hent->uid)) . '" height="150" width="170"/>' . user($hent->uid) . ' ' . $rediger_trad . '</div>
+  <div class="object_one"><img src="' . bilde(htmlentities($hent->uid)) . '" height="150" width="170">' . user($hent->uid) . ' ' . $rediger_trad . '</div>
     <div class="object_two" style="max-width: 400px;"><div class="object_three"><b>' . $hent->tema . ' @ ' . date("H:i:s | d-m-Y",
                     $hent->time) . '</b></div></br>' . bbcodes($hent->melding, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                     1, 1, 0) . '</div>
@@ -114,7 +114,7 @@ if (isset($_GET['trad'])) {
                     $rediger = '|| <a href=\"nyforum.php?rediger=' . $forum['sid'] . '\">Rediger</a>';
                     $if_rediger = ($forum['suid'] == $obj->id) ? $rediger : null;
                     echo '<div class="forumstart">  
-  <div class="object_one"><img src="' . bilde(htmlentities($forum['suid'])) . '" height="150" width="170"/>' . user($forum['suid']) . ' || <a href="nyforum.php?siter=' . $forum['sid'] . '">Siter</a> ' . $if_rediger . '</div>
+  <div class="object_one"><img src="' . bilde(htmlentities($forum['suid'])) . '" height="150" width="170">' . user($forum['suid']) . ' || <a href="nyforum.php?siter=' . $forum['sid'] . '">Siter</a> ' . $if_rediger . '</div>
     <div class="object_two" style="max-width: 400px;"><div class="object_three">@ ' . date("H:i:s | d-m-Y",
                             $forum['time']) . '</div>' . $if_object_four . '</br>' . bbcodes($forum['smelding'], 1, 1,
                             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0) . '</div>
@@ -134,7 +134,7 @@ if (isset($_GET['svar'])) {
         <form action="" method="POST">
             <textarea style="width: 540px;margin-left: auto;margin-right: auto;height: 120px;" name="object_one"
                       placeholder="Besvar Tr&aring;den"></textarea>
-            <input type="submit" name="object_two"/>
+            <input type="submit" name="object_two">
         </form>
         <?php
         if (isset($_POST['object_two'])) {
@@ -159,7 +159,7 @@ if (isset($_GET['opprett'])) {
             </tr>
             <tr>
                 <td>Emne:</td>
-                <td><input type="text" name="thread"/></td>
+                <td><input type="text" name="thread"></td>
             </tr>
             <tr>
                 <td>Melding:</td>
@@ -178,7 +178,7 @@ if (isset($_GET['opprett'])) {
             </tr>
             </td>
             <tr>
-                <td><input type="submit" name="object_two"/></td>
+                <td><input type="submit" name="object_two"></td>
             </tr>
         </table>
     </form>
@@ -209,7 +209,7 @@ if (isset($_GET['siter'])) {
         <form action="" method="POST">
             <textarea style="width: 540px;margin-left: auto;margin-right: auto;height: 120px;" name="object_one"
                       placeholder="Sitering"></textarea>
-            <input type="submit" name="object_two"/>
+            <input type="submit" name="object_two">
         </form>
         <?php
         if (isset($_POST['object_two'])) {
@@ -262,7 +262,7 @@ if (isset($_GET['rediger'])) {
             <form action="" method="POST">
                 <textarea style="width: 540px;margin-left: auto;margin-right: auto;height: 120px;" name="rediger_one"
                           placeholder="Sitering"><?= $fetch->smelding ?></textarea>
-                <input type="submit" name="rediger_two"/>
+                <input type="submit" name="rediger_two">
             </form>
             <?php
             if (isset($_POST['rediger_two'])) {
@@ -289,14 +289,14 @@ if (isset($_GET['rediger_trad'])) {
             ?>
             <form action="" method="POST">
                 <table class="table">
-                    Tema: <input type="text" name="title" value="<?= $object_fetch->tema ?>"/>
+                    Tema: <input type="text" name="title" value="<?= $object_fetch->tema ?>">
                     <tr>
                         <td><textarea style="width: 540px;margin-left: auto;margin-right: auto;height: 120px;"
                                       name="rediger_one" placeholder="Sitering"><?= $object_fetch->melding ?></textarea>
                         </td>
                     </tr>
                     <tr>
-                        <td><input type="submit" name="rediger_two"/></td>
+                        <td><input type="submit" name="rediger_two"></td>
                     </tr>
                 </table>
             </form>
@@ -370,7 +370,7 @@ if (isset($_GET['flytt_trad'])) {
                         <option value="3">Offtopic</option>
                         <?= $ledelsen ?>
                     </select>
-                    <input type="submit" name="senderen" value="Flytt tr&aring;den!"/>
+                    <input type="submit" name="senderen" value="Flytt tr&aring;den!">
                 </table>
             </form>
             <?php

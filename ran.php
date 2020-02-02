@@ -301,7 +301,7 @@ teller('.($bu - time()).',\'bunker\',false,\'ned\');
       <?php
       if ($db->num_rows($adsfas) >= 1) {
           while ($r = mysqli_fetch_object($adsfas)) {
-              echo '<tr><td>' . $r->from . '</td><td>' . city($r->city) . '</td><td><input type="radio" name="ransid" value="' . $r->id . '"/></td></tr>';
+              echo '<tr><td>' . $r->from . '</td><td>' . city($r->city) . '</td><td><input type="radio" name="ransid" value="' . $r->id . '"></td></tr>';
           }
       } else {
           echo '<tr><td colspan="3" style="text-align:center;">Du er ikke invitert til ran</td></tr>';

@@ -138,14 +138,14 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
                     <td>'.$valen['ingr_name'].'</td>
                     <td>'.number_format($valen['pris']).' kr</td>
                     <td>'.$curr[$valen['html']].'</td>
-                    <td><input type="radio" name="radioInput" value="'.$valen['html'].'"/></td>
+                    <td><input type="radio" name="radioInput" value="'.$valen['html'].'"></td>
                     </tr>';
             }elseif($valen['type'] === 1 && $obj->fabrikk_type == 1){
                 echo '<tr>
                     <td>'.$valen['ingr_name'].'</td>
                     <td>'.number_format($valen['pris']).' kr</td>
                     <td>'.$curr[$valen['html']].'</td>
-                    <td><input type="radio" name="radioInput" value="'.$valen['html'].'"/></td>
+                    <td><input type="radio" name="radioInput" value="'.$valen['html'].'"></td>
                     </tr>';
             }
             ?>
@@ -154,8 +154,8 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
         ?>
         <tr>
             <td colspan="4">
-                <input type="submit" name="send" value="Kj&oslash;p"/>
-                <input type="submit" name="selg" value="Selg"/> 
+                <input type="submit" name="send" value="Kj&oslash;p">
+                <input type="submit" name="selg" value="Selg">
             </td>
         </tr>
     </table>
@@ -186,12 +186,12 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
                 <tr>
                     <td>Kopper</td>
                     <td>'.$unser['kop'].'</td>
-                    <td><input type="text" name="kopper"/></td>
+                    <td><input type="text" name="kopper"></td>
                 </tr>
                 <tr>
                     <td>St&aring;l</td>
                     <td>'.$unser['stal'].'</td>
-                    <td><input type="text" name="stal"/></td>
+                    <td><input type="text" name="stal"></td>
                 </tr>
                 ';
             }elseif($r->fabrikk_type == 2){
@@ -199,17 +199,17 @@ lykket('Grattis makker, du solgte '.htmlentities($textfield).' stk '.$oppskrift[
                 <tr>
                     <td>Salpeter</td>
                     <td>'.$unser['sal'].'</td>
-                    <td><input type="text" name="salpeter"/></td>
+                    <td><input type="text" name="salpeter"></td>
                 </tr>
                 <tr>
                     <td>Trekull</td>
                     <td>'.$unser['tre'].'</td>
-                    <td><input type="text" name="trekull"/></td>
+                    <td><input type="text" name="trekull"></td>
                 </tr>
                 <tr>
                     <td>Svovel</td>
                     <td>'.$unser['svo'].'</td>
-                    <td><input type="text" name="svovel"/></td>
+                    <td><input type="text" name="svovel"></td>
                 </tr>
                 ';               
             }

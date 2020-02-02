@@ -171,7 +171,7 @@ ENDHTML;
 else{
 echo '
 <br>
-<center><img src="http://lastopp.no/3/0dfb49e119aa9507ed67f1733b0f9214.png"/></center>
+<center><img src="http://lastopp.no/3/0dfb49e119aa9507ed67f1733b0f9214.png"></center>
 <br>
 <br>
 <br><br><table style="padding:10px;margin:0px auto;border-collapse:collapse;border-color:grey;border:1px solid grey;width:500px;" border="1">

@@ -40,7 +40,7 @@ if($db->num_rows($query) == 0){
 <form action="" method="post">
     <table class="table">
         <th colspan="2">S&oslash;k etter spiller</th>
-        <tr><td><input type="text" name="search"/></td><td><input type="submit" name="search_post"></td></tr>
+        <tr><td><input type="text" name="search"></td><td><input type="submit" name="search_post"></td></tr>
     </table>
 </form>
 <form action="" method="post">

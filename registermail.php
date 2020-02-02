@@ -72,7 +72,7 @@ AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
                            tabindex="1"><br>
                     <input type="text" class="text" name="user"<?= $disa1 ?> placeholder="Brukernavn" tabindex="2"><br>
                     <input type="password" class="text" name="pass"<?= $disa2 ?> placeholder="Passord" tabindex="3"><br>
-                    <input type="submit" value="Registrer deg" tabindex="4" class="button"/>
+                    <input type="submit" value="Registrer deg" tabindex="4" class="button">
                 </form>
             </div>
         </div>

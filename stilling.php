@@ -61,7 +61,7 @@ Vi &oslash;nsker deg lykke til!'
             <tbody>
             <tr>
                 <td>Brukernavn:</td>
-                <td><input placeholder="Brukernavnet" value="<?= $asd ?>" name="user" type="text" autofocus=""/></td>
+                <td><input placeholder="Brukernavnet" value="<?= $asd ?>" name="user" type="text" autofocus=""></td>
             </tr>
             <tr>
                 <td>Velg status:</td>

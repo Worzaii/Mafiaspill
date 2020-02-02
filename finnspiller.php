@@ -3,7 +3,7 @@
 	startpage("Spillers&oslash;k");
 ?>
 <h1>Finn spiller</h1>
-<br> <center><form method="post"><input type="text" name="soktekst" value="" maxlength="15"/><input type="submit" class="finn" name="finn" value="Finn spiller"></form></center>
+<br> <center><form method="post"><input type="text" name="soktekst" value="" maxlength="15"><input type="submit" class="finn" name="finn" value="Finn spiller"></form></center>
 <?php
 if(isset($_POST['finn'])){
 	$soktekst = $db->escape($_POST['soktekst']);

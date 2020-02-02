@@ -120,7 +120,7 @@ if (fengsel() == true) {
                                 if ($db->query("UPDATE `users` SET `bank` = (`bank` + $bank) WHERE `id` = '$u->id' LIMIT 1")) {
                                     $ret .= '<p class="lykket">Du har overf&oslash;rt ' . number_format($bank) . 'kr til ' . $u->user . '!</p>';
                                     #$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $u->id . "',
-                                    #'" . time() . "','" . $db->slash('--<b>Bank</b><br/>' . $obj->user . ' har overf&oslash;rt ' . number_format($bank) . 'kr til deg!') . "')");
+                                    #'" . time() . "','" . $db->slash('--<b>Bank</b><br>' . $obj->user . ' har overf&oslash;rt ' . number_format($bank) . 'kr til deg!') . "')");
                                     $time = time();
                                     $db->query("INSERT INTO `bank_transfer`(`uid`,`tid`,`sum`,`timestamp`) VALUES('$obj->id','$u->id','$bank','$time')");
                                 }

@@ -86,7 +86,7 @@
     </table>
   </form>
   <form action="" method="post">
-    <input type="submit" <?=$knapp?> value="Kj&oslash;p Neste Eiendom!" name="eigendoms"/>
+    <input type="submit" <?=$knapp?> value="Kj&oslash;p Neste Eiendom!" name="eigendoms">
   </form>
       <?php
       }
@@ -213,10 +213,10 @@
               <td>Valg</td>
           </tr>
           <tr>
-              <td><input type="text" name="antall"/></td>
+              <td><input type="text" name="antall"></td>
               <td><?=number_format($fetch->kuler_pris)?></td>
               <td><?=$fetch->kuler_left?></td>
-              <td><input style="margin:5px;" value="Kj&oslash;p kuler" type="submit" name="kjop"/></td>
+              <td><input style="margin:5px;" value="Kj&oslash;p kuler" type="submit" name="kjop"></td>
           </tr>
       </table>
   </form>
@@ -278,7 +278,7 @@
                   echo '<tr><td '.$style.'>'.$weapon['navn'].'</td><td '.$style.'>'.number_format($weapon['pris']).' kr</td></tr>';
               }
               ?>
-          <tr><td colspan="2"><input type="submit" name="kjop" value="Kj&oslash;p neste v&aring;pen"/></td></tr>
+          <tr><td colspan="2"><input type="submit" name="kjop" value="Kj&oslash;p neste v&aring;pen"></td></tr>
       </table>
   </form>
                 <?php

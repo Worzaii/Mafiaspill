@@ -47,7 +47,7 @@ if (bunker() == true) {
                             if ($db->query("UPDATE `jail` SET `breaker` = '{$obj->id}' WHERE `breaker` IS NULL AND `id` = '$tid' AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1")) {
                                 $db->query("UPDATE `jail` SET `breaker` = '{$obj->id}' WHERE `id` = '$tid'");
                                 $res = lykket('Du har kj&oslash;pt ut ' . user($f->uid) . ' for ' . number_format($f->priceout) . 'kr!');
-                                /* $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br/>'.$obj->user.' kj&oslash;pte deg ut fra fengslet!')."')"); */
+                                /* $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br>'.$obj->user.' kj&oslash;pte deg ut fra fengslet!')."')"); */
                             }
                         }
                     } else {
@@ -83,7 +83,7 @@ if (bunker() == true) {
                             if ($db->query("UPDATE `jail` SET `breaker` = '{$obj->id}' WHERE `breaker` IS NULL AND `id` = '$tid' AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1")) {
                                 if ($db->query("UPDATE `users` SET `exp` = (`exp` + 0.4) WHERE `id` = '{$obj->id}' LIMIT 1")) {
                                     $res = lykket('Du klarte &aring; bryte ut ' . user($f->uid) . '!<br>Du tjente 0.4xp!');
-                                    /* $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br/>'.$obj->user.' br&oslash;t deg ut fra fengslet!')."')"); */
+                                    /* $db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('".$f->uid."','".time()."','".$db->slash('--<b>Fengsel</b><br>'.$obj->user.' br&oslash;t deg ut fra fengslet!')."')"); */
                                     /* sysmel($f->uid,
                                       '--<b>Fengsel</b></br>'.$obj->user.' br&oslash;t deg ut fra fengslet!'); */
                                 }

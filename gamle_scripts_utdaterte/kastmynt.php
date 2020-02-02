@@ -42,7 +42,7 @@ if(isset($_POST['bet'])){
 <form action="" method="post">
     <table class="table">
         <tr><td><input type="text" name="innsats" placeholder="Din Innsats"></td>
-            <td><input type="submit" name="bet" value="Sats"/></td></tr>
+            <td><input type="submit" name="bet" value="Sats"></td></tr>
     </table>
 </form>
 <?php

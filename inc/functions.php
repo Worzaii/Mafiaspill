@@ -291,16 +291,18 @@ function fengsel($timereturn = null)
 {
     global $obj;
     global $db;
-    $db->query("SELECT * FROM `jail` WHERE `uid` = '{$obj->id}' AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1");
-    if ($timereturn == true) {
-        $f = $db->fetch_object();
-        return ($f->timeleft - time());
-    } else {
-        if ($db->num_rows() == 0) {
-            return false;
+    $us = $db->prepare("SELECT count(*) FROM `jail` WHERE `uid` = ? AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1");
+    $us->execute([$obj->id]);
+    if ($us->fetchColumn() == 1) {
+        if ($timereturn == true) {
+            $us2 = $db->prepare("SELECT timeleft FROM `jail` WHERE `uid` = ? AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1");
+            $us2->execute([$obj->id]);
+            return $us2->fetchObject()->timeleft - time();
         } else {
             return true;
         }
+    } else {
+        return false;
     }
 }
 
@@ -308,11 +310,13 @@ function bunker($tr = false)
 {
     global $obj;
     global $db;
-    $db->query("SELECT * FROM `bunkerinv` WHERE `tid` = '" . $obj->id . "' AND `accepted` = '1' AND `timeleft` > " . time() . " AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
-    if ($db->num_rows() == 1) {
+    $bu = $db->query("SELECT count(*) FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+    $bu->execute([$obj->id]);
+    if ($bu->fetchColumn() == 1) {
         if ($tr) {
-            $g = $db->fetch_object();
-            return $g->timeleft;
+            $bu2 = $db->query("SELECT timeleft FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+            $bu2->execute([$obj->id]);
+            return $bu2->fetchColumn();
         } else {
             return true;
         }
@@ -381,16 +385,20 @@ function bbcodes(
         );
     }
     if ($understrek == 1) {
-        $text = preg_replace("/\[u\](.*?)\[\/u\]/is", "<span style='text-decoration:underline;'>$1</span>", $text);
+        $text = preg_replace("/\[u\](.*?)\[\/u\]/is",
+            "<span style='text-decoration:underline;'>$1</span>", $text);
     }
     if ($tykk == 1) {
-        $text = preg_replace("/\[b\](.*?)\[\/b\]/is", "<span style='font-weight:bold'>$1</span>", $text);
+        $text = preg_replace("/\[b\](.*?)\[\/b\]/is", "<span style='font-weight:bold'>$1</span>",
+            $text);
     }
     if ($kursiv == 1) {
-        $text = preg_replace("/\[i\](.*?)\[\/i\]/is", "<span style='font-style:italic'>$1</span>", $text);
+        $text = preg_replace("/\[i\](.*?)\[\/i\]/is", "<span style='font-style:italic'>$1</span>",
+            $text);
     }
     if ($midtstilt == 1) {
-        $text = preg_replace("/\[c\](.*?)\[\/c\]/is", "<div style='text-align:center;'>$1</div>", $text);
+        $text = preg_replace("/\[c\](.*?)\[\/c\]/is", "<div style='text-align:center;'>$1</div>",
+            $text);
     }
     if ($farge == 1) {
         $text = preg_replace("/\[f=#(([0-9a-f]){3}|([0-9a-f]){6})\](.*?)\[\/f\]/is",
@@ -404,7 +412,8 @@ function bbcodes(
         );
     }
     if ($storrelse == 1) {
-        $text = preg_replace('#\[size=([0-9]+)\](.*?)\[/size\]#s', '<span style="font-size:$1px">$2</span>', $text);
+        $text = preg_replace('#\[size=([0-9]+)\](.*?)\[/size\]#s',
+            '<span style="font-size:$1px">$2</span>', $text);
     }
     if ($hr == 1) {
         $text = preg_replace("/(.*?)\[hr\](.*?)/is", "$1<hr>$2", $text);
@@ -448,7 +457,12 @@ function bbcodes(
         );
     }
     $text = preg_replace(
-        ["/\<3/ix", "/\[li\](.*?)\[\/li\]/is", "/\[ul\](.*?)\[\/ul\]/is", "/\[ol\](.*?)\[\/ol\]/is"],
+        [
+            "/\<3/ix",
+            "/\[li\](.*?)\[\/li\]/is",
+            "/\[ul\](.*?)\[\/ul\]/is",
+            "/\[ol\](.*?)\[\/ol\]/is"
+        ],
         ["&heart;", "<li>$1</li>", "<ul>$1</ul>", "<ol>$1</ol>"],
         $text
     );

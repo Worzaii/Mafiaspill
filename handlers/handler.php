@@ -16,21 +16,7 @@ if ($host != "mafia.werzaire.net") {
 if (!(isset($_GET['login']) || isset($_GET['getaccess']) || isset($_GET['brukerreg']) || isset($_GET['forgotpassword']) || isset($_GET['resetpassword']))) {
     die(json_encode($str)); /* Saving some time, hopefully */
 }
-/* Setting up database for usage within the rest of the script scope */
-try {
-    $db = new PDO("mysql:dbname=" . DATABASE . ";host=" . HOST, USERNAME, PASSWORD, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_STRINGIFY_FETCHES => false,
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-        PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
-        PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
-        PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
-    ]);
-} catch (PDOException $PDOException) {
-    error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
-    die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
-}
+include_once '../inc/pdoinc.php';
 if (isset($_GET['login'])) {
     if (isset($_POST['username']) && isset($_POST['password'])) {
         if (strlen($_POST['username']) === 0 || strlen($_POST['password']) === 0) {
@@ -43,7 +29,11 @@ if (isset($_GET['login'])) {
             if ($st->rowCount() === 1) {
                 $uid = $st->fetchObject();
                 if (password_verify($pa, $uid->pass) && $uid->health > 0) {
-                    $_SESSION['sessionzar'] = [$uid->user, $uid->pass, safegen($uid->user, $uid->pass)];
+                    $_SESSION['sessionzar'] = [
+                        $uid->user,
+                        $uid->pass,
+                        safegen($uid->user, $uid->pass)
+                    ];
                     $st2 = $db->prepare("insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())");
                     $st2->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
 
@@ -71,20 +61,7 @@ if (isset($_GET['login'])) {
     }
 }
 if (isset($_GET['getaccess'])) {
-    try {
-        $db = new PDO("mysql:dbname=" . DATABASE . ";host=" . HOST, USERNAME, PASSWORD, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_STRINGIFY_FETCHES => false,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-            PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
-            PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
-            PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
-        ]);
-    } catch (PDOException $PDOException) {
-        error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
-        die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
-    }
+    include_once '../inc/pdoinc.php';
     $m = $_POST['email'];
     if (!filter_var($m, FILTER_VALIDATE_EMAIL)) {
         $str['string'] = feil('E-postadressen ikke godkjent! Pr&oslash;v igjen!');
@@ -133,20 +110,7 @@ VALUES(?,(UNIX_TIMESTAMP() + 600),?,?)");
     }
 }
 if (isset($_GET['brukerreg'])) {
-    try {
-        $db = new PDO("mysql:dbname=" . DATABASE . ";host=" . HOST, USERNAME, PASSWORD, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_STRINGIFY_FETCHES => false,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-            PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
-            PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
-            PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
-        ]);
-    } catch (PDOException $PDOException) {
-        error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
-        die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
-    }
+    include_once '../inc/pdoinc.php';
     $u = $_POST['user'];
     $p = $_POST['pass'];
     $m = $_POST['mail'];
@@ -156,7 +120,8 @@ if (isset($_GET['brukerreg'])) {
     $check->execute([$u]);
     if ($check->fetchColumn() != 1) {
         /* No users go by that name, continuing... */
-        if (!preg_match("/^[a-z]+[\w._-]*$/i", $u) || (strlen($u) <= 3 || strlen($u) >= 21) || (strlen($p) <= 3)) {
+        if (!preg_match("/^[a-z]+[\w._-]*$/i",
+                $u) || (strlen($u) <= 3 || strlen($u) >= 21) || (strlen($p) <= 3)) {
             $str['string'] = feil('Brukernavn ikke godkjent! Sjekk at du oppfyller kriteriene:<br>
 Bokstaver fra a-z(sm&aring; eller store) Du kan ogs&aring; bruke _(underscore). 
 Det kan v&aelig;re mellom 4-20 tegn. 
@@ -237,11 +202,18 @@ if (isset($_GET['forgotpassword'])) {
     $user = $_POST['user'];
     $mail = $_POST['mail'];
     if (strlen($user) >= 4 && strlen($user) <= 20 && filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-        $db = new DatabaseObject\database();
-        $db->connect();
-        $user = $db->escape($user);
-        $db->query("SELECT * FROM `users` WHERE `user` = '$user' AND `mail` = '$mail' AND `health` > '0'");
-        if ($db->num_rows() == 1) {
+        include_once '../inc/pdoinc.php';
+        $fp = $db->prepare("SELECT count(*) FROM `users` WHERE `user` = ? AND `mail` = ? AND `health` > '0'");
+        $fp->execute([
+            $user,
+            $mail
+        ]);
+        if ($fp->fetchColumn() == 1) {
+            $fp2 = $db->prepare("SELECT mail,user,id FROM `users` WHERE `user` = ? AND `mail` = ? AND `health` > '0'");
+            $fp2->execute([
+                $user,
+                $mail
+            ]);
             $i = $db->fetch_object();
             $to = $i->mail;
             $head = 'Nytt passord';
@@ -270,8 +242,6 @@ if (isset($_GET['forgotpassword'])) {
       ';
             $headers = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-
-            // Additional headers
             $headers .= 'To: ' . $i->user . ' <' . $i->mail . '>' . "\r\n";
             $headers .= 'From: ' . MAIL_SENDER . ' <' . HENVEND_MAIL . '>' . "\r\n";
             if (mail($to, $head, $message, $headers)) {
@@ -279,7 +249,7 @@ if (isset($_GET['forgotpassword'])) {
  registrert p&aring; brukeren. Sjekk innboks/s&oslash;ppelpost.');
             } else {
                 $str['string'] = feil('Mailen kunne ikke sendes, beklager. Ta kontakt med 
-Ledelsen via mailadressen: <a href="mailto:system@' . MAIL_SENDER . '">system@' . MAIL_SENDER . '</a>.');
+Ledelsen via mailadressen: <a href="mailto:werzairenet@' . MAIL_SENDER . '">system@' . MAIL_SENDER . '</a>.');
             }
         } else {
             $str['string'] = feil('Det ble ikke funnet noen brukere med oppgitt informasjon, 
@@ -296,47 +266,55 @@ if (isset($_GET['resetpassword'])) {
     $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ?
         $_SERVER['HTTP_X_FORWARDED_FOR'] . ' | ' . $_SERVER['REMOTE_ADDR'] : $_SERVER['REMOTE_ADDR'];
     if (strlen($p1) >= 4 && ($p1 == $p2) && is_numeric($uid)) {
-        $db = new DatabaseObject\database();
-        $db->connect();
-        $uid = $db->escape($_POST['uid']);
+        include_once '../inc/pdoinc.php';
+        $uid = $_POST['uid'];
         $pass = password_hash($p1, PASSWORD_BCRYPT);
-        if ($db->con) {
-            $s = $db->query("SELECT * FROM `resetpasset` WHERE `uid` = '$uid' AND `used` = '0'
+        $s = $db->prepare("SELECT count(*) FROM `resetpasset` WHERE `uid` = ? AND `used` = '0'
                               AND (`timestamp` + 3600) > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
-            if ($db->num_rows() == 1) {
-                $f = $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($uid) . "' LIMIT 1");
-                if ($db->num_rows() == 1) {
-                    $obj = $db->fetch_object();
-                    $db->query("UPDATE `users` SET `pass` = '$pass' WHERE
-                     `id` = '$uid' LIMIT 1");
-                    if ($db->affected_rows() == 1) {
-                        $str['string'] = lykket('Ditt passord har blitt endret! <br>
+        $s->execute([
+            $uid
+        ]);
+        if ($s->fetchColumn() == 1) {
+
+            $f = $db->prepare("SELECT COUNT(*) FROM `users` WHERE `id` = ? LIMIT 1");
+            $f->execute([$uid]);
+            if ($f->fetchColumn() == 1) {
+                $f2 = $db->prepare("SELECT * FROM users WHERE id = ?");
+                $f2->execute($uid);
+                $obj = $db->fetch_object();
+                $f3 = $db->prepare("UPDATE `users` SET `pass` = ? WHERE
+                     `id` = ? LIMIT 1");
+                $f3->execute([
+                    $p1,
+                    $uid
+                ]);
+                if ($f3->rowCount() == 1) {
+                    $str['string'] = lykket('Ditt passord har blitt endret! <br>
 Du kan n&aring; logge inn p&aring; innloggingssiden med det nye passordet ditt!');
-                        $str['res'] = 1;
-                        /*$db->query("INSERT INTO `respaslogg`(`uid`,`time`,`oldpass`,`newpass`,`ip`)
-VALUES('$uid',UNIX_TIMESTAMP(),'{$obj->pass}','" . md5($p1) . "','$ip')"); ** Might reimplement later*/
-                        $db->query("UPDATE `resetpasset` SET `used` = '1' 
-WHERE `uid` = '" . $db->escape($uid) . "' AND `used` = '0' ORDER BY `id` DESC LIMIT 1");
-                        if ($db->affected_rows() == 1) {
-                            $str['string'] = lykket('Passordet er oppdatert! G&aring; til innlogging for &aring; fortsette!');
-                        } else {
-                            $str['string'] = feil('Kunne ikke oppdatere passordet, kontakt admin!');
-                        }
+                    $str['res'] = 1;
+                    /**
+                     * Todo: Implement logg for password resets?
+                     * $db->query("INSERT INTO `respaslogg`(`uid`,`time`,`oldpass`,`newpass`,`ip`)
+                     * VALUES('$uid',UNIX_TIMESTAMP(),'{$obj->pass}','" . md5($p1) . "','$ip')"); ** Might reimplement later
+                     */
+                    $respw = $db->prepare("UPDATE `resetpasset` SET `used` = '1' 
+WHERE `uid` = ? AND `used` = '0' ORDER BY `id` DESC LIMIT 1");
+                    $respw->execute([$uid]);
+                    if ($respw->rowCount() == 1) {
+                        $str['string'] = lykket('Passordet er oppdatert! G&aring; til innlogging for &aring; fortsette!');
                     } else {
-                        if ($db->affected_rows() == 0) {
-                            $str['string'] = feil('Kunne ikke oppdatere passordet! 
-2 muligheter st&aring;r:<br>Du pr&oslash;vde &aring; bruke samme passordet<br>Det var en feil i query til databasen! 
-<br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!');
-                        }
+                        $str['string'] = feil('Kunne ikke oppdatere passordet, kontakt oss p&aring; ' . HENVEND_MAIL);
                     }
                 } else {
-                    $str['string'] = feil('Brukerid-en finnes ikke!');
+                    $str['string'] = feil('Kunne ikke oppdatere passordet! 
+2 muligheter st&aring;r:<br>Du pr&oslash;vde &aring; bruke samme passordet<br>Det var en feil i query til databasen! 
+<br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!');
                 }
             } else {
-                $str['string'] = feil('Denne koden er ikke lengre tilgjengelig!');
+                $str['string'] = feil('Brukerid-en finnes ikke!');
             }
         } else {
-            $str['string'] = feil('Databasen er ikke tilgjengelig! Pr&oslash;v igjen senere!');
+            $str['string'] = feil('Denne koden er ikke lengre tilgjengelig!');
         }
     } else {
         $str['string'] = feil('Passordet ditt m&aring; v&aelig;re 4 tegn eller lengre, og v&aelig;re like i begge feltene under! Det kan ogs&aring; v&aelig;re at ikke riktig uid ble postet.');
