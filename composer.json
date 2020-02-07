@@ -14,7 +14,8 @@
     "ext-mysqli": "*",
     "ext-json": "*",
     "ext-gd": "*",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "laravel/laravel": "^6.12"
   },
   "scripts": {
     "phpcs": "phpcs --standard=PSR2"
