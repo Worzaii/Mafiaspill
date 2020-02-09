@@ -15,7 +15,8 @@
     "ext-json": "*",
     "ext-gd": "*",
     "ext-pdo": "*",
-    "laravel/laravel": "^6.12"
+    "laravel/laravel": "^6.12",
+    "ext-readline": "*"
   },
   "scripts": {
     "phpcs": "phpcs --standard=PSR2"
