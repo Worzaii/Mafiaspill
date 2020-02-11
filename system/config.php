@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 function sql_log($query)
 {
     # [19-May-2019 12:45:39 Europe/Oslo]
-    if ($_SERVER['SERVER_NAME'] == "localhost") {
+    if ($_SERVER['SERVER_NAME'] == "localhost.localdomain") {
         $file = $_SERVER["DOCUMENT_ROOT"]."\\logs\\sql.log";
     } else {
         $file = "/var/www/mafia.werzaire.net/logs/sql.log";

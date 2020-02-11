@@ -9,7 +9,7 @@ $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR
     : $_SERVER['REMOTE_ADDR'];
 $host = $_SERVER['SERVER_NAME'];
 if ($host != "mafia.werzaire.net") {
-    $domain = "localhost";
+    $domain = "localhost.localdomain";
 } else {
     $domain = DOMENE_NAVN;
 }
@@ -46,11 +46,10 @@ if (isset($_GET['login'])) {
                         'state' => 1,
                         'href' => 'https://' . $domain . '/nyheter.php'
                     ];
-                    /*} else {
-                        $str['string'] = feil('Du har blitt drept! For &aring; spille, registrer en ny bruker!');
-                    }*/
                 } else {
                     $str['string'] = feil('Feil passord');
+                    $str['extra_info'] = "Health: {$uid->health}, and password result: " . ((password_verify($pa,
+                            $uid->pass)) ? "Correct" : "Wrong");
                 }
             } else {
                 $str['string'] = feil('Konto eksisterer ikke');

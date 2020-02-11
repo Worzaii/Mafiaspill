@@ -46,7 +46,7 @@ Q: Avslutt program (Alternativt, bruk CTRL + D)\n\n";
             /*echo "\n\ntypes: user: " . gettype($user) . "\nIs it in array? " . ((in_array($status,
                     [1, 2, 3, 4, 5])) ? "Ja" : "Nei");*/
             if (in_array($status, [1, 2, 3, 4, 5])) {
-                $inpass = (($genpas != "") ? $genpas : $pass);
+                $inpass = (isset($genpas)) ? $genpas : $pass;
                 $exists = $db->prepare("select count(*) from users where user = ?");
                 $exists->execute([$user]);
                 if ($exists->fetchColumn() != 1) {
