@@ -4,14 +4,13 @@ if (!defined('BASEPATH')) {
 }
 function sql_log($query)
 {
-    # [19-May-2019 12:45:39 Europe/Oslo]
-    if ($_SERVER['SERVER_NAME'] == "localhost.localdomain") {
-        $file = $_SERVER["DOCUMENT_ROOT"]."\\logs\\sql.log";
+    if ($_SERVER['SERVER_NAME'] == "mafia.localhost.localdomain") {
+        $file = $_SERVER["DOCUMENT_ROOT"] . "\\logs\\sql.log";
     } else {
         $file = "/var/www/mafia.werzaire.net/logs/sql.log";
     }
     $f = fopen($file, "a+");
-    fwrite($f, date("[d-M-Y H:i:s e] ").$query . "\n");
+    fwrite($f, date("[d-M-Y H:i:s e] ") . $query . "\n");
     fclose($f);
 }
 
@@ -43,7 +42,7 @@ define('DESC', 'Kommer senere...');
 define('KEYWORDS', 'mafia, spill');
 define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
-$timeout = (60* (120));
+$timeout = (60 * (120));
 
 /* Database connection parametres START */
 define("HOST", "127.0.0.1");
@@ -59,11 +58,11 @@ session_start();
 if (isset($_SESSION['HTTP_USER_AGENT'])) {
     if ($_SESSION['HTTP_USER_AGENT'] !== sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'])) {
         error_log("Seems the agent isn't correctly defined. Here's the comparements:");
-        error_log("Session value: '".$_SESSION['HTTP_USER_AGENT']."' and the value it's compared to: ");
-        error_log("Server-value:  '".$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']."'");
+        error_log("Session value: '" . $_SESSION['HTTP_USER_AGENT'] . "' and the value it's compared to: ");
+        error_log("Server-value:  '" . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] . "'");
         error_log("Removing the information so it can be set anew...");
         unset($_SESSION['HTTP_USER_AGENT']);
-        error_log("Result of removal: ".((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
+        error_log("Result of removal: " . ((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
         header('Location: https://' . DOMENE_NAVN . '/loggut.php?g=8');
         exit('Cross-network-tilgang avsl&aring;tt!');
     }

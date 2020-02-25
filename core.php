@@ -20,7 +20,7 @@ if (isset($_SERVER['X-Requested-With'])) {
 if (isset($_SESSION['sessionzar'])) {
     try {
         $db = new PDO("mysql:dbname=mafia;host=127.0.0.1", "mafia", "mafia", [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_STRINGIFY_FETCHES => false,
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,

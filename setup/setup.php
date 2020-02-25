@@ -1,4 +1,8 @@
 <?php
+if (php_sapi_name() != "cli") {
+    /*If someone were to try running it from the browser, it would stop the entirety of PHP execution, so stopping it here already to be safe*/
+    die("This script must be run in Command line!");
+}
 /**
  * todo: Make a CLI script to create users fast. With options of status and more.
  */
@@ -58,7 +62,7 @@ Q: Avslutt program (Alternativt, bruk CTRL + D)\n\n";
                         time(),
                         "user@localhost.localdomain"
                     ]);
-                    echo "Kommando utført!\nAntall rader endret: " . $userq->rowCount().PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.";
+                    echo "Kommando utført!\nAntall rader endret: " . $userq->rowCount() . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
                 } else {
                     echo "Brukernavn eksisterer allerede! Forsøk et annet brukernavn!\n\n";
                 }

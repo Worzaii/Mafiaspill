@@ -85,7 +85,7 @@ function startpage($title = NAVN_DOMENE)
 }
 
 /**
- * Prints out the rest of the page, as necessary
+ * @return string Writes out the rest of the WebPage
  */
 function endpage()
 {
@@ -101,11 +101,11 @@ function endpage()
     /* This is no longer valid because I haven't implemented PDO as some other class or function than the core itself */
 }
 
-function redirect($url, $wait)
-{
-    header("Refresh: $wait; url=$url");
-}
-
+/**
+ * @param $city
+ * @param int $way 1=intToCity, 2=CityToInt
+ * @return string City or Int depending on choice
+ */
 function city($city, $way = 1)
 {
     if (!is_numeric($city) || empty($city)) {
@@ -201,7 +201,7 @@ function timec($sec)
 
 function status($s)
 {
-    error_log("Status function called, working... Value passed: \"" . $s . "\"");
+    //error_log("Status function called, working... Value passed: \"" . $s . "\"");
     global $db;
     if (!is_string($s) && $s == 0) {
         return "System";
@@ -310,11 +310,11 @@ function bunker($tr = false)
 {
     global $obj;
     global $db;
-    $bu = $db->query("SELECT count(*) FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+    $bu = $db->prepare("SELECT count(*) FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
     $bu->execute([$obj->id]);
     if ($bu->fetchColumn() == 1) {
         if ($tr) {
-            $bu2 = $db->query("SELECT timeleft FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+            $bu2 = $db->prepare("SELECT timeleft FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
             $bu2->execute([$obj->id]);
             return $bu2->fetchColumn();
         } else {

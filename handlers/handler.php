@@ -7,12 +7,7 @@ header('Content-type: application/json');
 $str = ['string' => feil('Error: Not overwritten!'), 'state' => 0, 'act' => 0];
 $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
     : $_SERVER['REMOTE_ADDR'];
-$host = $_SERVER['SERVER_NAME'];
-if ($host != "mafia.werzaire.net") {
-    $domain = "localhost.localdomain";
-} else {
-    $domain = DOMENE_NAVN;
-}
+$domain = $_SERVER['SERVER_NAME'];
 if (!(isset($_GET['login']) || isset($_GET['getaccess']) || isset($_GET['brukerreg']) || isset($_GET['forgotpassword']) || isset($_GET['resetpassword']))) {
     die(json_encode($str)); /* Saving some time, hopefully */
 }
@@ -24,32 +19,31 @@ if (isset($_GET['login'])) {
         } else {
             $us = $_POST['username'];
             $pa = $_POST['password'];
-            $st = $db->prepare("SELECT * FROM `users` WHERE `user` = ?");
+            $st = $db->prepare("SELECT count(*) FROM `users` WHERE `user` = ?");
             $st->execute([$us]);
-            if ($st->rowCount() === 1) {
-                $uid = $st->fetchObject();
+            if ($st->fetchColumn() === 1) {
+                $st2 = $db->prepare("SELECT id, pass, user, health FROM `users` WHERE `user` = ?");
+                $st2->execute([$us]);
+                $uid = $st2->fetchObject();
                 if (password_verify($pa, $uid->pass) && $uid->health > 0) {
                     $_SESSION['sessionzar'] = [
                         $uid->user,
                         $uid->pass,
                         safegen($uid->user, $uid->pass)
                     ];
-                    $st2 = $db->prepare("insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())");
-                    $st2->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
+                    $st3 = $db->prepare("insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())");
+                    $st3->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
 
-                    $st3 = $db->prepare("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(), `ip` = ?, `hostname` = ? where `id` = ? AND `pass` = ?");
-                    $st3->execute([$ip, gethostbyaddr($ip), $uid->id, $uid->pass]);
+                    $st4 = $db->prepare("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(), `ip` = ?, `hostname` = ? where `id` = ? AND `pass` = ?");
+                    $st4->execute([$ip, gethostbyaddr($ip), $uid->id, $uid->pass]);
 
                     $str = [
-                        'string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn 
-                        til nyhetssiden...'),
+                        'string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn til nyhetssiden...'),
                         'state' => 1,
                         'href' => 'https://' . $domain . '/nyheter.php'
                     ];
                 } else {
                     $str['string'] = feil('Feil passord');
-                    $str['extra_info'] = "Health: {$uid->health}, and password result: " . ((password_verify($pa,
-                            $uid->pass)) ? "Correct" : "Wrong");
                 }
             } else {
                 $str['string'] = feil('Konto eksisterer ikke');
@@ -213,7 +207,7 @@ if (isset($_GET['forgotpassword'])) {
                 $user,
                 $mail
             ]);
-            $i = $db->fetch_object();
+            $i = $fp2->fetchObject();
             $to = $i->mail;
             $head = 'Nytt passord';
             $resgen = rand(1000010, 9999999);
@@ -230,12 +224,12 @@ if (isset($_GET['forgotpassword'])) {
       <p>Noen med f&oslash;lgende IP-adresse <i>' . $_SERVER['REMOTE_ADDR'] . '</i> har bedt om at passordet p&aring;
        brukernavn <b>' . $i->user . '</b> skal tilbakestilles.<br>
       Klikk p&aring; denne lenken for &aring; tilbakestille passordet:<br>
-      <a href="https://' . DOMENE_NAVN . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '">
-      https://' . DOMENE_NAVN . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '</a><br>
+      <a href="https://' . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '">
+      https://' . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '</a><br>
       Om det ikke var du som ba om at passordet skulle tilbakestilles anbefales det at du ser bort fra denne mailen.
        Det kan ogs&aring; v&aelig;re det at noen har kontroll p&aring; din e-post og dermed pr&oslash;ver &aring; 
        f&aring; tilgang til din bruker igjennom din e-post! Hvis du er smart, oppdater ditt passord p&aring; b&aring;de
-        ' . DOMENE_NAVN . ' og hos din e-post-leverand&oslash;r!</p>
+        ' . $domain . ' og hos din e-post-leverand&oslash;r!</p>
       </body>
       </html>
       ';

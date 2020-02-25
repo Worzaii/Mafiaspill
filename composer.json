@@ -15,7 +15,6 @@
     "ext-json": "*",
     "ext-gd": "*",
     "ext-pdo": "*",
-    "laravel/laravel": "^6.12",
     "ext-readline": "*"
   },
   "scripts": {
