@@ -1,21 +1,26 @@
 <?php
 include("core.php");
+$annual = "uken"; /* Setting a default value, if not overriden */
 if (isset($_GET['timespan']) && r1()) {
-    $time = (int) $_GET['timespan'];
+    $time = (int)$_GET['timespan'];
     if ($time === 1) {
         /* One day limit */
         $t = 60 * 60 * 24;
+        $annual = "dagen";
     } elseif ($time === 2) {
         /* One week limit */
         $t = 60 * 60 * 24 * 7;
+        $annual = "uken";
     } elseif ($time === 3) {
         /* One month-ish */
         $t = 60 * 60 * 24 * 31;
+        $annual = "m&aring;neden";
     } elseif ($time === 4) {
         /* One year */
         $t = 60 * 60 * 24 * 365;
+        $annual = "&aring;ret";
     } else {
-        error_log("Couldn't do it, type and value of GET is: ". gettype($time) . " ".$time);
+        error_log("Couldn't do it, type and value of GET is: " . gettype($time) . " " . $time);
     }
 }
 startpage("P&aring;loggede spillere");
@@ -51,10 +56,17 @@ ORDER BY `lastactive` DESC");
             $newtime = time() - $r->lastactive;
             if (r1() || r2()) {
                 error_log("Listed user result: " . ((!r1() && ($r->status == 1 || $r->status == 2)) ? "No" : "Yes"));
-                $add2 = "<td><span class=\"added-ip\">" . (($r->ip != null) ?
-                        ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $r->ip) : "Ikke registrert") . "</span></td>";
-                $add3 = "<td>" . (($r->hostname != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ?
-                        "***" : $r->hostname) : "Ikke registrert") . "</td>";
+                if (r1()) {
+                    $add2 = "<td><span class=\"added-ip\">" . (($r->ip != null) ?
+                            $r->ip : "Ikke registrert") . "</span></td>";
+                    $add3 = "<td>" . (($r->hostname != null) ? $r->hostname : "Ikke registrert") . "</td>";
+                } elseif (r2()) {
+                    $add2 = "<td><span class=\"added-ip\">" . (($r->ip != null) ?
+                            ((($r->status == 1)) ? "***" : $r->ip) : "Ikke registrert") . "</span></td>";
+                    $add3 = "<td>" . (($r->hostname != null) ? (($r->status == 1) ?
+                            "***" : $r->hostname) : "Ikke registrert") . "</td>";
+                }
+
             } else {
                 $add2 = null;
                 $add3 = null;
@@ -77,7 +89,7 @@ if (r1() || r2()) {
     echo '<table class="table extra">
     <thead>
     <tr>
-        <th colspan="4">Spillere som har v&aelig;rt p&aring;logget siste uken</th>
+        <th colspan="4">Spillere som har v&aelig;rt p&aring;logget siste ' . $annual . '</th>
     </tr>
     <tr>
         <th>Bruker</th>
@@ -102,10 +114,16 @@ if (r1() || r2()) {
         $lately2 = $db->query("SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - ($timequery)) and (unix_timestamp() - 1800)");
         while ($s = $lately2->fetchObject()) {
             $newtime = time() - $s->lastactive;
-            $add2 = "<td>" . (($s->ip != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $s->ip) :
-                    "Ikke registrert") . "</td>";
-            $add3 = "<td>" . (($s->hostname != null) ? ((!r1() && ($r->status == 1 || $r->status == 2)) ? "***" : $s->hostname) :
-                    "Ikke registrert") . "</td>";
+            if (r1()) {
+                $add2 = "<td><span class=\"added-ip\">" . (($s->ip != null) ?
+                        $s->ip : "Ikke registrert") . "</span></td>";
+                $add3 = "<td>" . (($s->hostname != null) ? $s->hostname : "Ikke registrert") . "</td>";
+            } elseif (r2()) {
+                $add2 = "<td><span class=\"added-ip\">" . (($s->ip != null) ?
+                        ((($s->status == 1)) ? "***" : $s->ip) : "Ikke registrert") . "</span></td>";
+                $add3 = "<td>" . (($s->hostname != null) ? (($s->status == 1) ?
+                        "***" : $s->hostname) : "Ikke registrert") . "</td>";
+            }
             echo '
           <tr>
           <td style="cursor:pointer;" onclick="window.location=\'profil.php?id=' . $s->id . '\'">

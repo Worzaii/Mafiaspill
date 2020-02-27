@@ -34,7 +34,12 @@ function codegen($length = 12)
 
 /* Config must be loaded before any other scripts, this must be defined and correct */
 define('THRUTT', "Sperrederrp!");
-define('DOMENE_NAVN', $_SERVER["SERVER_NAME"]); /* Name is fetched from the nginx configuration*/
+if (empty($_SERVER["SERVER_NAME"])) {
+    define('DOMENE_NAVN', "localhost.localdomain");
+} else {
+    define('DOMENE_NAVN',
+        $_SERVER["SERVER_NAME"]); /* Name is fetched from the nginx configuration*/
+}
 define('NAVN_DOMENE', 'Werzaire.net');
 define('MAIL_SENDER', 'werzaire.net');
 define('UTVIKLER', 'Nicholas Arnesen');
@@ -54,18 +59,21 @@ define("PASSWORD", "mafia");
 /* Rest of config has been imported to php.ini file directly. */
 
 /* Starting session */
-session_start();
-if (isset($_SESSION['HTTP_USER_AGENT'])) {
-    if ($_SESSION['HTTP_USER_AGENT'] !== sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'])) {
-        error_log("Seems the agent isn't correctly defined. Here's the comparements:");
-        error_log("Session value: '" . $_SESSION['HTTP_USER_AGENT'] . "' and the value it's compared to: ");
-        error_log("Server-value:  '" . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] . "'");
-        error_log("Removing the information so it can be set anew...");
-        unset($_SESSION['HTTP_USER_AGENT']);
-        error_log("Result of removal: " . ((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
-        header('Location: https://' . DOMENE_NAVN . '/loggut.php?g=8');
-        exit('Cross-network-tilgang avsl&aring;tt!');
+if (php_sapi_name() != "cli") {
+    session_start();
+    if (isset($_SESSION['HTTP_USER_AGENT'])) {
+        if ($_SESSION['HTTP_USER_AGENT'] !== sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'])) {
+            error_log("Seems the agent isn't correctly defined. Here's the comparements:");
+            error_log("Session value: '" . $_SESSION['HTTP_USER_AGENT'] . "' and the value it's compared to: ");
+            error_log("Server-value:  '" . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] . "'");
+            error_log("Removing the information so it can be set anew...");
+            unset($_SESSION['HTTP_USER_AGENT']);
+            error_log("Result of removal: " . ((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
+            header('Location: https://' . DOMENE_NAVN . '/loggut.php?g=8');
+            exit('Cross-network-tilgang avsl&aring;tt!');
+        }
+    } else {
+        $_SESSION['HTTP_USER_AGENT'] = sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
     }
-} else {
-    $_SESSION['HTTP_USER_AGENT'] = sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
+
 }

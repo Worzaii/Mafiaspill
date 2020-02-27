@@ -1,10 +1,11 @@
+#!/usr/bin/php7.2
 <?php
 if (php_sapi_name() != "cli") {
     /*If someone were to try running it from the browser, it would stop the entirety of PHP execution, so stopping it here already to be safe*/
     die("This script must be run in Command line!");
 }
 /**
- * todo: Make a CLI script to create users fast. With options of status and more.
+ * todo: Make a CLI script to create users fast. With options for status and more.
  */
 define('BASEPATH', true);
 include '../system/config.php';
@@ -33,22 +34,21 @@ Q: Avslutt program (Alternativt, bruk CTRL + D)\n\n";
     }
     if ($choice == 1) {
         $user = readline("Brukernavn: ");
-        $regex = preg_match("/^[a-z0-9-_]{3,10}$/i", $user);
+        $regex = preg_match("/^[a-z0-9\-_]{3,10}$/i", $user);
         if ($regex) {
             echo "Brukernavn gyldig!\n";
             $pass = readline("Opprett et passord, eller la stå tomt for tilfeldig generert passord: ");
             if (strlen($pass) == 0) {
+                echo "Du laget ikke passord selv, generer et for deg...\n\n";
                 /* Generating random password: */
-                $pass = "abcdefghijklmnopqrstuvwxyz0123456789-_.!\"#%&\\/()=?";
+                $pass_chars = "abcdefghijklmnopqrstuvwxyz0123456789-_.!\"#%&\\/()=?";
                 $genpas = "";
                 for ($i = 0; $i < 12; $i++) {
-                    $genpas .= $pass[rand(0, strlen($pass) - 1)];
+                    $genpas .= $pass_chars[rand(0, strlen($pass_chars) - 1)];
                 }
-                echo "Passord generert: " . $genpas . PHP_EOL . PHP_EOL;
+                echo "Passord generert: " . $genpas . "\n\n";
             }
-            $status = readline("Hvilket tilgangsnivå skal brukeren ha? \n1=admin, 2=moderator, 3=forum moderator, 4 = ? 5=vanlig bruker (standard): ");
-            /*echo "\n\ntypes: user: " . gettype($user) . "\nIs it in array? " . ((in_array($status,
-                    [1, 2, 3, 4, 5])) ? "Ja" : "Nei");*/
+            $status = readline("\nHvilket tilgangsnivå skal brukeren ha? \n1=admin, 2=moderator, 3=forum moderator, 4 = picmaker (vanlig bruker), 5=vanlig bruker: ");
             if (in_array($status, [1, 2, 3, 4, 5])) {
                 $inpass = (isset($genpas)) ? $genpas : $pass;
                 $exists = $db->prepare("select count(*) from users where user = ?");
@@ -62,7 +62,7 @@ Q: Avslutt program (Alternativt, bruk CTRL + D)\n\n";
                         time(),
                         "user@localhost.localdomain"
                     ]);
-                    echo "Kommando utført!\nAntall rader endret: " . $userq->rowCount() . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
+                    echo "\nKommando utført!\nAntall rader endret: " . $userq->rowCount() . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
                 } else {
                     echo "Brukernavn eksisterer allerede! Forsøk et annet brukernavn!\n\n";
                 }
@@ -72,6 +72,9 @@ Q: Avslutt program (Alternativt, bruk CTRL + D)\n\n";
         } else {
             echo "Brukernavnet er ikke innenfor, prøv igjen!\n\n";
         }
+        $choice = 0;
+    } elseif ($choice == 3) {
+        echo "You want to delete a user?! Heresy!!!!\n\n\n";
         $choice = 0;
     } else {
         $noselect = true;

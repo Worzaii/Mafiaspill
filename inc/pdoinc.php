@@ -11,6 +11,10 @@ try {
         PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
     ]);
 } catch (PDOException $PDOException) {
-    error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
-    die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
+    if (php_sapi_name() != "cli") {
+        error_log("Couldn't connect to database. Error: " . var_export($PDOException, true));
+        die(json_encode(['string' => "Kunne ikke koble til db. ", 'state' => 0]));
+    } else {
+        die("Couldn't connect to the database... Error message:\n" . $PDOException->getMessage());
+    }
 }
