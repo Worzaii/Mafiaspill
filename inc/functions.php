@@ -23,7 +23,7 @@ function startpage($title = NAVN_DOMENE)
     $online = $db->query("SELECT COUNT(*) as `numrows` FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800)
     AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
     $late_online = $online->fetchColumn();
-    $GLOBALS["stored_queries"]["online"] = $numrows;
+    $GLOBALS["stored_queries"]["online"] = $late_online;
     print'
   </head>
   <body>
@@ -45,7 +45,7 @@ function startpage($title = NAVN_DOMENE)
   <div id="information">
             <p>Spillet har blitt oppdatert. CTRL + F5</p>
   </div>
-  <header id="headerbg">
+  <!--<header id="headerbg">
   <div id="header"><div id="ct">';
     $chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
     while ($r = $chathead->fetchObject()) {
@@ -70,8 +70,8 @@ function startpage($title = NAVN_DOMENE)
     echo '</div>
 <noscript><p>&Aring; spille ' . NAVN_DOMENE . ' uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig, vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
   </div>
-  </header>
-  <section>
+  </header>-->
+  <section style="top: 56px;position: relative;">
   <div class="wrapper">
   <div id="content">
   <div id="shadow">

@@ -22,6 +22,23 @@ if (!(fengsel() || bunker())) {
         teller(' . ($f - time()) . ', "krim", false, "ned");
         </script>
         ';
+    } elseif (isset($_POST['valget'])) {
+        /* Starting execution of crime */
+        $valg = $_POST['valget'];
+        if(!is_numeric($valg)){
+            echo feil("Valg ikke godkjent! Pr&oslash;v p&aring; nytt! <a href=\"".$_SERVER['PHP_SELF']."\">Kriminalitet</a>");
+        } else{
+            $exists = $db->prepare("select count(*) from crime where id = ?");
+            $exists->execute([$valg]);
+            if($exists->fetchColumn() == 1){ /* Option exists, continuing crime*/
+                $crime = $db->prepare("select * from crime where id = ?");
+                $crime->execute([$valg]);
+                $info = $crime->fetchObject();
+                $chance = $db->prepare("select * from chance where uid = ? and `option` = ? and type = '1'");
+                $chance->execute([$obj->id, $valg]);
+                $thechance = $chance->fetchObject();
+            }
+        }
     } else {
         echo lykket("Du er klar til &aring; utf&oslash;re kriminalitet!");
         $get_actions = $db->prepare("select * from crime where levelmin <= ? ORDER BY `levelmin` DESC,`id` DESC");
