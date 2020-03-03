@@ -23,7 +23,7 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `mafia` /*!40100 DEFAULT CHARACTER SET 
 
 USE `mafia`;
 /* Making it faster and simpler */
-CREATE user if not exists 'mafia'@'localhost' identified by 'mafia';
+CREATE user if not exists 'mafia'@'localhost' identified with mysql_native_password by 'mafia';
 grant all on mafia.* to 'mafia'@'localhost';
 
 --
