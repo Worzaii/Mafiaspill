@@ -14,16 +14,20 @@ if (r1() || r2()) {
                 echo '<p>Meldingen er for kort!</p>';
             } else {
                 $new = $db->prepare("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES(?,?,?,UNIX_TIMESTAMP(),1,?)");
-                if ($new->execute([$tema, $mel, $obj->id, $lvl])) {
-                    echo lykket("Du har publisert en nyhet!");
-                    if ($lvl == 5) {
-                        /* Only announce news if it's for everyone */
-                        $db->query("INSERT INTO `chat` (`id`, `uid`, `message`, `timestamp`) 
+                try {
+                    if ($new->execute([$tema, $mel, $obj->id, $lvl])) {
+                        echo lykket("Du har publisert en nyhet!");
+                        if ($lvl == 5) {
+                            /* Only announce news if it's for everyone */
+                            $db->query("INSERT INTO `chat` (`id`, `uid`, `message`, `timestamp`) 
 VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen " . $tema . "', UNIX_TIMESTAMP());");
+                        }
+                    } else {
+                        error_log("Couldn't execute this query: " . $new->queryString . ". Got this error: " . $new->errorInfo()[2]);
+                        echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
                     }
-                } else {
-                    error_log("Couldn't execute this query: " . $new->queryString . ". Got this error: " . $new->errorInfo()[2]);
-                    echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
+                } catch (PDOException $exception) {
+                    echo feil("Kunne ikke utf&oslash;re p&aring; grunn av f&oslash;lgende feil: " . $exception->getMessage());
                 }
 
             }

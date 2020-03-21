@@ -8,7 +8,7 @@ function startpage($title = NAVN_DOMENE)
     print '<!DOCTYPE html>
 <html lang="no">
   <head>
-  <link rel="stylesheet" type="text/css" href="css/style_old.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="shortcut icon" href="./favicon.ico">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>' . $title . '</title>
