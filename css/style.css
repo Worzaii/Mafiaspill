@@ -1047,7 +1047,7 @@ body {
 }
 
 #header {
-    background: url(https://mikeandrew.co/banner_test.svg) no-repeat top left !important;
+    background: url(../images/banner_test.svg) no-repeat top left !important;
 }
 
 .ct1 {
@@ -1107,7 +1107,7 @@ img#profileuserimage:hover {
 }
 
 section.newsection {
-    background: url(https://mikeandrew.co/banner_test.svg) #242424 center;
+    background: url(../images/banner_test.svg) #242424 center;
     height: 7em !important;
     background-repeat: no-repeat !important;
 }
