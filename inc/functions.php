@@ -140,15 +140,24 @@ function city($city, $way = 1)
  */
 function user($i, $obj = 0)
 {
+    error_log("Running user function with the following values: ID=$i, OBJ=$obj");
     global $db;
-    $s = $db->prepare("SELECT * FROM `users` WHERE `id` = ?");
-    $s->execute([$i]);
-    if ($user = $s->fetchObject()) {
+    $s = $db->prepare("SELECT count(*) FROM `users` WHERE `id` = ?");
+    error_log("Result of execution: " . $s->execute([$i]));
+    $rows = $s->fetchColumn();
+    error_log("Number of rows found: $rows");
+    if ($rows == 1) {
+        error_log("User found on ID, getting info:");
+        $requery = $db->prepare("select * from users where id = ?");
+        $requery->execute([$i]);
+        $user = $requery->fetchObject();
+        error_log("User information extracted: \n" . var_export($user, true));
         if ($obj == 1) {
             return $user;
         }
         return '<a href="profil.php?id=' . $user->id . '">' . $user->user . '</a>';
     } else {
+        error_log(var_export($s, true));
         return false;
     }
 }

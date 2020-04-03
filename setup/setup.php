@@ -1,9 +1,10 @@
-#!/usr/bin/php7.2
+#!/usr/bin/php7.4
 <?php
 if (php_sapi_name() != "cli") {
     /*If someone were to try running it from the browser, it would stop the entirety of PHP execution, so stopping it here already to be safe*/
     die("This script must be run in Command line!");
 }
+chdir(dirname(__FILE__)); # This allows the script to be run from wherever php started if from.
 /**
  * todo: Make a CLI script to create users fast. With options for status and more.
  */

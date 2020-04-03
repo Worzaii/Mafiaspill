@@ -1,33 +1,65 @@
 <?php
 
-namespace UserObject {
+namespace UserObject
+{
+
+    use PDO;
 
     class User
     {
-        protected $password;
         private $id;
-        private $username;
+        private $user;
+        protected $pass;
         private $mail;
+        private $image;
+        private $profile;
+        private $family;
         private $bank;
         private $hand;
         private $city;
+        private $weapon;
+        private $bullets;
         private $health;
+        private $points;
         private $exp;
         private $status;
         private $support;
-        private $picmaker;
         private $ip;
+        private $regip;
         private $hostname;
+        private $reghostname;
         private $lastactive;
+        private $forceout;
+        private $regstamp;
+        private $picmaker;
+        private PDO $db;
 
         public function __construct()
         {
             return $this;
         }
 
-        public function getUser($Identifier)
+        public function connect(PDO $db)
         {
-            /* Insert some SQL query here somehow*/
+            $this->db = $db;
+            return $this;
+        }
+
+        public function getUserObject()
+        {
+            $getUserCount = $this->db->prepare("select count(*) from users where id = ?");
+            $getUserCount->execute([$this->id]);
+            if ($getUserCount->fetchColumn() == 1) {
+                $getUser = $this->db->prepare("select * from users where id = ?");
+                $getUser->execute([$this->id]);
+                return $getUser->fetchObject(__CLASS__);
+            }
+        }
+
+        public function setUserID($id)
+        {
+            $this->id = $id;
+            return $this;
         }
 
         /**
@@ -51,7 +83,7 @@ namespace UserObject {
          */
         public function getUsername()
         {
-            return $this->username;
+            return $this->user;
         }
 
         /**
@@ -59,7 +91,7 @@ namespace UserObject {
          */
         public function setUsername($username): void
         {
-            $this->username = $username;
+            $this->user = $username;
         }
 
         /**

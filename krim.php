@@ -38,12 +38,13 @@ if (!(fengsel() || bunker())) {
                 $chance->execute([$obj->id, $valg]);
                 $thechance = $chance->fetchObject();
                 if ($thechance->chance >= 74) {
+                    error_log(var_export($thechance,true));
                     $ran2 = rand(10, 46);
                     $db->query("UPDATE `chance` SET `chance` = (`chance` - $ran2) WHERE `uid` = '" . $obj->id . "' AND `option` = '" . $thechance->option . "' LIMIT 1");
-                    $thechance->chance += $ran2;
+                    $thechance->chance -= $ran2;
                 } elseif ($thechance->chance <= 73) {
                     $ran2 = rand(1, 3);
-                    $db->query("UPDATE `chance` SET `chance` = (`chance` + $ran2) WHERE `uid` = '$obj->id' AND `option` = '$thechance->option' AND `chance` < '46'");
+                    $db->query("UPDATE `chance` SET `chance` = (`chance` + $ran2) WHERE `uid` = '$obj->id' AND `option` = '$thechance->option' AND `chance` < '80'");
                     $thechance->chance += $ran2;
                 }
                 $kr = mt_rand($info->minval, $info->maxval);
