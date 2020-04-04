@@ -38,6 +38,8 @@ if (isset($_POST['valget']) && (isset($_POST['bryte']) || isset($_POST['kjope'])
                 } else {
                     $res = warning('Kunne ikke lengre finne spiller i fengsel.');
                 }
+            } elseif ($action == 'bryte') {
+                $res = feil("Funksjonen er ikke klar til bruk enda.");
             } else {
                 $res = warning('Valg ikke opprettet...');
             }
