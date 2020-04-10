@@ -15,7 +15,8 @@
     "ext-json": "*",
     "ext-gd": "*",
     "ext-pdo": "*",
-    "ext-readline": "*"
+    "ext-readline": "*",
+    "ext-intl": "*"
   },
   "scripts": {
     "phpcs": "phpcs --standard=PSR2"
