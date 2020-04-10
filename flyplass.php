@@ -82,23 +82,6 @@ values (?,unix_timestamp(), ?, ?, 10000)");
             </table>
             <input type="hidden" id="vei" value="0" name="tilby">
         </form>
-        <script>
-          $(function() {
-            $('#dialog-confirm').dialog({
-              resizable: true,
-              height: 400,
-              modal: true,
-              buttons: {
-                'Delete all items': function() {
-                  $(this).dialog('close');
-                },
-                Cancel: function() {
-                  $(this).dialog('close');
-                },
-              },
-            });
-          });
-        </script>
         <script language="javascript">
           function sendpost(valg) {
             $('#vei').val(valg);
