@@ -5,9 +5,8 @@ if (defined("LVL") && LVL == true) {
 } else {
     $r = './';
 }
-include_once $r.'system/config.php';
-//include_once $r.'classes/Database.php';
-include_once $r.'inc/functions.php';
+include_once $r . 'system/config.php';
+include_once $r . 'inc/functions.php';
 if (isset($_SERVER['X-Requested-With'])) {
     if ($_SERVER['X-Requested-With'] == "XMLHttpRequest") {
         define("JSON", 1);
@@ -18,20 +17,7 @@ if (isset($_SERVER['X-Requested-With'])) {
     define("JSON", 0);
 }
 if (isset($_SESSION['sessionzar'])) {
-    try {
-        $db = new PDO("mysql:dbname=mafia;host=127.0.0.1", "mafia", "mafia", [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_STRINGIFY_FETCHES => false,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
-            PDO::MYSQL_ATTR_SSL_CA => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\ca.pem",
-            PDO::MYSQL_ATTR_SSL_CERT => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-cert.pem",
-            PDO::MYSQL_ATTR_SSL_KEY => "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\client-key.pem"
-        ]);
-    } catch (PDOException $PDOException) {
-        error_log("Couldn't connect to database. Error: " . $PDOException->getMessage());
-        die("Kunne ikke koble til db!<br><a href=\"${r}loggut.php?g=2\">Tilbake til innlogging.</a>");
-    }
+    include "./inc/database.php";
     $m = explode(" ", microtime());
     $start = $m[0] + $m[1];
     list($user, $pass, $sss) = $_SESSION['sessionzar'];
@@ -42,7 +28,7 @@ if (isset($_SESSION['sessionzar'])) {
     $obj = $st1->fetchObject();
     if (!$obj) {
         header("Location: ${r}loggut.php?g=4");
-        die('<a href="'.$r.'loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget p&aring; din bruker.</a>');
+        die('<a href="' . $r . 'loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget p&aring; din bruker.</a>');
     } else {
         $stored_queries = [
             "online" => 0,
@@ -50,14 +36,14 @@ if (isset($_SESSION['sessionzar'])) {
         ];
         if ($obj->ip != $ip) {
             header("Location: ${r}loggut.php?g=7&currentip=$ip&dbip={$obj->ip}");
-            echo '<h1>Det kan se ut som du har blitt logget inn p&aring; et annet nettverk. Klikk her for &aring; g&aring; til innloggingssiden: <a href="'.$r.'loggut.php">Index</a></h1>';
+            echo '<h1>Det kan se ut som du har blitt logget inn p&aring; et annet nettverk. Klikk her for &aring; g&aring; til innloggingssiden: <a href="' . $r . 'loggut.php">Index</a></h1>';
             die();
         }
         liv_check();
         ipbanned($ip);
         if ($obj->forceout == 1) {
             $db->query("UPDATE `users` SET `forceout` = '0' WHERE `id` = '{$obj->id}'");
-            die('<a href="'.$r.'loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn p&aring; nytt for &aring; fortsette &aring; spille.</a>');
+            die('<a href="' . $r . 'loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn p&aring; nytt for &aring; fortsette &aring; spille.</a>');
         }
         if (($obj->lastactive + $timeout) < time()) {
             header("Location: ${r}loggut.php?g=5");

@@ -14,7 +14,7 @@ if (bunker()) {
 HTML;
 } elseif (fengsel()) {
     $fe = fengsel(true);
-    $tid = date("H:i:s d.m.Y", $fe);
+    $tid = date("H:i:s d.m.Y", $bu);
     echo <<<HTML
     <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">$fe</span><br>Du er ute: $tid</p>
     <script>
@@ -31,34 +31,41 @@ HTML;
         $airfetch->execute([$obj->id]);
         $wait = ($airfetch->fetchColumn() + 600) - time();
         error_log($wait);
-        echo info('Du m&aring; vente f&oslash;r du kan fly igjen! 
+        echo warning('Du m&aring; vente f&oslash;r du kan fly igjen! 
 <span id="flyplass"></span><script>teller(\'' . ($wait) . '\',"flyplass",false,"ned")</script><br>
 Du kan fly igjen: ' . date('H:i:s d.m.Y', time() + $wait));
     } else {
         if (isset($_POST['tilby'])) {
-            $i = (int)$_POST['tilby'];
-            if (($i >= 1 && $i <= 8) && ($obj->city != $i) && ($obj->hand >= 10000)) {
-                /* If everything is correct, just go ahead, if not, it'll be sorted underneath for more clean code with less nesting */
-                $fly = $db->prepare("UPDATE `users` SET `hand` = (`hand` - 10000), `city` = ? WHERE `id` = ?");
-                $fly->execute([$i, $obj->id]);
-                if ($fly->rowCount() == 1) {
-                    echo lykket('Du har betalt for en billett til ' . city($i) . ' til prisen 
+            $i = $db->escape($_POST['tilby']);
+            if ($i >= 1 && $i <= 8) {
+                if ($obj->city == $i) {
+                    echo warning('Du er allerede i denne byen!');
+                } else {
+                    if ($obj->hand <= 9999) {
+                        echo warning('Du har ikke r&aring;d til &aring; fly!');
+                    } else {
+                        if ($obj->hand >= 10000) {
+                            $db->query("UPDATE `users` 
+SET `hand` = (`hand` - 10000),
+    `city` = '$i' 
+WHERE `id` = '{$obj->id}' LIMIT 1");
+                            if ($db->affected_rows() == 1) {
+                                echo lykket('Du har betalt for en billett til ' . city($i) . ' til prisen 
                                     av 10,000kr! 
                                     Du m&aring; n&aring; vente i 20 minutter f&oslash;r du kan reise igjen.');
-                    $flightlog = $db->prepare("insert into flight_log(uid, timestamp, from_city, to_city, price) 
-values (?,unix_timestamp(), ?, ?, 10000)");
-                    $flightlog->execute([$obj->id, $obj->city, $i]);
-                    error_log("Trying to add to flight log... Result: " . var_export($flightlog->fetchAll(),
-                            true));
-                } else {
-                    echo feil('Du kunne ikke reise p&aring; grunn av en feil i enten sp&oslash;rring eller i databasen, ta kontakt med Ledelsen!');
+                                $flightlog = $db->query("insert into flight_log(uid, timestamp, from_city, to_city, price) 
+values ('{$obj->id}',unix_timestamp(), '$obj->city', '$i', '10000')");
+                                error_log("Trying to add to flight log... Result: " . var_export($flightlog,
+                                        true));
+                            } else {
+                                echo feil('Du kunne ikke reise p&aring; grunn av en feil i enten 
+                                    sp&oslash;rring eller i databasen, ta kontakt med Ledelsen!');
+                            }
+                        }
+                    }
                 }
-            } elseif ($i >= 1 && $i <= 8) {
-                echo warning('Du valgte ikke en gyldig by!');
-            } elseif ($obj->city != $i) {
-                echo warning('Du kan ikke velge samme by som du er i!');
-            } elseif ($obj->hand >= 10000) {
-                echo warning('Du m&aring; ha nok penger p&aring; h&aring;nda for &aring; reise!<br>Du mangler: ' . number_format((10000 - $obj->hand)) . "kr");
+            } else {
+                echo feil('Den byen du valgte, om du valgte noen, er ikke gyldig!');
             }
         }
         ?>
