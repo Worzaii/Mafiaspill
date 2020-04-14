@@ -7,22 +7,22 @@ if (r1() || r2()) {
     <p>Det skal helst legges inn et grunnlag for hvorfor en brukerkonto bannes.</p>
     <?php
     if (isset($_POST['bruker']) && isset($_POST['grunn']) && isset($_POST['valg'])) {
-        $user = $db->escape($_POST['bruker']);
-        $valg = $db->escape($_POST['valg']);
-        $grunn = $db->escape($_POST['grunn']);
-        $fet = user_exists($user, 2);
-        if ($fet) {
-            if ($fet->status == 1 && !r1()) {
+        $user = $_POST['bruker'];
+        $valg = $_POST['valg'];
+        $grunn = $_POST['grunn'];
+        $userexists = user_exists($user, 2);
+        if ($userexists) {
+            if ($userexists->status == 1 && !r1()) {
                 feil("Du kan ikke banne en administrator!");
             } else {
                 if ($valg == 1) {
-                    if ($db->query("select * from `banlog` where uid = '{$fet->id}' and active = '1'
+                    if ($db->query("select * from `banlog` where uid = '{$userexists->id}' and active = '1'
 order by id desc limit 1")) {
                         if ($db->num_rows() == 1) {
                             echo warning('Brukeren er allerede bannet. Mente du &aring; fjerne ban p&aring; brukerkontoen?');
                         } else {
                             if ($db->query("INSERT INTO `banlog`(`uid`,`timestamp`,`reason`,`banner`) 
-VALUES('" . $fet->id . "',UNIX_TIMESTAMP(),'$grunn','" . $obj->id . "')")) {
+VALUES('" . $userexists->id . "',UNIX_TIMESTAMP(),'$grunn','" . $obj->id . "')")) {
                                 if ($db->affected_rows() == 1) {
                                     echo lykket('Spilleren har blitt modkillet, og kan ikke lengre logge inn!');
                                 } else {
@@ -37,7 +37,7 @@ VALUES('" . $fet->id . "',UNIX_TIMESTAMP(),'$grunn','" . $obj->id . "')")) {
                     }
                 } elseif ($valg == 2) {
                     if ($db->query("select * from `banlog` 
-where uid = '{$fet->id}' and active = '1' order by id desc limit 1")) {
+where uid = '{$userexists->id}' and active = '1' order by id desc limit 1")) {
                         if ($db->num_rows() === 1) {
                             $banlog = $db->fetch_object();
                             if ($db->query("update `banlog` set active = '0' where id = '{$banlog->id}' and active = '1'")) {

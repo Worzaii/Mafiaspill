@@ -10,7 +10,6 @@ if (bunker()) {
     <script>
     teller('$bu','bunker',false,'ned');
     </script>
-    ';
 HTML;
 } elseif (fengsel()) {
     $fe = fengsel(true);
@@ -20,7 +19,6 @@ HTML;
     <script>
     teller('$fe','bunker',false,'ned');
     </script>
-    ';
 HTML;
 } else {
     $airport = $db->prepare("select count(*) from flight_log where (timestamp + 600) > unix_timestamp() and uid = ? order by id desc limit 0,1");
@@ -85,7 +83,6 @@ values (?,unix_timestamp(), ?, ?, 10000)");
         <script language="javascript">
           function sendpost(valg) {
             $('#vei').val(valg);
-//$('.wantto').dialog();
             $('#fly').submit();
           }
 

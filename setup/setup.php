@@ -74,9 +74,46 @@ Q: Avslutt program (Alternativt, bruk CTRL + D)\n\n";
             echo "Brukernavnet er ikke innenfor, prøv igjen!\n\n";
         }
         $choice = 0;
+    } elseif ($choice == 2) {
     } elseif ($choice == 3) {
         echo "You want to delete a user?! Heresy!!!!\n\n\n";
         $choice = 0;
+    } elseif ($choice == 4) {
+        echo "La brukernavn stå tom hvis du ønsker å bruke ID i stedet.\n";
+        $brukernavn = readline("Brukernavn: ");
+        if (strlen($brukernavn) == 0) {
+            $id = readline("ID: ");
+        }
+        $queryadd = (strlen($brukernavn) >= 1) ? "user" : "id";
+        $value = (strlen($brukernavn) >= 1) ? $brukernavn : $id;
+        $query = $db->prepare("select count(*) from users where $queryadd = ?");
+        $query->execute([$value]);
+        if ($query->fetchColumn() == 1) {
+            /* Allows password change... */
+            echo "La stå for automatisk generert passord.\n";
+            $newpass = readline("Nytt passord: ");
+            if (strlen($newpass) >= 3) {
+                $pass_chars = "abcdefghijklmnopqrstuvwxyz0123456789-_.!\"#%&\\/()=?";
+                $newpass = "";
+                for ($i = 0; $i < 12; $i++) {
+                    $newpass .= $pass_chars[rand(0, strlen($pass_chars) - 1)];
+                }
+                $update = $db->prepare("update users set pass = ? where $queryadd = ?");
+                if ($update->execute([
+                    $newpass,
+                    $value
+                ])) {
+                    if ($update->rowCount() == 1) {
+                        echo "Passordet har blitt satt til: ";
+                    }
+                } else {
+                    echo "Kunne ikke oppdatere passordet! " . $update->errorInfo();
+                }
+
+            }
+        }
+        $choice = 0;
+
     } else {
         $noselect = true;
     }

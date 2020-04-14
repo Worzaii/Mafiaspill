@@ -4,7 +4,7 @@ $ant = $GLOBALS["stored_queries"]["online"];
 $sql3 = $db->query("SELECT COUNT(*) as `numrows` FROM `chat`");
 $num2 = $sql3->fetchObject()->numrows;
 $ant2 = $GLOBALS["stored_queries"]["jail"];
-error_log("Antall i fengsel lagret i array: ".$ant2);
+error_log("Antall i fengsel lagret i array: " . $ant2);
 $klpre = $db->prepare("SELECT timewait FROM `krimlogg` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
 $klpre->execute([$obj->id]);
 if ($res = $klpre->fetchColumn()) {
@@ -89,12 +89,12 @@ $onl = "online.php";
 </ul>
 <h2>Kommunikasjon</h2>
 <ul>
-    <li><a href="innboks.php">Innboks (<span style="color:#ff0">jobbes med</span>)</a></li>
-    <li><a href="#deputy.php">Send inn s&oslash;knad! </a></li>
-    <li><a href="#support.php">Support </a></li>
+    <li><a href="innboks.php">Innboks <?php echo "\u{2709}"; ?></a></li>
+    <li><a href="#deputy.php">Send inn s&oslash;knad!</a></li>
+    <li><a href="#support.php">Support</a></li>
     <li><a href="<?= $onl; ?>">Spillere p&aring;logget</a> (<?= $ant; ?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
-    <li><a href="Ledelsen">Ledelsen </a></li>
+    <li><a href="ledelse.php">Ledelsen</a></li>
 </ul>
 <h2>Sosialt</h2>
 <ul>

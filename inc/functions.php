@@ -5,17 +5,6 @@
 function startpage($title = NAVN_DOMENE)
 {
     global $obj, $db;
-    print '<!DOCTYPE html>
-<html lang="no">
-  <head>
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="shortcut icon" href="./favicon.ico">
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>' . $title . '</title>
-  <script src="./js/jquery.js"></script>
-  <script src="./js/teller.js"></script>
-  <script src="./js/loggteller.js"></script>
-  ';
     $jail = $db->query("SELECT COUNT(*) as `numrows` FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL");
     $numrows = $jail->fetchColumn();
     $GLOBALS["stored_queries"]["jail"] = $numrows;
@@ -24,30 +13,8 @@ function startpage($title = NAVN_DOMENE)
     AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
     $late_online = $online->fetchColumn();
     $GLOBALS["stored_queries"]["online"] = $late_online;
-    print'
-  </head>
-  <body>
-  <section class="newsection"></section>
-  <div id="navbar_top">
-    <div class="content">
-      <nav>
-        <ul>
-          <li><a href="profil.php?id=' . $obj->id . '">Profil</a></li>
-          <li><a href="innboks.php">Innboks</a></li>
-          <li><a href="nyheter.php">Nyheter</a></li>
-          <li><a href="fengsel.php">Fengsel' . $anyjail . '</a></li>
-          <li><a href="bj.php">BlackJack</a></li>
-          <li><a href="online.php">Spillere p&aring;logget (' . $late_online . ')</a></li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-  <div id="information">
-            <p>Spillet har blitt oppdatert. CTRL + F5</p>
-  </div>
-  <!--<header id="headerbg">
-  <div id="header"><div id="ct">';
     $chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
+    $chat = "";
     while ($r = $chathead->fetchObject()) {
         $message = smileys(htmlentities($r->message, ENT_NOQUOTES, 'UTF-8'));
         $message = wordwrap($message, 200, "<br>\n", true);
@@ -58,25 +25,55 @@ function startpage($title = NAVN_DOMENE)
             $uob = '<a href="profil.php?id=' . $uob->id . '">' . $uob->user . '</a>';
         }
         if ($r->id % 2) {
-            echo
+            $chat .=
                 '<div class="ct1"><b>[' . date("H:i:s d.m.y",
                     $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
         } else {
-            echo
+            $chat .=
                 '<div class="ct2"><b>[' . date("H:i:s d.m.y",
                     $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
         }
     }
-    echo '</div>
-<noscript><p>&Aring; spille ' . NAVN_DOMENE . ' uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig, vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
-  </div>
-  </header>-->
-  <section style="top: 56px;position: relative;">
-  <div class="wrapper">
-  <div id="content">
-  <div id="shadow">
-  </div>
-  <div id="leftmenu">';
+    echo <<<HTML
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>$title</title>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/teller.js"></script>
+    <script src="./js/loggteller.js"></script>
+</head>
+<body>
+    <section class="newsection"></section>
+    <div id="navbar_top">
+        <div class="content">
+            <nav>
+                <ul>
+                    <li><a href="profil.php?id=$obj->id">Profil</a></li>
+                    <li><a href="innboks.php">Innboks</a></li>
+                    <li><a href="nyheter.php">Nyheter</a></li>
+                    <li><a href="fengsel.php">Fengsel$anyjail</a></li>
+                    <li><a href="bj.php">BlackJack</a></li>
+                    <li><a href="online.php">Spillere p&aring;logget ($late_online)</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div id="information">
+        <p>Spillet har blitt oppdatert. CTRL + F5</p>
+    </div>
+$chat
+<noscript><p>&Aring; spille uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig, vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
+<section style="top: 56px;position: relative;">
+<div class="wrapper">
+    <div id="content">
+        <div id="shadow">
+        </div>
+        <div id="leftmenu">
+HTML;
     include_once './inc/left.php';
     print '
 </div>
@@ -97,8 +94,6 @@ function endpage()
     $end = $m[0] + $m[1];
     error_log("Page: " . $_SERVER["REQUEST_URI"] . " used " . round($end - $GLOBALS["start"],
             7) . " seconds to execute.");
-    /*error_log("Number of queries on " . $_SERVER["REQUEST_URI"] . ": " . $GLOBALS["db"]->num_queries);*/
-    /* This is no longer valid because I haven't implemented PDO as some other class or function than the core itself */
 }
 
 /**
@@ -243,21 +238,26 @@ function status($s)
 function user_exists($username, $ret = 0)
 {
     global $db;
-    $db->query("SELECT * FROM `users` WHERE `user` = '" . $db->escape($username) . "'");
-    if ($db->num_rows() == 1) {
+    $userexists = $db->prepare("SELECT count(*) FROM `users` WHERE `user` = ?");
+    $userexists->execute([$username]);
+    if ($userexists->fetchColumn() == 1) {
         if ($ret == 0) {
             return true;
+        } else {
+            $userexists = $db->prepare("SELECT * FROM `users` WHERE `user` = ?");
+            $userexists->execute([$username]);
+            $f = $userexists->fetchObject();
+            if ($ret == 1) {
+                $f = $db->fetch_object();
+                return $f->id;
+            }
+            if ($ret == 2) {
+                return $db->fetch_object();
+            }
         }
-        if ($ret == 1) {
-            $f = $db->fetch_object();
-            return $f->id;
-        }
-        if ($ret == 2) {
-            return $db->fetch_object();
-        }
-    } else {
-        return false;
+
     }
+    return false;
 }
 
 function firma($id)
@@ -274,12 +274,9 @@ function firma($id)
 
 function liv_check()
 {
-    global $dir;
     global $obj;
     if ($obj->health <= 0) {
-        return include($dir . "death.php");
-    } else {
-        return;
+        return require("death.php");
     }
 }
 

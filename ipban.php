@@ -3,39 +3,41 @@ include("core.php");
 if (r1() || r2()) {
     startpage("IP-ban bruker");
     echo '<h1>Utesteng IP-adresse</h1>';
-    /* IP BANN SYSTEMET */
     if (isset($_POST['ban'])) {
         $ip = ($_POST['ip']);
         $iplong = ip2long($ip);
-        $sql1 = $db->query("SELECT * FROM `ipban` WHERE `ip`='$iplong'");
-        if ($db->num_rows() === 1) {
-            lykket("IP-adressen er allerede bannet!");
+        $ipban = $db->prepare("SELECT count(*) FROM `ipban` WHERE `ip`=?");
+        $ipban->execute([$iplong]);
+        if ($ipban->fetchColumn() == 1) {
+            echo warning("IP-adressen er allerede bannet!");
         } else {
-            $grunn = $db->escape($_POST['grunn']);
-            $db->query("INSERT INTO `ipban` VALUES(null,'$iplong',1,UNIX_TIMESTAMP(),'$grunn','{$obj->id}')");
-            if ($db->affected_rows() == 1) {
+            $grunn = $_POST['grunn'];
+            $banip = $db->prepare("INSERT INTO `ipban`(ip, timestamp, reason, banner) VALUES(?, unix_timestamp(), ?, ?)");
+            $banip->execute([$iplong, $_POST['grunn'], $obj->id]);
+            if ($banip->rowCount() == 1) {
                 echo lykket("IP-adressen <u>" . htmlentities($ip) . "</u> er bannet!");
             } else {
                 echo feil('Kunne ikke banne ip-adresse: ' . htmlentities($ip));
             }
         }
-    } else if (isset($_POST['deleteban'])) {
+    } elseif (isset($_POST['deleteban'])) {
         $id = (int)$_POST['deleteban'];
-        $db->query("select * from `ipban` WHERE active = 1 and id = '$id' order by id desc limit 1");
-        if ($db->num_rows() == 1) {
-            $db->query("update `ipban` set active = 0 where id = '$id'");
-            if ($db->affected_rows() == 1) {
+        $delban = $db->prepare("select count(*) from `ipban` WHERE active = '1' and id = ? order by id desc limit 1");
+        $delban->execute([$id]);
+        if ($delban->fetchColumn() == 1) {
+            $bandel = $db->prepare("update `ipban` set active = 0 where id = ?");
+            $bandel->execute([$id]);
+            if ($bandel->rowCount() == 1) {
                 echo lykket("IP-adressen har blitt fjernet fra blokkeringen.");
             } else {
                 echo feil('Kunne ikke fjerne IP-adressen fra blokkering. Se hendelsesloggen...');
             }
         } else {
-            echo info('Det var ingenting i tabellen der. 
-            Pr&oslash;v &aring; friske opp siden og pr&oslash;v p&aring; nytt.');
+            echo warning('IP-adressen du fors&oslash;kte &aring; fjerne er ikke aktiv i tabellen, kanskje den allerede er fjernet?');
         }
     }
     if (isset($_GET['ip'])) {
-        $ip = $_GET['ip'];
+        $ip = htmlentities($_GET['ip']);
     } else {
         $ip = null;
     }
@@ -47,11 +49,13 @@ if (r1() || r2()) {
             </thead>
             <tr class="uhead">
                 <td>IP-adresse:</td>
-                <td><input required="" value="<?= $ip; ?>" type="text" name="ip" class="input frelst"></td>
+                <td><input required="" value="<?= $ip; ?>" type="text" name="ip"
+                           class="input frelst"></td>
             </tr>
             <tr class="ehead">
                 <td>Grunn:</td>
-                <td><textarea required="" class="frelst" name="grunn" style="width: 225px;height: 200px;"></textarea>
+                <td><textarea required="" class="frelst" name="grunn"
+                              style="width: 225px;height: 200px;"></textarea>
             </tr>
             <tr class="uhead">
                 <td colspan="2"><input type="submit" name="ban" value="Ban IP!" class="submit"></td>
@@ -74,9 +78,17 @@ if (r1() || r2()) {
             </thead>
             <tbody>
             <?php
-            $i = $db->query("SELECT * FROM `ipban` where active = 1 ORDER BY `id` DESC");
-            if ($db->num_rows() >= 1) {
-                while ($r = mysqli_fetch_object($i)) {
+            $i = $db->query("SELECT * FROM `ipban` where active = '1' ORDER BY `id` DESC");
+            error_log("Dumping some data:\n
+            Errorcode: " . $i->errorCode() . "\n
+            Rowcount: " . $i->rowCount() . "\n
+            Columns: " . $i->columnCount() . "\n
+            i fetch object dump: " . /*var_export($i->fetchObject(), true) . */ "\n
+            Fetchall dump: " . var_export($i->fetchObject(), true)
+            );
+            $i->closeCursor();$i->execute();
+            if ($i->rowCount() >= 1) {
+                while ($r = $i->fetchObject()) {
                     echo '<tr>
 <td>' . long2ip($r->ip) . '</td>
 <td>' . $r->reason . '</td><td>' . user($r->banner) . '</td>
