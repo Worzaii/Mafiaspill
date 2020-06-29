@@ -33,9 +33,9 @@ HTML;
             print 'news2">';
         }
         if ($r->userlevel == 1) {
-            $statuss = ' style="background:#800;"';
+            $statuss = 'news_admin';
         } elseif ($r->userlevel == 2) {
-            $statuss = ' style="background:#0052A5"';
+            $statuss = 'news_mod';
         }
 
         $newres = bbcodes($r->text, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
@@ -43,7 +43,8 @@ HTML;
         $f = $db->fetch_object($q);*/
         print '
             <tr>
-            <td class="linkstyle"' . $statuss . '><b>' . htmlentities($r->title, ENT_NOQUOTES | ENT_HTML401, 'UTF-8')
+            <td class="linkstyle ' . $statuss . '"><b>' . htmlentities($r->title,
+                ENT_NOQUOTES | ENT_HTML401, 'UTF-8')
             . '</b> skrevet av ' . status($r->author) . ' <div class="innlegsdato">' . date("H:i:s | d.m.Y",
                 $r->timestamp) . '</div></td>
             </tr>

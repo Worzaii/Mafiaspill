@@ -1014,6 +1014,7 @@ table.online tbody td, table.extra tbody td {
     text-align: center;
     margin-top: 70px;
 }
+
 /* MIKKAL CSS */
 
 .profiltekst {
@@ -1249,4 +1250,23 @@ table.tablemain {
 table.tablemain {
     margin: 0 auto;
     width: 100% !important;
+}
+
+.over_wrapper {
+    top: 56px;
+    position: relative;
+}
+
+.news_admin {
+    background: #800;
+}
+
+.news_mod {
+    background: #0052A5;
+}
+
+.left_div {
+    width: 100px;
+    height: 4px;
+    background: #f00;
 }

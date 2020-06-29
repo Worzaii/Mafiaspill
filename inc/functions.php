@@ -67,7 +67,7 @@ function startpage($title = NAVN_DOMENE)
     </div>
 $chat
 <noscript><p>&Aring; spille uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig, vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
-<section style="top: 56px;position: relative;">
+<section class="over_wrapper">
 <div class="wrapper">
     <div id="content">
         <div id="shadow">
@@ -428,22 +428,6 @@ function bbcodes(
         $text = str_replace("\n", "<br>", $text);
     }
     if ($smil == 1) {
-        $text = str_replace(
-            [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "<3", ":S", ":*"],
-            [
-                '<img src="smileys/Content.png" alt=":)">',
-                '<img src="smileys/Grin.png" alt=":D">',
-                '<img src="smileys/Yuck.png" alt=":P">',
-                '<img src="smileys/Slant.png" alt=":-/">',
-                '<img src="smileys/Sarcastic.png" alt=";)">',
-                '<img src="smileys/Frown.png" alt=":(">',
-                '<img src="smileys/Gasp.png" alt=":O">',
-                '<img src="smileys/Heart.png" alt="&lt;3">',
-                '<img src="smileys/Confused.png" alt=":S">',
-                '<img src="smileys/Kiss.png" alt=":*">'
-            ],
-            $text
-        );
     }
     if ($shadow == 1) {
         $text = preg_replace(
@@ -486,22 +470,22 @@ function bbcodes(
 
 function smileys($text)
 {
-    $text = str_replace(
-        [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"],
-        [
-            '<img src="smileys/Content.png" alt=":)">',
-            '<img src="smileys/Grin.png" alt=":D">',
-            '<img src="smileys/Yuck.png" alt=":P">',
-            '<img src="smileys/Slant.png" alt=":-/">',
-            '<img src="smileys/Sarcastic.png" alt=";)">',
-            '<img src="smileys/Frown.png" alt=":(">',
-            '<img src="smileys/Gasp.png" alt=":O">',
-            '<img src="smileys/Heart.png" alt="&lt;3">',
-            '<img src="smileys/Confused.png" alt=":S">',
-            '<img src="smileys/Kiss.png" alt=":*">'
-        ],
-        $text
-    );
+//    $text = str_replace(
+//        [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"],
+//        [
+//            '<img src="smileys/Content.png" alt=":)">',
+//            '<img src="smileys/Grin.png" alt=":D">',
+//            '<img src="smileys/Yuck.png" alt=":P">',
+//            '<img src="smileys/Slant.png" alt=":-/">',
+//            '<img src="smileys/Sarcastic.png" alt=";)">',
+//            '<img src="smileys/Frown.png" alt=":(">',
+//            '<img src="smileys/Gasp.png" alt=":O">',
+//            '<img src="smileys/Heart.png" alt="&lt;3">',
+//            '<img src="smileys/Confused.png" alt=":S">',
+//            '<img src="smileys/Kiss.png" alt=":*">'
+//        ],
+//        $text
+//    );
     return $text;
 }
 
@@ -652,11 +636,11 @@ function sysmel($til, $melding)
 
 function noaccess()
 {
-    echo <<<'NOAC'
+    echo <<<HTML
     <h1>Ingen tilgang!</h1>
     <p>Du har ikke <b style="color: #f00;">TILGANG</b> til denne siden</p>
     <p>Dersom du mener du skal ha tilgang, kontakt en admin/moderator eller send en henvendelse til support.</p>
-NOAC;
+HTML;
 }
 
 function weapons($r)

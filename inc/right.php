@@ -28,8 +28,8 @@ if (r1() || r2() || r3() || $obj->support == 1) {
     <li>Poeng: <?= number_format($obj->points); ?></li>
     <li>By: <?= city($obj->city); ?></li>
     <li>Liv: <?= $obj->health; ?>%<br>
-        <div style="width:100px;height:4px;background: #f00;">
-            <div style="width:<?= $obj->health ?>%;height:4px;background: #0f0;"></div>
+        <div class="left_div">
+            <div style="height:4px;background: #0f0;<?= $obj->health ?>%;"></div>
         </div>
     </li>
     <li>Familie: <?= ($obj->family == null) ? "<i>ingen</i>" :
@@ -51,7 +51,8 @@ if (r1() || r2() || r3() || $obj->support == 1) {
     <li><a href="finnspiller.php">Finn spiller</a></li>
     <li><a href="endreprofil.php">Endre profil</a></li>
     <li><a href="nypassord.php">Endre passord</a></li>
-    <li><a href="loggut.php" onclick="return confirm('Er du sikker p&aring; at du vil logge ut? ')">Logg ut</a></li>
+    <li><a href="loggut.php" onclick="return confirm('Er du sikker p&aring; at du vil logge ut? ')">Logg
+            ut</a></li>
 </ul>
 </div>
 </div>
@@ -60,23 +61,6 @@ if (r1() || r2() || r3() || $obj->support == 1) {
 <?php
 include_once './inc/footer.php';
 ?>
-<script>
-    $(document).ready(function () {
-        $(document).bind("click", function (event) {
-            $("div.custom-menu").remove();
-        });
-        $("a.user_menu").bind("contextmenu", function (event) {
-            event.preventDefault();
-            let id = $(this).attr("data-id");
-            let user = $(this).attr("data-user");
-            $("body")
-                .append("<div class=\"custom-menu\"><ul><li><a href=\"profil.php?id=" + id + "\">G&aring; til Profil</a></li><li><a href=\"innboks.php?ny&usertoo=" + user + "\">Send melding</a></li><li><a href=\"bank.php?til=" + user + "\">Send penger</a></li></ul></div>");
-            $("div.custom-menu").css({top: event.pageY + "px", left: event.pageX + "px"});
-        });
-        $("#ct").on("click", function () {
-            window.location.href = "https://mafia.werzaire.net/chat.php";
-        });
-    });
-</script>
+<script src=""></script>
 </body>
 </html>
