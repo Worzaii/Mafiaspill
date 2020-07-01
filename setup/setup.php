@@ -196,7 +196,83 @@ END;
             $choice = 0;
         }
     } elseif ($choice == 3) {
-        echo "You want to delete a user?! Heresy!!!!\n\n\n";
+        echo "Ønsker du virkelig å slette en brukerkonto? Dette sletter kun selve entryen i brukertabellen og vil ikke være mulig å gjenopprette når det er utført.\n\n";
+        $bekreft = readline("Hvis du er sikker på at du vil fortsette, skriv: 'jeg bekrefter': ");
+        if (strtolower($bekreft) == 'jeg bekrefter') {
+            $bruker = readline("Oppgi brukernavn du ønsker å slette: ");
+            $checkifexists = $db->prepare("select count(*) from users where user = ?");
+            if ($checkifexists->execute([$bruker])) {
+                /* Literally checking if any user accounts has the name as given, case insensitive */
+                $numrows = $checkifexists->fetchColumn();
+                if($numrows == 1){
+                    /* Found one count of user, getting data next */
+                    $getuser = $db->prepare("select * from users where user = ?");
+                    if ($getuser->execute([$bruker])) {
+                        /* Getting user data */
+                        $userinfo = $getuser->fetchObject();
+                        echo <<<DATA
+::Brukerdata hentet::
+BrukerID:       $userinfo->id
+Brukernavn:     $userinfo->user
+Passord:        $userinfo->pass
+E-post:         $userinfo->mail
+Bildelenke:     $userinfo->image
+Profiltekst slettes fullstendig og hentes ikke inn her...
+Familie:        $userinfo->family
+Bankverdi:      $userinfo->bank
+Handverdi:      $userinfo->hand
+By:             $userinfo->city
+Våpen:          $userinfo->weapon
+Kuler:          $userinfo->bullets
+Poeng:          $userinfo->points
+Erfaringspoeng: $userinfo->exp
+Status:         $userinfo->status
+Supportstatus:  $userinfo->support
+IP-adresse:     $userinfo->ip
+RegistreringsIP:$userinfo->regip
+Hostname:       $userinfo->hostname
+Reg hostname:   $userinfo->reghostname
+Last active:    $userinfo->lastactive
+Tving avlogg:   $userinfo->forceout (Denne verdien er normalt 0).
+Reg. tid:       $userinfo->regstamp
+Picmakerstatus: $userinfo->picmaker (Denne verdien er normalt 0).
+
+All data hentet.
+
+Hvis du er sikker på at denne dataen nå skal slettes...
+DATA;
+                        $sistebekreft = readline("Skriv 'jeg bekrefter sletting': ");
+                        if (strtolower($sistebekreft) == 'jeg bekrefter sletting') {
+                            $preparedelete = $db->prepare("delete from users where id = ? and user = ? and status = ? limit 1");
+                            if ($preparedelete->execute([
+                                $userinfo->id,
+                                $userinfo->user,
+                                $userinfo->status
+                            ])) {
+                                if ($preparedelete->rowCount() == 1) {
+                                    echo "Brukerkontoen har blitt slettet. Ta vare på informasjonen over om det på et tidspunkt blir nødvendig å legge inn dataene på nytt.\n\n";
+                                } else {
+                                    echo "Merkelig nok ble ingen rader berørt av utføringen... Sjekk om bruker eksisterer ved å sjekke i databasen manuelt.\n\n";
+                                }
+                            } else {
+                                echo "Kunne ikke utføre sletting av brukerkonto!\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
+                            }
+                        } else {
+                            echo "Du skrev ikke riktig tekst. Hvis du skrev feil så må du gjenta hele prosessen, om ikke vil det bli tatt som at du ønsket å avbryte slettingen av dataene. Returnerer til hovedmeny...\n\n";
+                        }
+                    } else {
+                        echo "Utføringen av kommandoen fungerte ikke!\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
+                    }
+                } else{
+                    echo "Fant $numrows brukere på $bruker. Kan ikke fortsette, går til hovedmeny...\n\n";
+                }
+            } else{
+                echo "Kunne ikke sjekke om brukerkonto eksisterer.\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
+            }
+        } else {
+            echo "Enten skrev du ikke rett eller ønsket å avbryte slettingen. Du må velge fra hovedmenyen på nytt om du ønsker å slette.\n\n";
+        }
+        $bekreft = "";
         $choice = 0;
     } elseif ($choice == 4) {
         echo "La brukernavn stå tom hvis du ønsker å bruke ID i stedet.\n";
