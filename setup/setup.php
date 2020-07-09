@@ -16,12 +16,12 @@ $noselect = true;
 $choice = 0;
 while ($doLoop) {
     while ($noselect) {
-        echo "Meny: 
-1: Opprett bruker
-2: Endre bruker
-3: Slett bruker
-4: Endre passord for bruker
-Q: Avslutt program (Alternativt, bruk CTRL + D)\n\n";
+        echo "\e[32mMeny:\e[39m 
+1: \e[32mOpprett bruker\e[39m 
+2: \e[33mEndre bruker\e[39m
+3: \e[32mSlett bruker (Klar)\e[39m 
+4: \e[32mEndre passord for bruker (Klar)\e[39m 
+Q: \e[31mAvslutt program (Alternativt, bruk CTRL + D)\e[39m \n\n";
         $choice = readline("Gjør et valg: (1|2|3|4|q): ");
         if (in_array($choice, [1, 2, 3, 4])) {
             $noselect = false;

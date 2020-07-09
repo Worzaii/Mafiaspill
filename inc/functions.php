@@ -13,8 +13,8 @@ function startpage($title = NAVN_DOMENE)
     AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
     $late_online = $online->fetchColumn();
     $GLOBALS["stored_queries"]["online"] = $late_online;
-    $chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
     $chat = "";
+    /*$chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
     while ($r = $chathead->fetchObject()) {
         $message = smileys(htmlentities($r->message, ENT_NOQUOTES, 'UTF-8'));
         $message = wordwrap($message, 200, "<br>\n", true);
@@ -33,7 +33,7 @@ function startpage($title = NAVN_DOMENE)
                 '<div class="ct2"><b>[' . date("H:i:s d.m.y",
                     $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
         }
-    }
+    }*/
     echo <<<HTML
 <!DOCTYPE html>
 <html lang="no">
@@ -470,22 +470,22 @@ function bbcodes(
 
 function smileys($text)
 {
-//    $text = str_replace(
-//        [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"],
-//        [
-//            '<img src="smileys/Content.png" alt=":)">',
-//            '<img src="smileys/Grin.png" alt=":D">',
-//            '<img src="smileys/Yuck.png" alt=":P">',
-//            '<img src="smileys/Slant.png" alt=":-/">',
-//            '<img src="smileys/Sarcastic.png" alt=";)">',
-//            '<img src="smileys/Frown.png" alt=":(">',
-//            '<img src="smileys/Gasp.png" alt=":O">',
-//            '<img src="smileys/Heart.png" alt="&lt;3">',
-//            '<img src="smileys/Confused.png" alt=":S">',
-//            '<img src="smileys/Kiss.png" alt=":*">'
-//        ],
-//        $text
-//    );
+    //    $text = str_replace(
+    //        [":)", ":D", ":P", ":-/", ";)", ":(", ":O", "&lt;3", ":S", ":*"],
+    //        [
+    //            '<img src="smileys/Content.png" alt=":)">',
+    //            '<img src="smileys/Grin.png" alt=":D">',
+    //            '<img src="smileys/Yuck.png" alt=":P">',
+    //            '<img src="smileys/Slant.png" alt=":-/">',
+    //            '<img src="smileys/Sarcastic.png" alt=";)">',
+    //            '<img src="smileys/Frown.png" alt=":(">',
+    //            '<img src="smileys/Gasp.png" alt=":O">',
+    //            '<img src="smileys/Heart.png" alt="&lt;3">',
+    //            '<img src="smileys/Confused.png" alt=":S">',
+    //            '<img src="smileys/Kiss.png" alt=":*">'
+    //        ],
+    //        $text
+    //    );
     return $text;
 }
 
