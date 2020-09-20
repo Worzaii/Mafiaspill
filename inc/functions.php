@@ -42,7 +42,7 @@ function startpage($title = NAVN_DOMENE)
     <link rel="shortcut icon" href="./favicon.ico">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>$title</title>
-    <script src="./js/jquery.js"></script>
+    <script src="./js/jquery-3.5.1.js"></script>
     <script src="./js/teller.js"></script>
     <script src="./js/loggteller.js"></script>
 </head>
