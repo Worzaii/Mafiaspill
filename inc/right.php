@@ -61,6 +61,5 @@ if (r1() || r2() || r3() || $obj->support == 1) {
 <?php
 include_once './inc/footer.php';
 ?>
-<script src=""></script>
 </body>
 </html>

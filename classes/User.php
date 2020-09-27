@@ -7,8 +7,8 @@ namespace UserObject
 
     class User
     {
-        private $id;
-        private $user;
+        public $id;
+        public $user;
         protected $pass;
         private $mail;
         private $image;

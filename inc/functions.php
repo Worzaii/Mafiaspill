@@ -34,51 +34,12 @@ function startpage($title = NAVN_DOMENE)
                     $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
         }
     }*/
-    echo <<<HTML
-<!DOCTYPE html>
-<html lang="no">
-<head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="shortcut icon" href="./favicon.ico">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>$title</title>
-    <script src="./js/jquery-3.5.1.js"></script>
-    <script src="./js/teller.js"></script>
-    <script src="./js/loggteller.js"></script>
-</head>
-<body>
-    <section class="newsection"></section>
-    <div id="navbar_top">
-        <div class="content">
-            <nav>
-                <ul>
-                    <li><a href="profil.php?id=$obj->id">Profil</a></li>
-                    <li><a href="innboks.php">Innboks</a></li>
-                    <li><a href="nyheter.php">Nyheter</a></li>
-                    <li><a href="fengsel.php">Fengsel$anyjail</a></li>
-                    <li><a href="bj.php">BlackJack</a></li>
-                    <li><a href="online.php">Spillere p&aring;logget ($late_online)</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-    <div id="information">
-        <p>Spillet har blitt oppdatert. CTRL + F5</p>
-    </div>
-$chat
-<noscript><p>&Aring; spille uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig, vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
-<section class="over_wrapper">
-<div class="wrapper">
-    <div id="content">
-        <div id="shadow">
-        </div>
-        <div id="leftmenu">
-HTML;
+    include "start.php";
     include_once './inc/left.php';
-    print '
+    print <<<'HTML'
 </div>
 <div id="main">
-';
+HTML;
 }
 
 /**
@@ -135,25 +96,30 @@ function city($city, $way = 1)
  */
 function user($i, $obj = 0)
 {
-    error_log("Running user function with the following values: ID=$i, OBJ=$obj");
+    #error_log("Running user function with the following values: ID=$i, OBJ=$obj");
     global $db;
     $s = $db->prepare("SELECT count(*) FROM `users` WHERE `id` = ?");
-    error_log("Result of execution: " . $s->execute([$i]));
+    $s->execute([$i]);
+    #error_log("Result of execution: " . $s->execute([$i]));
     $rows = $s->fetchColumn();
-    error_log("Number of rows found: $rows");
+    #error_log("Number of rows found: $rows");
     if ($rows == 1) {
-        error_log("User found on ID, getting info:");
+        #error_log("User found on ID, getting info:");
         $requery = $db->prepare("select * from users where id = ?");
         $requery->execute([$i]);
         $user = $requery->fetchObject();
-        error_log("User information extracted: \n" . var_export($user, true));
+        #error_log("User information extracted: \n" . var_export($user, true));
         if ($obj == 1) {
             return $user;
         }
         return '<a href="profil.php?id=' . $user->id . '">' . $user->user . '</a>';
     } else {
-        error_log(var_export($s, true));
-        return false;
+        #error_log(var_export($s, true));
+        include_once 'classes/User.php';
+        $dummy = new \UserObject\User();
+        $dummy->setUsername("System");
+        $dummy->setUserID(1);
+        return $dummy;
     }
 }
 

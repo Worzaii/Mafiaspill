@@ -11,6 +11,7 @@ chdir(dirname(__FILE__)); # This allows the script to be run from wherever php s
 define('BASEPATH', true);
 include '../system/config.php';
 include '../inc/pdoinc.php';
+include 'functions.php';
 $doLoop = true;
 $noselect = true;
 $choice = 0;
@@ -40,13 +41,8 @@ Q: \e[31mAvslutt program (Alternativt, bruk CTRL + D)\e[39m \n\n";
             echo "Brukernavn gyldig!\n";
             $pass = readline("Opprett et passord, eller la stå tomt for tilfeldig generert passord: ");
             if (strlen($pass) == 0) {
+                $genpas = genpass();
                 echo "Du laget ikke passord selv, generer et for deg...\n\n";
-                /* Generating random password: */
-                $pass_chars = "abcdefghijklmnopqrstuvwxyz0123456789-_.!\"#%&\\/()=?";
-                $genpas = "";
-                for ($i = 0; $i < 12; $i++) {
-                    $genpas .= $pass_chars[rand(0, strlen($pass_chars) - 1)];
-                }
                 echo "Passord generert: " . $genpas . "\n\n";
             }
             $status = readline("\nHvilket tilgangsnivå skal brukeren ha? \n1=admin, 2=moderator, 3=forum moderator, 4 = picmaker (vanlig bruker), 5=vanlig bruker: ");
@@ -204,7 +200,7 @@ END;
             if ($checkifexists->execute([$bruker])) {
                 /* Literally checking if any user accounts has the name as given, case insensitive */
                 $numrows = $checkifexists->fetchColumn();
-                if($numrows == 1){
+                if ($numrows == 1) {
                     /* Found one count of user, getting data next */
                     $getuser = $db->prepare("select * from users where user = ?");
                     if ($getuser->execute([$bruker])) {
@@ -263,10 +259,10 @@ DATA;
                     } else {
                         echo "Utføringen av kommandoen fungerte ikke!\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
                     }
-                } else{
+                } else {
                     echo "Fant $numrows brukere på $bruker. Kan ikke fortsette, går til hovedmeny...\n\n";
                 }
-            } else{
+            } else {
                 echo "Kunne ikke sjekke om brukerkonto eksisterer.\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
             }
         } else {
@@ -288,30 +284,17 @@ DATA;
             /* Allows password change... */
             echo "La stå for automatisk generert passord.\n";
             $newpass = readline("Nytt passord: ");
-            if (strlen($newpass) >= 3) {
-                $pass_chars = "abcdefghijklmnopqrstuvwxyz0123456789-_.!\"#%&\\/()=?";
-                $newpass = "";
-                for ($i = 0; $i < 12; $i++) {
-                    $newpass .= $pass_chars[rand(0, strlen($pass_chars) - 1)];
+            $newpass = (strlen($newpass) <= 3) ? genpass() : $newpass;
+            $update = $db->prepare("update users set pass = ? where $queryadd = ?");
+            if ($update->execute([
+                password_hash($newpass, PASSWORD_DEFAULT),
+                $value
+            ])) {
+                if ($update->rowCount() == 1) {
+                    echo "Passordet har blitt satt til: " . $newpass;
                 }
-                $update = $db->prepare("update users set pass = ? where $queryadd = ?");
-                if ($update->execute([
-                    $newpass,
-                    $value
-                ])) {
-                    if ($update->rowCount() == 1) {
-                        echo "Passordet har blitt satt til: " . $newpass;
-                    }
-                } else {
-                    echo "Kunne ikke oppdatere passordet! " . $update->errorInfo();
-                }
-
             } else {
-                $pass_chars = "abcdefghijklmnopqrstuvwxyz0123456789-_.!\"#%&\\/()=?";
-                $newpass = "";
-                for ($i = 0; $i < 12; $i++) {
-                    $newpass .= $pass_chars[rand(0, strlen($pass_chars) - 1)];
-                }
+                echo "Kunne ikke oppdatere passordet! " . $update->errorInfo();
             }
         }
         $choice = 0;
