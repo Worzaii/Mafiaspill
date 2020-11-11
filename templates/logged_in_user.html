@@ -22,7 +22,7 @@
                 <li><a href="statistikk.php">Statistikk</a></li>
                 <li><a href="fengsel.php">Fengsel</a></li>
                 <li><a href="bj.php">BlackJack</a></li>
-                <li><a href="online.php">Spillere p&aring;logget (#ONLINE_USERS#)</a></li>
+                <li><a href="online.php">Spillere pålogget (#ONLINE_USERS#)</a></li>
             </ul>
         </nav>
     </div>
@@ -35,9 +35,9 @@
         <div id="ct">
             #CHAT_MESSAGES_HEADER#
         </div>
-        <noscript><p>&Aring; spille #DOMAIN# uten javascript aktivert vil vise seg &aring; v&aelig;re fungere
-            d&aring;rlig,
-            vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p></noscript>
+        <noscript><p>å spille #DOMAIN# uten javascript aktivert vil vise seg å være fungere
+            dårlig,
+            vennligst aktiver javascript eller bruk en nettleser som støtter dette.</p></noscript>
     </div>
 </header>
 <section>
@@ -56,7 +56,7 @@
                 </ul>
                 <h2>Verdier</h2>
                 <ul>
-                    <li><a href="#">Svarteb&oslash;rsen</a></li>
+                    <li><a href="#">Svartebørsen</a></li>
                     <li><a href="#">Bunker#WAIT_BUNKER_USER#</a></li>
                     <li><a href="#">Banken</a></li>
                     <li><a href="#">Poeng</a></li>
@@ -68,9 +68,9 @@
                 <h2>Kommunikasjon</h2>
                 <ul>
                     <li><a href="#">Innboks #USER_INBOX#</a></li>
-                    <li><a href="#">Send inn s&oslash;knad!</a></li>
+                    <li><a href="#">Send inn søknad!</a></li>
                     <li><a href="#">Support</a></li>
-                    <li><a href="#">Spillere p&aring;logget</a> (#ONLINE_USERS#)</li>
+                    <li><a href="#">Spillere pålogget</a> (#ONLINE_USERS#)</li>
                     <li><a href="#">Nyheter</a></li>
                     <li><a href="#">Ledelsen</a></li>
                 </ul>
@@ -78,7 +78,7 @@
                 <ul>
                     <li><a href="#">Chat</a>(#CHATS_NUMBER#)</li>
                     <li><a href="#">Generelt Forum </a></li>
-                    <li><a href="#">Salg og S&oslash;knadsforum</a></li>
+                    <li><a href="#">Salg og Søknadsforum</a></li>
                     <li><a href="#">Annet</a></li>
                     <li><a href="#">Gjengene</a></li>
                 </ul>
@@ -106,7 +106,7 @@
                     </li>
                     <li>Familie: #USER_FAMILY#</li>
                     <li>Kuler: #USER_BULLETS#</li>
-                    <li>V&aring;pen: #USER_WEAPON#</li>
+                    <li>Våpen: #USER_WEAPON#</li>
                 </ul>
                 <h2>Oversikt</h2>
                 <ul>
@@ -122,7 +122,7 @@
                     <li><a href="finnspiller.php">Finn spiller</a></li>
                     <li><a href="endreprofil.php">Endre profil</a></li>
                     <li><a href="nypassord.php">Endre passord</a></li>
-                    <li><a href="loggut.php" onclick="return confirm('Er du sikker p&aring; at du vil logge ut? ')">Logg
+                    <li><a href="loggut.php" onclick="return confirm('Er du sikker på at du vil logge ut? ')">Logg
                         ut</a></li>
                 </ul>
             </div>
@@ -140,7 +140,7 @@
             let id = $(this).attr("data-id");
             let user = $(this).attr("data-user");
             $("body")
-                .append("<div class=\"custom-menu\"><ul><li><a href=\"profil.php?id=" + id + "\">G&aring; til Profil</a></li><li><a href=\"innboks.php?ny&usertoo=" + user + "\">Send melding</a></li><li><a href=\"bank.php?til=" + user + "\">Send penger</a></li></ul></div>");
+                .append("<div class=\"custom-menu\"><ul><li><a href=\"profil.php?id=" + id + "\">Gå til Profil</a></li><li><a href=\"innboks.php?ny&usertoo=" + user + "\">Send melding</a></li><li><a href=\"bank.php?til=" + user + "\">Send penger</a></li></ul></div>");
             $("div.custom-menu").css({top: event.pageY + "px", left: event.pageX + "px"});
         });
         $("#ct").on("click", function () {

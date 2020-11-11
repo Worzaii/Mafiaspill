@@ -9,18 +9,18 @@ startpage("Forum");
 
 <?php
 //Et forum er delt opp i flere deler.
-//1. Selve forumtr&aring;dene i liste/tabell
-//2. Selve tr&aring;den i forumet/visning av tr&aring;den
-//3. Svar p&aring; tr&aring;den
-//4. Slette tr&aring;d/ kunn for admin og fm's
-//5. Opprette tr&aring;der
+//1. Selve forumtrådene i liste/tabell
+//2. Selve tråden i forumet/visning av tråden
+//3. Svar på tråden
+//4. Slette tråd/ kunn for admin og fm's
+//5. Opprette tråder
 //6. Flere?
 if(isset($_GET['topic'])){
-//Viser tr&aring;den
+//Viser tråden
 $topic = mysql_real_escape_string($_GET['topic']);
 echo '<br>';
 if(isset($_POST['post'])){
-//Svarer p&aring; tr&aring;d
+//Svarer på tråd
 $svar = mysql_real_escape_string($_POST['svar']);
 if(strlen($svar) <= 2){
 echo '<p style="color:#f00;text-align:center;">Svaret ditt er for kort, vennligst ha 3 tegn eller mer!</p>';
@@ -49,7 +49,7 @@ $get = mysql_fetch_object($sql);
 $geti = mysql_query("SELECT * FROM `users` WHERE `user` = '$get->creator'");
 $usr = mysql_fetch_object($geti);
 if(mysql_num_rows($sql) == 0){
-echo '<p style="color:#f00;text-align:center;">Denne tr&aring;den eksisterer ikke lengre. Eller har ikke blitt opprettet av noen.</p>';
+echo '<p style="color:#f00;text-align:center;">Denne tråden eksisterer ikke lengre. Eller har ikke blitt opprettet av noen.</p>';
 }
 else{
 $what = $get->what;
@@ -59,7 +59,7 @@ echo '
 <br>
 <p style="text-align:center;padding-center:30px;"><a style="color:#A07650;" href="forum.php">Tilbake til forumet!</a></p>';
 if(!isset($_GET['nysvar'])){
-  $text = '<p style="text-align:right;padding-right:40px;"><a style="border:2px solid #A07650A07650;border-radius:15px;padding:5px;background-image:-webkit-gradient(linear,left bottom,left top,color-stop(0.33, #1e1e1e),color-stop(0.67, #202020));color:#fff" href="forum.php?topic='.$topic.'&nysvar">Svar p&aring; tr&aring;d!</a></p>';
+  $text = '<p style="text-align:right;padding-right:40px;"><a style="border:2px solid #A07650A07650;border-radius:15px;padding:5px;background-image:-webkit-gradient(linear,left bottom,left top,color-stop(0.33, #1e1e1e),color-stop(0.67, #202020));color:#fff" href="forum.php?topic='.$topic.'&nysvar">Svar på tråd!</a></p>';
 }
 else{
   $text = '
@@ -126,22 +126,22 @@ echo '</table>';
 echo $text;
 }
 else if(isset($_GET['nytrad'])){
-//Opprette ny tr&aring;d
+//Opprette ny tråd
 echo '<br><p style="text-align:left;padding-left:40px;"><a style="border:2px solid #A07650;border-radius:15px;padding:5px;background-image:-webkit-gradient(linear,left bottom,left top,color-stop(0.33, #1e1e1e),color-stop(0.67, #202020));color:#fff" href="forum2.php">Tilbake til forumsiden!</a></p>';
 if(isset($_POST['melding']) && isset($_POST['tema'])){
 $sms = mysql_real_escape_string($_POST['melding']);
 $tema = mysql_real_escape_string($_POST['tema']);
 if(strlen($sms) <= 14){
-echo '<p style="color:#f00;text-align:center;">Meldingen er for kort! Det m&aring; minst v&aelig;re 15 tegn eller lengre!</p>';
+echo '<p style="color:#f00;text-align:center;">Meldingen er for kort! Det må minst være 15 tegn eller lengre!</p>';
 }
 else if(strlen($tema) <= 3){
-echo '<p style="color:#f00;text-align:center;">Temaet for tr&aring;den er for kort! Det m&aring; minst v&aelig;re 4 tegn!</p>';
+echo '<p style="color:#f00;text-align:center;">Temaet for tråden er for kort! Det må minst være 4 tegn!</p>';
 }
 else if(strlen($sms) >= 15 && strlen($tema) >= 4){
   $user = $_SESSION['user'];
   $date = date("H:i:s d.m.Y");
 if(mysql_query("INSERT INTO `forum`(`tema`,`creator`,`date`,`what`) VALUES('$tema','$user','$date','$sms')")){
-echo '<p style="color:#0f0;text-align:center;font-weight:bold;">Tr&aring;den har blitt opprettet!</p>';
+echo '<p style="color:#0f0;text-align:center;font-weight:bold;">Tråden har blitt opprettet!</p>';
 }
 else{
 echo '<p>Det oppstod en feil!<br>'.mysql_error().'</p>';
@@ -151,7 +151,7 @@ echo '<p>Det oppstod en feil!<br>'.mysql_error().'</p>';
 echo <<<ENDHTML
 <form method="post" action="forum2.php?nytrad&post">
 <tr>
-<h3>lag en ny tr&aring;d!</h3>
+<h3>lag en ny tråd!</h3>
 </tr>
 <tr>
 <th style="width:50%;text-align:right;">Temaet: </th><td style="width:50%;text-align:left;"><input type="text" name="tema" style="width:50%;"></td>
@@ -162,7 +162,7 @@ echo <<<ENDHTML
 </th>
 </tr>
 <tr>
-<th colspan="2"><input type="submit" value="Opprett tr&aring;den!"></th>
+<th colspan="2"><input type="submit" value="Opprett tråden!"></th>
 </tr>
 </table>
 </form>
@@ -176,8 +176,8 @@ echo '
 <br>
 <br><br><table style="padding:10px;margin:0px auto;border-collapse:collapse;border-color:grey;border:1px solid grey;width:500px;" border="1">
 <tr>
-<!--<th style="padding:10px;">Tr&aring;d</th><th style="padding:10px;">Av</th><th style="padding:10px;">Dato</th><th style="padding:10px;">Antall svar</th>-->
-<th>Alt mulig forumet <a href="forum.php?nytrad" style="color:#A07650;">Lag din egen tr&aring;d</a></th>
+<!--<th style="padding:10px;">Tråd</th><th style="padding:10px;">Av</th><th style="padding:10px;">Dato</th><th style="padding:10px;">Antall svar</th>-->
+<th>Alt mulig forumet <a href="forum.php?nytrad" style="color:#A07650;">Lag din egen tråd</a></th>
 </tr>
 ';
 $sql = mysql_query("SELECT * FROM `forum` ORDER BY `id` DESC")or die('Feil:'.mysql_error());
@@ -201,7 +201,7 @@ echo '
 </tr>
 ';
 }
-echo '</table><br><p style="text-align:right;padding-right:40px;"><a style="border:2px solid #A07650A07650;border-radius:15px;padding:5px;background-image:-webkit-gradient(linear,left bottom,left top,color-stop(0.33, #1e1e1e),color-stop(0.67, #202020));color:#fff" href="forum.php?nytrad">Opprett ny tr&aring;d!</a></p>';
+echo '</table><br><p style="text-align:right;padding-right:40px;"><a style="border:2px solid #A07650A07650;border-radius:15px;padding:5px;background-image:-webkit-gradient(linear,left bottom,left top,color-stop(0.33, #1e1e1e),color-stop(0.67, #202020));color:#fff" href="forum.php?nytrad">Opprett ny tråd!</a></p>';
 }
 echo '<br>';
 ?>

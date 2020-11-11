@@ -3,7 +3,7 @@
     startpage("Innboksen");
 ?>
 <?php
-//echo '<p style="-moz-border-radius: 3px;-webkit-border-radius: 3px;background: #322929;border: 1px solid #4F4141;border-radius: 3px;color: #666;font-family: verdana;font-size: 11px;font-weight: 700;line-height: 30px;margin: 10px auto;padding: 5px;text-align: center;text-shadow: 1px 1px 0 black;width: 540px;">Meldingssystemet er ikke feilfritt. Det er kun �n feil som gjenst&aring;r. Feilen er slik at f&oslash;rste melding med tema som du sender til en person vises ikke. Dette jobbes med.</p>';//Notis til de som bruker meldinger
+//echo '<p style="-moz-border-radius: 3px;-webkit-border-radius: 3px;background: #322929;border: 1px solid #4F4141;border-radius: 3px;color: #666;font-family: verdana;font-size: 11px;font-weight: 700;line-height: 30px;margin: 10px auto;padding: 5px;text-align: center;text-shadow: 1px 1px 0 black;width: 540px;">Meldingssystemet er ikke feilfritt. Det er kun �n feil som gjenstår. Feilen er slik at første melding med tema som du sender til en person vises ikke. Dette jobbes med.</p>';//Notis til de som bruker meldinger
 if (!isset($_GET['do'])) {
     echo '
     <h1>Innboks</h1>
@@ -50,7 +50,7 @@ if (isset($_GET['do'])) {
             $dato = date("H:i:s d.m.Y");
             if (strlen($sms) == 0) {
                 echo '
-<p class="feil">Meldingsinnholdet var ikke stort nok! Du m&aring; ha mer enn 1 tegn.</p>
+<p class="feil">Meldingsinnholdet var ikke stort nok! Du må ha mer enn 1 tegn.</p>
 ';
             } else if (strlen($usto) <= 3) {
                 echo feil('Brukernavnet er ikke gyldig, det er for kort!');
@@ -69,7 +69,7 @@ if (isset($_GET['do'])) {
 ';
                         } else {
                             echo '
-<p class="feil">Det har oppst&aring;tt en feil! Rapporter til Support snarest!</p>
+<p class="feil">Det har oppstått en feil! Rapporter til Support snarest!</p>
 ';
                         }
                     }
@@ -108,7 +108,7 @@ END;
         if (!is_numeric($id)) {
             echo feil('Meldingens id er ikke gyldig!');
         } else if ($id <= 0) {
-            echo feil('Pr&oslash;ver du hack eller noe? xD');
+            echo feil('Prøver du hack eller noe? xD');
         } else if (is_numeric($id) && $id >= 1) {
             $sql = mysql_query("SELECT * FROM `mail` WHERE `UId` = '$obj->id' AND `id` = '$id' OR `TId` = '$obj->id' AND `id` = '$id'") or die(mysql_error());
             $sql2 = mysql_fetch_object($sql) or die(mysql_error());
@@ -139,7 +139,7 @@ END;
 ';
                     } else {
                         echo '
-<p class="feil">Det har oppst&aring;tt en feil! Rapporter til Support snarest!</p>
+<p class="feil">Det har oppstått en feil! Rapporter til Support snarest!</p>
 ';
                     }
                 }

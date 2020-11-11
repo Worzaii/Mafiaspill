@@ -4,8 +4,8 @@ if($obj->status == 1 || $obj->status == 2){
 startpage("Multi/IP-sjekk");
 ?>
 <h1>Sjekk spillere for multi-muligheter</h1>
-<p>Det er UTROLIG viktig at det ikke deles videre p&aring; noen som helst slags vis, hvordan vi tar multier. </br>
-  Bruk ikke modkill-grunn som "HADDE SAMME PASSORD SOM xxxx".. bruk heller "Multi", eller noe s&aring;nt!
+<p>Det er UTROLIG viktig at det ikke deles videre på noen som helst slags vis, hvordan vi tar multier. </br>
+  Bruk ikke modkill-grunn som "HADDE SAMME PASSORD SOM xxxx".. bruk heller "Multi", eller noe sånt!
 </p>
 <table class="table">
 <tr>

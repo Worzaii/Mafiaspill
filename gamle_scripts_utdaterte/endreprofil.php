@@ -4,7 +4,7 @@ include("core.php");
 startpage("Endre profil");
 ?>
     <h1>Endre profil</h1>
-    <p>Her har du mulighet til &aring; lage din egen profil!</p>
+    <p>Her har du mulighet til å lage din egen profil!</p>
 <?php
 if (isset($_POST['bilde']) && isset($_POST['profil'])) {
     $i = $db->escape($_POST['bilde']);
@@ -50,7 +50,7 @@ if (isset($_POST['bilde']) && isset($_POST['profil'])) {
         if ($obj->status == 1) {
             echo mysqli_error($db->con);
         } else {
-            echo feil('Det har oppst&aring;tt en feil! Rapporter dette til Support snarest!');
+            echo feil('Det har oppstått en feil! Rapporter dette til Support snarest!');
         }
     }
     $bilde = htmlentities($_POST['bilde']);

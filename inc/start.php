@@ -20,7 +20,7 @@
                 <li><a href="nyheter.php">Nyheter</a></li>
                 <li><a href="fengsel.php">Fengsel$anyjail</a></li>
                 <li><a href="bj.php">BlackJack</a></li>
-                <li><a href="online.php">Spillere p&aring;logget (<?= $late_online; ?>)</a></li>
+                <li><a href="online.php">Spillere pålogget (<?= $late_online; ?>)</a></li>
             </ul>
         </nav>
     </div>
@@ -29,8 +29,8 @@
     <p>Spillet har blitt oppdatert. CTRL + F5</p>
 </div>
 <?= $chat; ?>
-<noscript><p>&Aring; spille uten javascript aktivert vil vise seg &aring; v&aelig;re fungere d&aring;rlig,
-        vennligst aktiver javascript eller bruk en nettleser som st&oslash;tter dette.</p>
+<noscript><p>å spille uten javascript aktivert vil vise seg å være fungere dårlig,
+        vennligst aktiver javascript eller bruk en nettleser som støtter dette.</p>
 </noscript>
 <section class="over_wrapper">
     <div class="wrapper">

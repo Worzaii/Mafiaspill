@@ -1,5 +1,6 @@
 <?php
 define("LVL", true);
+error_log("About to include core from directory above... Current dir: ". getcwd());
 include "../core.php";
 header('Content-type: application/json');
 $str = ['string' => feil('Error: Action not set!'), 'state' => 0];
@@ -38,7 +39,7 @@ if (isset($_POST["action"]) && isset($_POST["id"])) {
                 $str['string'] = "Nyheten med ID $id har blitt satt som " . (($change == 1) ? "synlig" : "skjult") . "!";
                 $str['state'] = 1;
             } else{
-                $str['string'] = "Kunne ikke endre synlighet p&aring; nyheten!";
+                $str['string'] = "Kunne ikke endre synlighet på nyheten!";
             }
         }
     } else {

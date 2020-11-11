@@ -74,9 +74,9 @@ function city($city, $way = 1)
             "Trondheim",
             "Stavanger",
             "Fredrikstad",
-            "Troms&oslash;",
+            "Tromsø",
             "Sarpsborg",
-            "Lillestr&oslash;m"
+            "Lillestrøm"
         ]; //Norske byer ONLY :)
         if ($way == 1) {
             $by = str_replace($int, $var, $city);
@@ -89,7 +89,7 @@ function city($city, $way = 1)
 
 /**
  *
- * @param type $i er IDen vi &oslash;nsker &aring; sjekke opp
+ * @param type $i er IDen vi ønsker å sjekke opp
  * @param type $obj (<b>0</b>|1) bestemmer om funksjonen skal returnere brukerobjektet om det finnes.
  *
  * @return boolean or object
@@ -115,7 +115,6 @@ function user($i, $obj = 0)
         return '<a href="profil.php?id=' . $user->id . '">' . $user->user . '</a>';
     } else {
         #error_log(var_export($s, true));
-        include_once 'classes/User.php';
         $dummy = new \UserObject\User();
         $dummy->setUsername("System");
         $dummy->setUserID(1);
@@ -201,7 +200,7 @@ function status($s)
     }
 }
 
-function user_exists($username, $ret = 0)
+function getUser($username, $ret = 0)
 {
     global $db;
     $userexists = $db->prepare("SELECT count(*) FROM `users` WHERE `user` = ?");
@@ -229,7 +228,7 @@ function user_exists($username, $ret = 0)
 function firma($id)
 {
     global $db;
-    $db->query("SELECT * FROM `firma` WHERE `id` = '" . $db->escape($id) . "'");
+    $db->query("SELECT * FROM `firms` WHERE `id` = '" . $db->escape($id) . "'");
     if ($db->num_rows() == 1) {
         $f = $db->fetch_object();
         return [$f->Navn, $f->Eier, $f->Type, $f->Konto, $f->By];
@@ -246,19 +245,6 @@ function liv_check()
     }
 }
 
-function aktiv()
-{
-    global $dir;
-    global $obj;
-    global $db;
-    $db->query("SELECT * FROM `users` WHERE `id` = '$obj->id' AND `activated` = '0'");
-    if ($db->num_rows() == 1) {
-        include_once($dir . "inc/desp.php");
-    } else {
-        return;
-    }
-}
-
 function fengsel($timereturn = null)
 {
     global $obj;
@@ -269,7 +255,8 @@ function fengsel($timereturn = null)
         if ($timereturn == true) {
             $us2 = $db->prepare("SELECT timeleft FROM `jail` WHERE `uid` = ? AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1");
             $us2->execute([$obj->id]);
-            return $us2->fetchObject()->timeleft - time();
+            $res = $us2->fetchObject();
+            return $res->timeleft - time();
         } else {
             return true;
         }
@@ -425,7 +412,7 @@ function bbcodes(
     if ($decode == 1) {
         $text = utf8_decode($text);
     }
-    $text = str_replace(["æ", "ø", "å"], ["&aelig;", "&oslash;", "&aring;"], $text);
+    $text = str_replace(["æ", "ø", "å"], ["æ", "ø", "å"], $text);
     $text = preg_replace(
         "#\[spotify=(.+)\]#is",
         "<iframe src=\"https://embed.spotify.com/?uri=$1\" width=\"300\" height=\"380\" frameborder=\"0\" allowtransparency=\"true\"></iframe>",
@@ -453,73 +440,6 @@ function smileys($text)
     //        $text
     //    );
     return $text;
-}
-
-function rank($xp)
-{
-    if ($xp <= 50) {
-        $ranknr = 1;
-        $rankty = "Soldat";
-        $maxxp = 50;
-    } elseif ($xp > 50 && $xp < 100) {
-        $xp = $xp - 50;
-        $ranknr = 2;
-        $rankty = "Capo";
-        $maxxp = 50;
-    } elseif ($xp >= 100 && $xp < 150) {
-        $xp = $xp - 100;
-        $ranknr = 3;
-        $rankty = "Underboss";
-        $maxxp = 50;
-    } elseif ($xp >= 150 && $xp < 250) {
-        $xp = $xp - 150;
-        $ranknr = 4;
-        $rankty = "Boss";
-        $maxxp = 100;
-    } elseif ($xp >= 250 && $xp < 350) {
-        $xp = $xp - 250;
-        $ranknr = 5;
-        $rankty = "Consigliere";
-        $maxxp = 350;
-    } elseif ($xp >= 350 && $xp < 500) {
-        $xp = $xp - 350;
-        $ranknr = 6;
-        $rankty = "Don";
-        $maxxp = 500;
-    } elseif ($xp >= 500 && $xp < 700) {
-        $xp = $xp - 500;
-        $ranknr = 7;
-        $rankty = "Mafioso";
-        $maxxp = 700;
-    } elseif ($xp >= 700 && $xp < 950) {
-        $xp = $xp - 700;
-        $ranknr = 8;
-        $rankty = "Omerta";
-        $maxxp = 950;
-    } elseif ($xp >= 950 && $xp < 1250) {
-        $xp = $xp - 950;
-        $ranknr = 9;
-        $rankty = "Vendetta";
-        $maxxp = 1250;
-    } elseif ($xp >= 1250 && $xp < 1400) {
-        $xp = $xp - 1250;
-        $ranknr = 10;
-        $rankty = "Godfather";
-        $maxxp = 1400;
-    } elseif ($xp >= 1400 && $xp < 3000) {
-        $xp = $xp - 1400;
-        $ranknr = 11;
-        $rankty = "Legende";
-        $maxxp = 2600;
-    } elseif ($xp >= 3000) {
-        $ranknr = 12;
-        $rankty = "Legendarisk Don";
-        $maxxp = 3000;
-        if (($xp / $maxxp) > 1) {
-            $rankty .= " x" . floor($xp / $maxxp);
-        }
-    }
-    return [$ranknr, $rankty, $xp, $maxxp];
 }
 
 function get_userobject($in)
@@ -662,4 +582,34 @@ function info($t)
 function warning($t)
 {
     return '<div class="boxshape"><p class="warning">' . $t . '</p></div>';
+}
+
+function canUseFunction($jail, $bunker)
+{
+    $write = "";
+    if ($jail === 1) {
+        $fe = fengsel(true);
+        if ($fe !== false) {
+            $write .= feil('Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
+            <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $fe))) .
+                '<script>teller(' . $fe . ', "fengsel", false, \'ned\');</script>';
+        }
+    }
+    if ($bunker === 1) {
+        $bu = bunker(true);
+        if ($bu !== false) {
+            $write .= '
+            <p class="feil">Du er i bunker, gjenstående tid:
+            <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
+            <script>
+            teller(' . ($bu - time()) . ', "bunker", false, \'ned\');
+            </script>
+            ';
+        }
+    }
+    if (!empty($write)) {
+        return $write;
+    } else {
+        return false;
+    }
 }

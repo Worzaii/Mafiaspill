@@ -27,7 +27,7 @@ VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen " . $tema .
                         echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
                     }
                 } catch (PDOException $exception) {
-                    echo feil("Kunne ikke utf&oslash;re p&aring; grunn av f&oslash;lgende feil: " . $exception->getMessage());
+                    echo feil("Kunne ikke utføre på grunn av følgende feil: " . $exception->getMessage());
                 }
 
             }
@@ -35,7 +35,7 @@ VALUES (NULL, '0', '{$obj->user} skrev akkurat en nyhet med tittelen " . $tema .
         ?>
         <form method="post" action="">
             <p>Tittel:<input type="text" name="tema" value=""></p>
-            <p class="info">Dra baren for &aring; justere hvem som kan se nyheten.</p>
+            <p class="info">Dra baren for å justere hvem som kan se nyheten.</p>
             <input id="rang" type="range" name="rangerank" min="1" max="5" value="5"><br><span
                     id="rankrange">Alle</span>
             <p>Melding:</p>

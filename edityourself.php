@@ -36,7 +36,7 @@ if (r1() || r2()) {
                 <td>Exp: <input style="float:right;" name="epx" type="text" value="<?= $obj->exp ?>"><br></td>
             </tr>
             <tr>
-                <td>Penger p&aring; handa: <input style="float:right;" name="dnah" type="number"
+                <td>Penger på handa: <input style="float:right;" name="dnah" type="number"
                                                   value="<?= $obj->hand ?>"></td>
             </tr>
             <tr>

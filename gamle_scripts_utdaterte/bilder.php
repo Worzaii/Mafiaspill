@@ -3,7 +3,7 @@ die();
 include("core.php");
 startpage("Bildebestillinger");
 ?>
-<h1>S&oslash;k etter bilder/avatarer/profilbilder ++</h1>
+<h1>Søk etter bilder/avatarer/profilbilder ++</h1>
 <?php
 if (isset($_POST['stock']) && isset($_POST['type']) && isset($_POST['pris1']) && isset($_POST['pris2']) && isset($_POST['hvem']) && isset($_POST['extra'])) {
     $link = mysql_real_escape_string($_POST['stock']);
@@ -74,7 +74,7 @@ while ($r = mysql_fetch_object($s)) {
 </tr>
 <tr>
 <td colspan="2">Ekstra kommentar til picmaker:<br>
-<textarea name="ekstra" style="width:100%;" placeholder="Noe spessielt du vil ha gjort med bildet, s&aring; kan du forklare det her."></textarea>
+<textarea name="ekstra" style="width:100%;" placeholder="Noe spessielt du vil ha gjort med bildet, så kan du forklare det her."></textarea>
 </td>
 </tr>
 <tr>

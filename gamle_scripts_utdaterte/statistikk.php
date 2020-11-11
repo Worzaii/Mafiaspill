@@ -18,7 +18,7 @@ echo '<table class="tablemain">
             <tbody>
                 <tr><td>Antall spillere registrert:</td><td>' . $select2->num_rows . '</td></tr>
                 <!--<tr><td>Antall aktiverte spillere:</td><td></td></tr>-->
-                <tr><td>Antall d&oslash;de spillere:</td><td>' . $select4->num_rows . '</td></tr>
+                <tr><td>Antall døde spillere:</td><td>' . $select4->num_rows . '</td></tr>
             </tbody>
         </table>
     </td>

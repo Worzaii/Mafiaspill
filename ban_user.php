@@ -10,7 +10,7 @@ if (r1() || r2()) {
         $user = $_POST['bruker'];
         $valg = $_POST['valg'];
         $grunn = $_POST['grunn'];
-        $userexists = user_exists($user, 2);
+        $userexists = getUser($user, 2);
         if ($userexists) {
             if ($userexists->status == 1 && !r1()) {
                 feil("Du kan ikke banne en administrator!");
@@ -19,7 +19,7 @@ if (r1() || r2()) {
                     if ($db->query("select * from `banlog` where uid = '{$userexists->id}' and active = '1'
 order by id desc limit 1")) {
                         if ($db->num_rows() == 1) {
-                            echo warning('Brukeren er allerede bannet. Mente du &aring; fjerne ban p&aring; brukerkontoen?');
+                            echo warning('Brukeren er allerede bannet. Mente du å fjerne ban på brukerkontoen?');
                         } else {
                             if ($db->query("INSERT INTO `banlog`(`uid`,`timestamp`,`reason`,`banner`) 
 VALUES('" . $userexists->id . "',UNIX_TIMESTAMP(),'$grunn','" . $obj->id . "')")) {
@@ -33,7 +33,7 @@ VALUES('" . $userexists->id . "',UNIX_TIMESTAMP(),'$grunn','" . $obj->id . "')")
                             }
                         }
                     } else {
-                        echo feil('Kunne ikke sp&oslash;rre tabellen om brukeren allerede er bannet!');
+                        echo feil('Kunne ikke spørre tabellen om brukeren allerede er bannet!');
                     }
                 } elseif ($valg == 2) {
                     if ($db->query("select * from `banlog` 
@@ -49,10 +49,10 @@ where uid = '{$userexists->id}' and active = '1' order by id desc limit 1")) {
                             echo info('Det var ingen brukerkonto som var bannet med den ID.');
                         }
                     } else {
-                        echo feil('Kunne ikke sp&oslash;rre tabellen om bruker er bannet, sjekk logg for databasen');
+                        echo feil('Kunne ikke spørre tabellen om bruker er bannet, sjekk logg for databasen');
                     }
                 } else {
-                    echo feil('Ukjent valg... Pr&oslash;v igjen.');
+                    echo feil('Ukjent valg... Prøv igjen.');
                 }
             }
         } else {
@@ -61,7 +61,7 @@ where uid = '{$userexists->id}' and active = '1' order by id desc limit 1")) {
     }
     if (isset($_GET['kill'])) {
         $kill = $db->escape($_GET['kill']);
-        $uid = user_exists($kill, 2);
+        $uid = getUser($kill, 2);
         if (!$uid) {
             echo warning('Det var ingen bruker med brukernavnet ' . htmlentities($_GET['kill']));
             $uname = null;
@@ -89,7 +89,7 @@ where uid = '{$userexists->id}' and active = '1' order by id desc limit 1")) {
             <tr>
                 <td>Grunn:</td>
                 <td><textarea name="grunn" style="width:100%;height: 100px;" placeholder="Skriv grunnlag her.
-Kan redigeres i ettertid om n&oslash;dvendig."></textarea></td>
+Kan redigeres i ettertid om nødvendig."></textarea></td>
             </tr>
             <tr>
                 <td>Valg:</td>
@@ -99,7 +99,7 @@ Kan redigeres i ettertid om n&oslash;dvendig."></textarea></td>
                 </td>
             </tr>
         </table>
-        <input type="submit" value="Utf&oslash;r!"></form>
+        <input type="submit" value="Utfør!"></form>
     <?php
 } else {
     noaccess();

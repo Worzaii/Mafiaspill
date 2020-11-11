@@ -6,7 +6,7 @@ startpage("Forumpanel");
 if($obj->status == 3 || $obj->status == 2 || $obj->status == 1){ ?>
 <h1>Forumpanelet</h1>
 <ul class="adminpanel">
-	<a class="menu" href="tomprat.php" onclick="return confirm('Sikker p&aring; at du vil t&oslash;mme praten?')"><li>Rens forumet</li></a>
+	<a class="menu" href="tomprat.php" onclick="return confirm('Sikker på at du vil tømme praten?')"><li>Rens forumet</li></a>
 	<a class="menu" href="forumban.php"><li>Forumban spiller</li></a>	
 </ul>
 <?php }

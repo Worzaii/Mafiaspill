@@ -28,12 +28,12 @@ if (isset($_SESSION['sessionzar'])) {
     $db->query("SELECT id,user,pass,ip,forceout,lastactive, health, status, image, exp, bank, hand, points, city, family, bullets, weapon, support, profile FROM `users` WHERE `user` = '" . $db->escape($user) . "' AND `pass` = '" . $db->escape($pass) . "'");
     if ($db->num_rows() == 0) {
         header("Location: loggut.php?g=4");
-        die('<a href="loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget p&aring; din bruker.</a>');
+        die('<a href="loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget på din bruker.</a>');
     } elseif ($db->num_rows() == 1) {
         $obj = $db->fetch_object();
         if ($obj->ip != $ip) {
             header("Location: loggut.php?g=7&$ip");
-            echo '<h1>Det kan se ut som du har blitt logget inn p&aring; et annet nettverk. Klikk her for &aring; g&aring; til innloggingssiden: <a href="loggut.php">Index</a></h1>';
+            echo '<h1>Det kan se ut som du har blitt logget inn på et annet nettverk. Klikk her for å gå til innloggingssiden: <a href="loggut.php">Index</a></h1>';
             die();
         }
         liv_check();
@@ -41,18 +41,18 @@ if (isset($_SESSION['sessionzar'])) {
         if ($obj->forceout == 1) {
             $db->query("UPDATE `users` SET `forceout` = '0' WHERE `id` = '{$obj->id}'");
             header("Location: loggut.php?g=6");
-            die('<a href="loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn p&aring; nytt for &aring; fortsette &aring; spille.</a>');
+            die('<a href="loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn på nytt for å fortsette å spille.</a>');
         }
         if (($obj->lastactive + 1800) < time()) {
             header("Location: loggut.php?g=5");
-            die('<a href="loggut.php?g=1">Du har blitt logget ut p&aring; grunn av inaktivitet.</a>');
+            die('<a href="loggut.php?g=1">Du har blitt logget ut på grunn av inaktivitet.</a>');
         } elseif (($obj->lastactive + 1800) > time()) {
             if (!defined("NOUPDATE")) {
                 if (!$db->query("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP() WHERE `id` = '{$obj->id}'")) {
                     if ($obj->status == 1) {
                         die('<p>Kunne ikke sette ny info!<br>' . mysqli_error($db->con) . '</p>');
                     } else {
-                        die('<p>Det har oppst&aring;tt en feil i scriptet!!!</p>');
+                        die('<p>Det har oppstått en feil i scriptet!!!</p>');
                     }
                 }
             }

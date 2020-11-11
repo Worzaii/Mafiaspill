@@ -19,14 +19,14 @@ if (isset($_POST['tuser']) && isset($_POST['theme']) && isset($_POST['smsen'])) 
     if (strlen($til) <= 2) {
         $res = '<p class="feil">Brukernavnet oppgitt er for kort!</p>';
         $re = false;
-    } else if (!user_exists($til)) {
-        $res = '<p class="feil">Brukeren ' . htmlentities($til) . ' finnes ikke i v&aring;re databaser, sjekk at du har skrevet riktig.</p>';
+    } else if (!getUser($til)) {
+        $res = '<p class="feil">Brukeren ' . htmlentities($til) . ' finnes ikke i våre databaser, sjekk at du har skrevet riktig.</p>';
         $re = false;
     } else if (strlen($mel) <= 2) {
-        $res = '<p class="feil">Meldingen din er for kort! Du m&aring; minst ha 3 tegn.</p>';
+        $res = '<p class="feil">Meldingen din er for kort! Du må minst ha 3 tegn.</p>';
         $re = false;
     } else {
-        $userto = user_exists($til, 1);
+        $userto = getUser($til, 1);
         if ($db->query("INSERT INTO `mail2`(`tid`,`fid`,`title`,`message`,`time`) VALUES('$userto','$obj->id','$tema','$mel',UNIX_TIMESTAMP())")) {
             $res = '<p class="lykket">Meldingen har blitt sendt til ' . status($userto, 1) . '!</p>';
         }

@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>D&oslash;d spiller</title>
+<title>Død spiller</title>
 <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
@@ -10,8 +10,8 @@
 <section>
     <div class="wrapper">
         <p><b>Spilleren har blitt drept!</b></p>
-        <p>En spiller drepte brukeren din. Om du &oslash;nsker &aring; starte p&aring; nytt m&aring; du <a
-                    href="http://mafia-no.net">registrere deg p&aring; nytt!</a></p>
+        <p>En spiller drepte brukeren din. Om du ønsker å starte på nytt må du <a
+                    href="http://mafia-no.net">registrere deg på nytt!</a></p>
         <?php
         if ($obj->moddet == 1) {
             echo <<<ENDHTML

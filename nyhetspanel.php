@@ -18,7 +18,7 @@ if (r1() || r2()) {
 </tr>
 HTML;
     }
-    //$rows .= "<tr><td colspan='5'><input type='submit' value='Utf&oslash;r n&aring;!'></td></tr>";
+    //$rows .= "<tr><td colspan='5'><input type='submit' value='Utfør nå!'></td></tr>";
     echo <<<HTML
 <script type="text/javascript" src="js/newshandler.js"></script>
 <div id="newsresult"></div>

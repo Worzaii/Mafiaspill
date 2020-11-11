@@ -9,7 +9,7 @@ startpage("Forumet");
  */
 $forums = array(
     1 => array('navn' => "Generelt", 'id' => 1),
-    2 => array('navn' => "Salg & S&oslash;knad", 'id' => 2),
+    2 => array('navn' => "Salg & Søknad", 'id' => 2),
     3 => array('navn' => "Offtopic", 'id' => 3),
     4 => array('navn' => "Ledelsen", 'id' => 4),
     5 => array('navn' => "Gjengforum", 'id' => 5)
@@ -33,12 +33,12 @@ if (isset($_GET['type'])) {
     } // Ingen tilgang til ledelsen forumet om man ikke er admin/mod.
     if ($db->num_rows($db->query($sql)) == 0) {
         echo '<form action="" method="POST">
-  <input type="submit" name="sopprett" value="Opprett tr&aring;d!">
-</form><p class="feil">Ingen tr&aring;der er opprettet i forumet.</p>';
+  <input type="submit" name="sopprett" value="Opprett tråd!">
+</form><p class="feil">Ingen tråder er opprettet i forumet.</p>';
     } else {
         ?>
         <form action="" method="POST">
-            <input type="submit" name="sopprett" value="Opprett tr&aring;d!">
+            <input type="submit" name="sopprett" value="Opprett tråd!">
         </form>
         <table class="table">
             <tr>
@@ -46,7 +46,7 @@ if (isset($_GET['type'])) {
             </tr>
             <tr>
                 <td>Tema</td>
-                <td>Tr&aring;dstarter</td>
+                <td>Trådstarter</td>
                 <td>Opprettet</td>
                 <td>Sist svar av</td>
             </tr>
@@ -69,29 +69,29 @@ if (isset($_GET['trad'])) {
     $start = $db->query("SELECT * FROM `forum` WHERE `id` = '$trad'");
     $hent = $db->fetch_object($start);
     if ($hent->type == 5 && $hent->famid != $obj->family) {
-        echo feil('Du har ikke tilgang til denne tr&aring;den!');
+        echo feil('Du har ikke tilgang til denne tråden!');
     } else {
         if ($db->num_rows($start) == 0) {
-            echo feil('Tr&aring;den er slettet, eller finnes ikke.');
+            echo feil('Tråden er slettet, eller finnes ikke.');
         } else {
             ?>
             <form action="nyforum.php?svar=<?= $trad ?>" method="POST">
-                <input type="submit" name="svar" value="Besvar Tr&aring;den">
+                <input type="submit" name="svar" value="Besvar Tråden">
             </form>
             <?php
             if ($obj->status == 1 || $obj->status == 2) {
                 ?>
                 <form action="nyforum.php?slett_trad=<?= $trad ?>" method="POST">
                     <input type="submit" onclick="return confirm('Er du sikker?')" name="slett"
-                           value="Slett Tr&aring;den">
+                           value="Slett Tråden">
                 </form>
                 <form action="nyforum.php?flytt_trad=<?= $trad ?>" method="POST">
-                    <input type="submit" name="flytt" value="Flytt Tr&aring;den">
+                    <input type="submit" name="flytt" value="Flytt Tråden">
                 </form>
 
                 <?php
             }
-            $if_rediger_trad = "|| <a href=\"nyforum.php?rediger_trad=" . $hent->id . "\">Rediger Tr&aring;d</a>";
+            $if_rediger_trad = "|| <a href=\"nyforum.php?rediger_trad=" . $hent->id . "\">Rediger Tråd</a>";
             $rediger_trad = ($hent->uid == $obj->id) ? $if_rediger_trad : null;
             echo '<div class="forumstart">  
   <div class="object_one"><img src="' . bilde(htmlentities($hent->uid)) . '" height="150" width="170">' . user($hent->uid) . ' ' . $rediger_trad . '</div>
@@ -133,7 +133,7 @@ if (isset($_GET['svar'])) {
         ?>
         <form action="" method="POST">
             <textarea style="width: 540px;margin-left: auto;margin-right: auto;height: 120px;" name="object_one"
-                      placeholder="Besvar Tr&aring;den"></textarea>
+                      placeholder="Besvar Tråden"></textarea>
             <input type="submit" name="object_two">
         </form>
         <?php
@@ -155,7 +155,7 @@ if (isset($_GET['opprett'])) {
     <form action="" method="POST">
         <table class="table">
             <tr>
-                <th colspan="3">Opprett Tr&aring;d!</th>
+                <th colspan="3">Opprett Tråd!</th>
             </tr>
             <tr>
                 <td>Emne:</td>
@@ -170,7 +170,7 @@ if (isset($_GET['opprett'])) {
                 <td>Type:</td>
                 <td><select name="type_forum">
                         <option value="1">Generelt</option>
-                        <option value="2">Salg & S&oslash;knad</option>
+                        <option value="2">Salg & Søknad</option>
                         <option value="3">Offtopic</option>
                         <?= $option ?>
                         <?= $gjeng ?>
@@ -233,7 +233,7 @@ if (isset($_GET['slett_trad'])) {
             $query = $db->query("SELECT * FROM `forum` WHERE `id` = '$id' AND `slettet` = '0'");
             $fetch = $db->fetch_object($query);
             if ($db->num_rows($query) == 0) {
-                echo feil('Tr&aring;den er allerede slettet!');
+                echo feil('Tråden er allerede slettet!');
             } else {
                 $db->query("UPDATE `forum` SET `slettet` = '1' WHERE `id` = '$id' LIMIT 1");
                 header("Location: nyforum.php?type=$fetch->type");
@@ -249,7 +249,7 @@ if (isset($_GET['rediger'])) {
     $sjekk = $db->query("SELECT * FROM `forumsvar` WHERE `sid` = '$trad_id'");
     $sjekk_fetch = $db->fetch_object($sjekk);
     if ($sjekk_fetch->rediger >= 2) {
-        echo feil('Du har redigert posten din 2 ganger. Du kan ikke redigere flere ganger n&aring;!');
+        echo feil('Du har redigert posten din 2 ganger. Du kan ikke redigere flere ganger nå!');
     } else { // Hvor mange ganger man kan redigere.
         $id = $db->escape($_GET['rediger']);
         $tradid = $db->escape($_GET['trad']);
@@ -280,7 +280,7 @@ if (isset($_GET['rediger_trad'])) {
     $id_trad = $db->escape($_GET['rediger_trad']);
     $query = $db->query("SELECT * FROM `forum` WHERE `id` = '$id_trad' AND `slettet` = '0' AND `uid` = '$obj->id'");
     if ($db->num_rows($query) == 0) {
-        echo feil('Ingen tr&aring;d funnet.');
+        echo feil('Ingen tråd funnet.');
     } else {
         $object_fetch = $db->fetch_object();
         if ($object_fetch->redigert >= 1) {
@@ -305,7 +305,7 @@ if (isset($_GET['rediger_trad'])) {
                 $id = $db->escape($_POST['title']);
                 $rediger_one = $db->escape($_POST['rediger_one']);
                 $db->query("UPDATE `forum` SET `melding` = '$rediger_one',`tema` = '$id',`redigert` = (`redigert` + 1) WHERE `id` = '$id_trad' LIMIT 1");
-                echo lykket('Du har endret tr&aring;den!');
+                echo lykket('Du har endret tråden!');
                 $query = $db->query("SELECT * FROM `forum` WHERE `id` = '$id_trad' AND `slettet` = '0' AND `uid` = '$obj->id'");
                 $object = $db->fetch_object();
                 header("Location: nyforum.php?trad=$object->id");
@@ -331,28 +331,28 @@ if (isset($_GET['flytt_trad'])) {
         $flyttid = $db->escape($_GET['flytt_trad']);
         $query = $db->query("SELECT * FROM `forum` WHERE `id` = '$flyttid'");
         if ($db->num_rows($query) == 0) {
-            echo feil('Ingen tr&aring;der funnet med oppgitt id.');
+            echo feil('Ingen tråder funnet med oppgitt id.');
         } else {
             if (isset($_POST['senderen'])) {
                 /*NOTE TO SELF:
                  * 1: Generelt
-                 * 2: Salg S&oslash;knad
+                 * 2: Salg Søknad
                  * 3: Offtopic
                  * 4: Ledelsen*/
                 $value = $db->escape($_POST['value']);
                 $trad_id = $db->escape($_GET['flytt_trad']);
                 $db->query("UPDATE `forum` SET `type` = '$value' WHERE `id` = '$trad_id' LIMIT 1");
-                echo lykket('Tr&aring;den ble flyttet til ' . $forums[$value]['navn'] . '');
+                echo lykket('Tråden ble flyttet til ' . $forums[$value]['navn'] . '');
             }
             $ta = $db->fetch_object($query);
             $ledelsen = (r1() || r2()) ? "<option value=\"4\">Ledelsen Forumet</option>" : null;
             ?>
             <form action="" method="POST">
                 <table class="table">
-                    <th colspan="3">Flytt tr&aring;d!</th>
+                    <th colspan="3">Flytt tråd!</th>
                     <tr>
-                        <td>Tr&aring;dnavn</td>
-                        <td>Tr&aring;dstarter</td>
+                        <td>Trådnavn</td>
+                        <td>Trådstarter</td>
                         <td>Plassert I</td>
                     </tr>
                     <tr>
@@ -364,13 +364,13 @@ if (isset($_GET['flytt_trad'])) {
                         <td colspan="3"><?= bbcodes($ta->melding, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                 0) ?></td>
                     </tr>
-                    Flytt denne tr&aring;den til: <select name="value">
+                    Flytt denne tråden til: <select name="value">
                         <option value="1">Generelt</option>
-                        <option value="2">Salg & S&oslash;knad</option>
+                        <option value="2">Salg & Søknad</option>
                         <option value="3">Offtopic</option>
                         <?= $ledelsen ?>
                     </select>
-                    <input type="submit" name="senderen" value="Flytt tr&aring;den!">
+                    <input type="submit" name="senderen" value="Flytt tråden!">
                 </table>
             </form>
             <?php

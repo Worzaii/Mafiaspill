@@ -32,7 +32,7 @@ from `banlog` inner join users on banlog.uid = users.id where banlog.active = '1
 ';
             }
         } else {
-            echo '<tr><td colspan="6"><i>Det er ingen bannede brukere akkurat n&aring;...</i></td></tr>';
+            echo '<tr><td colspan="6"><i>Det er ingen bannede brukere akkurat nå...</i></td></tr>';
         }
         ?>
     </table>

@@ -6,13 +6,13 @@ startpage("Garasje");
 echo '<img src="images/headers/garasje.png" alt>';
 if (fengsel()) {
     $bu = fengsel(true);
-    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span>
+    echo feil('Du er i fengsel, gjenstående tid: <span id="fengsel">' . $bu . '</span>
 <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))) .
         '<script>teller(' . $bu . ', "fengsel", false, \'ned\');</script>';
 } elseif (bunker()) {
     $bu = bunker(true);
     echo '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid:
+    <p class="feil">Du er i bunker, gjenstående tid:
     <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
     <script>
     teller(' . ($bu - time()) . ', "bunker", false, \'ned\');
@@ -21,7 +21,7 @@ if (fengsel()) {
 } else {
     ?>
     <h1>Garasjen</h1>
-    <p>Velkommen til garasjen din!<br>Her for &aring; selge biler, s&aring; m&aring; du sende bilene til en annen by, n&aring;r
+    <p>Velkommen til garasjen din!<br>Her for å selge biler, så må du sende bilene til en annen by, når
         de er fremme, dra til byen du sendte de til, og selg dem for penger :)</p>
     <?php
     if ((isset($_POST['selgbil']) || isset($_POST['sendbil']) ||
@@ -67,7 +67,7 @@ WHERE `uid` = '{$obj->id}' AND
                         $errors['num'] += 1;
                     }
                 } else {
-                    $errors['res'] .= ', fordi den ikke finnes, eller ikke tilh&oslash;rer deg';
+                    $errors['res'] .= ', fordi den ikke finnes, eller ikke tilhører deg';
                     $errors['num'] += 1;
                 }
             }/*Foreach for flere biler END*/
@@ -79,7 +79,7 @@ WHERE `uid` = '{$obj->id}' AND
             }
             if ($errors['num'] >= 1) {
                 $ant = ($success >= 2) ? " bilene dine" : " bilen din";
-                echo feil('Det oppstod ' . $errors["num"] . ' feil' . ' da du pr&oslash;vde &aring; selge ' . $ant . '!<br>'.$errors['res']);
+                echo feil('Det oppstod ' . $errors["num"] . ' feil' . ' da du prøvde å selge ' . $ant . '!<br>'.$errors['res']);
             }
             /*Selg bil END*/
         } elseif (isset($_POST['sendbil'])) {
@@ -102,7 +102,7 @@ WHERE `id` = '{$bil}' AND
                         } else {
                             if ($f->current_city == $tilby) {
                                 $errors['num'] += 1;
-                                $errors['res'] .= ', fordi bilen ikke kan sendes tilbake til byen den ble stj&aring;let i';
+                                $errors['res'] .= ', fordi bilen ikke kan sendes tilbake til byen den ble stjålet i';
                             } else {
                                 if ($f->current_city == $obj->city) {
                                     if ($db->query("UPDATE `garage` 
@@ -133,7 +133,7 @@ WHERE `uid` = '{$obj->id}' AND
             }
             if ($errors['num'] >= 1) {
                 $ant = ($success == 1) ? " bil" : " biler";
-                echo feil('Det oppstod ' . $errors["num"] . ' feil da du pr&oslash;vde &aring; sendte ' . $ant . ' biler.<br>' . $errors["res"] . '!');
+                echo feil('Det oppstod ' . $errors["num"] . ' feil da du prøvde å sendte ' . $ant . ' biler.<br>' . $errors["res"] . '!');
             }
         }
         if (isset($_POST['selgalle'])) {
@@ -159,7 +159,7 @@ WHERE `uid` = '{$obj->id}' AND
 WHERE `id` = '{$obj->id}' LIMIT 1");
                 echo lykket('Du har solgt ' . $ant . ' bil' . $pre . ' for ' . number_format($sum) . 'kr!');
             } else {
-                echo feil('Ingen biler er klare til &aring; selges i ' . city($obj->city) . '!');
+                echo feil('Ingen biler er klare til å selges i ' . city($obj->city) . '!');
             }
         }
     }
@@ -172,7 +172,7 @@ WHERE `uid` = '{$obj->id}' AND
         <form method="post" action="" id="bilfrakt">
         <table class="table">
         <tr>
-        <th><input type="checkbox" id="velgalle" onchange="derp();">Velg</th><th>Bil</th><th>Stj&aring;let i</th><th>N&aring;v&aelig;rende by</th><th>I bevegelse?</th>
+        <th><input type="checkbox" id="velgalle" onchange="derp();">Velg</th><th>Bil</th><th>Stjålet i</th><th>Nåværende by</th><th>I bevegelse?</th>
         </tr>';
         $pagination = new Pagination($db, $sql, 20, 'p');
         $pagination_links = $pagination->GetPageLinks();
@@ -236,7 +236,7 @@ WHERE `uid` = '{$obj->id}' AND
             echo feil('Du har ingen biler!');
         }
     }
-    echo '</br><a class href="garasje.php?verdier">Sjekk verdiene p&aring; bilene!</a>';
+    echo '</br><a class href="garasje.php?verdier">Sjekk verdiene på bilene!</a>';
 }
 ?>
     <script>

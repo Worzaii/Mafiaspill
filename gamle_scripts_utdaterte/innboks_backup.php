@@ -33,7 +33,7 @@ if (!isset($_GET['vis']) && !isset($_GET['ny']) && !isset($_GET['supportsvar']) 
                 $db->query("UPDATE `mails` SET `deleted` = '1' WHERE `tid` = '$obj->id' AND `id` = '$id'");
                 $res = lykket('Meldingen din ble slettet!');
             } else {
-                $res = feil('Fant ikke det du pr&oslash;vde &aring; slette.');
+                $res = feil('Fant ikke det du prøvde å slette.');
             }
         }
     }
@@ -69,13 +69,13 @@ if (!isset($_GET['vis']) && !isset($_GET['ny']) && !isset($_GET['supportsvar']) 
             </td>
             <td>'.user($inbox['fid']).'</td>
             <td>' . date("H:i:s d.m.Y", $inbox['timestamp']) . '</td>
-            <td><a href="innboks.php?slettid='.$inbox['id'].'"onclick="return confirm(\'Er du sikker p&aring; at du vil slette denne meldingen?\')">Slett Melding</a></td>
+            <td><a href="innboks.php?slettid='.$inbox['id'].'"onclick="return confirm(\'Er du sikker på at du vil slette denne meldingen?\')">Slett Melding</a></td>
             </tr>     
             ';
             }
             echo '<tr><td colspan="5">' . $pagination_links . '</tr></td>';
         } else {
-            echo '<tr><td colspan="4"><em>Du har ingen meldinger &aring; hente.</em></td></tr>';
+            echo '<tr><td colspan="4"><em>Du har ingen meldinger å hente.</em></td></tr>';
         }
         ?>
         </tbody>
@@ -103,7 +103,7 @@ if (isset($_GET['vis'])) {
             if (isset($_POST['smsback'])) {
                 $sms = $db->escape($_POST['smsback']);
                 if (strlen($sms) <= 1) {
-                    echo feil('Du m&aring; ha en meldingstekst lengre enn et tegn.');
+                    echo feil('Du må ha en meldingstekst lengre enn et tegn.');
                     $keep = (strlen($sms) <= 1) ? $sms : null;
                 } else {
                     if ($db->query("INSERT INTO `mail2`(`tid`,`fid`,`title`,`message`,`time`) VALUES('$f->fid','$obj->id','" . $db->escape($f->title) . "','$sms',UNIX_TIMESTAMP())")) {
@@ -114,7 +114,7 @@ if (isset($_GET['vis'])) {
                         if ($obj->status == 1) {
                             echo feil('Feil ved sending av melding: <br>' . mysqli_error());
                         } else {
-                            echo feil('Det har oppst&aring;tt et problem ved sending av meldingen. Rapporter dette til Support.');
+                            echo feil('Det har oppstått et problem ved sending av meldingen. Rapporter dette til Support.');
                         }
                     }
                 }
@@ -165,14 +165,14 @@ if (isset($_GET['vis'])) {
         if (strlen($til) <= 2) {
             $res = feil('Brukernavnet oppgitt er for kort!');
             $re = false;
-        } else if (!user_exists($til)) {
-            $res = feil('Brukeren ' . htmlentities($til) . ' finnes ikke i v&aring;re databaser, sjekk at du har skrevet riktig.');
+        } else if (!getUser($til)) {
+            $res = feil('Brukeren ' . htmlentities($til) . ' finnes ikke i våre databaser, sjekk at du har skrevet riktig.');
             $re = false;
         } else if (strlen($mel) <= 2) {
-            $res = feil('Meldingen din er for kort! Du m&aring; minst ha 3 tegn.');
+            $res = feil('Meldingen din er for kort! Du må minst ha 3 tegn.');
             $re = false;
         } else {
-            $userto = user_exists($til, 1);
+            $userto = getUser($til, 1);
             $db->query("SELECT * FROM `block` WHERE `tid` = '$obj->id' AND `uid` = '$userto'");
             if ($db->num_rows() == 0) {
                 if ($db->query("INSERT INTO `mail2`(`tid`,`fid`,`title`,`message`,`time`) VALUES('$userto','$obj->id','$tema','$mel',UNIX_TIMESTAMP())")) {
@@ -264,7 +264,7 @@ if (isset($_GET['vis'])) {
 									<th colspan="5">Supportmeldinger</th>
 								</tr>
 								<tr>
-									<th>Tema</th><th>Bruker</th><th>Ang&aring;ende</th><th>Dato innsendt</th><th>Status</th>
+									<th>Tema</th><th>Bruker</th><th>Angående</th><th>Dato innsendt</th><th>Status</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -277,8 +277,8 @@ if (isset($_GET['vis'])) {
             }
         }
     } else {
-        startpage("Viser sp&oslash;rsm&aring;l");
-        echo '<h1>Viser sp&oslash;rsm&aring;l</h1><p><a href="innboks.php?supportsvar">&laquo; Tilbake</a></p>';
+        startpage("Viser spørsmål");
+        echo '<h1>Viser spørsmål</h1><p><a href="innboks.php?supportsvar">&laquo; Tilbake</a></p>';
         $g = $db->query("SELECT * FROM `support` WHERE `id` = '" . $db->escape($idd) . "'");
         if ($db->num_rows() == 1) {
             $f = $db->fetch_object();
@@ -393,7 +393,7 @@ if (isset($_GET['vis'])) {
             }
             echo '<tr><td colspan="5">' . $pagination_links . '</tr></td>';
         } else {
-            echo '<tr><td colspan="4"><em>Ingen meldinger &aring; hente...</em></td></tr>';
+            echo '<tr><td colspan="4"><em>Ingen meldinger å hente...</em></td></tr>';
             ?>
             </tbody>
             </table>
@@ -420,14 +420,14 @@ if (isset($_GET['vis'])) {
         echo $pagination_links;
         $db->query("UPDATE `mails` SET `opened` = '1' WHERE `uid` = '{$obj->id}' AND `opened` = '0' AND `type` = '1'");
     } else {
-        echo lykket('Du har ingen meldinger &aring; lese!');
+        echo lykket('Du har ingen meldinger å lese!');
     }
 } else if (isset($_GET['blokker'])) {
     if (isset($_POST['user'])) {
         if (isset($_POST['submit'])) {
             /* Blokkering av spiller */
-            if (user_exists($_POST['user'])) {
-                $u = user_exists($_POST['user'], 1);
+            if (getUser($_POST['user'])) {
+                $u = getUser($_POST['user'], 1);
                 $db->query("SELECT * FROM `block` WHERE `tid` = '$u' AND `uid` = '{$obj->id}'");
                 if ($db->num_rows() >= 1) {
                     $resub = feil('Du har allerede blokkert spilleren!');
@@ -438,20 +438,20 @@ if (isset($_GET['vis'])) {
                     }
                 }
             } else {
-                $resub = feil('Brukeren eksisterer ikke! Pr&oslash;v igjen!');
+                $resub = feil('Brukeren eksisterer ikke! Prøv igjen!');
             }
         } else if ($_POST['allow']) {
-            if (user_exists($_POST['user'])) {
-                $u = user_exists($_POST['user'], 1);
+            if (getUser($_POST['user'])) {
+                $u = getUser($_POST['user'], 1);
                 $db->query("SELECT * FROM `block` WHERE `tid` = '$u'");
                 if ($db->num_rows() == 0) {
-                    $resub = feil('Det finnes ingen blokkering p&aring; spilleren!');
+                    $resub = feil('Det finnes ingen blokkering på spilleren!');
                 } else {
                     $db->query("DELETE FROM `block` WHERE `uid` = '$obj->id' AND `tid` = '$u'");
                     if ($db->affected_rows() == 1) {
                         $resub = lykket('Blokkeringen har blitt fjernet!');
                     } else {
-                        $resub = feil('Kunne ikke fjerne blokkering. Det er noe galt med sp&oslash;rringen.');
+                        $resub = feil('Kunne ikke fjerne blokkering. Det er noe galt med spørringen.');
                     }
                 }
             } else {
@@ -460,7 +460,7 @@ if (isset($_GET['vis'])) {
         }
     }
     startpage("Blokkering");
-    echo '<h1>Blokker en spiller</h1><p>Dette inneb&aelig;rer at spilleren ikke lengre kan sende meldinger til deg via innboks.</p>';
+    echo '<h1>Blokker en spiller</h1><p>Dette innebærer at spilleren ikke lengre kan sende meldinger til deg via innboks.</p>';
     if (isset($resub)) {
         echo $resub;
     }

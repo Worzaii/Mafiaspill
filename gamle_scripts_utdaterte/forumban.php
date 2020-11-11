@@ -7,7 +7,7 @@ if (r1() || r2() || r3()) {
             $id = $db->escape($_GET['edit']);
             $db->query("DELETE FROM `forumban` WHERE `id` = '$id' LIMIT 1");
             echo lykket('Forumban ble fjernet!') . '</br>
-		<a href="forumban.php">G&aring; tilbake!</a>';
+		<a href="forumban.php">Gå tilbake!</a>';
         } else {
             echo feil('En feil skjedde da du skulle fjerne ban');
         }
@@ -32,7 +32,7 @@ VALUES('$u->id',UNIX_TIMESTAMP(),(UNIX_TIMESTAMP()+" . $tim[$time] . "),'$obj->i
                 }
             } else {
                 $banres = feil('Tid ikke korrekt definert(endring i nettleser) eller grunn ikke lang nok! 
-                Grunn m&aring; v&aelig;re 4 tegn eller mer.');
+                Grunn må være 4 tegn eller mer.');
             }
         }
         if (isset($_GET['ban'])) {

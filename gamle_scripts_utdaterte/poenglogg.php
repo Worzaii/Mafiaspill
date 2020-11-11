@@ -11,7 +11,7 @@ if(!(r1() || r2())){
 else{
 startpage("Se alle spillere som har brukt poeng");
 ?>
-<?php if(r1()) echo '<p>Trykk <a href="smslogg.php">Her</a> for &aring; se sms-loggen. Der ser du hvem som har sendt sms til systemet!</p>';?>
+<?php if(r1()) echo '<p>Trykk <a href="smslogg.php">Her</a> for å se sms-loggen. Der ser du hvem som har sendt sms til systemet!</p>';?>
 <?php
 /*Scriptet starter*/
 $moddetvis = $db->query("SELECT * FROM `poenglogg` ORDER BY `id` DESC");

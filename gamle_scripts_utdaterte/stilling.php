@@ -17,7 +17,7 @@ if (r1()) {
         $status = $db->escape($_POST['status']);
         $support = $db->escape($_POST['support']);
         if (!is_numeric($status) || $status <= 0 || $status >= 6) {
-            feil("Status er ikke et nummer, er for h&oslash;yt eller for lavt, du valgte nr. : " . $status . "!");
+            feil("Status er ikke et nummer, er for høyt eller for lavt, du valgte nr. : " . $status . "!");
         } else {
             $query = $db->query("SELECT * FROM `users` WHERE `user` = '$user'");
             $num = $db->num_rows();
@@ -27,12 +27,12 @@ if (r1()) {
                 if (!$db->query("UPDATE `users` SET `status` = '$status',`support` = '" . $support . "' WHERE `user` = '$user'")) {
                     echo feil('Spilleren fikk ikke stillingen! ' . mysqli_error($db->con) . '');
                 } else {
-                    echo info('Spilleren har n&aring; blitt oppdatert!');
+                    echo info('Spilleren har nå blitt oppdatert!');
                     if ($status != 5) {
                         sysmel(
                             $uid2->id,
-                            '--<b>Ledelsen</b></br>Du har n&aring; blitt satt opp som ' . $stilling[$status] . '.<br>
-Vi &oslash;nsker deg lykke til!'
+                            '--<b>Ledelsen</b></br>Du har nå blitt satt opp som ' . $stilling[$status] . '.<br>
+Vi ønsker deg lykke til!'
                         );
                     }
                 }
@@ -74,7 +74,7 @@ Vi &oslash;nsker deg lykke til!'
                         <option selected value="5">Vanlig spiller</option>
                     </select>
                     <br>
-                    <p>Kan brukeren svare p&aring; support?</p>
+                    <p>Kan brukeren svare på support?</p>
                     <input type="radio" name="support" value="1">Ja
                     <input type="radio" name="support" value="0" checked="">Nei
                 </td>

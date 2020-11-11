@@ -1,7 +1,7 @@
 <?php
 include("core.php");
 if (r1() || r2() || r3()) {
-    startpage("T&oslash;mmer prat");
+    startpage("Tømmer prat");
     $dato2 = date("H.i.s_d.m.Y");
     if (!file_exists("chatlog/")) {
         mkdir("chatlog");
@@ -26,11 +26,11 @@ if (r1() || r2() || r3()) {
         $db->query("INSERT INTO `chat`(uid,message,timestamp) 
 VALUES ('0','Praten ble t\u{00F8}mt av " . $obj->user . "!',UNIX_TIMESTAMP())");
         echo '
-<h1>Chatten har blitt t&oslash;mt!</h1>
-<p>Du har n&aring; renset chatten, og en melding ble skrevet i prat for deg.</br>';
+<h1>Chatten har blitt tømt!</h1>
+<p>Du har nå renset chatten, og en melding ble skrevet i prat for deg.</br>';
     }
 } else {
     startpage("Ingen tilgang!");
-    echo '<h1>Ingen tilgang!</h1><p>Denne siden er kun for Forum-moderatorer og h&oslash;yere.</p>';
+    echo '<h1>Ingen tilgang!</h1><p>Denne siden er kun for Forum-moderatorer og høyere.</p>';
 }
 endpage();

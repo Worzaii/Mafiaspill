@@ -1,10 +1,10 @@
 <?php
 include 'core.php';
 $faces = array (
-    "To"=>2, "Tre"=>3, "Fire"=>4, "Fem"=>5, "Seks"=>6, "Syv"=>7, "&aring;tte"=>8,
+    "To"=>2, "Tre"=>3, "Fire"=>4, "Fem"=>5, "Seks"=>6, "Syv"=>7, "åtte"=>8,
     "Ni"=>9, "Ti"=>10, "Knekt"=>10, "Dame"=>10, "Konge"=>10, "Ess"=>1
 );
-$tastatur=array("Ess"=>1,"To"=>2,"Tre"=>3,"Fire"=>4,"Fem"=>5,"Seks"=>6,"Syv"=>7,"&aring;tte"=>8,"Ni"=>9,"Ti"=>10,"Knekt"=>11,"Dame"=>12,"Konge"=>13);
+$tastatur=array("Ess"=>1,"To"=>2,"Tre"=>3,"Fire"=>4,"Fem"=>5,"Seks"=>6,"Syv"=>7,"åtte"=>8,"Ni"=>9,"Ti"=>10,"Knekt"=>11,"Dame"=>12,"Konge"=>13);
 function evaluateHand($hand) {
   global $faces;
   $value = 0;
@@ -47,8 +47,8 @@ else{
           if($card['suit'] == "Hjerter"){
             $img = '<img src="spillkort/h'.$tastatur[$card['face']].'.png" alt="Hjerter '.$tastatur['face'].'">';
           }
-          else if($card['suit'] == "Kl&oslash;ver"){
-            $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kl&oslash;ver'.$tastatur['face'].'">';
+          else if($card['suit'] == "Kløver"){
+            $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kløver'.$tastatur['face'].'">';
           }
           else if($card['suit'] == "Ruter"){
             $img = '<img src="spillkort/r'.$tastatur[$card['face']].'.png" alt="Ruter '.$tastatur['face'].'">';
@@ -64,8 +64,8 @@ else{
           if($card['suit'] == "Hjerter"){
             $img = '<img src="spillkort/h'.$tastatur[$card['face']].'.png" alt="Hjerter '.$tastatur['face'].'">';
           }
-          else if($card['suit'] == "Kl&oslash;ver"){
-            $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kl&oslash;ver'.$tastatur['face'].'">';
+          else if($card['suit'] == "Kløver"){
+            $img = '<img src="spillkort/k'.$tastatur[$card['face']].'.png" alt="Kløver'.$tastatur['face'].'">';
           }
           else if($card['suit'] == "Ruter"){
             $img = '<img src="spillkort/r'.$tastatur[$card['face']].'.png" alt="Ruter '.$tastatur['face'].'">';

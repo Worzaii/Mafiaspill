@@ -22,7 +22,7 @@
   //hint:use message_id to log your messages
   //additional parameters: country, price, currency, operator, keyword, shortcode
   // do something with $sender and $message
-  define('THRUTT', "Sperred&oslash;rp!");
+  define('THRUTT', "Sperredørp!");
 include_once("classes/Database.php");
   $db = new database;
   $db->configure();
@@ -33,18 +33,18 @@ include_once("classes/Database.php");
   //$sel = $db->query("SELECT * FROM `paymentcheck` WHERE `mes_id` = '$message_id'");
   if($db->query("INSERT INTO `paymentcheck`(`id`,`mes_id`,`mobil`,`poeng`,`tilpris`,`uid`,`status`,`time`) VALUES(NULL,'$message_id','$sender','$amount','$price','$uid','$status',UNIX_TIMESTAMP())")){
   if($db->query("UPDATE `users` SET `points` = (`points` + ".$amount.") WHERE `id` = '$uid' LIMIT 1")){
-      $reply = "Takk for kj&oslash;pet $sender!
-      Brukeren skal n&aring; ha mottatt poengene.";
-      sysmel(1, "Poengkj&oslash;p av spiller--<br>".user($uid)." kj&oslash;pte $amount poeng!");
-      sysmel(2, "Poengkj&oslash;p av spiller--<br>".user($uid)." kj&oslash;pte $amount poeng!");
-      sysmel(28, "Poengkj&oslash;p av spiller--<br>".user($uid)." kj&oslash;pte $amount poeng!");
+      $reply = "Takk for kjøpet $sender!
+      Brukeren skal nå ha mottatt poengene.";
+      sysmel(1, "Poengkjøp av spiller--<br>".user($uid)." kjøpte $amount poeng!");
+      sysmel(2, "Poengkjøp av spiller--<br>".user($uid)." kjøpte $amount poeng!");
+      sysmel(28, "Poengkjøp av spiller--<br>".user($uid)." kjøpte $amount poeng!");
   }
   else{
-      $reply = "Kj&oslash;pet er notert, men ikke lagt til bruker pga. databasefeil. Ta kontakt med Ledelsen asap for &aring; motta poengene dine!";
+      $reply = "Kjøpet er notert, men ikke lagt til bruker pga. databasefeil. Ta kontakt med Ledelsen asap for å motta poengene dine!";
   }
   }
   else{
-  $reply = 'Kj&oslash;pet ble ikke gjennomf&oslash;rt riktig. Du kan bli belastet uten &aring; motta poengene. Ta kontakt med Ledelsen SNAREST for &aring; motta dine poeng!';
+  $reply = 'Kjøpet ble ikke gjennomført riktig. Du kan bli belastet uten å motta poengene. Ta kontakt med Ledelsen SNAREST for å motta dine poeng!';
   }
   // print out the reply
   echo($reply);

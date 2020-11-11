@@ -6,15 +6,15 @@ if(!r1()){
 }
 else{
 startpage("Chatlog");
-/*$innhold = file_get_contents("chatlog/chat_00.01.56_05.11.2012.txt"); // Metode for &aring; vise en spesifikk vil
+/*$innhold = file_get_contents("chatlog/chat_00.01.56_05.11.2012.txt"); // Metode for å vise en spesifikk vil
 print $innhold;*/
 
 
-//include("chatlog/chat_21.32.49_05.04.2013.html"); // Annen metode for &aring; vise en spesifikk fil
+//include("chatlog/chat_21.32.49_05.04.2013.html"); // Annen metode for å vise en spesifikk fil
 
 if ($handle = opendir('chatlog/')) {
 
-    /* Korrekt m&aring;te. */
+    /* Korrekt måte. */
     while (false !== ($entry = readdir($handle))) {
         echo '<a style="width:10px;" href="chatlog/'.$entry.'">'.$entry.'</a><br>';
     }

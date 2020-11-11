@@ -1,19 +1,19 @@
 <?php
 include("core.php");
 startpage("Kriminalitet");
-echo '<img alt src="images/headers/krim.png"><p>N&aring;r du f&oslash;rst starter med kriminalitet,
- s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp. 
+echo '<img alt src="images/headers/krim.png"><p>Når du først starter med kriminalitet,
+ så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp. 
  Hvis du ikke ser noen valg, kontakt support!</p>';
 $jailed = false;
 if (fengsel()) {
     $bu = fengsel(true);
-    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span>
+    echo feil('Du er i fengsel, gjenstående tid: <span id="fengsel">' . $bu . '</span>
 <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))) .
         '<script>teller(' . $bu . ', "fengsel", false, \'ned\');</script>';
 } elseif (bunker()) {
     $bu = bunker(true);
     echo '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid:
+    <p class="feil">Du er i bunker, gjenstående tid:
     <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
     <script>
     teller(' . ($bu - time()) . ', "bunker", false, \'ned\');
@@ -30,7 +30,7 @@ if (fengsel()) {
         $f = $q2->fetchObject();
         if (time() < $f->timewait) {
             echo '
-        <p class="feil">Du m&aring; vente <span id="krim">' . ($f->timewait - time()) . '</span> f&oslash;r neste krim.</p>
+        <p class="feil">Du må vente <span id="krim">' . ($f->timewait - time()) . '</span> før neste krim.</p>
         <script>
         teller(' . ($f->timewait - time()) . ', "krim", false, "ned");
         </script>
@@ -39,7 +39,7 @@ if (fengsel()) {
     } else {
         if (isset($_POST['valget'])) {
             if (empty($_POST['valget'])) {
-                echo feil('Du m&aring; velge et alternativ f&oslash;rst!');
+                echo feil('Du må velge et alternativ først!');
             } else {
                 $val = $_POST['valget'];
                 $valg = $db->prepare("SELECT * FROM `crime` WHERE `id` = ? LIMIT 0,1");
@@ -47,11 +47,11 @@ if (fengsel()) {
                 if (!$valg) {
                     if (r1()) {
                         echo '
-      <p>Feil i sp&oslash;rring1: ' . mysqli_error($db->con) . '</p>
+      <p>Feil i spørring1: ' . mysqli_error($db->con) . '</p>
       ';
                     } else {
                         echo '
-        <p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til support!</p>
+        <p>Det var feil i utførelse av spørringer, vennligst rapporter dette til support!</p>
         ';
                     }
                 } else {
@@ -87,20 +87,20 @@ if (fengsel()) {
                             } else {
                                 if (r1()) {
                                     echo '
-                <p>Feil i sp&oslash;rring2: ' . mysqli_error($db->con) . '</p>
+                <p>Feil i spørring2: ' . mysqli_error($db->con) . '</p>
                 ';
                                 } else {
-                                    echo '<p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til support, slik at de kan se i loggen hva som hendte!</p>';
+                                    echo '<p>Det var feil i utførelse av spørringer, vennligst rapporter dette til support, slik at de kan se i loggen hva som hendte!</p>';
                                 }
                             }
                         } else {
                             if (r1()) {
                                 echo '
-              <p>Feil i sp&oslash;rring: ' . mysqli_error($db->con) . '</p>
+              <p>Feil i spørring: ' . mysqli_error($db->con) . '</p>
               ';
                             } else {
                                 echo '
-              <p>Det var feil i utf&oslash;relse av sp&oslash;rringer, vennligst rapporter dette til support!</p>
+              <p>Det var feil i utførelse av spørringer, vennligst rapporter dette til support!</p>
               ';
                             }
                         }
@@ -119,18 +119,18 @@ if (fengsel()) {
                                 $time = time();
                                 $time2 = time() + $timewait;
                                 $punish = $time + $v->punishtime;
-                                $q = $db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('$obj->id','Pr&oslash;vde &aring; v&aelig;re litt kriminiminel.',UNIX_TIMESTAMP(),'$punish',2500000)");
+                                $q = $db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('$obj->id','Prøvde å være litt kriminiminel.',UNIX_TIMESTAMP(),'$punish',2500000)");
                                 echo feil('Du klarte det ikke, og politiet oppdaget deg!</p>');
                                 if ($db->affected_rows() == 1) {
                                     echo '
-                <p class="feil">Du ble satt i fengsel! <br>Gjenst&aring;ende tid: <span id="krim2">' . ($v->punishtime) . '</span>.</p>
+                <p class="feil">Du ble satt i fengsel! <br>Gjenstående tid: <span id="krim2">' . ($v->punishtime) . '</span>.</p>
                 <script>
                 teller(' . $v->punishtime . ', "krim2", false, \'ned\');
                 </script>
                 ';
                                     $jailed = true;
                                 } else {
-                                    echo feil('Klarte ikke &aring; sette deg i fengsel! S&aring; bra...');
+                                    echo feil('Klarte ikke å sette deg i fengsel! Så bra...');
                                 }
                             }
                         }
@@ -179,7 +179,7 @@ if (fengsel()) {
                         } else {
                             echo '
             <tr>
-            <td colspan="4" style="text-align:center;"><i>Det ser ut til &aring; v&aelig;re tomt for valg... Har du h&oslash;y nok rank til &aring; utf&oslash;re dette da?</i></td>
+            <td colspan="4" style="text-align:center;"><i>Det ser ut til å være tomt for valg... Har du høy nok rank til å utføre dette da?</i></td>
             </tr>
             ';
                         }

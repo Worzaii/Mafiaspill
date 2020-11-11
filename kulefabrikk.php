@@ -6,7 +6,7 @@ if($obj->family != NULL){
   $res = $db->fetch_object();
   echo '<h1>Kulefabrikk</h1><p>Her kommer kulefabrikken snart! :D</p>';
   if($res->Leder == $obj->id){
-    /*Kan administrere kulefabrikk eller kj&oslash;pe*/
+    /*Kan administrere kulefabrikk eller kjøpe*/
     $k = $db->query("SELECT * FROM `kulefabrikker` WHERE `mobowner` = '$obj->family'");
     if($db->num_rows() == 1):
       /*Viser frem kontrollpanel for kulefabrikken*/
@@ -41,19 +41,19 @@ if($obj->family != NULL){
         }
         ?>
       <tr>
-        <td>Kulefabrikken i <?=city($re[0]["city"]);?></td><td><?php echo ($re[0]["mobowner"] == 0) ? '<span style="color:#0f0">&aring;pen for kj&oslash;p!</span>' : ((famidtoname($re[0]["mobowner"], 1) != false) ? famidtoname($re[0]["mobowner"], 1) : '<span style="color:#f00">D&oslash;d familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
+        <td>Kulefabrikken i <?=city($re[0]["city"]);?></td><td><?php echo ($re[0]["mobowner"] == 0) ? '<span style="color:#0f0">åpen for kjøp!</span>' : ((famidtoname($re[0]["mobowner"], 1) != false) ? famidtoname($re[0]["mobowner"], 1) : '<span style="color:#f00">Død familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
       </tr>
       <tr>
-        <td>Kulefabrikken i <?=city($re[1]["city"]);?></td><td><?php echo ($re[1]["mobowner"] == 0) ? '<span style="color:#0f0">&aring;pen for kj&oslash;p!</span>' : ((famidtoname($re[1]["mobowner"], 1) != false) ? famidtoname($re[1]["mobowner"], 1) : '<span style="color:#f00">D&oslash;d familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
+        <td>Kulefabrikken i <?=city($re[1]["city"]);?></td><td><?php echo ($re[1]["mobowner"] == 0) ? '<span style="color:#0f0">åpen for kjøp!</span>' : ((famidtoname($re[1]["mobowner"], 1) != false) ? famidtoname($re[1]["mobowner"], 1) : '<span style="color:#f00">Død familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
       </tr>
       <tr>
-        <td>Kulefabrikken i <?=city($re[2]["city"]);?></td><td><?php echo ($re[2]["mobowner"] == 0) ? '<span style="color:#0f0">&aring;pen for kj&oslash;p!</span>' : ((famidtoname($re[2]["mobowner"], 1) != false) ? famidtoname($re[2]["mobowner"], 1) : '<span style="color:#f00">D&oslash;d familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
+        <td>Kulefabrikken i <?=city($re[2]["city"]);?></td><td><?php echo ($re[2]["mobowner"] == 0) ? '<span style="color:#0f0">åpen for kjøp!</span>' : ((famidtoname($re[2]["mobowner"], 1) != false) ? famidtoname($re[2]["mobowner"], 1) : '<span style="color:#f00">Død familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
       </tr>
       <tr>
-        <td>Kulefabrikken i <?=city($re[3]["city"]);?></td><td><?php echo ($re[3]["mobowner"] == 0) ? '<span style="color:#0f0">&aring;pen for kj&oslash;p!</span>' : ((famidtoname($re[3]["mobowner"], 1) != false) ? famidtoname($re[3]["mobowner"], 1) : '<span style="color:#f00">D&oslash;d familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
+        <td>Kulefabrikken i <?=city($re[3]["city"]);?></td><td><?php echo ($re[3]["mobowner"] == 0) ? '<span style="color:#0f0">åpen for kjøp!</span>' : ((famidtoname($re[3]["mobowner"], 1) != false) ? famidtoname($re[3]["mobowner"], 1) : '<span style="color:#f00">Død familie</span>');  ?></td><td><input<?php echo ($r1["active"] == 1) ? " disabled='disabled'" : NULL; ?> type="radio" value="1" name="kf"></td>
       </tr>
       <tr>
-        <td>&nbsp;</td><td style="text-align: center"><input style="margin:0;" type="submit" value="Kj&oslash;p!"></td>
+        <td>&nbsp;</td><td style="text-align: center"><input style="margin:0;" type="submit" value="Kjøp!"></td>
       </tr>
     </tbody>
   </table>

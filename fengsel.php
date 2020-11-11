@@ -7,7 +7,7 @@ if (isset($_POST['valget']) && (isset($_POST['bryte']) || isset($_POST['kjope'])
     /* Starting execution of script depending on action taken */
     $valget = $_POST['valget'];
     if (!is_numeric($valget) || $valget < 1) {
-        $res = feil('Du m&aring; velge et gyldig valg f&oslash;rst...');
+        $res = feil('Du må velge et gyldig valg først...');
     } else {
         $action = (isset($_POST['bryte']) ? 'bryte' : (isset($_POST['kjope']) ? 'kjope' : null));
         if (in_array($action, ['kjope', 'bryte'])) {
@@ -20,7 +20,7 @@ if (isset($_POST['valget']) && (isset($_POST['bryte']) || isset($_POST['kjope'])
                     $jailed->execute([$valget]);
                     $jail3 = $jailed->fetchObject();
                     if ($jail3->priceout > $obj->hand) {
-                        $res = feil('Du har ikke r&aring;d til &aring; kj&oslash;pe ut spilleren.');
+                        $res = feil('Du har ikke råd til å kjøpe ut spilleren.');
                     } else {
                         $breakout = $db->prepare("update jail set breaker = ? where uid = ? and breaker is null and timeleft > unix_timestamp()");
                         $breakout->execute([$obj->id, $jail3->uid]);
@@ -30,7 +30,7 @@ if (isset($_POST['valget']) && (isset($_POST['bryte']) || isset($_POST['kjope'])
                             if ($doit->rowCount() != 1) {
                                 error_log('Kunne ikke oppdatere penger i handa til brukeren?');
                             }
-                            $res = lykket('Du kj&oslash;pte ut spilleren! ');
+                            $res = lykket('Du kjøpte ut spilleren! ');
                         } else {
                             $res = warning('Kunne ikke bryte ut spilleren. For sent?');
                         }
@@ -89,7 +89,7 @@ if (isset($res)) {
                     echo '<tr>
                             <td colspan="4" style="text-align: center;">
                                 <input type="submit" value="Bryt ut!" name="bryte" class="button2">
-                                <input type="submit" value="Kj&oslash;p ut!" name="kjope" class="button2">
+                                <input type="submit" value="Kjøp ut!" name="kjope" class="button2">
                                 
                             </td>
                         </tr>';
@@ -120,7 +120,7 @@ if (isset($res)) {
 <?php
 if (fengsel() == true) {
     echo '
-<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">' . fengsel(true) . '</span></p>
+<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">' . fengsel(true) . '</span></p>
 <script type= "text/javascript">
 teller(' . fengsel(true) . ',\'krim\',true,\'ned\');
 </script>

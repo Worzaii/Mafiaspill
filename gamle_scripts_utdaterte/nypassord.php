@@ -6,7 +6,7 @@ if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['newpas
     $ne2 = $_POST['newpass2'];
     $res = null;
     if (strlen($_POST['oldpass']) <= 2 || strlen($_POST['newpass']) <= 2 || strlen($_POST['newpass']) <= 2 || $_POST['newpass'] != $_POST['newpass2'] || !password_verify($old, $obj->pass)) {
-        $res .= feil('Det har oppst&aring;tt en eller flere feil:');
+        $res .= feil('Det har oppstått en eller flere feil:');
         if (strlen($_POST['oldpass']) <= 2) {
             $res .= feil('Det gamle passordet var for kort eller ikke oppgitt!');
         }
@@ -17,12 +17,12 @@ if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['newpas
             $res .= feil('Det gjentatte passordet var for kort eller ikke oppgitt!');
         }
         if ($_POST['newpass'] != $_POST['newpass2']) {
-            $res .= feil('De nye passordene var ikke like, pr&oslash;v igjen!');
+            $res .= feil('De nye passordene var ikke like, prøv igjen!');
         }
         if (!password_verify($old, $obj->pass)) {
             $res .= feil('<u>Det gamle passordet du oppgav var ikke riktig!</u>');
         }
-    } else {/* Ingen feil, pr&oslash;ver &aring; endre passordet*/
+    } else {/* Ingen feil, prøver å endre passordet*/
         $newhash = password_hash($new, PASSWORD_DEFAULT);
         if ($db->query("UPDATE `users` SET `pass` = '".$newhash."' WHERE `id` = '{$obj->id}' AND `pass` = '{$obj->pass}' LIMIT 1")) {
             $_SESSION['sessionzar'] = [$obj->user, $newhash];

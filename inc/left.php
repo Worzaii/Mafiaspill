@@ -78,7 +78,7 @@ $onl = "online.php";
 </ul>
 <h2>Verdier</h2>
 <ul>
-    <li><a href="#Marked">Svarteb&oslash;rsen </a></li>
+    <li><a href="#Marked">Svartebørsen </a></li>
     <li><a href="#Bunker">Bunker </a></li>
     <li><a href="bank.php">Banken </a></li>
     <li><a href="#Poeng">Poeng </a></li>
@@ -90,9 +90,9 @@ $onl = "online.php";
 <h2>Kommunikasjon</h2>
 <ul>
     <li><a href="innboks.php">Innboks <?php echo "\u{2709}"; ?></a></li>
-    <li><a href="#deputy.php">Send inn s&oslash;knad!</a></li>
+    <li><a href="#deputy.php">Send inn søknad!</a></li>
     <li><a href="#support.php">Support</a></li>
-    <li><a href="<?= $onl; ?>">Spillere p&aring;logget</a> (<?= $ant; ?>)</li>
+    <li><a href="<?= $onl; ?>">Spillere pålogget</a> (<?= $ant; ?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
     <li><a href="ledelse.php">Ledelsen</a></li>
 </ul>
@@ -104,7 +104,7 @@ $onl = "online.php";
         }
         ?></li>
     <li><a href="nyforum.php?type=1">Generelt Forum </a></li>
-    <li><a href="nyforum.php?type=2">Salg og S&oslash;knadsforum </a></li>
+    <li><a href="nyforum.php?type=2">Salg og Søknadsforum </a></li>
     <li><a href="nyforum.php?type=3">Annet </a></li>
     <?php
     if ($obj->family != null) {

@@ -5,14 +5,14 @@ startpage("Blackjack");
 echo '<h1>Blackjack</h1>';
 if (fengsel()) {
     $bu = fengsel(true);
-    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span>
+    echo feil('Du er i fengsel, gjenstående tid: <span id="fengsel">' . $bu . '</span>
 <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))) .
         '<script>teller(' . $bu . ', "fengsel", false, "ned");</script>';
 } elseif (bunker()) {
     $bu = bunker(true);
     echo /** @lang JavaScript */
         '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid:
+    <p class="feil">Du er i bunker, gjenstående tid:
     <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
     <script>
     teller(' . ($bu - time()) . ', "bunker", false, "ned");
@@ -22,7 +22,7 @@ if (fengsel()) {
     $suits = [
         "Spar",
         "Hjerter",
-        "Kl&oslash;ver",
+        "Kløver",
         "Ruter"
     ];
     $faces = [
@@ -32,7 +32,7 @@ if (fengsel()) {
         "Fem" => 5,
         "Seks" => 6,
         "Syv" => 7,
-        "&Aring;tte" => 8,
+        "åtte" => 8,
         "Ni" => 9,
         "Ti" => 10,
         "Knekt" => 10,
@@ -80,7 +80,7 @@ if (fengsel()) {
         if ($db->num_rows() == 1) {
             error_log('Stopping BJ script, round is active!');
             echo feil('Du spiller allerede en runde,
-            fullf&oslash;r den f&oslash;r du pr&oslash;ver &aring; starte et nytt spill!');
+            fullfør den før du prøver å starte et nytt spill!');
         } else {
             error_log('Continuing BJ script.');
             $pris = $db->escape($_POST['price']);
@@ -91,16 +91,16 @@ if (fengsel()) {
             $pris = str_replace(" ", "", $pris);
             error_log("Price got converted to: $pris");
             if ($pris <= 99) {
-                echo feil('Du m&aring; by 100kr eller mer');
+                echo feil('Du må by 100kr eller mer');
             } elseif (!is_numeric($pris)) {
-                echo feil('Du har ikke oppgitt en gyldig verdi! Tall er godkjent om f&oslash;lgende
+                echo feil('Du har ikke oppgitt en gyldig verdi! Tall er godkjent om følgende
                 tegn er blant tallene: "kr", ",", "." og mellomrom.');
             } elseif ($pris > 1000000000) {
-                echo feil('Maks innsats per runde er p&aring; 1,000,000,000kr!');
+                echo feil('Maks innsats per runde er på 1,000,000,000kr!');
             } elseif ($pris >= 100 && is_numeric($pris) && $pris <= 1000000000) {
                 if ($obj->hand <= ($pris - 1)) {
-                    echo feil('Du har ikke s&aring; mye penger &aring; spille for. Sjekk at du har
-                    minst 100 kr ute p&aring; handa!');
+                    echo feil('Du har ikke så mye penger å spille for. Sjekk at du har
+                    minst 100 kr ute på handa!');
                 } else {
                     error_log('Dealing cards...');
                     for ($i = 0; $i < 2; $i++) {
@@ -204,7 +204,7 @@ WHERE `id` = '$obj->id' LIMIT 1");
                                         } elseif ((evaluateHand($dealer) <= 21) && evaluateHand($dealer) >
                                             evaluateHand($hand)) {
                                             error_log("Dealer got more than player, player lost");
-                                            echo feil('Dealeren hadde h&oslash;yere enn deg, du tapte!');
+                                            echo feil('Dealeren hadde høyere enn deg, du tapte!');
                                             $db->query("UPDATE `bjtables`
 SET `active` = '0',`result` = '-$arraycards->price',`dcards` = '" . serialize($dealer) . "'
 WHERE `uid` = '$obj->id' AND `active` = '1' ORDER BY `id` DESC LIMIT 1");
@@ -212,7 +212,7 @@ WHERE `uid` = '$obj->id' AND `active` = '1' ORDER BY `id` DESC LIMIT 1");
                                         } elseif (evaluateHand($dealer) < evaluateHand($hand)) {
                                             error_log("Player won, more than dealer");
                                             $price = $arraycards->price * 2;
-                                            echo lykket('Du fikk h&oslash;yere enn dealeren,
+                                            echo lykket('Du fikk høyere enn dealeren,
                                             du vant ' . number_format($price) . ' kr!');
                                             $db->query("UPDATE `bjtables`
 SET `active` = '0',`result` = '$price',`dcards` = '" . serialize($dealer) . "'
@@ -260,7 +260,7 @@ WHERE `uid` = '$obj->id' AND `active` = '1' ORDER BY `id` DESC LIMIT 1")) {
                                         "Fem" => 5,
                                         "Seks" => 6,
                                         "Syv" => 7,
-                                        "&Aring;tte" => 8,
+                                        "åtte" => 8,
                                         "Ni" => 9,
                                         "Ti" => 10,
                                         "Knekt" => 11,
@@ -271,9 +271,9 @@ WHERE `uid` = '$obj->id' AND `active` = '1' ORDER BY `id` DESC LIMIT 1")) {
                                         if ($card['suit'] == "Hjerter") {
                                             $img = '<img src="spillkort/h' . $tastatur[$card['face']] . '.png"
                                             alt="Hjerter ' . $tastatur[$card['face']] . '">';
-                                        } elseif ($card['suit'] == "Kl&oslash;ver") {
+                                        } elseif ($card['suit'] == "Kløver") {
                                             $img = '<img src="spillkort/k' . $tastatur[$card['face']] . '.png"
-                                            alt="Kl&oslash;ver' . $tastatur[$card['face']] . '">';
+                                            alt="Kløver' . $tastatur[$card['face']] . '">';
                                         } elseif ($card['suit'] == "Ruter") {
                                             $img = '<img src="spillkort/r' . $tastatur[$card['face']] . '.png"
                                             alt="Ruter ' . $tastatur[$card['face']] . '">';
@@ -293,7 +293,7 @@ ORDER BY `id` DESC LIMIT 1");
                 <tr>
                 <td style="text-align: center;">
                 <input type="submit" value="Nytt kort!" name="newcard">
-                <input type="submit" value="St&aring;" name="stand"></td>
+                <input type="submit" value="Stå" name="stand"></td>
                 </tr>';
                                 } else {
                                     echo '
@@ -312,9 +312,9 @@ ORDER BY `id` DESC LIMIT 1");
                                         if ($dealer[0]['suit'] == "Hjerter") {
                                             $img = '<img src="spillkort/h' . $tastatur[$dealer[0]['face']] . '.png"
                                             alt="Hjerter ' . $tastatur[$dealer[0]['face']] . '">';
-                                        } elseif ($dealer[0]['suit'] == "Kl&oslash;ver") {
+                                        } elseif ($dealer[0]['suit'] == "Kløver") {
                                             $img = '<img src="spillkort/k' . $tastatur[$dealer[0]['face']] . '.png"
-                                            alt="Kl&oslash;ver ' . $tastatur[$dealer[0]['face']] . '">';
+                                            alt="Kløver ' . $tastatur[$dealer[0]['face']] . '">';
                                         } elseif ($dealer[0]['suit'] == "Ruter") {
                                             $img = '<img src="spillkort/r' . $tastatur[$dealer[0]['face']] . '.png"
                                             alt="Ruter ' . $tastatur[$dealer[0]['face']] . '">';
@@ -329,9 +329,9 @@ ORDER BY `id` DESC LIMIT 1");
                                             if ($card['suit'] == "Hjerter") {
                                                 $img = '<img src="spillkort/h' . $tastatur[$card['face']] . '.png"
                                                 alt="Hjerter ' . $tastatur[$dealer[0]['face']] . '">';
-                                            } elseif ($card['suit'] == "Kl&oslash;ver") {
+                                            } elseif ($card['suit'] == "Kløver") {
                                                 $img = '<img src="spillkort/k' . $tastatur[$card['face']] . '.png"
-                                                alt="Kl&oslash;ver ' . $tastatur[$dealer[0]['face']] . '">';
+                                                alt="Kløver ' . $tastatur[$dealer[0]['face']] . '">';
                                             } elseif ($card['suit'] == "Ruter") {
                                                 $img = '<img src="spillkort/r' . $tastatur[$card['face']] . '.png"
                                                 alt="Ruter ' . $tastatur[$dealer[0]['face']] . '">';

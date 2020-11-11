@@ -25,10 +25,10 @@ startpage("Verving");
     ?>
 </table>
 </br>
-<center><p>Hei <b><?= $obj->user; ?></b>, n&aring; er det mulig og verve spillere for noen fine premier :)</br>
-        For &aring; verve noen m&aring; du sende de weblink til spillet. Deretter m&aring; vedkommende oppgi din verve kode i "vervet av" feltet.<br>
+<center><p>Hei <b><?= $obj->user; ?></b>, nå er det mulig og verve spillere for noen fine premier :)</br>
+        For å verve noen må du sende de weblink til spillet. Deretter må vedkommende oppgi din verve kode i "vervet av" feltet.<br>
         Din verve kode: <b><font color="red"><?= $obj->id; ?></font></b><br>
-        <b><font color="red">NB!:</font> Spillere p&aring; samme ip regnes ikke som gyldig!</b></p><br><br>
+        <b><font color="red">NB!:</font> Spillere på samme ip regnes ikke som gyldig!</b></p><br><br>
     <table class="table" style="margin-top: 1px; text-align: center; width: 540px;"> Ekstra premier frem til 3. desember :)
         <th>Premie</th><th>Vervede</th>
         <tr><td>25 poeng + 5 poeng</td><td>1 Stk</td></tr>

@@ -3,39 +3,46 @@
 namespace UserObject
 {
 
+    include "Rank.php";
+
     use PDO;
+    use UserObject\Rank;
 
     class User
     {
         public $id;
         public $user;
-        protected $pass;
-        private $mail;
-        private $image;
-        private $profile;
-        private $family;
-        private $bank;
-        private $hand;
-        private $city;
-        private $weapon;
-        private $bullets;
-        private $health;
-        private $points;
-        private $exp;
-        private $status;
-        private $support;
-        private $ip;
-        private $regip;
-        private $hostname;
-        private $reghostname;
-        private $lastactive;
-        private $forceout;
-        private $regstamp;
-        private $picmaker;
-        private PDO $db;
+        public $mail;
+        public $image;
+        public $profile;
+        public $family;
+        public $bank;
+        public $hand;
+        public $city;
+        public $weapon;
+        public $bullets;
+        public $health;
+        public $points;
+        public $exp;
+        public $status;
+        public $support;
+        public $ip;
+        public $regip;
+        public $hostname;
+        public $reghostname;
+        public $lastactive;
+        public $forceout;
+        public $regstamp;
+        public $picmaker;
+        public PDO $db;
+        public $rank;
+        public $rankname;
+        public $maxxp;
+        protected $password;
 
         public function __construct()
         {
+            $this->exp = new Rank($this->exp);
             return $this;
         }
 
@@ -302,5 +309,9 @@ namespace UserObject
             $this->city = $city;
         }
 
+        public function setRank($xp)
+        {
+
+        }
     }
 }

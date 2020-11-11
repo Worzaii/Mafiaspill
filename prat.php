@@ -14,7 +14,7 @@ if (isset($_GET['write'])) {
     }
     if ($obj->health == 0) {
         $_SESSION['chatwarning'] = [
-            'string' => feil('En d&oslash;d mann kan vell ikke snakke?'),
+            'string' => feil('En død mann kan vell ikke snakke?'),
             'time' => (time()
                 + 10)
         ];
@@ -25,7 +25,7 @@ if (isset($_GET['write'])) {
         if ($s->fetchColumn() == 1) {
             /* If banned from the forum, don't post messages to the chat */
             $_SESSION['chatwarning'] = [
-                'string' => '<p style="color:#f00;">Du har ikke tillatelse til &aring; skrive, pr&oslash;v igjen senere.</p>',
+                'string' => '<p style="color:#f00;">Du har ikke tillatelse til å skrive, prøv igjen senere.</p>',
                 'time' => (time() + 10)
             ];
         } else {
@@ -33,7 +33,7 @@ if (isset($_GET['write'])) {
             if (strlen($w) <= 1) {
                 $time = time() + 5;
                 $_SESSION['chatwarning'] = [
-                    'string' => '<p style="color:#f00;">Du m&aring; skrive 2 tegn eller mer for &aring; bruke chatten!</p>',
+                    'string' => '<p style="color:#f00;">Du må skrive 2 tegn eller mer for å bruke chatten!</p>',
                     'time' => $time
                 ];
             } else {

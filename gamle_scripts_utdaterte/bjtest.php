@@ -12,7 +12,7 @@ $suits = array (
     "Spades", "Hearts", "Clubs", "Diamonds"
 );
 /*
-Spar, Hjerte, kl&oslash;ver, ruter
+Spar, Hjerte, kløver, ruter
 */
 
 /* Next, we declare the faces*/

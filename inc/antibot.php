@@ -4,7 +4,7 @@ session_start(); // starter session
 $width = 120;
 $height = 40;
 $length = rand(5, 7);
-$baseList = '0123456789abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; // bokstaver og tall som vil komme opp p&aring; bildet
+$baseList = '0123456789abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; // bokstaver og tall som vil komme opp på bildet
 $code = "";
 $image = imagecreate($width, $height) or die('Kunne ikke velge GD!');  // lager bildet
 

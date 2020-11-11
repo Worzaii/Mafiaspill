@@ -14,21 +14,21 @@ if (isset($_GET['timespan']) && r1()) {
     } elseif ($time === 3) {
         /* One month-ish */
         $t = 60 * 60 * 24 * 31;
-        $annual = "m&aring;neden";
+        $annual = "måneden";
     } elseif ($time === 4) {
         /* One year */
         $t = 60 * 60 * 24 * 365;
-        $annual = "&aring;ret";
+        $annual = "året";
     } else {
         error_log("Couldn't do it, type and value of GET is: " . gettype($time) . " " . $time);
     }
 }
-startpage("P&aring;loggede spillere");
+startpage("Påloggede spillere");
 ?>
-    <h1>P&aring;loggede spillere</h1>
+    <h1>Påloggede spillere</h1>
 <?php
 if (r1() || r2()) {
-    echo '<p>Tabell 2 tidsjusteringer: <a href="online.php?timespan=1">En dag</a> | <a href="online.php?timespan=2">En uke (standard)</a> | <a href="online.php?timespan=3">En m&aring;ned</a> | <a href="online.php?timespan=4">Ett &aring;r</a></p>';
+    echo '<p>Tabell 2 tidsjusteringer: <a href="online.php?timespan=1">En dag</a> | <a href="online.php?timespan=2">En uke (standard)</a> | <a href="online.php?timespan=3">En måned</a> | <a href="online.php?timespan=4">Ett år</a></p>';
     $add1 = "<th>IP-adresse</th>";
     $add3 = "<th>Hostname</th>";
     $cols = 4;
@@ -43,7 +43,7 @@ ORDER BY `lastactive` DESC");
     <table class="table online">
         <thead>
         <tr>
-            <th colspan="<?= $cols; ?>">P&aring;logget n&aring;:</th>
+            <th colspan="<?= $cols; ?>">Pålogget nå:</th>
         </tr>
         <tr>
             <th style="width:95px;">Spiller:</th>
@@ -89,7 +89,7 @@ if (r1() || r2()) {
     echo '<table class="table extra">
     <thead>
     <tr>
-        <th colspan="4">Spillere som har v&aelig;rt p&aring;logget siste ' . $annual . '</th>
+        <th colspan="4">Spillere som har vært pålogget siste ' . $annual . '</th>
     </tr>
     <tr>
         <th>Bruker</th>
@@ -134,7 +134,7 @@ if (r1() || r2()) {
           ';
         }
     } else {
-        echo '<tr><td colspan="' . $cols . '" class="center">Det er ingenting &aring; vise.</td></tr>';
+        echo '<tr><td colspan="' . $cols . '" class="center">Det er ingenting å vise.</td></tr>';
     }
 
     echo '</tbody></table>';

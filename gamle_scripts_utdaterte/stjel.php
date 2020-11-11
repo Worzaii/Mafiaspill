@@ -8,14 +8,14 @@ echo '<img src="images/headers/Ranspiller.png">';
 if (bunker() == true) {
     $bu = bunker(true);
     echo '
-	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
+	<p class="feil">Du er i bunker, gjenstående tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
 	<script>
 	teller(' . ($bu - time()) . ',\'bunker\',\'ned\',false);
 	</script>
 	';
 } elseif (fengsel() == true) {
     echo '
-	<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">' . fengsel(true) . '</span></p>
+	<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">' . fengsel(true) . '</span></p>
 	<script>
 	teller(' . fengsel(true) . ';)
 	</script>
@@ -29,15 +29,15 @@ if (bunker() == true) {
         $left = $l->timestamp - $time;
         if ($left >= 1) {
             $kan = 0;
-            //M&aring; fortsatt vente
-            echo '<p class="feil">Du m&aring; fortsatt vente i <span id="rantid"></span>!<!--<br>Tid: ' . $l->time .
+            //Må fortsatt vente
+            echo '<p class="feil">Du må fortsatt vente i <span id="rantid"></span>!<!--<br>Tid: ' . $l->time .
                 ' - ' . $time . ' = ' . $left . '--></p><script>teller(' . $left . ',"rantid",false,"ned")</script>';
         } else {
             //echo '<p>time: '.$time.'<br>ltime: '.$l->time.'<br>time - ltime = '.$left.'</p>';
             $kan = 1;
         }
     } else {
-        //F&oslash;rste kupp
+        //Første kupp
         $kan = 1;
     }
     if (isset($_POST['spiller'])) {
@@ -54,7 +54,7 @@ if (bunker() == true) {
                     if ($f->status == 1 || $f->status == 2) {
                         echo warning('Du kan ikke rane ledelsen!');
                     } elseif ($f->health <= 0) {
-                        echo warning('Du kan ikke rane d&oslash;de spillere!');
+                        echo warning('Du kan ikke rane døde spillere!');
                     } else {
                         if ($f->city == $obj->city) {
                             if ($f->hand >= 500000) {
@@ -65,7 +65,7 @@ if (bunker() == true) {
                                 /*$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $f->id . "','" .
                                     time() . "','" . $db->slash('--<b>Ran Spiller</b><br>' . $obj->user . ' ranet '
                                 . number_format($rand) . 'kr fra deg!') . "')");*/
-                                echo lykket('Du klarte &aring; rane ' . status($f->user) . ' for ' . number_format($rand) . ' kr!');
+                                echo lykket('Du klarte å rane ' . status($f->user) . ' for ' . number_format($rand) . ' kr!');
                             } else {
                                 echo warning('Spilleren har ikke nok penger ute! ' . $f->user . ' har bare ' .
                                     number_format($f->hand) . ' kr ute!');
@@ -86,7 +86,7 @@ if (bunker() == true) {
     <form method="post" action="">
         <table class="table" style="width: 300px;">
             <tr>
-                <th colspan="2"><p style="width:300px;">Ran spiller<br><span style="font-size: 10px;">For at du skal klare &aring; stjele penger m&aring; spilleren ha minst 500,000kr ute og v&aelig;re i samme by som du er i, bommer du m&aring; du vente en stund f&oslash;r du kan pr&oslash;ve igjen.</span>
+                <th colspan="2"><p style="width:300px;">Ran spiller<br><span style="font-size: 10px;">For at du skal klare å stjele penger må spilleren ha minst 500,000kr ute og være i samme by som du er i, bommer du må du vente en stund før du kan prøve igjen.</span>
                     </p></th>
             </tr>
             <tr>

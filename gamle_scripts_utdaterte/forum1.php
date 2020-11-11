@@ -26,7 +26,7 @@ if ($db->num_rows() == 1) {
     }
 
     /*if($obj->status <= 3){
-        $addbutton='<a class="button" href="#">T&oslash;m forum!</a>';
+        $addbutton='<a class="button" href="#">Tøm forum!</a>';
     }
     else{
         $addbutton=null;
@@ -64,7 +64,7 @@ if ($db->num_rows() == 1) {
                 }
                 echo '<a class="button" href="' . $_SERVER['PHP_SELF'] . '?svar=' . htmlentities($_GET['vis']) . '">Besvar emnet!</a>';
                 if ($obj->status <= '3') {
-                    echo '<a class="button" onclick="return confirm(\'Er du sikker p&aring; at du vil slette tr&aring;den?\')" href="' . $_SERVER['PHP_SELF'] . '?slett=' . $_GET['vis'] . '">Slett tr&aring;d!</a>';
+                    echo '<a class="button" onclick="return confirm(\'Er du sikker på at du vil slette tråden?\')" href="' . $_SERVER['PHP_SELF'] . '?slett=' . $_GET['vis'] . '">Slett tråd!</a>';
                 }
                 $ges = $db->query("SELECT * FROM `forumsvar` WHERE `stid` = '$vis' ORDER BY `sid` DESC");
                 while ($r = mysqli_fetch_object($ge)) {
@@ -99,7 +99,7 @@ if ($db->num_rows() == 1) {
                     echo feil('Ingen svar!');
                 }
             } else {//Enten slettet, eller eksisterer ikke.
-                echo feil('Denne tr&aring;den eksisterer ikke eller har blitt slettet!');
+                echo feil('Denne tråden eksisterer ikke eller har blitt slettet!');
             }
         }
     } else {
@@ -133,7 +133,7 @@ if ($db->num_rows() == 1) {
         </form>
 ENDHTML;
                 } else {
-                    echo feil('Tr&aring;den eksisterer ikke, eller har blitt slettet!');
+                    echo feil('Tråden eksisterer ikke, eller har blitt slettet!');
                 }
             }
         } else {
@@ -143,9 +143,9 @@ ENDHTML;
                 if ($db->num_rows($g) == 1) {
                     $m = mysqli_fetch_object($g);
                     $db->query("UPDATE `forum` SET `slettet` = '1' WHERE `id` = '$id' LIMIT 1");
-                    echo lykket('Tr&aring;den ble slettet!');
+                    echo lykket('Tråden ble slettet!');
                 } else {
-                    echo feil('Tr&aring;den eksisterer ikke, eller har blitt slettet!');
+                    echo feil('Tråden eksisterer ikke, eller har blitt slettet!');
                 }
             } else {
                 if (isset($_GET['ny'])) {
@@ -185,7 +185,7 @@ ENDHTML;
                     echo <<<ENDHTML
 <form method="post" action="">
 <table class="table" style="width:90%;">
-<tr><th colspan="2">Opprett ny tr&aring;d</th></tr>
+<tr><th colspan="2">Opprett ny tråd</th></tr>
 <tr>
 <th>Tema:</th><td><input type="text" value="$txt" name="tema">
 </tr>
@@ -195,7 +195,7 @@ ENDHTML;
 <tr>
 <td colspan="2" style="padding:0px;"><textarea style="border-width:0px;width:100%;min-height:300px;padding:0px;margin:0px;" name="meld" class="txar"></textarea></td>
 <tr>
-<th>Innhold:</th><td><select name="type"><option value="0">Generelt</option><option value="1">Salg</option><option value="2">S&oslash;knad</option><option value="3">Off topic</option></select></td>
+<th>Innhold:</th><td><select name="type"><option value="0">Generelt</option><option value="1">Salg</option><option value="2">Søknad</option><option value="3">Off topic</option></select></td>
 </tr>
 <tr>
 <th colspan="2" class="last"><input type="submit" value="Opprett tema!"></th>

@@ -31,7 +31,7 @@ if (!r1() && !r2() && !r3()) {
             }
         }
     } else {
-        echo info('Det var ingen meldinger i praten n&aring;');
+        echo info('Det var ingen meldinger i praten nå');
     }
 }
 endpage();

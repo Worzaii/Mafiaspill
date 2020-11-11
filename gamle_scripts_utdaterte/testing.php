@@ -2,7 +2,7 @@
 $melding = $_POST["tekst"];
 ?>
     <script>
-      //Sp&oslash;r om tilatelse for og vise skrivebords varsler
+      //Spør om tilatelse for og vise skrivebords varsler
       document.addEventListener('DOMContentLoaded', function() {
         if (Notification.permission !== 'granted')
           Notification.requestPermission();

@@ -33,7 +33,7 @@ if (r1() || r2()) {
                 echo feil('Kunne ikke fjerne IP-adressen fra blokkering. Se hendelsesloggen...');
             }
         } else {
-            echo warning('IP-adressen du fors&oslash;kte &aring; fjerne er ikke aktiv i tabellen, kanskje den allerede er fjernet?');
+            echo warning('IP-adressen du forsøkte å fjerne er ikke aktiv i tabellen, kanskje den allerede er fjernet?');
         }
     }
     if (isset($_GET['ip'])) {
@@ -97,7 +97,7 @@ if (r1() || r2()) {
 </tr>';
                 }
             } else {
-                echo '<tr><td colspan="5" class="center">Ingen rader &aring; vise.</td></tr>';
+                echo '<tr><td colspan="5" class="center">Ingen rader å vise.</td></tr>';
             }
             ?>
             </tbody>

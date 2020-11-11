@@ -2,27 +2,15 @@
 include("core.php");
 include_once("inc/bilconfig.php");
 startpage("Biltyveri");
-echo '<img src="images/headers/biltyveri.png"><p>N&aring;r du f&oslash;rst starter med biltyveri, s&aring; vil du kun ha et valg. Ettersom du kommer opp i rank, s&aring; vil nye valg l&aring;ses opp.</p>';
-if (fengsel()) {
-    $bu = fengsel(true);
-    echo feil('Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">' . $bu . '</span>
-<br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))) .
-        '<script>teller(' . $bu . ', "fengsel", false, \'ned\');</script>';
-} elseif (bunker()) {
-    $bu = bunker(true);
-    echo '
-    <p class="feil">Du er i bunker, gjenst&aring;ende tid:
-    <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
-    <script>
-    teller(' . ($bu - time()) . ', "bunker", false, \'ned\');
-    </script>
-    ';
+echo '<img src="images/headers/biltyveri.png"><p>Når du først starter med biltyveri, så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp.</p>';
+if ($write = canUseFunction(1, 1)) {
+    echo $write;
 } else {
     $q = $db->query("SELECT * FROM `carslog` WHERE `uid` = '$obj->id' AND `timewait` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1");
-    if ($db->num_rows() == 1) {
+    if ($q->num_rows() == 1) {
         $qf = $db->fetch_object($q);
         $left = $qf->timewait - time();
-        echo feil('Du m&aring vente <span id="tid"></span> f&oslash;r neste gang!') . '<script>teller(' . $left . ',"tid",false,"ned");</script>';
+        echo feil('Du m&aring vente <span id="tid"></span> før neste gang!') . '<script>teller(' . $left . ',"tid",false,"ned");</script>';
     } else {
         if (isset($_POST['valget'])) {
             $v = $db->escape($_POST['valget']);
@@ -41,7 +29,7 @@ if (fengsel()) {
                                     echo feil('Du klarte det ikke!');
                                     if (!$db->query("INSERT INTO `carslog`(`uid`,`timestamp`,`timewait`,`result`,`choice`) VALUES('$obj->id',UNIX_TIMESTAMP(),'" . (time()
                                             + $se->timewait) . "','0','$v')")) {
-                                        echo feil('Det var feil med en sp&oslash;rring, og det ble lagret i loggen. 
+                                        echo feil('Det var feil med en spørring, og det ble lagret i loggen. 
                                         Varsle Ledelsen om dette snarest, slik at de kan se igjennom det.');
                                     }
                                 } else {
@@ -50,11 +38,11 @@ if (fengsel()) {
                                             + $se->timewait) . "',UNIX_TIMESTAMP(),'2','{$se->id}')")) {
                                         echo feil('Kunne ikke legge inn i loggen! x.x');
                                     }
-                                    if ($db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('{$obj->id}','Pr&oslash;vde &aring stjele bil',UNIX_TIMESTAMP(),'" . (time()
+                                    if ($db->query("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES('{$obj->id}','Prøvde &aring stjele bil',UNIX_TIMESTAMP(),'" . (time()
                                             + $se->punishtime) . "', 5000)")) {
                                         echo feil('Tid igjen: <span id="fengsel"></span><script>teller(' . $se->punishtime . ',"fengsel",false,"ned");</script>');
                                     } else {
-                                        echo feil('Pr&oslash;vde &aring; fengsle deg, men klarte det ikke... :7');
+                                        echo feil('Prøvde å fengsle deg, men klarte det ikke... :7');
                                     }
                                 }
                             } else {
@@ -89,7 +77,7 @@ WHERE `uid` = '$obj->id' AND
                                 $si->chance += $ran2;
                             }
                         } else {
-                            echo feil('Beklager, det kan se ut som det er feil med din sjanse-sjekker. Ta kontakt med admin for &aring; f&aring; dette fikset.');
+                            echo feil('Beklager, det kan se ut som det er feil med din sjanse-sjekker. Ta kontakt med admin for å få dette fikset.');
                         }
                     }
                 } else {
@@ -136,25 +124,25 @@ VALUES('$obj->id','2','$r->id')");
             ';
                             }
                         } else {
-                            echo '<tr><td colspan="3"><em>Ingen biltyverier kan bli tatt akkurat n&aring;!</em></td></tr>';
+                            echo '<tr><td colspan="3"><em>Ingen biltyverier kan bli tatt akkurat nå!</em></td></tr>';
                         }
                         ?>
                     </table>
                     <input type="hidden" value="" name="valget" id="valget">
                 </form>
                 <script language="javascript">
-                    function sendpost(valg) {
-                        $('#valget').val(valg);
-                        $('#bil').submit();
-                    }
+                  function sendpost(valg) {
+                    $('#valget').val(valg);
+                    $('#bil').submit();
+                  }
 
-                    $(document).ready(function () {
-                        $('.valg').hover(function () {
-                            $(this).removeClass().addClass('c_2').css('cursor', 'pointer');
-                        }, function () {
-                            $(this).removeClass().css('cursor', 'pointer');
-                        });
+                  $(document).ready(function() {
+                    $('.valg').hover(function() {
+                      $(this).removeClass().addClass('c_2').css('cursor', 'pointer');
+                    }, function() {
+                      $(this).removeClass().css('cursor', 'pointer');
                     });
+                  });
                 </script>
             </div>
             <?php

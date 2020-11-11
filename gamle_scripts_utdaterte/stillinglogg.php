@@ -7,7 +7,7 @@ if (!in_array($obj->id, array(1, 2))) {
 }
 $stilling = array(1 => "Admin", 2 => "Moderator", 3 => "Forum-Moderator", 4 => "Picmaker", 5 => "Vanlig spiller");
 startpage("Stillingslogg");
-echo '<h1>Viser stillinger</h1><p>Her har du oversikt over hvem som ble satt til en stilling, og n&aring;r det ble gjort av hvem. Siste stilling satt er &oslash;verst.</p>';
+echo '<h1>Viser stillinger</h1><p>Her har du oversikt over hvem som ble satt til en stilling, og når det ble gjort av hvem. Siste stilling satt er øverst.</p>';
 ?>
     <table class="table">
         <thead>

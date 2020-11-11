@@ -5,7 +5,7 @@ if (bunker()) {
     $bu = bunker(true);
     $tid = date("H:i:s d.m.Y", $bu);
     echo <<<HTML
-    <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">$bu</span><br>Du er ute: $tid</p>
+    <p class="feil">Du er i fengsel, gjenstående tid: <span id="fengsel">$bu</span><br>Du er ute: $tid</p>
     <script>
     teller('$bu','bunker',false,'ned');
     </script>
@@ -14,7 +14,7 @@ HTML;
     $fe = fengsel(true);
     $tid = date("H:i:s d.m.Y", $fe);
     echo <<<HTML
-    <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">$fe</span><br>Du er ute: $tid</p>
+    <p class="feil">Du er i fengsel, gjenstående tid: <span id="fengsel">$fe</span><br>Du er ute: $tid</p>
     <script>
     teller('$fe','bunker',false,'ned');
     </script>
@@ -44,15 +44,15 @@ HTML;
             } elseif (isset($_POST['overfor']) && isset($_POST['overfortil'])) {
                 $usr = $_POST['overfortil'];
                 $id = $db->escape($_POST['id']);
-                $u = (user_exists($usr) == true) ? true : false;
+                $u = (getUser($usr) == true) ? true : false;
                 if ($u == true) {
-                    $uin = user_exists($usr, 1);
+                    $uin = getUser($usr, 1);
                     if (is_numeric($uin)) {
                         if ($db->query("UPDATE `firms` SET `uid` = '{$uin}' WHERE `id` = '$id' LIMIT 1")) {
-                            echo lykket('Du har overf&oslash;rt firmaet ditt til ' . user($uin) . '!');
-                            #sysmel($uin,'<b>--Firma</b><br>Du har mottat et firma ifra ' . user($obj->id) . '! Klikk her for &aring; se ditt panel over firmaene dine: <a href="http://mafia-no.net/Firmaer">Firmapanel</a>');
+                            echo lykket('Du har overført firmaet ditt til ' . user($uin) . '!');
+                            #sysmel($uin,'<b>--Firma</b><br>Du har mottat et firma ifra ' . user($obj->id) . '! Klikk her for å se ditt panel over firmaene dine: <a href="http://mafia-no.net/Firmaer">Firmapanel</a>');
                         } else {
-                            echo feil('Feil i sp&oslash;rring! ' . $db->get_last_error() . '');
+                            echo feil('Feil i spørring! ' . $db->get_last_error() . '');
                         }
                     }
                 } else {
@@ -86,7 +86,7 @@ HTML;
                     $v3 = $db->escape($_POST['edit3lotto']);
                     $v4 = $db->escape($_POST['edit4lotto']);
                     if ($v1 == $current_value1 && $v2 == $current_value2 && $v3 == $current_value3 && $v4 == $current_value4) {
-                        echo feil('Verdiene er allerede oppdatert, pr&oslash;v heller &aring; endre den f&oslash;r du lagrer! =)');
+                        echo feil('Verdiene er allerede oppdatert, prøv heller å endre den før du lagrer! =)');
                     } elseif (($v1 >= 10000 && $v1 <= 1000000) && ($v2 >= 10 && $v2 <= 60) && ($v3 >= 5 && $v3 <= 30) && ($v4 >= 100 && $v4 <= 1000)) {
                         if ($db->query("INSERT INTO lotteryconfig(`ticketprice`,`timestamp`,`percentage`,`numticks`) VALUES('$v1','$v2','$v3','$v4')")) {
                             echo lykket('Du har oppdatert instillingene for lotto, de vil bli aktive ved neste runde.');
@@ -99,16 +99,16 @@ HTML;
                         }
                     } else {
                         if ($v1 >= 10000 && $v1 <= 1000000) {
-                            echo warning('Tallet m&aring; v&aelig;re mellom 10,000kr-1,000,000kr p&aring; loddprisen!');
+                            echo warning('Tallet må være mellom 10,000kr-1,000,000kr på loddprisen!');
                         }
                         if ($v2 >= 10 && $v2 <= 60) {
-                            echo warning('Tallet m&aring; v&aelig;re mellom 10 til 60 minutter p&aring; tiden!');
+                            echo warning('Tallet må være mellom 10 til 60 minutter på tiden!');
                         }
                         if ($v3 >= 5 && $v3 <= 30) {
-                            echo warning('Tallet m&aring; v&aelig;re mellom 5%-15% p&aring; prosenten som trekkes av til firmakonto!');
+                            echo warning('Tallet må være mellom 5%-15% på prosenten som trekkes av til firmakonto!');
                         }
                         if ($v4 >= 100 && $v4 <= 1000) {
-                            echo warning('Tallet m&aring; v&aelig;re mellom 100-1,000 stk p&aring; antall lodd spillere kan kj&oslash;pe samtidig!');
+                            echo warning('Tallet må være mellom 100-1,000 stk på antall lodd spillere kan kjøpe samtidig!');
                         }
                     }
                 }
@@ -152,7 +152,7 @@ HTML;
         <td colspan="2">
         ' . $lottoupdate . '
         <input type="submit" name="allout" value="Ta ut alle pengene!"><br>
-        <input type="submit" value="Overf&oslash;r til en annen spiller:" name="overfor">
+        <input type="submit" value="Overfør til en annen spiller:" name="overfor">
         <input type="text" placeholder="Nick" name="overfortil"></td>
       </tr>
       </tbody>

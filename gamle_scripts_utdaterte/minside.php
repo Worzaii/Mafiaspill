@@ -6,7 +6,7 @@ $maks = $rank[3];
 $rnr = $rank[0];
 $prosent = ($rank[2] / $maks) * 100;
 if ($rnr == 12) {
-    $rest = "Du har n&aring;dd h&oslash;yeste rank, gratulerer! :)";
+    $rest = "Du har nådd høyeste rank, gratulerer! :)";
 } else {
     $rest = $maks - $rank[2];
 }
@@ -43,14 +43,14 @@ $fuckxtofeilto = $db->num_rows($db->query("SELECT * FROM `carslog` WHERE `uid` =
         </tr>
         <tr>
             <td>Krim: <?= $krlyk ?> / <?= $krfeil ?></td>
-            <td>Totalt gjennomf&oslash;rt: <?= $db->num_rows($fuck) ?></td>
+            <td>Totalt gjennomført: <?= $db->num_rows($fuck) ?></td>
         <tr>
             <td>Biltyveri: <?= $fuckxtolyk ?> / <?= $fuckxtofeil + $fuckxtofeilto ?></td>
-            <td>Totalt gjennomf&oslash;rt: <?= $db->num_rows($fuckxto) ?></td>
+            <td>Totalt gjennomført: <?= $db->num_rows($fuckxto) ?></td>
         </tr>
         <tr>
             <td>Ran-Spiller: <?= $ranlyk ?> / <?= $ranfeil ?></td>
-            <td>Totalt gjennomf&oslash;rte: <?= $db->num_rows($ran) ?></td>
+            <td>Totalt gjennomførte: <?= $db->num_rows($ran) ?></td>
         </tr>
         </tr>
     </table>
@@ -68,7 +68,7 @@ $fuckxtofeilto = $db->num_rows($db->query("SELECT * FROM `carslog` WHERE `uid` =
             3
         ) ?>%</p>
     </div>
-    <p>N&aring;v&aelig;rende xp: <?= $obj->exp ?><br>
-        Gjenv&aelig;rende xp i denne ranken: <?= $rest ?></p>
+    <p>Nåværende xp: <?= $obj->exp ?><br>
+        Gjenværende xp i denne ranken: <?= $rest ?></p>
 <?
 endpage();

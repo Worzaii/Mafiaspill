@@ -77,7 +77,7 @@
                 else{
                     if($db->query("INSERT INTO `support`(usid,theme,issue,text,time) VALUES('$obj->id','$n','$t','$i','$d')")){
                       echo '
-                      <p class="lykket">Din melding har blitt mottat! Du vil f&aring; svar s&aring; snart noen i support-delen av spillet ser meldingen!</p>
+                      <p class="lykket">Din melding har blitt mottat! Du vil få svar så snart noen i support-delen av spillet ser meldingen!</p>
                       ';
                     }
                     else{
@@ -88,10 +88,10 @@
                         }
                         else{
 													echo '
-													<p class="feil">Det har oppst&aring;tt en feil!<br>Ta vare p&aring; dette til senere:</p>
+													<p class="feil">Det har oppstått en feil!<br>Ta vare på dette til senere:</p>
 													';
 													echo '
-													<p>Du skrev f&oslash;lgende:<br>Tema: '.$n.'<br>Din tekst: <br>'.$i.'</p>
+													<p>Du skrev følgende:<br>Tema: '.$n.'<br>Din tekst: <br>'.$i.'</p>
 													';
                         }
                     }
@@ -153,7 +153,7 @@
                 </tr>-->
                 <tr class="c_3">
                     <td colspan="2" style="text-align:center;">
-                        <p>Skriv inn en utfyllende tekst under som beskriver s&aring; mye som mulig om det emnet du vil ha behandlet.</p>
+                        <p>Skriv inn en utfyllende tekst under som beskriver så mye som mulig om det emnet du vil ha behandlet.</p>
                         <textarea name="ticketi" style="width: 440px;height: 200px;"></textarea>
                         <br>
                         <input type="submit" value="Send inn supportmelding!" class="knapp">

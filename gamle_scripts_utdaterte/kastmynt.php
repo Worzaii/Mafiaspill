@@ -4,7 +4,7 @@ startpage("Kast Mynt");
 if(r1() || r2()){
 // Ett veldig simpelt kast mynt script.
 // Scriptet er ikke lansert fordi jeg vil lage en logg over hver enkelt spiller
-// som spiller, for &aring; se om noen jukser med dette, eller rett og slett for &aring; lage
+// som spiller, for å se om noen jukser med dette, eller rett og slett for å lage
 // en grei oversikt.
 if(isset($_POST['bet'])){
         $innsats = $db->escape($_POST['innsats']);
@@ -15,11 +15,11 @@ if(isset($_POST['bet'])){
     $winning = $innsats * 2;
     $random = mt_rand(1,100);
     if($innsats <= 0){
-        echo feil('Du m&aring; satse mer enn 0kr!');
+        echo feil('Du må satse mer enn 0kr!');
     }elseif($innsats >= 200000000){
         echo feil('Du kan ikke satse mer enn 200,000,000r');
     }elseif($obj->hand <= $innsats){
-        echo feil('Du m&aring; ha penger ute p&aring; h&aring;nden.');
+        echo feil('Du må ha penger ute på hånden.');
     }elseif($obj->hand >= $innsats){
     if($random <=50){
         echo '<p class="feil"`>Du satset '.number_format($innsats).'kr og tapte!</p>';
@@ -37,8 +37,8 @@ if(isset($_POST['bet'])){
     }
 }
 ?>
-<p>Plasser din innsats her. Det er 50/50 sjanse for &aring; vinne eller og tape.<br>
-    Spillet er i beta form og du spiller p&aring; <u style="color:red;">EGET ANSVAR!</u></p>
+<p>Plasser din innsats her. Det er 50/50 sjanse for å vinne eller og tape.<br>
+    Spillet er i beta form og du spiller på <u style="color:red;">EGET ANSVAR!</u></p>
 <form action="" method="post">
     <table class="table">
         <tr><td><input type="text" name="innsats" placeholder="Din Innsats"></td>

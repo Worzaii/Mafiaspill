@@ -101,7 +101,7 @@ namespace DatabaseObject {
                     $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ' sent by session (' . $obj->user . ', ID: {' . $obj->id . '}): ' . mysqli_error($this->con) . '. ' . PHP_EOL . 'Query was: ' . $this->last_query;
                 }
                 error_log($feil);
-                $this->last_error = "Det var en feil ved sp&oslash;rringen: &quote;" . $this->last_query . "&quote;(" . mysqli_errno($this->con) . ")Feil: " . mysqli_error($this->con);
+                $this->last_error = "Det var en feil ved spørringen: &quote;" . $this->last_query . "&quote;(" . mysqli_errno($this->con) . ")Feil: " . mysqli_error($this->con);
                 return false;
             }
 

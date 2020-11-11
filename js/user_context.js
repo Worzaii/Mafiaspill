@@ -8,7 +8,7 @@ $(document).ready(function() {
     let user = $(this).attr('data-user');
     $('body').
     append('<div class="custom-menu"><ul><li><a href="profil.php?id=' + id +
-        '">G&aring; til Profil</a></li><li><a href="innboks.php?ny&usertoo=' +
+        '">Gå til Profil</a></li><li><a href="innboks.php?ny&usertoo=' +
         user +
         '">Send melding</a></li><li><a href="bank.php?til=' + user +
         '">Send penger</a></li></ul></div>');

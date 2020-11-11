@@ -7,9 +7,9 @@ if (!r1()) {
     startpage("Logg ut en spiller");
     ?>
     <h1>Logg ut en spiller!</h1>
-    <p>Ikke misbruk denne funksjonen da det vil bli en irritasjon til en spiller n&aring;r brukt i
+    <p>Ikke misbruk denne funksjonen da det vil bli en irritasjon til en spiller når brukt i
         feil tilfelle! Eneste
-        tilfellene man kan bruke denne funksjonen er n&aring;r det er en spiller som &oslash;delegger
+        tilfellene man kan bruke denne funksjonen er når det er en spiller som ødelegger
         for andre. Og
         lignende situasjoner.</p>
     <?php
@@ -29,7 +29,7 @@ if (!r1()) {
                     if ($logout->rowCount() == 1) {
                         echo lykket('Neste gang ' . status($u->user) . ' oppdaterer siden blir de logget ut!');
                     } else {
-                        echo warning('Det er mulig ' . status($u->user) . ' allerede har blitt satt til &aring; logges ut neste gang.');
+                        echo warning('Det er mulig ' . status($u->user) . ' allerede har blitt satt til å logges ut neste gang.');
                     }
                 }
             }
@@ -41,7 +41,7 @@ if (!r1()) {
     </form>
 HTML;
         } else {
-            echo warning('Spilleren finnes ikke! Pr&oslash;v igjen!');
+            echo warning('Spilleren finnes ikke! Prøv igjen!');
         }
     } else {
         ?>

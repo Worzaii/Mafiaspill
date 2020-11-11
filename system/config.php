@@ -70,7 +70,7 @@ if (php_sapi_name() != "cli") {
             unset($_SESSION['HTTP_USER_AGENT']);
             error_log("Result of removal: " . ((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
             header('Location: https://' . DOMENE_NAVN . '/loggut.php?g=8');
-            exit('Cross-network-tilgang avsl&aring;tt!');
+            exit('Cross-network-tilgang avslått!');
         }
     } else {
         $_SESSION['HTTP_USER_AGENT'] = sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);

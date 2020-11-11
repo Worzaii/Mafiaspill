@@ -14,7 +14,7 @@ startpage("Unban alle spillere (Forum)")
 
 if(mysql_query("TRUNCATE TABLE `forumban`")){
 
-echo'<h1>Alle spillerne er n&aring; unbannet.</h1><p class="lykket">Alle brukere unbannet</p>';
+echo'<h1>Alle spillerne er nå unbannet.</h1><p class="lykket">Alle brukere unbannet</p>';
 
 }
 

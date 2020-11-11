@@ -7,7 +7,7 @@ if (r1() || r2() || r3() || support()) {
         <h1 class="center">Administrasjon</h1>
         <h3 class="center" style="clear: both"> Test Funksjoner</h3>
         <ul class="adminpanel">
-            <li><a href="#">Ingen for &oslash;yeblikket.</a></li>
+            <li><a href="#">Ingen for øyeblikket.</a></li>
         </ul>
         <h3 class="center" style="clear: both"> Admin funksjoner</h3>
         <ul class="adminpanel">
@@ -31,7 +31,7 @@ if (r1() || r2() || r3() || support()) {
     } elseif (r1() || r2()) { ?>
         <h3 class="center" style="clear: both">Moderering</h3>
         <ul class="adminpanel">
-            <li><a href="bankalle.php">Bankoverf&oslash;ringer</a></li>
+            <li><a href="bankalle.php">Bankoverføringer</a></li>
             <li><a href="publiser.php">Legge til en nyhet</a></li>
             <li><a href="ipsjekk.php">Sjekk spillere som kan bruke multi</a></li>
             <li><a href="ban_user.php">Modkill spiller</a></li>
@@ -49,8 +49,8 @@ if (r1() || r2() || r3() || support()) {
         <ul class="adminpanel">
             <li><a href="visprat.php">Vis hele prat databasen!</a></li>
             <li><a href="forumban.php">Forumban spiller</a></li>
-            <li><a href="tomprat.php">Loggf&oslash;r og t&oslash;m praten!</a></li>
-            <li><a href="chatlog.php">Vis loggf&oslash;rte chat logger</a></li>
+            <li><a href="tomprat.php">Loggfør og tøm praten!</a></li>
+            <li><a href="chatlog.php">Vis loggførte chat logger</a></li>
         </ul>
         <?php
     } elseif (r1() || r2() || support()) {

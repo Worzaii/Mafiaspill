@@ -3,7 +3,7 @@ include("core.php");
 startpage("Banken");
 if (fengsel() == true) {
     echo '<h1>Bank</h1>
-	<p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="krim">' . fengsel(true) . '</span></p>
+	<p class="feil">Du er i fengsel, gjenstående tid: <span id="krim">' . fengsel(true) . '</span></p>
 	<script>
 	teller(' . fengsel(true) . ',\'krim\',true,\'ned\');
 	</script>
@@ -11,7 +11,7 @@ if (fengsel() == true) {
 } elseif (bunker() == true) {
     $bu = bunker(true);
     echo '<h1>Bank</h1>
-	<p class="feil">Du er i bunker, gjenst&aring;ende tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
+	<p class="feil">Du er i bunker, gjenstående tid: <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
 	<script>
 	teller(' . ($bu - time()) . ',\'bunker\',false,\'ned\');
 	</script>
@@ -36,12 +36,12 @@ if (fengsel() == true) {
             $money = 0;
         }
         if (!is_numeric($money)) {
-            $ret = feil('Ikke gyldig input, m&aring; kun best&aring; av tall, du kan inkludere mellomrom, punktum, komma og "kr".');
+            $ret = feil('Ikke gyldig input, må kun bestå av tall, du kan inkludere mellomrom, punktum, komma og "kr".');
         } else {
             if (isset($_POST['withdraw'])) {
                 if ($_POST['alldo'] == 1) {
                     if ($obj->bank <= 0) {
-                        $ret = feil('Du m&aring; ta ut mer enn 0kr.');
+                        $ret = feil('Du må ta ut mer enn 0kr.');
                     } else {
                         $db->query("UPDATE `users` SET `hand` = (`hand` + `bank`), `bank` = '0' WHERE `id` = '$obj->id'");
                         $db->query("INSERT INTO `banklogg`(`uid`,`amount`,`way`,`all`,`timestamp`) VALUES('$obj->id','$money','0','1',UNIX_TIMESTAMP())");
@@ -50,7 +50,7 @@ if (fengsel() == true) {
                 } else {
                     if ($money <= 0) {
                         $ret = '
-            <p class="feil">Du m&aring; ta ut mer enn 0 kr.</p>
+            <p class="feil">Du må ta ut mer enn 0 kr.</p>
             ';
                     } elseif ($money >= 1) {
                         if ($money <= $obj->bank) {
@@ -60,17 +60,17 @@ if (fengsel() == true) {
                 <p class="lykket">Du har tatt ut ' . number_format($money) . 'kr fra banken din.</p>
                 ';
                             } else {
-                                $ret = feil('Kunne ikke utf&oslash;re sp&oslash;rringen: ' . mysqli_error());
+                                $ret = feil('Kunne ikke utføre spørringen: ' . mysqli_error());
                             }
                         } else {
-                            $ret = feil('Du har ikke s&aring; mye penger i banken!');
+                            $ret = feil('Du har ikke så mye penger i banken!');
                         }
                     }
                 }
             } elseif (isset($_POST['deposit'])) {
                 if ($_POST['alldo'] == 1) {
                     if ($obj->hand <= 0) {
-                        $ret = feil('Du m&aring; sette inn mer enn 0kr.');
+                        $ret = feil('Du må sette inn mer enn 0kr.');
                     } else {
                         $db->query("UPDATE `users` SET `bank` = (`bank` + `hand`),`hand` = '0' WHERE `id` = '$obj->id'");
                         $db->query("INSERT INTO `banklogg`(`uid`,`amount`,`way`,`all`,`timestamp`) VALUES('$obj->id','" .
@@ -80,7 +80,7 @@ if (fengsel() == true) {
                 } else {
                     if ($money <= 0) {
                         $ret = '
-            <p class="feil">Du m&aring; sette inn mer enn 0 kr.</p>
+            <p class="feil">Du må sette inn mer enn 0 kr.</p>
             ';
                     } elseif ($money >= 1) {
                         if ($money <= $obj->hand) {
@@ -91,11 +91,11 @@ if (fengsel() == true) {
                 <p class="lykket">Du har satt inn ' . number_format($money) . 'kr i banken din.</p>
                 ';
                             } else {
-                                $ret = feil('Kunne ikke utf&oslash;re sp&oslash;rringen: ' . mysqli_error());
+                                $ret = feil('Kunne ikke utføre spørringen: ' . mysqli_error());
                             }
                         } else {
                             $ret = '
-              <p class="feil">Du har ikke s&aring; mye penger ute p&aring; handa! Du har bare ' . number_format($obj->hand) . ' kr.</p>
+              <p class="feil">Du har ikke så mye penger ute på handa! Du har bare ' . number_format($obj->hand) . ' kr.</p>
               ';
                         }
                     }
@@ -118,29 +118,29 @@ if (fengsel() == true) {
                         if ($u->id != $obj->id) {
                             if ($db->query("UPDATE `users` SET `bank` = (`bank` - $bank) WHERE `id` = '$obj->id' LIMIT 1")) {
                                 if ($db->query("UPDATE `users` SET `bank` = (`bank` + $bank) WHERE `id` = '$u->id' LIMIT 1")) {
-                                    $ret .= '<p class="lykket">Du har overf&oslash;rt ' . number_format($bank) . 'kr til ' . $u->user . '!</p>';
+                                    $ret .= '<p class="lykket">Du har overført ' . number_format($bank) . 'kr til ' . $u->user . '!</p>';
                                     #$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $u->id . "',
-                                    #'" . time() . "','" . $db->slash('--<b>Bank</b><br>' . $obj->user . ' har overf&oslash;rt ' . number_format($bank) . 'kr til deg!') . "')");
+                                    #'" . time() . "','" . $db->slash('--<b>Bank</b><br>' . $obj->user . ' har overført ' . number_format($bank) . 'kr til deg!') . "')");
                                     $time = time();
                                     $db->query("INSERT INTO `bank_transfer`(`uid`,`tid`,`sum`,`timestamp`) VALUES('$obj->id','$u->id','$bank','$time')");
                                 }
                             } else {
-                                $ret .= feil('Kunne ikke overf&oslash;re pengene!');
+                                $ret .= feil('Kunne ikke overføre pengene!');
                             }
                         } else {
-                            $ret .= feil('Du kan ikke overf&oslash;re penger til deg selv!');
+                            $ret .= feil('Du kan ikke overføre penger til deg selv!');
                         }
                     } else {
-                        $ret .= feil('Personen du pr&oslash;ver &aring; sende til eksisterer ikke!');
+                        $ret .= feil('Personen du prøver å sende til eksisterer ikke!');
                     }
                 } else {
-                    $ret .= feil('Du har ikke s&aring; mye penger i banken!');
+                    $ret .= feil('Du har ikke så mye penger i banken!');
                 }
             } else {
-                $ret .= feil('Du m&aring; overf&oslash;re mer enn 0 kr!');
+                $ret .= feil('Du må overføre mer enn 0 kr!');
             }
         } else {
-            $ret .= feil('Du m&aring; oppgi en gyldig sum!');
+            $ret .= feil('Du må oppgi en gyldig sum!');
         }
     }
     if (isset($ret)) {
@@ -163,7 +163,7 @@ if (fengsel() == true) {
                 <td><?php echo number_format($obj->bank); ?> kr</td>
             </tr>
             <tr>
-                <td>Bel&oslash;p</td>
+                <td>Beløp</td>
                 <td><input style="background-color:#aaa; border:1px; height:16px;"
                            type="textbox"
                            name="money"
@@ -174,11 +174,11 @@ if (fengsel() == true) {
                     style="text-align:center;">
                     <input style="font-size: 12px;border: 1px solid #aaa;padding: 7px;padding-left: 10px;padding-right: 10px;"
                            type="submit"
-                           class="gjennomf&oslash;r"
+                           class="gjennomfør"
                            value="Ta ut!"
                            name="withdraw">&nbsp;&nbsp;<input style="font-size: 12px; border: 1px solid #aaa; padding: 7px; padding-left: 10px; padding-right: 10px;"
                                                               type="submit"
-                                                              class="gjennomf&oslash;r"
+                                                              class="gjennomfør"
                                                               value="Sett inn!"
                                                               name="deposit"> <input type="checkbox"
                                                                                      name="alldo"
@@ -195,7 +195,7 @@ if (fengsel() == true) {
                class="table bank">
             <tr>
                 <th style="border-radius: 25px;"
-                    colspan="2">Bankoverf&oslash;ringer:
+                    colspan="2">Bankoverføringer:
                 </th>
             </tr>
             <tr>
@@ -214,9 +214,9 @@ if (fengsel() == true) {
             <tr>
                 <th colspan="2">
                     <input style="font-size: 12px;border: 1px solid #aaa;-webkit-border-radius: 10px;height: 25px;"
-                           class="gjennomf&oslash;r"
+                           class="gjennomfør"
                            type="submit"
-                           value="Overf&oslash;r pengene!"></th>
+                           value="Overfør pengene!"></th>
             </tr>
         </table>
     </form>
@@ -224,7 +224,7 @@ if (fengsel() == true) {
            class="table bank">
         <tr>
             <th style="border-radius: 25px;"
-                colspan="4">Bankoverf&oslash;ringer fra og til deg (maks 20 visninger)
+                colspan="4">Bankoverføringer fra og til deg (maks 20 visninger)
             </th>
         </tr>
         <tr>

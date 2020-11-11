@@ -38,7 +38,7 @@ if (isset($_GET['login'])) {
                     $st4->execute([$ip, gethostbyaddr($ip), $uid->id, $uid->pass]);
 
                     $str = [
-                        'string' => lykket('Innlogget! Et lite &oslash;yeblikk imens vi sender deg inn til nyhetssiden...'),
+                        'string' => lykket('Innlogget! Et lite øyeblikk imens vi sender deg inn til nyhetssiden...'),
                         'state' => 1,
                         'href' => 'https://' . $domain . '/nyheter.php'
                     ];
@@ -57,7 +57,7 @@ if (isset($_GET['getaccess'])) {
     include_once '../inc/pdoinc.php';
     $m = $_POST['email'];
     if (!filter_var($m, FILTER_VALIDATE_EMAIL)) {
-        $str['string'] = feil('E-postadressen ikke godkjent! Pr&oslash;v igjen!');
+        $str['string'] = feil('E-postadressen ikke godkjent! Prøv igjen!');
     } else {
         $res = $db->query("SELECT COUNT(*) as numrows FROM `invsjekk` WHERE `ip` = '" . $_SERVER['REMOTE_ADDR'] . "' 
         AND `used` = '0' AND `timestamp` > '" . time() . "'");
@@ -75,7 +75,7 @@ VALUES(?,(UNIX_TIMESTAMP() + 600),?,?)");
                     <title>Invitasjon til registrering</title>
                     </head>
                     <body>
-                    <h1>Klikk p&aring; linken under for &aring; g&aring; til registrering</h1>
+                    <h1>Klikk på linken under for å gå til registrering</h1>
                     <p><a href=\"{$url}\">{$url}</a></p>
                     </body>
                     </html>
@@ -86,19 +86,19 @@ VALUES(?,(UNIX_TIMESTAMP() + 600),?,?)");
                 if (mail($m, $subject, $message, $headers)) {
                     $str['string'] = lykket('Det ble sendt en email til ' . htmlentities($m) . ' 
                 fra noreply@' . MAIL_SENDER . '! 
-                Sjekk innboks(mulig s&oslash;ppelpost ogs&aring;).');
+                Sjekk innboks(mulig søppelpost også).');
                     $str['res'] = 1;
                 } else {
-                    $str['string'] = feil('Kunne ikke sende mail! Kan v&aelig;re feilkonfigurasjon 
+                    $str['string'] = feil('Kunne ikke sende mail! Kan være feilkonfigurasjon 
                 i script eller ikke ferdig modul.');
                 }
             }
         } else {
             $f = $db->fetch_object();
             $left = $f->time - time();
-            $str['string'] = feil('Du m&aring; vente med &aring; motta ny invitasjon, 
-            eller bruke den du har mottatt p&aring; ' . $f->mail . '. 
-            Det gjenst&aring;r ' . $left . ' sekunder f&oslash;r du kan pr&oslash;ve igjen.');
+            $str['string'] = feil('Du må vente med å motta ny invitasjon, 
+            eller bruke den du har mottatt på ' . $f->mail . '. 
+            Det gjenstår ' . $left . ' sekunder før du kan prøve igjen.');
         }
     }
 }
@@ -116,14 +116,14 @@ if (isset($_GET['brukerreg'])) {
         if (!preg_match("/^[a-z]+[\w._-]*$/i",
                 $u) || (strlen($u) <= 3 || strlen($u) >= 21) || (strlen($p) <= 3)) {
             $str['string'] = feil('Brukernavn ikke godkjent! Sjekk at du oppfyller kriteriene:<br>
-Bokstaver fra a-z(sm&aring; eller store) Du kan ogs&aring; bruke _(underscore). 
-Det kan v&aelig;re mellom 4-20 tegn. 
-Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller mer.');
+Bokstaver fra a-z(små eller store) Du kan også bruke _(underscore). 
+Det kan være mellom 4-20 tegn. 
+Du må også passe på at passordet inneholder minst 4 tegn eller mer.');
             if (!preg_match("/^[a-z]+[\w._-]*$/i", $u)) {
                 $str['string'] .= '<p>Brukernavnet ble ikke godkjent!</p>';
             }
             if (strlen($u) <= 3 || strlen($u) >= 21) {
-                $str['string'] .= '<p>Brukernavnet m&aring; v&aelig;re mellom 4-20 tegn! Du hadde 
+                $str['string'] .= '<p>Brukernavnet må være mellom 4-20 tegn! Du hadde 
 ' . strlen($u) . ' tegn!</p>';
             }
             if (strlen($p) <= 3) {
@@ -150,7 +150,7 @@ Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller
                 }
                 if (isset($error) && $error === 1) {
                     $str['string'] = feil('Brukeren din angav i verving ble ikke godkjent. 
-                    Pr&oslash;v igjen, eller la feltet st&aring; tomt.');
+                    Prøv igjen, eller la feltet stå tomt.');
                 } else {
                     $password = password_hash($p, PASSWORD_BCRYPT);
                     $newuser = $db->prepare("INSERT INTO `users`(`user`,`pass`,`mail`,`regip`,`reghostname`,
@@ -164,8 +164,8 @@ Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller
                         gethostbyaddr($ip)
                     ]);
                     if ($newuser->rowCount() == 1) {
-                        $str['string'] = lykket('Du har blitt registrert, du kan n&aring; logge inn! 
-                        <a href="http://' . DOMENE_NAVN . '/">Trykk her for &aring; g&aring; til innlogging</a>');
+                        $str['string'] = lykket('Du har blitt registrert, du kan nå logge inn! 
+                        <a href="http://' . DOMENE_NAVN . '/">Trykk her for å gå til innlogging</a>');
                         $str['res'] = 1;
                         $inv = $db->prepare("UPDATE `invsjekk` SET `used` = '1' WHERE `mail` = ? AND `code` = ?");
                         $inv->execute([
@@ -177,17 +177,17 @@ Du m&aring; ogs&aring; passe p&aring; at passordet inneholder minst 4 tegn eller
                                     true));
                         }
                     } else {
-                        $str['string'] = feil('Brukeren kunne ikke bli lagt inn i databasen, pr&oslash;v igjen, 
+                        $str['string'] = feil('Brukeren kunne ikke bli lagt inn i databasen, prøv igjen, 
                         ta gjerne kontakt med support: support@' . MAIL_SENDER . '!');
                     }
                 }
             } else {
-                $str['string'] = feil('Koden er ikke godkjent! Den kan v&aelig;re brukt allerede, 
+                $str['string'] = feil('Koden er ikke godkjent! Den kan være brukt allerede, 
                 eller mailen har ingen tilknytning til koden.');
             }
         }
     } else {
-        $str['string'] = feil('Du m&aring; velge et annet brukernavn, da dette er i bruk.');
+        $str['string'] = feil('Du må velge et annet brukernavn, da dette er i bruk.');
     }
 
 }
@@ -221,15 +221,15 @@ if (isset($_GET['forgotpassword'])) {
       <body>
       <h1>Gjenopprett din brukerkonto</h1>
       <div style="width:95%;border-bottom:2px dotted #3e3e3e; margin: 0 auto;"></div>
-      <p>Noen med f&oslash;lgende IP-adresse <i>' . $_SERVER['REMOTE_ADDR'] . '</i> har bedt om at passordet p&aring;
+      <p>Noen med følgende IP-adresse <i>' . $_SERVER['REMOTE_ADDR'] . '</i> har bedt om at passordet på
        brukernavn <b>' . $i->user . '</b> skal tilbakestilles.<br>
-      Klikk p&aring; denne lenken for &aring; tilbakestille passordet:<br>
+      Klikk på denne lenken for å tilbakestille passordet:<br>
       <a href="https://' . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '">
       https://' . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '</a><br>
       Om det ikke var du som ba om at passordet skulle tilbakestilles anbefales det at du ser bort fra denne mailen.
-       Det kan ogs&aring; v&aelig;re det at noen har kontroll p&aring; din e-post og dermed pr&oslash;ver &aring; 
-       f&aring; tilgang til din bruker igjennom din e-post! Hvis du er smart, oppdater ditt passord p&aring; b&aring;de
-        ' . $domain . ' og hos din e-post-leverand&oslash;r!</p>
+       Det kan også være det at noen har kontroll på din e-post og dermed prøver å 
+       få tilgang til din bruker igjennom din e-post! Hvis du er smart, oppdater ditt passord på både
+        ' . $domain . ' og hos din e-post-leverandør!</p>
       </body>
       </html>
       ';
@@ -239,7 +239,7 @@ if (isset($_GET['forgotpassword'])) {
             $headers .= 'From: ' . MAIL_SENDER . ' <' . HENVEND_MAIL . '>' . "\r\n";
             if (mail($to, $head, $message, $headers)) {
                 $str['string'] = lykket('Det har blitt sendt en mail til mailadressen
- registrert p&aring; brukeren. Sjekk innboks/s&oslash;ppelpost.');
+ registrert på brukeren. Sjekk innboks/søppelpost.');
             } else {
                 $str['string'] = feil('Mailen kunne ikke sendes, beklager. Ta kontakt med 
 Ledelsen via mailadressen: <a href="mailto:werzairenet@' . MAIL_SENDER . '">system@' . MAIL_SENDER . '</a>.');
@@ -283,7 +283,7 @@ if (isset($_GET['resetpassword'])) {
                 ]);
                 if ($f3->rowCount() == 1) {
                     $str['string'] = lykket('Ditt passord har blitt endret! <br>
-Du kan n&aring; logge inn p&aring; innloggingssiden med det nye passordet ditt!');
+Du kan nå logge inn på innloggingssiden med det nye passordet ditt!');
                     $str['res'] = 1;
                     /**
                      * Todo: Implement logg for password resets?
@@ -294,13 +294,13 @@ Du kan n&aring; logge inn p&aring; innloggingssiden med det nye passordet ditt!'
 WHERE `uid` = ? AND `used` = '0' ORDER BY `id` DESC LIMIT 1");
                     $respw->execute([$uid]);
                     if ($respw->rowCount() == 1) {
-                        $str['string'] = lykket('Passordet er oppdatert! G&aring; til innlogging for &aring; fortsette!');
+                        $str['string'] = lykket('Passordet er oppdatert! Gå til innlogging for å fortsette!');
                     } else {
-                        $str['string'] = feil('Kunne ikke oppdatere passordet, kontakt oss p&aring; ' . HENVEND_MAIL);
+                        $str['string'] = feil('Kunne ikke oppdatere passordet, kontakt oss på ' . HENVEND_MAIL);
                     }
                 } else {
                     $str['string'] = feil('Kunne ikke oppdatere passordet! 
-2 muligheter st&aring;r:<br>Du pr&oslash;vde &aring; bruke samme passordet<br>Det var en feil i query til databasen! 
+2 muligheter står:<br>Du prøvde å bruke samme passordet<br>Det var en feil i query til databasen! 
 <br>Send en mail til ' . HENVEND_MAIL . ' om problemet redvarer!');
                 }
             } else {
@@ -310,7 +310,7 @@ WHERE `uid` = ? AND `used` = '0' ORDER BY `id` DESC LIMIT 1");
             $str['string'] = feil('Denne koden er ikke lengre tilgjengelig!');
         }
     } else {
-        $str['string'] = feil('Passordet ditt m&aring; v&aelig;re 4 tegn eller lengre, og v&aelig;re like i begge feltene under! Det kan ogs&aring; v&aelig;re at ikke riktig uid ble postet.');
+        $str['string'] = feil('Passordet ditt må være 4 tegn eller lengre, og være like i begge feltene under! Det kan også være at ikke riktig uid ble postet.');
     }
 }
 print(json_encode($str));

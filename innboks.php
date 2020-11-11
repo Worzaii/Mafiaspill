@@ -8,9 +8,9 @@ function linejump($text)
 startpage("Innboks");
 ?>
     <h1>Innboks</h1>
-    <p class="info">Her har du mulighet til &aring; komme i privat kontakt med andre spillere, hvis de ikke har blokkert deg.
-        Du har ogs&aring; muligheten til &aring; blokkere spillere som er til plage eller ellers her. Om du har sp&oslash;rsm&aring;l, gjerne ta
-        kontakt med support s&aring; hjelper vi s&aring; godt vi kan.</p>
+    <p class="info">Her har du mulighet til å komme i privat kontakt med andre spillere, hvis de ikke har blokkert deg.
+        Du har også muligheten til å blokkere spillere som er til plage eller ellers her. Om du har spørsmål, gjerne ta
+        kontakt med support så hjelper vi så godt vi kan.</p>
     <ul class="nav">
         <li><a href="./innboks.php">Innboks</a></li>
         <li><a href="./innboks.php?page=utboks">Utboks</a></li>
@@ -64,13 +64,13 @@ if (!isset($_GET['page'])) {
 END;
             } else {
                 echo feil('Det finnes ingen melding til deg med den IDen. <br>
-                Er du sikker p&aring; at den ikke er slettet? <br> Gjerne kontakt support for &aring; sjekke opp dette.');
+                Er du sikker på at den ikke er slettet? <br> Gjerne kontakt support for å sjekke opp dette.');
             }
         } elseif ($page === 'ny') {
             if (isset($_GET['user'])) {
                 $user = $_GET['user'];
                 if (is_string($user) || is_int($user)) {
-                    $to = user_exists($user, 2)->user;
+                    $to = getUser($user, 2)->user;
                 } else {
                     echo warning("Feil bruker, finnes ikke... Trykket feil?");
                 }
@@ -134,7 +134,7 @@ END;
         }
         /* Add more handlers for the page here... */
     } else {
-        echo warning('Innboks inneholder ikke en slik side, pr&oslash;v igjen.');
+        echo warning('Innboks inneholder ikke en slik side, prøv igjen.');
     }
 }
 ?>

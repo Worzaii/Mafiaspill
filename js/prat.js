@@ -26,7 +26,7 @@ const sendChat = () => {
       console.log('Message sent, removed content from field.');
     },
     error: (data, status, chr) => {
-      alert('Kunne ikke sende melding, pr&oslash;v igjen senere!' + data);
+      alert('Kunne ikke sende melding, prøv igjen senere!' + data);
     },
   });
 };

@@ -48,7 +48,7 @@ if ($db->num_rows() == 1) {
             } else {
                 ?>
                 <div id="resetpassword">
-                    <p>Tid som gjenst&aring;r med f&oslash;lgende kode: <span id="timeleft"></span>
+                    <p>Tid som gjenstår med følgende kode: <span id="timeleft"></span>
                         <script>teller(<?= $time; ?>, "timeleft", false, "ned");</script>
                     </p>
                     <hr>

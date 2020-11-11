@@ -6,7 +6,7 @@ if (bunker()) {
     $bu = bunker(true);
     $tid = date("H:i:s d.m.Y", $bu);
     echo <<<HTML
-    <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">$bu</span><br>Du er ute: $tid</p>
+    <p class="feil">Du er i fengsel, gjenstående tid: <span id="fengsel">$bu</span><br>Du er ute: $tid</p>
     <script>
     teller('$bu','bunker',false,'ned');
     </script>
@@ -16,7 +16,7 @@ HTML;
     $fe = fengsel(true);
     $tid = date("H:i:s d.m.Y", $bu);
     echo <<<HTML
-    <p class="feil">Du er i fengsel, gjenst&aring;ende tid: <span id="fengsel">$fe</span><br>Du er ute: $tid</p>
+    <p class="feil">Du er i fengsel, gjenstående tid: <span id="fengsel">$fe</span><br>Du er ute: $tid</p>
     <script>
     teller('$fe','bunker',false,'ned');
     </script>
@@ -31,7 +31,7 @@ HTML;
         $airfetch->execute([$obj->id]);
         $wait = ($airfetch->fetchColumn() + 600) - time();
         error_log($wait);
-        echo warning('Du m&aring; vente f&oslash;r du kan fly igjen! 
+        echo warning('Du må vente før du kan fly igjen! 
 <span id="flyplass"></span><script>teller(\'' . ($wait) . '\',"flyplass",false,"ned")</script><br>
 Du kan fly igjen: ' . date('H:i:s d.m.Y', time() + $wait));
     } else {
@@ -42,7 +42,7 @@ Du kan fly igjen: ' . date('H:i:s d.m.Y', time() + $wait));
                     echo warning('Du er allerede i denne byen!');
                 } else {
                     if ($obj->hand <= 9999) {
-                        echo warning('Du har ikke r&aring;d til &aring; fly!');
+                        echo warning('Du har ikke råd til å fly!');
                     } else {
                         if ($obj->hand >= 10000) {
                             $db->query("UPDATE `users` 
@@ -52,14 +52,14 @@ WHERE `id` = '{$obj->id}' LIMIT 1");
                             if ($db->affected_rows() == 1) {
                                 echo lykket('Du har betalt for en billett til ' . city($i) . ' til prisen 
                                     av 10,000kr! 
-                                    Du m&aring; n&aring; vente i 20 minutter f&oslash;r du kan reise igjen.');
+                                    Du må nå vente i 20 minutter før du kan reise igjen.');
                                 $flightlog = $db->query("insert into flight_log(uid, timestamp, from_city, to_city, price) 
 values ('{$obj->id}',unix_timestamp(), '$obj->city', '$i', '10000')");
                                 error_log("Trying to add to flight log... Result: " . var_export($flightlog,
                                         true));
                             } else {
-                                echo feil('Du kunne ikke reise p&aring; grunn av en feil i enten 
-                                    sp&oslash;rring eller i databasen, ta kontakt med Ledelsen!');
+                                echo feil('Du kunne ikke reise på grunn av en feil i enten 
+                                    spørring eller i databasen, ta kontakt med Ledelsen!');
                             }
                         }
                     }
@@ -69,7 +69,7 @@ values ('{$obj->id}',unix_timestamp(), '$obj->city', '$i', '10000')");
             }
         }
         ?>
-        <p>&aring; ta fly vil koste deg 10,000kr ingame. Dette blir endret i fremtiden slik at
+        <p>å ta fly vil koste deg 10,000kr ingame. Dette blir endret i fremtiden slik at
             firmaeierne kan
             endre prisene mellom 1,000kr-50,000kr!</p>
         <form method="post" action id="fly">
