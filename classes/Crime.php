@@ -111,9 +111,17 @@ class Crime
         $kr = mt_rand($info->minval, $info->maxval);
         $timewait = $info->untilnext + time();
         if (mt_rand(0, 100) <= $thechance->chance) {
-            $prep = $this->database->prepare("UPDATE `users` SET `hand` = (`hand` + ?),`exp` = (`exp` + ?) WHERE `user`= ? LIMIT 1");
-            $prep->execute([$kr, $info->expgain, $this->user->getId()]);
-            if ($prep->rowCount() == 1) {
+            $prep = $this->database->prepare("UPDATE `users` SET `hand` = (`hand` + ?),`exp` = (`exp` + ?) WHERE `id` = ? LIMIT 1");
+            error_log("Result of spørring execute: " . $prep->execute([
+                    $kr,
+                    $info->expgain,
+                    $this->user->getId()
+                ]));
+            error_log("KR: $kr, Gain: {$info->expgain}, id: " . $this->user->getId() . "\n" . var_export($this->database->errorInfo(),
+                    true));
+            $rows = $prep->rowCount();
+            error_log("Rowcount: " . $rows . var_export($prep->errorInfo(), true));
+            if ($rows == 1) {
                 $secondprep = $this->database->prepare("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,'$kr',?)");
                 if ($secondprep->execute([$this->user->getId(), $info->id, $timewait])) {
                     $this->out .= '
