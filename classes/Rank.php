@@ -5,7 +5,7 @@ namespace UserObject;
 
 class Rank
 {
-    public int $xp;
+    public float $xp;
     private array $map = [
         1 => [
             "name" => "Soldat",
@@ -59,7 +59,7 @@ class Rank
 
     public function __construct($xp)
     {
-        $this->xp = (float)$xp;
+        $this->xp = floatval($xp);
         $this->getRank();
         return $this;
     }
@@ -70,6 +70,15 @@ class Rank
             if ($this->xp < $two["max"]) {
                 return $this->map[$one]["name"];
             }
+        }
+    }
+
+    public function progress()
+    {
+        if ($this->getRankID() > 1) {
+            return ($this->getXP() - $this->map[$this->getRankID() - 1]["max"] / $this->map[$this->getRankID()]["max"]);
+        } else {
+            return ($this->getXP() / $this->map[$this->getRankID()]["max"]) * 100;
         }
     }
 
@@ -84,6 +93,15 @@ class Rank
 
     public function getXP()
     {
-        return $this->xp;
+        return number_format($this->xp, 3);
+    }
+
+    public function remaining()
+    {
+        if ($this->getRankID() > 1) {
+            return $this->map[$this->getRankID()]["max"] - ($this->getXP() - $this->map[$this->getRankID() - 1]["max"]);
+        } else {
+            return $this->map[$this->getRankID()]["max"] - $this->getXP();
+        }
     }
 }

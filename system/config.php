@@ -47,6 +47,7 @@ define('DESC', 'Kommer senere...');
 define('KEYWORDS', 'mafia, spill');
 define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
+define("WWWPATH", "https://" . $_SERVER["HTTP_HOST"]);
 $timeout = (60 * (120));
 
 /* Database connection parametres START */

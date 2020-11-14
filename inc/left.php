@@ -4,7 +4,7 @@ $ant = $GLOBALS["stored_queries"]["online"];
 $sql3 = $db->query("SELECT COUNT(*) as `numrows` FROM `chat`");
 $num2 = $sql3->fetchObject()->numrows;
 $ant2 = $GLOBALS["stored_queries"]["jail"];
-error_log("Antall i fengsel lagret i array: " . $ant2);
+#error_log("Antall i fengsel lagret i array: " . $ant2);
 $klpre = $db->prepare("SELECT timewait FROM `krimlogg` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
 $klpre->execute([$obj->id]);
 if ($res = $klpre->fetchColumn()) {

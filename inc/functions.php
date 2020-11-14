@@ -53,8 +53,8 @@ function endpage()
     include_once './inc/right.php';
     $m = explode(" ", microtime());
     $end = $m[0] + $m[1];
-    error_log("Page: " . $_SERVER["REQUEST_URI"] . " used " . round($end - $GLOBALS["start"],
-            7) . " seconds to execute.");
+    /*error_log("Page: " . $_SERVER["REQUEST_URI"] . " used " . round($end - $GLOBALS["start"],
+            7) . " seconds to execute.");*/
 }
 
 /**

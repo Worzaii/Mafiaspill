@@ -3,6 +3,7 @@ define("BASEPATH", 1);
 include_once __DIR__ . '/system/config.php';
 include_once __DIR__ . '/inc/functions.php';
 include_once __DIR__ . '/classes/User.php';
+include_once __DIR__ . '/classes/MinSide.php';
 if (isset($_SERVER['X-Requested-With'])) {
     if ($_SERVER['X-Requested-With'] == "XMLHttpRequest") {
         define("JSON", 1);
@@ -24,26 +25,26 @@ if (isset($_SESSION['sessionzar'])) {
     $st1->execute([$user, $pass]);
     $obj = $st1->fetchObject(\UserObject\User::class);
     if (!$obj) {
-        header("Location: " . __DIR__ . "/loggut.php?g=4");
-        die('<a href="' . __DIR__ . '/loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget på din bruker.</a>');
+        header("Location: " . WWWPATH . "/loggut.php?g=4");
+        die('<a href="' . WWWPATH . '/loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget på din bruker.</a>');
     } else {
         $stored_queries = [
             "online" => 0,
             "jail" => 0
         ];
         if ($obj->ip != $ip) {
-            header("Location: " . __DIR__ . "/loggut.php?g=7&currentip=$ip&dbip={$obj->ip}");
-            echo '<h1>Det kan se ut som du har blitt logget inn på et annet nettverk. Klikk her for å gå til innloggingssiden: <a href="' . __DIR__ . 'loggut.php">Index</a></h1>';
+            header("Location: " . WWWPATH . "/loggut.php?g=7&currentip=$ip&dbip={$obj->ip}");
+            echo '<h1>Det kan se ut som du har blitt logget inn på et annet nettverk. Klikk her for å gå til innloggingssiden: <a href="' . WWWPATH . 'loggut.php">Index</a></h1>';
             die();
         }
         liv_check();
         ipbanned($ip);
         if ($obj->forceout == 1) {
             $db->query("UPDATE `users` SET `forceout` = '0' WHERE `id` = '{$obj->id}'");
-            die('<a href="' . __DIR__ . '/loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn på nytt for å fortsette å spille.</a>');
+            die('<a href="' . WWWPATH . '/loggut.php?g=6">Du har blitt logget ut av en i Ledelsen! Vennligst logg inn på nytt for å fortsette å spille.</a>');
         }
         if (($obj->lastactive + $timeout) < time()) {
-            header("Location: " . __DIR__ . "/loggut.php?g=5");
+            header("Location: " . WWWPATH . "/loggut.php?g=5");
         } elseif (($obj->lastactive + $timeout) > time()) {
             if (defined("NOUPDATE") && NOUPDATE == 1) {
             } else {
@@ -59,5 +60,5 @@ if (isset($_SESSION['sessionzar'])) {
         }
     }
 } else {
-    header("Location: " . __DIR__ . "/loggut.php?g=1");
+    header("Location: " . WWWPATH . "/loggut.php?g=1");
 }

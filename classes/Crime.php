@@ -112,18 +112,24 @@ class Crime
         $timewait = $info->untilnext + time();
         if (mt_rand(0, 100) <= $thechance->chance) {
             $prep = $this->database->prepare("UPDATE `users` SET `hand` = (`hand` + ?),`exp` = (`exp` + ?) WHERE `id` = ? LIMIT 1");
-            error_log("Result of spørring execute: " . $prep->execute([
-                    $kr,
-                    $info->expgain,
-                    $this->user->getId()
-                ]));
-            error_log("KR: $kr, Gain: {$info->expgain}, id: " . $this->user->getId() . "\n" . var_export($this->database->errorInfo(),
-                    true));
+            error_log("The query: " . $prep->queryString);
+            $prep->execute([
+                $kr,
+                $info->expgain,
+                $this->user->getId()
+            ]);
+            error_log("Values executed: 1: $kr, " . $info->expgain . ", " . $this->user->getId());
             $rows = $prep->rowCount();
-            error_log("Rowcount: " . $rows . var_export($prep->errorInfo(), true));
             if ($rows == 1) {
-                $secondprep = $this->database->prepare("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,'$kr',?)");
-                if ($secondprep->execute([$this->user->getId(), $info->id, $timewait])) {
+                $secondprep = $this->database->prepare("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,?,(? + UNIX_TIMESTAMP()))");
+                if ($secondprep->execute(
+                    [
+                        $this->user->getId(),
+                        $choice,
+                        $kr,
+                        $info->untilnext
+                    ]
+                )) {
                     $this->out .= '
                         <p class="lykket">Du var heldig og fikk ' . number_format($kr) . 'kr med deg!</p>
                         <p class="feil">Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.</p>
