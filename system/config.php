@@ -51,7 +51,7 @@ define("WWWPATH", "https://" . $_SERVER["HTTP_HOST"]);
 $timeout = (60 * (120));
 
 /* Database connection parametres START */
-define("HOST", "127.0.0.1");
+define("HOST", "localhost");
 define("DATABASE", "mafia");
 define("USERNAME", "mafia");
 define("PASSWORD", "mafia");
