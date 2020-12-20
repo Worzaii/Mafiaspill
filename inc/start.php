@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="shortcut icon" href="./favicon.ico">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title><?= $title; ?></title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="css/style.css">
+    <link rel="shortcut icon"
+          href="./favicon.ico">
+    <meta http-equiv="content-type"
+          content="text/html; charset=UTF-8">
+    <title><?=$title;?></title>
     <script src="./js/jquery-3.5.1.js"></script>
     <script src="./js/teller.js"></script>
     <script src="./js/loggteller.js"></script>
@@ -15,12 +19,12 @@
     <div class="content">
         <nav>
             <ul>
-                <li><a href="profil.php?id=<?= $obj->id; ?>">Profil</a></li>
+                <li><a href="profil.php?id=<?=$obj->id;?>">Profil</a></li>
                 <li><a href="innboks.php">Innboks</a></li>
                 <li><a href="nyheter.php">Nyheter</a></li>
-                <li><a href="fengsel.php">Fengsel$anyjail</a></li>
+                <li><a href="fengsel.php">Fengsel<?=$anyjail;?></a></li>
                 <li><a href="bj.php">BlackJack</a></li>
-                <li><a href="online.php">Spillere pålogget (<?= $late_online; ?>)</a></li>
+                <li><a href="online.php">Spillere pålogget (<?=$late_online;?>)</a></li>
             </ul>
         </nav>
     </div>
@@ -28,9 +32,9 @@
 <div id="information">
     <p>Spillet har blitt oppdatert. CTRL + F5</p>
 </div>
-<?= $chat; ?>
-<noscript><p>å spille uten javascript aktivert vil vise seg å være fungere dårlig,
-        vennligst aktiver javascript eller bruk en nettleser som støtter dette.</p>
+<?=$chat;?>
+<noscript><p>å spille uten javascript aktivert vil vise seg å være fungere dårlig, vennligst aktiver javascript eller
+        bruk en nettleser som støtter dette.</p>
 </noscript>
 <section class="over_wrapper">
     <div class="wrapper">

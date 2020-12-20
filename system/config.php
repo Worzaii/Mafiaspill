@@ -76,5 +76,5 @@ if (php_sapi_name() != "cli") {
     } else {
         $_SESSION['HTTP_USER_AGENT'] = sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
     }
-
+    
 }
