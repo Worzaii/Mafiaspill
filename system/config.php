@@ -1,4 +1,18 @@
 <?php
+if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
+    error_log("Development mode is enabled from the fastcgi_params in your nginx setup!");
+    ini_set("display_errors", "on");
+    ini_set("display_startup_errors", "on");
+    ini_set("error_reporting", "32767");
+    ini_set("log_errors", "on");
+    ini_set("track_errors", "on");
+    ini_set("html_errors", "on");
+    ini_set("error_log", $_SERVER["LOGLOCATION"]);
+    /*foreach (ini_get_all() as $name => $setting) {
+        print "<p><b>$name:</b> <br>Global: {$setting['global_value']}<br>Local: {$setting['local_value']}<br>Access: {$setting['access']}</p>";
+    }
+    die();*/
+}
 if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
