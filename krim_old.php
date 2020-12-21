@@ -30,7 +30,7 @@ if (fengsel()) {
         $f = $q2->fetchObject();
         if (time() < $f->timewait) {
             echo '
-        <p class="feil">Du må vente <span id="krim">' . ($f->timewait - time()) . '</span> før neste krim.</p>
+        <p class="warning">Du må vente <span id="krim">' . ($f->timewait - time()) . '</span> før neste krim.</p>
         <script>
         teller(' . ($f->timewait - time()) . ', "krim", false, "ned");
         </script>

@@ -71,7 +71,7 @@ $onl = "online.php";
 <script>loggteller(' . $jte . ',"jailteller",false,"ned");</script></li>';
     }
     ?>
-    <li><a href="flyplass.php">Flyplass</a></li>
+    <li><a href="fly.php">Flyplass</a></li>
     <li><a href="#Drap">Drap </a></li>
     <li><a href="#oppdrag.php">Oppdrag</li>
     <li><a href="#Ran">Ran </a></li>
@@ -92,7 +92,7 @@ $onl = "online.php";
     <li><a href="innboks.php">Innboks <?php echo "\u{2709}"; ?></a></li>
     <li><a href="#deputy.php">Send inn søknad!</a></li>
     <li><a href="#support.php">Support</a></li>
-    <li><a href="<?= $onl; ?>">Spillere pålogget</a> (<?= $ant; ?>)</li>
+    <li><a href="<?=$onl;?>">Spillere pålogget</a> (<?=$ant;?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
     <li><a href="ledelse.php">Ledelsen</a></li>
 </ul>

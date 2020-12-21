@@ -10,9 +10,10 @@ class Crime
     public User $user;
     public object $database;
     public string $out = "";
-
+    
     /**
      * Crime constructor.
+     *
      * @param User $user UserObject ($obj)
      * @param PDO $database Imports database from running script
      */
@@ -22,7 +23,7 @@ class Crime
         $this->database = $database;
         $this->execute();
     }
-
+    
     private function execute()
     {
         if ($write = canUseFunction(1, 1)) {
@@ -32,7 +33,7 @@ class Crime
         }
         $this->loadPage();
     }
-
+    
     /**
      * @uses waitText();
      * Checks whether or not User can have options listed up, if not print waitText
@@ -55,21 +56,22 @@ class Crime
             $this->getCrime();
         }
     }
-
+    
     /**
      * @param $time
+     *
      * @return string "Prepared text for waiting"
      */
     public function waitText($time)
     {
         return '
-        <p class="feil">Du må vente <span id="krim">' . ($time - time()) . '</span> før neste krim.</p>
+        <p class="warning">Du må vente <span id="krim">' . ($time - time()) . '</span> før neste krim.</p>
         <script>
         teller(' . ($time - time()) . ', "krim", false, "ned");
         </script>
         ';
     }
-
+    
     /**
      * This will execute a POST event where "valget" is set.
      */
@@ -88,7 +90,7 @@ class Crime
             }
         }
     }
-
+    
     public function doCrime($choice)
     {
         $crime = $this->database->prepare("select * from crime where id = ?");
@@ -112,13 +114,11 @@ class Crime
         $timewait = $info->untilnext + time();
         if (mt_rand(0, 100) <= $thechance->chance) {
             $prep = $this->database->prepare("UPDATE `users` SET `hand` = (`hand` + ?),`exp` = (`exp` + ?) WHERE `id` = ? LIMIT 1");
-            error_log("The query: " . $prep->queryString);
             $prep->execute([
                 $kr,
                 $info->expgain,
                 $this->user->getId()
             ]);
-            error_log("Values executed: 1: $kr, " . $info->expgain . ", " . $this->user->getId());
             $rows = $prep->rowCount();
             if ($rows == 1) {
                 $secondprep = $this->database->prepare("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,?,(? + UNIX_TIMESTAMP()))");
@@ -151,12 +151,11 @@ class Crime
                 $this->out = feil('Det var feil i utførelse av spørringer, vennligst rapporter dette til support!');
             }
         } else {
-            /* Feilet krim, utfører konsekvens */
             $failed = $this->database->prepare("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,'0',?)");
             $failed->execute([$this->user->getId(), $choice, $timewait]);
             if ($failed->rowCount() == 1) {
-                $fen = mt_rand(0, 1);
-                if ($fen == 1) {
+                $fen = mt_rand(0, 3);
+                if ($fen !== 2) {
                     $this->out .= feil('Du klarte det ikke! <br>Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.') . '
               <script>
               teller(' . $info->untilnext . ', "krim", false, \'ned\');
@@ -184,7 +183,7 @@ class Crime
             }
         }
     }
-
+    
     /**
      * This will get all the available Crime options
      */
@@ -196,7 +195,7 @@ class Crime
         $q1->execute([$this->user->exp->getRankID()]);
         $this->listCrimeChoices();
     }
-
+    
     public function listCrimeChoices()
     {
         $get_actions = $this->database->prepare("select * from crime where levelmin <= ? ORDER BY `levelmin` DESC,`id` DESC");
@@ -259,7 +258,7 @@ class Crime
         </script>
 END;
     }
-
+    
     /**
      * This prints the page depending on the results of functions called.
      */
@@ -272,5 +271,5 @@ END;
         echo $this->out;
         endpage();
     }
-
+    
 }
