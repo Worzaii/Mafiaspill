@@ -33,10 +33,10 @@ if (isset($_GET['login'])) {
                     ];
                     $st3 = $db->prepare("insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())");
                     $st3->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
-
+                    
                     $st4 = $db->prepare("UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(), `ip` = ?, `hostname` = ? where `id` = ? AND `pass` = ?");
                     $st4->execute([$ip, gethostbyaddr($ip), $uid->id, $uid->pass]);
-
+                    
                     $str = [
                         'string' => lykket('Innlogget! Et lite øyeblikk imens vi sender deg inn til nyhetssiden...'),
                         'state' => 1,
@@ -139,7 +139,7 @@ Du må også passe på at passordet inneholder minst 4 tegn eller mer.');
                 if (strlen($v) >= 1) {
                     $r = $db->prepare("SELECT count(*) FROM `users` WHERE `id` = ?");
                     $r->execute([$v]);
-
+                    
                     if ($r->fetchColumn() == 1) {
                         $r = $db->prepare("SELECT id FROM `users` WHERE `id` = ?");
                         $r->execute([$v]);
@@ -165,7 +165,7 @@ Du må også passe på at passordet inneholder minst 4 tegn eller mer.');
                     ]);
                     if ($newuser->rowCount() == 1) {
                         $str['string'] = lykket('Du har blitt registrert, du kan nå logge inn! 
-                        <a href="http://' . DOMENE_NAVN . '/">Trykk her for å gå til innlogging</a>');
+                        <a href="https://' . DOMENE_NAVN . '/">Trykk her for å gå til innlogging</a>');
                         $str['res'] = 1;
                         $inv = $db->prepare("UPDATE `invsjekk` SET `used` = '1' WHERE `mail` = ? AND `code` = ?");
                         $inv->execute([
@@ -189,7 +189,7 @@ Du må også passe på at passordet inneholder minst 4 tegn eller mer.');
     } else {
         $str['string'] = feil('Du må velge et annet brukernavn, da dette er i bruk.');
     }
-
+    
 }
 if (isset($_GET['forgotpassword'])) {
     $user = $_POST['user'];
@@ -268,7 +268,7 @@ if (isset($_GET['resetpassword'])) {
             $uid
         ]);
         if ($s->fetchColumn() == 1) {
-
+            
             $f = $db->prepare("SELECT COUNT(*) FROM `users` WHERE `id` = ? LIMIT 1");
             $f->execute([$uid]);
             if ($f->fetchColumn() == 1) {

@@ -50,7 +50,8 @@ HTML;
                     if (is_numeric($uin)) {
                         if ($db->query("UPDATE `firms` SET `uid` = '{$uin}' WHERE `id` = '$id' LIMIT 1")) {
                             echo lykket('Du har overført firmaet ditt til ' . user($uin) . '!');
-                            #sysmel($uin,'<b>--Firma</b><br>Du har mottat et firma ifra ' . user($obj->id) . '! Klikk her for å se ditt panel over firmaene dine: <a href="http://mafia-no.net/Firmaer">Firmapanel</a>');
+                            #sysmel($uin,'<b>--Firma</b><br>Du har mottat et firma ifra ' . user($obj->id) . '! Klikk
+                            # her for å se ditt panel over firmaene dine: <a href="firmaer.php">Firmapanel</a>');
                         } else {
                             echo feil('Feil i spørring! ' . $db->get_last_error() . '');
                         }

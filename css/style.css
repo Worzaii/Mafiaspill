@@ -467,6 +467,19 @@ footer #spot3 {
     margin-top: 15px;
 }
 
+.table.newshandler button {
+    background: #000;
+    border: 3px solid #333;
+    margin: 5px;
+    border-radius: 25px;
+    padding: 10px;
+    color: #999;
+}
+
+.table.newshandler td:nth-child(5) {
+    text-align: center;
+}
+
 #lotto th {
     background: #666 !important;
 }
@@ -1270,3 +1283,4 @@ table.tablemain {
     height: 4px;
     background: #f00;
 }
+

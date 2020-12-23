@@ -12,13 +12,16 @@ if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
         print "<p><b>$name:</b> <br>Global: {$setting['global_value']}<br>Local: {$setting['local_value']}<br>Access: {$setting['access']}</p>";
     }
     die();*/
+    define("LOCALWRITE", $_SERVER['LOGLOCATION']);
 }
 if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
 function sql_log($query)
 {
-    if ($_SERVER['SERVER_NAME'] == "mafia.localhost.localdomain") {
+    if (defined("LOCALWRITE")) {
+        $file = LOCALWRITE;
+    } elseif ($_SERVER['SERVER_NAME'] == "mafia.localhost.localdomain") {
         $file = $_SERVER["DOCUMENT_ROOT"] . "\\logs\\sql.log";
     } else {
         $file = "/var/www/mafia.werzaire.net/logs/sql.log";

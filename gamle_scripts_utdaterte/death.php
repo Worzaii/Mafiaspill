@@ -11,7 +11,7 @@
     <div class="wrapper">
         <p><b>Spilleren har blitt drept!</b></p>
         <p>En spiller drepte brukeren din. Om du ønsker å starte på nytt må du <a
-                    href="http://mafia-no.net">registrere deg på nytt!</a></p>
+                    href="<?=DOMENE_NAVN;?>">registrere deg på nytt!</a></p>
         <?php
         if ($obj->moddet == 1) {
             echo <<<ENDHTML

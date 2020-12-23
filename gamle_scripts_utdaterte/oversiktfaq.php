@@ -65,10 +65,10 @@
 *   <a href="forum1.php">Forumet</a>
 </pre>
 <h1 style="font-weight: normal;"><a onclick="javascript:void(NULL);">Linker</a></h1>
-<p>Kode1: <code>[link="http://google.com"]</code></p>
-<p><a href="http://google.com">http://google.com</a></p>
-<p>Kode2: <code>[link="http://" text="Til Google!"]</code></p>
-<p><a href="http://google.com" title="http://google.com">Til Google!</a></p>
+<p>Kode1: <code>[link="https://google.com"]</code></p>
+<p><a href="https://google.com">https://google.com</a></p>
+<p>Kode2: <code>[link="https://" text="Til Google!"]</code></p>
+<p><a href="https://google.com" title="https://google.com">Til Google!</a></p>
 <p>Kan brukes på følgende områder:</p>
 <pre>
 *   <a href="profil.php?id=1">Profiltekster</a>
@@ -118,7 +118,7 @@ margin: 0;">
 <iframe width="560" height="315" src="http://www.youtube-nocookie.com/embed/KrVC5dm5fFc" frameborder="0" allowfullscreen></iframe>
 <p>Slik henter du youtube koden:<br>
     På youtube siden med videoen er det en lang adresse:<br>
-    http://www.youtube.com/watch?v=<b>KrVC5dm5fFc</b>&feature=player_embedded<br>
+    https://www.youtube.com/watch?v=<b>KrVC5dm5fFc</b>&feature=player_embedded<br>
     Ifra denne koden skal du hente ut det som er etter watch?v=(her er youtube koden)</p>
 <p>Kan brukes på følgende områder:</p>
 <pre>

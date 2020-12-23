@@ -16,7 +16,6 @@ if($obj->har_fabrikk == 0){
         Forventet ferdig: 01.07.2014 </br>
         Datoen kan endres uten varsel.</br>
         </br>
-        Spørsmål rettes til <a href="http://mafia-no.net/profil.php?id=2">Slowboii</a>
         ';
 }elseif($obj->har_fabrikk == 1){
     // Har fabrikk

@@ -26,7 +26,7 @@ if ($db->num_rows() == 1) {
     <meta name="description" content="<?= DESC; ?>">
     <meta name="keywords" content="<?= KEYWORDS; ?>">
     <meta name="author" content="<?= UTVIKLER; ?>">
-    <script src="./js/jquery.js" type="text/javascript"></script>
+    <script src="./js/jquery-3.5.1.js" type="text/javascript"></script>
     <script src="js/handler.js" type="text/javascript"></script>
     <script src="./js/teller.js" type="text/javascript"></script>
 </head>

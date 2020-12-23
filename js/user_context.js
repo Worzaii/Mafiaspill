@@ -1,3 +1,8 @@
+/*
+* TODO: Will this be a legitimate feature in the game and should it stay here or delete it?
+*  While it would be handy to quickly rightclick and send a message, enter profile or other things, will this be
+*  actively used?
+* */
 $(document).ready(function() {
   $(document).bind('click', function(event) {
     $('div.custom-menu').remove();

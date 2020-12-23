@@ -19,7 +19,7 @@ if (isset($_SESSION['sessionzar'])) {
     <meta name="description" content="<?= DESC; ?>">
     <meta name="keywords" content="<?= KEYWORDS; ?>">
     <meta name="author" content="<?= UTVIKLER; ?>">
-    <script src="js/jquery.js"></script>
+    <script src="js/jquery-3.5.1.js"></script>
     <script src="js/handler.js"></script>
     <script src="js/tabs.js"></script>
 </head>
@@ -51,6 +51,7 @@ if (isset($_SESSION['sessionzar'])) {
                 <noscript><p>Du må ha javascript aktivert for å spille!</p></noscript>
                 <form class="loginform" name="logininfo" id="loginform"
                       action="handlers/handler.php?login">
+                    <fieldset id="loginfield" style="border: 0;">
                     Brukernavn: <input autocomplete="username" class="text" disabled name="username"
                                        placeholder="Brukernavn"
                                        required type="text"><br>
@@ -58,6 +59,7 @@ if (isset($_SESSION['sessionzar'])) {
                                    placeholder="Passord"
                                    required type="password"><br><br>
                     <input class="button" disabled type="Submit" value="Logg inn">
+                </fieldset>
                 </form>
                 <div class="cleanify"></div>
             </div>

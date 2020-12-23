@@ -45,7 +45,7 @@ $melding = $_POST["tekst"];
           });
 
           notification.onclick = function() {
-            window.open('http://westmafia.net/');
+            window.open('https://<?=DOMENE_NAVN;?>');
           };
 
         }
@@ -67,7 +67,7 @@ $melding = $_POST["tekst"];
           });
 
           notification.onclick = function() {
-            window.open('http://westmafia.net/');
+            window.open('https://<?=DOMENE_NAVN;?>');
           };
 
         }
@@ -90,7 +90,7 @@ $melding = $_POST["tekst"];
           });
 
           notification.onclick = function() {
-            window.open('http://westmafia.net/');
+            window.open('https://<?=DOMENE_NAVN;?>');
           };
 
         }
