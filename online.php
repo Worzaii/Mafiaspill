@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 $annual = "uken"; /* Setting a default value, if not overriden */
 if (isset($_GET['timespan']) && r1()) {
@@ -37,8 +38,10 @@ if (r1() || r2()) {
     $cols = 2;
     $add3 = null;
 }
-$online = $db->query("SELECT id,user,lastactive,ip,hostname,status FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP()
-ORDER BY `lastactive` DESC");
+$online = $db->query(
+    "SELECT id,user,lastactive,ip,hostname,status FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP()
+ORDER BY `lastactive` DESC"
+);
 ?>
     <table class="table online">
         <thead>
@@ -66,7 +69,6 @@ ORDER BY `lastactive` DESC");
                     $add3 = "<td>" . (($r->hostname != null) ? (($r->status == 1) ?
                             "***" : $r->hostname) : "Ikke registrert") . "</td>";
                 }
-
             } else {
                 $add2 = null;
                 $add3 = null;
@@ -106,12 +108,18 @@ if (r1() || r2()) {
         /* Defaults to a week */
         $timequery = 60 * 60 * 24 * 7;
     }
-    error_log("online.php timequery changed by GET method. Query became: SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - ($timequery)) and (unix_timestamp() - 1800)");
-    $lately = $db->query("SELECT COUNT(*) as numrows FROM `users` WHERE `lastactive` BETWEEN
+    error_log(
+        "online.php timequery changed by GET method. Query became: SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - ($timequery)) and (unix_timestamp() - 1800)"
+    );
+    $lately = $db->query(
+        "SELECT COUNT(*) as numrows FROM `users` WHERE `lastactive` BETWEEN
     (UNIX_TIMESTAMP() - ($timequery)) AND (UNIX_TIMESTAMP() - 1800)
-    ORDER BY `lastactive` DESC");
+    ORDER BY `lastactive` DESC"
+    );
     if ($lately->fetchColumn() >= 1) {
-        $lately2 = $db->query("SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - ($timequery)) and (unix_timestamp() - 1800)");
+        $lately2 = $db->query(
+            "SELECT id,`user`,lastactive,ip,hostname,status from users where lastactive between (unix_timestamp() - ($timequery)) and (unix_timestamp() - 1800)"
+        );
         while ($s = $lately2->fetchObject()) {
             $newtime = time() - $s->lastactive;
             if (r1()) {

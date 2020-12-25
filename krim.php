@@ -1,7 +1,4 @@
 <?php
-/**
- * TODO: Make the new crime script working again, but better!
- */
 
 use UserObject\Crime\Crime;
 

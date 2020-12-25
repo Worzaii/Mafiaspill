@@ -1,7 +1,6 @@
 <?php
 
-namespace UserObject
-{
+namespace UserObject {
 
     include "Rank.php";
 
@@ -69,6 +68,11 @@ namespace UserObject
             return $this;
         }
 
+        public function getFamily()
+        {
+            return (is_null($this->family)) ? "<i>Ingen</i>" : $this->family;
+        }
+
         /**
          * @return mixed
          */
@@ -123,6 +127,24 @@ namespace UserObject
         public function getStatus()
         {
             return $this->status;
+        }
+
+        public function getStatusName()
+        {
+            switch ($this->getStatus()) {
+                case 1:
+                    return "<span class='stat1'>Administrator</span>";
+                case 2:
+                    return "<span class='stat2'>Moderator</span>";
+                case 3:
+                    return "<span class='stat3'>Forum-moderatr</span>";
+                case 4:
+                    return "<span class='stat5'>Spiller</span>";
+                case 5:
+                    return "<span class='statnpc'>NPC</span>";
+                default:
+                    return feil("FEIL");
+            }
         }
 
         /**
@@ -311,7 +333,22 @@ namespace UserObject
 
         public function setRank($xp)
         {
-
         }
+
+        public function lastDate()
+        {
+            return date("H:m:s d.m.Y", $this->getLastactive());
+        }
+
+        public function regDate()
+        {
+            return date("H:m:s d.m.Y", $this->regstamp);
+        }
+
+        public function handformat()
+        {
+            return number_format($this->getHand(), null, null, " ") . "kr";
+        }
+
     }
 }

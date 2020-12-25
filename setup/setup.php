@@ -17,11 +17,11 @@ $noselect = true;
 $choice = 0;
 while ($doLoop) {
     while ($noselect) {
-        echo "\e[32mMeny:\e[39m 
-1: \e[32mOpprett bruker\e[39m 
+        echo "\e[32mMeny:\e[39m
+1: \e[32mOpprett bruker\e[39m
 2: \e[33mEndre bruker\e[39m
-3: \e[32mSlett bruker (Klar)\e[39m 
-4: \e[32mEndre passord for bruker (Klar)\e[39m 
+3: \e[32mSlett bruker (Klar)\e[39m
+4: \e[32mEndre passord for bruker (Klar)\e[39m
 Q: \e[31mAvslutt program (Alternativt, bruk CTRL + D)\e[39m \n\n";
         $choice = readline("Gjør et valg: (1|2|3|4|q): ");
         if (in_array($choice, [1, 2, 3, 4])) {
@@ -43,23 +43,31 @@ Q: \e[31mAvslutt program (Alternativt, bruk CTRL + D)\e[39m \n\n";
             if (strlen($pass) == 0) {
                 $genpas = genpass();
                 echo "Du laget ikke passord selv, generer et for deg...\n\n";
-                echo "Passord generert: " . $genpas . "\n\n";
+                echo "Passord generert: \e[1m" . $genpas . "\e[0m\n\n";
             }
-            $status = readline("\nHvilket tilgangsnivå skal brukeren ha? \n1=admin, 2=moderator, 3=forum moderator, 4 = picmaker (vanlig bruker), 5=vanlig bruker: ");
+            echo "\e[0m\nHvilket tilgangsnivå skal brukeren ha? \n1= \e[1;31m Administrator, 2=Moderator, 3=Forum-moderator, 4 = Vanlig bruker, 5=NPC: ";
+            $status = readline(
+                "\nHvilket tilgangsnivå skal brukeren ha? \n1= \e[1;31m Administrator, 2=Moderator, 3=Forum-moderator, 4 = Vanlig bruker, 5=NPC: "
+            );
             if (in_array($status, [1, 2, 3, 4, 5])) {
                 $inpass = (isset($genpas)) ? $genpas : $pass;
                 $exists = $db->prepare("select count(*) from users where user = ?");
                 $exists->execute([$user]);
                 if ($exists->fetchColumn() != 1) {
-                    $userq = $db->prepare("insert into users(user, pass, status, regstamp, mail) values(?, ?, ?, ?, ?)");
-                    $userq->execute([
-                        $user,
-                        password_hash($inpass, PASSWORD_DEFAULT),
-                        $status,
-                        time(),
-                        "user@localhost.localdomain"
-                    ]);
-                    echo "\nKommando utført!\nAntall rader endret: " . $userq->rowCount() . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
+                    $userq = $db->prepare(
+                        "insert into users(user, pass, status, regstamp, mail) values(?, ?, ?, ?, ?)"
+                    );
+                    $userq->execute(
+                        [
+                            $user,
+                            password_hash($inpass, PASSWORD_DEFAULT),
+                            $status,
+                            time(),
+                            "user@localhost.localdomain"
+                        ]
+                    );
+                    echo "\nKommando utført!\nAntall rader endret: " . $userq->rowCount(
+                        ) . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
                 } else {
                     echo "Brukernavn eksisterer allerede! Forsøk et annet brukernavn!\n\n";
                 }
@@ -112,7 +120,8 @@ END;
                                         if ($updateuser->execute([ltrim($bank, "="), $user])) {
                                             echo "Ny bankverdi for $user satt til $bank! \n\n";
                                         } else {
-                                            echo "Kunne ikke sette ny verdi! Feilmelding: \n" . $updateuser->errorCode() . ": " . $updateuser->errorInfo() . "\n\n";
+                                            echo "Kunne ikke sette ny verdi! Feilmelding: \n" . $updateuser->errorCode(
+                                                ) . ": " . $updateuser->errorInfo() . "\n\n";
                                         }
                                     } elseif ($bank[0] == '-') {
                                         /* Removing said amount from player */
@@ -151,7 +160,8 @@ END;
                                             /**
                                              * Couldn't update user status. Show error:
                                              */
-                                            echo "Kunne ikke oppdaterer status: " . $updateuser->errorCode() . ": " . $updateuser->errorInfo() . "\n\n\n";
+                                            echo "Kunne ikke oppdaterer status: " . $updateuser->errorCode(
+                                                ) . ": " . $updateuser->errorInfo() . "\n\n\n";
                                         }
                                     } else {
                                         echo "Avbryter endring og går tilbake til hovedmeny.\n\n";
@@ -160,7 +170,8 @@ END;
                                         $notchosen = false;
                                     }
                                 } else {
-                                    echo "Kunne ikke hente brukerdata: " . $updateuser->errorCode() . ": " . $updateuser->errorInfo() . "\n\n\n";
+                                    echo "Kunne ikke hente brukerdata: " . $updateuser->errorCode(
+                                        ) . ": " . $updateuser->errorInfo() . "\n\n\n";
                                 }
                                 $choice = 0;
                                 $endrechoice = 0;
@@ -169,7 +180,6 @@ END;
                                 /**
                                  * Change support player status
                                  */
-
                             } elseif ($endrechoice == 4) {
                                 /**
                                  * Reset player timers from list or just all.
@@ -239,31 +249,38 @@ Hvis du er sikker på at denne dataen nå skal slettes...
 DATA;
                         $sistebekreft = readline("Skriv 'jeg bekrefter sletting': ");
                         if (strtolower($sistebekreft) == 'jeg bekrefter sletting') {
-                            $preparedelete = $db->prepare("delete from users where id = ? and user = ? and status = ? limit 1");
-                            if ($preparedelete->execute([
-                                $userinfo->id,
-                                $userinfo->user,
-                                $userinfo->status
-                            ])) {
+                            $preparedelete = $db->prepare(
+                                "delete from users where id = ? and user = ? and status = ? limit 1"
+                            );
+                            if ($preparedelete->execute(
+                                [
+                                    $userinfo->id,
+                                    $userinfo->user,
+                                    $userinfo->status
+                                ]
+                            )) {
                                 if ($preparedelete->rowCount() == 1) {
                                     echo "Brukerkontoen har blitt slettet. Ta vare på informasjonen over om det på et tidspunkt blir nødvendig å legge inn dataene på nytt.\n\n";
                                 } else {
                                     echo "Merkelig nok ble ingen rader berørt av utføringen... Sjekk om bruker eksisterer ved å sjekke i databasen manuelt.\n\n";
                                 }
                             } else {
-                                echo "Kunne ikke utføre sletting av brukerkonto!\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
+                                echo "Kunne ikke utføre sletting av brukerkonto!\n" . $preparedelete->errorCode(
+                                    ) . ": " . $preparedelete->errorInfo();
                             }
                         } else {
                             echo "Du skrev ikke riktig tekst. Hvis du skrev feil så må du gjenta hele prosessen, om ikke vil det bli tatt som at du ønsket å avbryte slettingen av dataene. Returnerer til hovedmeny...\n\n";
                         }
                     } else {
-                        echo "Utføringen av kommandoen fungerte ikke!\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
+                        echo "Utføringen av kommandoen fungerte ikke!\n" . $preparedelete->errorCode(
+                            ) . ": " . $preparedelete->errorInfo();
                     }
                 } else {
                     echo "Fant $numrows brukere på $bruker. Kan ikke fortsette, går til hovedmeny...\n\n";
                 }
             } else {
-                echo "Kunne ikke sjekke om brukerkonto eksisterer.\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
+                echo "Kunne ikke sjekke om brukerkonto eksisterer.\n" . $preparedelete->errorCode(
+                    ) . ": " . $preparedelete->errorInfo();
             }
         } else {
             echo "Enten skrev du ikke rett eller ønsket å avbryte slettingen. Du må velge fra hovedmenyen på nytt om du ønsker å slette.\n\n";
@@ -286,10 +303,12 @@ DATA;
             $newpass = readline("Nytt passord: ");
             $newpass = (strlen($newpass) <= 3) ? genpass() : $newpass;
             $update = $db->prepare("update users set pass = ? where $queryadd = ?");
-            if ($update->execute([
-                password_hash($newpass, PASSWORD_DEFAULT),
-                $value
-            ])) {
+            if ($update->execute(
+                [
+                    password_hash($newpass, PASSWORD_DEFAULT),
+                    $value
+                ]
+            )) {
                 if ($update->rowCount() == 1) {
                     echo "Passordet har blitt satt til: " . $newpass;
                 }
@@ -298,7 +317,6 @@ DATA;
             }
         }
         $choice = 0;
-
     } else {
         $noselect = true;
     }

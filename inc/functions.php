@@ -1,16 +1,21 @@
 <?php
+
 /**
  * @param string $title Sets the title of the HTML document. Also starts the first part of the HTML page
  */
 function startpage($title = NAVN_DOMENE)
 {
     global $obj, $db;
-    $jail = $db->query("SELECT COUNT(*) as `numrows` FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL");
+    $jail = $db->query(
+        "SELECT COUNT(*) as `numrows` FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL"
+    );
     $numrows = $jail->fetchColumn();
     $GLOBALS["stored_queries"]["jail"] = $numrows;
     $anyjail = ($numrows > 0) ? " (" . $numrows . ")" : null;
-    $online = $db->query("SELECT COUNT(*) as `numrows` FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800)
-    AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC");
+    $online = $db->query(
+        "SELECT COUNT(*) as `numrows` FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800)
+    AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC"
+    );
     $late_online = $online->fetchColumn();
     $GLOBALS["stored_queries"]["online"] = $late_online;
     $chat = "";
@@ -175,22 +180,26 @@ function status($s)
     if (!is_string($s) && $s == 0) {
         return "System";
     }
-    $pre = $db->prepare("SELECT id,user,status,picmaker,health FROM `users` WHERE `user` = :val1 OR `id` = :val2 LIMIT 0,1");
+    $pre = $db->prepare(
+        "SELECT id,user,status,picmaker,health FROM `users` WHERE `user` = :val1 OR `id` = :val2 LIMIT 0,1"
+    );
     $pre->bindParam(":val1", $s);
     $pre->bindParam(":val2", $s);
     error_log("Result of execution: " . (($pre->execute()) ? "Successful!" : "Failed!!"));
     if ($user = $pre->fetchObject()) {
         error_log("Status function called, values: " . var_export($user, true));
         if ($user->status == 1) {
-            $span = "stat1";
+            $span = "stat1"; /* Admin */
         } elseif ($user->status == 2) {
-            $span = "stat2";
+            $span = "stat2"; /* Moderator */
         } elseif ($user->status == 3) {
-            $span = "stat3";
-        } elseif ($user->status == 4 || $user->status == 5 && $user->picmaker == 1 && $user->health > 1) {
-            $span = "stat4";
-        } elseif ($user->status == 4) {
-            $span = "stat5";
+            $span = "stat3"; /* Forum moderator */
+        } elseif ($user->status == 4 && $user->health > 1 && $user->picmaker != 1) {
+            $span = "stat4"; /* Normal user */
+        } elseif ($user->status == 4 && $user->picmaker == 1 && $user->health > 1) {
+            $span = "statpic";
+        } elseif ($user->status == 5) {
+            $span = "statnpc";
         } else {
             $span = "";
         }
@@ -220,7 +229,6 @@ function getUser($username, $ret = 0)
                 return $db->fetch_object();
             }
         }
-
     }
     return false;
 }
@@ -249,11 +257,15 @@ function fengsel($timereturn = null)
 {
     global $obj;
     global $db;
-    $us = $db->prepare("SELECT count(*) FROM `jail` WHERE `uid` = ? AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1");
+    $us = $db->prepare(
+        "SELECT count(*) FROM `jail` WHERE `uid` = ? AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1"
+    );
     $us->execute([$obj->id]);
     if ($us->fetchColumn() == 1) {
         if ($timereturn == true) {
-            $us2 = $db->prepare("SELECT timeleft FROM `jail` WHERE `uid` = ? AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1");
+            $us2 = $db->prepare(
+                "SELECT timeleft FROM `jail` WHERE `uid` = ? AND `breaker` IS NULL AND `timeleft` > UNIX_TIMESTAMP() ORDER BY `timeleft` DESC LIMIT 1"
+            );
             $us2->execute([$obj->id]);
             $res = $us2->fetchObject();
             return $res->timeleft - time();
@@ -269,11 +281,15 @@ function bunker($tr = false)
 {
     global $obj;
     global $db;
-    $bu = $db->prepare("SELECT count(*) FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+    $bu = $db->prepare(
+        "SELECT count(*) FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'"
+    );
     $bu->execute([$obj->id]);
     if ($bu->fetchColumn() == 1) {
         if ($tr) {
-            $bu2 = $db->prepare("SELECT timeleft FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'");
+            $bu2 = $db->prepare(
+                "SELECT timeleft FROM `bunkerinv` WHERE `tid` = ? AND `accepted` = '1' AND `timeleft` > unix_timestamp() AND `used` = '1' AND `declined` = '0' AND `gone` = '0'"
+            );
             $bu2->execute([$obj->id]);
             return $bu2->fetchColumn();
         } else {
@@ -289,8 +305,12 @@ function settinn($uid, $res = "?", $timeleft = 60)
     global $db;
     $db->query("SELECT * FROM `users` WHERE `id` = '" . $db->escape($uid) . "'");
     if ($db->num_rows() == 1) {
-        if ($db->query("INSERT INTO `jail`(`timestamp`,`uid`,`reason`,`timeleft`,`priceout`) VALUES(UNIX_TIMESTAMP(),'" . $db->escape($uid) . "','" . $db->escape($res) . "','" . (time()
-                + $timeleft) . "','1000000')")) {
+        if ($db->query(
+            "INSERT INTO `jail`(`timestamp`,`uid`,`reason`,`timeleft`,`priceout`) VALUES(UNIX_TIMESTAMP(),'" . $db->escape(
+                $uid
+            ) . "','" . $db->escape($res) . "','" . (time()
+                + $timeleft) . "','1000000')"
+        )) {
             return true;
         } else {
             return $db->query_error();
@@ -344,24 +364,39 @@ function bbcodes(
         );
     }
     if ($understrek == 1) {
-        $text = preg_replace("/\[u\](.*?)\[\/u\]/is",
-            "<span style='text-decoration:underline;'>$1</span>", $text);
+        $text = preg_replace(
+            "/\[u\](.*?)\[\/u\]/is",
+            "<span style='text-decoration:underline;'>$1</span>",
+            $text
+        );
     }
     if ($tykk == 1) {
-        $text = preg_replace("/\[b\](.*?)\[\/b\]/is", "<span style='font-weight:bold'>$1</span>",
-            $text);
+        $text = preg_replace(
+            "/\[b\](.*?)\[\/b\]/is",
+            "<span style='font-weight:bold'>$1</span>",
+            $text
+        );
     }
     if ($kursiv == 1) {
-        $text = preg_replace("/\[i\](.*?)\[\/i\]/is", "<span style='font-style:italic'>$1</span>",
-            $text);
+        $text = preg_replace(
+            "/\[i\](.*?)\[\/i\]/is",
+            "<span style='font-style:italic'>$1</span>",
+            $text
+        );
     }
     if ($midtstilt == 1) {
-        $text = preg_replace("/\[c\](.*?)\[\/c\]/is", "<div style='text-align:center;'>$1</div>",
-            $text);
+        $text = preg_replace(
+            "/\[c\](.*?)\[\/c\]/is",
+            "<div style='text-align:center;'>$1</div>",
+            $text
+        );
     }
     if ($farge == 1) {
-        $text = preg_replace("/\[f=#(([0-9a-f]){3}|([0-9a-f]){6})\](.*?)\[\/f\]/is",
-            "<span style=\"color:#$1\">$4</span>", $text);
+        $text = preg_replace(
+            "/\[f=#(([0-9a-f]){3}|([0-9a-f]){6})\](.*?)\[\/f\]/is",
+            "<span style=\"color:#$1\">$4</span>",
+            $text
+        );
     }
     if ($bilde == 1) {
         $text = preg_replace(
@@ -371,8 +406,11 @@ function bbcodes(
         );
     }
     if ($storrelse == 1) {
-        $text = preg_replace('#\[size=([0-9]+)\](.*?)\[/size\]#s',
-            '<span style="font-size:$1px">$2</span>', $text);
+        $text = preg_replace(
+            '#\[size=([0-9]+)\](.*?)\[/size\]#s',
+            '<span style="font-size:$1px">$2</span>',
+            $text
+        );
     }
     if ($hr == 1) {
         $text = preg_replace("/(.*?)\[hr\](.*?)/is", "$1<hr>$2", $text);
@@ -590,8 +628,10 @@ function canUseFunction($jail, $bunker)
     if ($jail === 1) {
         $fe = fengsel(true);
         if ($fe !== false) {
-            $write .= feil('Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
-            <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $fe))) .
+            $write .= feil(
+                    'Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
+            <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $fe))
+                ) .
                 '<script>teller(' . $fe . ', "fengsel", false, \'ned\');</script>';
         }
     }

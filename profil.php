@@ -1,9 +1,16 @@
 <?php
+
 include("core.php");
+include("classes/Profil.php");
+
+use UserObject\Profil;
+
+$profil = new Profil($obj, $db, "Profil");
+die();
 startpage("Profil");
 if (!isset($_GET['id'])) {
     echo '
-<p>Denne profilen kan ikke vises. Vennligst søk på en spiller for å se profilen. Søkefunksjonen kommer så snart profilscriptet er klart.</p>
+<p>ID ikke oppgitt.</p>
 ';
 } else {
     if (isset($_GET['id'])) {
@@ -18,7 +25,7 @@ if (!isset($_GET['id'])) {
                 $user->execute([$id]);
                 $fetch = $user->fetchObject();
                 $timeuser = time() - $fetch->lastactive;
-                list($ranknr, $ranknm, $exper) = rank($fetch->exp);
+                [$ranknr, $ranknm, $exper] = rank($fetch->exp);
                 unset($ranknr);
                 if (r1()) {
                     $experience = "({$fetch->exp})";
@@ -28,8 +35,10 @@ if (!isset($_GET['id'])) {
                 } else {
                     $image = htmlentities(filter_var($fetch->image, FILTER_SANITIZE_URL));
                 }
-                $regd = ($fetch->regstamp != 0) ? date("H:i:s | d-m-Y",
-                    $fetch->regstamp) : '<em>Ukjent registreringsdato</em>';
+                $regd = ($fetch->regstamp != 0) ? date(
+                    "H:i:s | d-m-Y",
+                    $fetch->regstamp
+                ) : '<em>Ukjent registreringsdato</em>';
                 $var = [
                     1 => "<span class='stat1' title='Admin'>Admin</span>",
                     2 => "<span class='stat2' title='Moderator'>Moderator</span>",
@@ -132,11 +141,15 @@ if (!isset($_GET['id'])) {
 <tr ><td> Liv:</td><td> ' . $fetch->health . ' %</td></tr>
 <tr ><td> Kuler:</td><td> ' . $fetch->bullets . '</td></tr>
 <tr ><td> Poeng:</td><td> ' . $fetch->points . '</td></tr>
-<tr ><td> Oppført IP:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->regip != null) ? $fetch->regip : "<i>Ikke registrert</i>")) . '</td ></tr >
-<tr ><td> Sist brukte IP:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->ip != null) ? $fetch->ip : "<i>Ikke registrert</i>")) . '</td ></tr >
-<tr ><td> Oppført hostname:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->reghostname != null) ? $fetch->reghostname : "<i>Ikke registrert</i>")) . '</td ></tr >
-<tr ><td> Siste hostname:</td ><td > ' . ((!r1() && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->hostname != null) ? $fetch->hostname : "<i>Ikke registrert</i>")) . '</td ></tr ><tr >
-<!--<td colspan = "2"><a href="http://browscap.org/ua-lookup"> Nettleser:</a><br>???</td>-->  
+<tr ><td> Oppført IP:</td ><td > ' . ((!r1(
+                            ) && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->regip != null) ? $fetch->regip : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Sist brukte IP:</td ><td > ' . ((!r1(
+                            ) && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->ip != null) ? $fetch->ip : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Oppført hostname:</td ><td > ' . ((!r1(
+                            ) && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->reghostname != null) ? $fetch->reghostname : "<i>Ikke registrert</i>")) . '</td ></tr >
+<tr ><td> Siste hostname:</td ><td > ' . ((!r1(
+                            ) && ($fetch->status == 1 || $fetch->status == 2)) ? "***" : (($fetch->hostname != null) ? $fetch->hostname : "<i>Ikke registrert</i>")) . '</td ></tr ><tr >
+<!--<td colspan = "2"><a href="http://browscap.org/ua-lookup"> Nettleser:</a><br>???</td>-->
 </tr >
                     ';
                 }

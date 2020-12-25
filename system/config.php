@@ -1,4 +1,8 @@
 <?php
+
+if (!defined('BASEPATH')) {
+    die('Ingen tilgang!');
+}
 if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
     error_log("Development mode is enabled from the fastcgi_params in your nginx setup!");
     ini_set("display_errors", "on");
@@ -8,14 +12,7 @@ if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
     ini_set("track_errors", "on");
     ini_set("html_errors", "on");
     ini_set("error_log", $_SERVER["LOGLOCATION"]);
-    /*foreach (ini_get_all() as $name => $setting) {
-        print "<p><b>$name:</b> <br>Global: {$setting['global_value']}<br>Local: {$setting['local_value']}<br>Access: {$setting['access']}</p>";
-    }
-    die();*/
-    define("LOCALWRITE", $_SERVER['LOGLOCATION']);
-}
-if (!defined('BASEPATH')) {
-    die('Ingen tilgang!');
+    define("LOCALWRITE", $_SERVER['LOGLOCATION']); /* Inserts typical linux path */
 }
 function sql_log($query)
 {
@@ -54,8 +51,10 @@ define('THRUTT', "Sperrederrp!");
 if (empty($_SERVER["SERVER_NAME"])) {
     define('DOMENE_NAVN', "localhost.localdomain");
 } else {
-    define('DOMENE_NAVN',
-        $_SERVER["SERVER_NAME"]); /* Name is fetched from the nginx configuration*/
+    define(
+        'DOMENE_NAVN',
+        $_SERVER["SERVER_NAME"]
+    ); /* Name is fetched from the nginx configuration*/
 }
 define('NAVN_DOMENE', 'Werzaire.net');
 define('MAIL_SENDER', 'werzaire.net');
@@ -64,7 +63,9 @@ define('DESC', 'Kommer senere...');
 define('KEYWORDS', 'mafia, spill');
 define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
-define("WWWPATH", "https://" . $_SERVER["HTTP_HOST"]);
+if (php_sapi_name() != "cli") {
+    define("WWWPATH", "https://" . $_SERVER["HTTP_HOST"]);
+}
 $timeout = (60 * (120));
 
 /* Database connection parametres START */
@@ -73,8 +74,6 @@ define("DATABASE", "mafia");
 define("USERNAME", "mafia");
 define("PASSWORD", "mafia");
 /* Database connection parametres END */
-
-/* Rest of config has been imported to php.ini file directly. */
 
 /* Starting session */
 if (php_sapi_name() != "cli") {
@@ -93,5 +92,4 @@ if (php_sapi_name() != "cli") {
     } else {
         $_SESSION['HTTP_USER_AGENT'] = sha1($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
     }
-    
 }
