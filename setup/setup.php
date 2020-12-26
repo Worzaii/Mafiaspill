@@ -17,12 +17,14 @@ $noselect = true;
 $choice = 0;
 while ($doLoop) {
     while ($noselect) {
-        echo "\e[32mMeny:\e[39m
-1: \e[32mOpprett bruker\e[39m
-2: \e[33mEndre bruker\e[39m
-3: \e[32mSlett bruker (Klar)\e[39m
-4: \e[32mEndre passord for bruker (Klar)\e[39m
-Q: \e[31mAvslutt program (Alternativt, bruk CTRL + D)\e[39m \n\n";
+        echo <<<TAG
+\e[38;5;32mMeny:\e[0m
+1: \e[38;5;40mOpprett bruker\e[0m
+2: \e[38;5;11mEndre bruker\e[0m
+3: \e[38;5;40mSlett bruker\e[0m
+4: \e[38;5;40mEndre passord for bruker\e[0m
+Q: \e[38;5;196mAvslutt program\e[0m \n\n
+TAG;
         $choice = readline("Gjør et valg: (1|2|3|4|q): ");
         if (in_array($choice, [1, 2, 3, 4])) {
             $noselect = false;
@@ -45,9 +47,15 @@ Q: \e[31mAvslutt program (Alternativt, bruk CTRL + D)\e[39m \n\n";
                 echo "Du laget ikke passord selv, generer et for deg...\n\n";
                 echo "Passord generert: \e[1m" . $genpas . "\e[0m\n\n";
             }
-            echo "\e[0m\nHvilket tilgangsnivå skal brukeren ha? \n1= \e[1;31m Administrator, 2=Moderator, 3=Forum-moderator, 4 = Vanlig bruker, 5=NPC: ";
+            echo "\e[0m\nHvilket tilgangsnivå skal brukeren ha?
+1=\e[38;5;51mAdministrator\e[0m
+2=\e[38;5;46mModerator\e[0m,
+3=\e[38;5;33mForum-moderator\e[0m,
+4=\e[38;5;15mVanlig bruker\e[0m
+5=\e[38;5;9mNPC\e[0m
+Status: ";
             $status = readline(
-                "\nHvilket tilgangsnivå skal brukeren ha? \n1= \e[1;31m Administrator, 2=Moderator, 3=Forum-moderator, 4 = Vanlig bruker, 5=NPC: "
+                ""
             );
             if (in_array($status, [1, 2, 3, 4, 5])) {
                 $inpass = (isset($genpas)) ? $genpas : $pass;
@@ -124,6 +132,9 @@ END;
                                                 ) . ": " . $updateuser->errorInfo() . "\n\n";
                                         }
                                     } elseif ($bank[0] == '-') {
+                                        /**
+                                         * TODO: Either remove function or implement it
+                                         */
                                         /* Removing said amount from player */
                                     } elseif ($bank[0] == '+') {
                                         /* Adding said amount from player */

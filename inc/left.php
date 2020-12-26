@@ -56,7 +56,7 @@ $onl = "online.php";
     if ($rtl == null) {
         echo '<li><a href="stjel.php">Ran Spiller</a>';
     } else {
-        echo '<li><a href="stjel.php">Ran Spiller</a> 
+        echo '<li><a href="stjel.php">Ran Spiller</a>
 <span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
 <script>loggteller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
     }
@@ -89,7 +89,7 @@ $onl = "online.php";
 </ul>
 <h2>Kommunikasjon</h2>
 <ul>
-    <li><a href="innboks.php">Innboks <?php echo "\u{2709}"; ?></a></li>
+    <li><a href="innboks.php">Innboks</a></li>
     <li><a href="#deputy.php">Send inn søknad!</a></li>
     <li><a href="#support.php">Support</a></li>
     <li><a href="<?=$onl;?>">Spillere pålogget</a> (<?=$ant;?>)</li>

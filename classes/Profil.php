@@ -39,6 +39,7 @@ class Profil extends \mainclass
         );
         $u->execute([$id]);
         $profile = $u->fetchObject(User::class);
+        $profiletext = new \BBcodes(!is_null($profile->profile) ? $profile->profile : "");
         $this->out .= <<<ENDHTML
 <table style="width:310px;margin - top: 60px;" class="table ekstra">
 <tr>
@@ -73,7 +74,7 @@ class Profil extends \mainclass
 <br>
 
 <div class="profiltekst">
-{$profile->profile}
+{$profiletext->applyAllBBcodes()}
 </div>
 ENDHTML;
     }

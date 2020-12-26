@@ -14,6 +14,7 @@ a {
   color: #ccc;
   transition: all 0.3s ease;
 }
+
 body {
   padding-bottom: 30px
 }
@@ -970,6 +971,7 @@ div#main ul.nav {
 div#main ul.nav li a:hover {
   background-color: #111;
 }
+
 div.boxshape {
   margin: auto;
 }
