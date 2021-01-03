@@ -9,7 +9,7 @@ echo "<hr>";
 /* Needs this in php.ini file:
 * extension=intl
 */
-echo "Closest accepted language is: ".Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+echo "Closest accepted language is: " . Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 /*foreach ($_SERVER as $key => $value) {
     echo "<p>$key: $value</p>";
 }*/
