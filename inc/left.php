@@ -45,20 +45,20 @@ $onl = "online.php";
         echo '<li><a href="krim.php">Kriminalitet</a>';
     } else {
         echo '<li><a href="krim.php">Kriminalitet</a> <span style="font-size:10px;" id="krimteller">' . $ktl . '</span>
-<script>loggteller(' . $ktl . ',"krimteller",false,"ned");</script></li>';
+<script>teller(' . $ktl . ',"krimteller",false,"ned");</script></li>';
     }
     if ($btl == null) {
         echo '<li><a href="biltyveri.php">Biltyveri</a>';
     } else {
         echo '<li><a href="biltyveri.php">Biltyveri</a> <span style="font-size:10px;" id="bilteller">' . $btl . '</span>
-<script>loggteller(' . $btl . ',"bilteller",false,"ned");</script></li>';
+<script>teller(' . $btl . ',"bilteller",false,"ned");</script></li>';
     }
     if ($rtl == null) {
         echo '<li><a href="stjel.php">Ran Spiller</a>';
     } else {
         echo '<li><a href="stjel.php">Ran Spiller</a>
 <span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
-<script>loggteller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
+<script>teller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
     }
     if ($jte == null) {
         echo '<li><a href="fengsel.php">Fengsel</a>';
@@ -68,7 +68,7 @@ $onl = "online.php";
         echo '</li>';
     } else {
         echo '<li><a href="fengsel.php">Fengsel</a> <span style="font-size:10px;" id="jailteller">' . $jte . '</span>
-<script>loggteller(' . $jte . ',"jailteller",false,"ned");</script></li>';
+<script>teller(' . $jte . ',"jailteller",false,"ned");</script></li>';
     }
     ?>
     <li><a href="fly.php">Flyplass</a></li>

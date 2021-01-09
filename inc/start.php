@@ -11,7 +11,6 @@
     <title><?=$title;?></title>
     <script src="./js/jquery-3.5.1.js"></script>
     <script src="./js/teller.js"></script>
-    <script src="./js/loggteller.js"></script>
 </head>
 <body>
 <section class="newsection"></section>

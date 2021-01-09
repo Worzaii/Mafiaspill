@@ -4,13 +4,15 @@ startpage("Chat");
 echo "<h1>Chat - Snakk med andre spillere</h1>";
 
 if (r1() || r2() || r3()) {
-    ?>
-    <p class="feil"><a href="tomprat.php"
-                       onclick="return confirm('Sikker på at du vil tømme prat?');">Tøm
-            prat - Burde ikke tømmes før det er
-            minst 3 dager gammelt, eller over 150 beskjeder i praten!</a></p>
-    <p class="feil"><a href="visprat.php">Vis hele prat databasen</a></p>
-    <?php
+    $dis = <<<END
+<a href="tomprat.php" onclick="return confirm('Sikker på at du vil tømme prat?');">Tøm prat</a>
+END;
+    $dis2 = <<<END
+<a href="visprat.php">Vis hele prat databasen</a>
+END;
+
+    echo info($dis);
+    echo info($dis2);
 }
 
 $s = $db->prepare("SELECT count(*) FROM `forumban` WHERE `uid` = ? AND `bantime` > UNIX_TIMESTAMP() AND `active` = '1' ORDER BY `bantime` DESC LIMIT 1");
