@@ -1,0 +1,9 @@
+# Version of the application
+version: 1.0.0
+# Name of the application
+name: mafiaspillet
+# A short description of the application
+description:
+# List of application maintainers with name and email for each
+maintainers:
+  - name: Worzaii

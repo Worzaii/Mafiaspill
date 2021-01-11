@@ -1,0 +1,15 @@
+# A sample of what to come, more automation of the game for development
+version: "3.6"
+services:
+  database:
+    image: mysql/mysql-server
+    command: [ ]
+    ports:
+      - "3306:3306"
+  web:
+    image: nginx
+    build: .
+    ports:
+      - "5000:5000"
+networks:
+  mafiaspillet:
