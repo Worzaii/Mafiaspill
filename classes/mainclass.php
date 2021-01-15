@@ -4,7 +4,7 @@ use \UserObject\User;
 
 abstract class mainclass
 {
-    protected string $out;
+    protected string $out = "";
     protected User $user;
     protected PDO $database;
     protected string $title;
