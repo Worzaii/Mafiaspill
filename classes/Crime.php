@@ -5,26 +5,9 @@ namespace UserObject\Crime;
 use PDO;
 use UserObject\User;
 
-class Crime
+class Crime extends \mainclass
 {
-    public User $user;
-    public object $database;
-    public string $out = "";
-    
-    /**
-     * Crime constructor.
-     *
-     * @param User $user UserObject ($obj)
-     * @param PDO $database Imports database from running script
-     */
-    public function __construct(User $user, PDO $database)
-    {
-        $this->user = $user;
-        $this->database = $database;
-        $this->execute();
-    }
-    
-    private function execute()
+    protected function execute()
     {
         if ($write = canUseFunction(1, 1)) {
             $this->out .= $write;
@@ -33,7 +16,7 @@ class Crime
         }
         $this->loadPage();
     }
-    
+
     /**
      * @uses waitText();
      * Checks whether or not User can have options listed up, if not print waitText
@@ -56,7 +39,7 @@ class Crime
             $this->getCrime();
         }
     }
-    
+
     /**
      * @param $time
      *
@@ -71,7 +54,7 @@ class Crime
         </script>
         ';
     }
-    
+
     /**
      * This will execute a POST event where "valget" is set.
      */
@@ -90,7 +73,7 @@ class Crime
             }
         }
     }
-    
+
     public function doCrime($choice)
     {
         $crime = $this->database->prepare("select * from crime where id = ?");
@@ -183,7 +166,7 @@ class Crime
             }
         }
     }
-    
+
     /**
      * This will get all the available Crime options
      */
@@ -195,7 +178,7 @@ class Crime
         $q1->execute([$this->user->exp->getRankID()]);
         $this->listCrimeChoices();
     }
-    
+
     public function listCrimeChoices()
     {
         $get_actions = $this->database->prepare("select * from crime where levelmin <= ? ORDER BY `levelmin` DESC,`id` DESC");
@@ -258,7 +241,7 @@ class Crime
         </script>
 END;
     }
-    
+
     /**
      * This prints the page depending on the results of functions called.
      */
@@ -266,10 +249,10 @@ END;
     {
         startpage("Kriminalitet");
         echo '<h1>Kriminalitet</h1><img alt src="images/headers/krim.png"><p>Når du først starter med kriminalitet,
- så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp. 
+ så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp.
  Hvis du ikke ser noen valg, kontakt support!</p>';
         echo $this->out;
         endpage();
     }
-    
+
 }

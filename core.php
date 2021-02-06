@@ -6,6 +6,7 @@ include_once __DIR__ . '/inc/functions.php';
 include_once __DIR__ . '/classes/User.php';
 include_once __DIR__ . '/classes/MinSide.php';
 include_once __DIR__ . '/classes/BBcodes.php';
+include_once __DIR__ . '/classes/mainclass.php';
 if (isset($_SERVER['X-Requested-With'])) {
     if ($_SERVER['X-Requested-With'] == "XMLHttpRequest") {
         define("JSON", 1);

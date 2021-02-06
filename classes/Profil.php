@@ -3,8 +3,6 @@
 
 namespace UserObject;
 
-include("mainclass.php");
-
 class Profil extends \mainclass
 {
     /* Initializing out variable as it doesn't get initialized from extending */

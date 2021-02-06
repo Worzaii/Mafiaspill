@@ -15,8 +15,14 @@ a {
   transition: all 0.3s ease;
 }
 
+.over_wrapper {
+  top: 56px;
+  position: relative;
+}
+
 body {
-  padding-bottom: 30px
+  padding-bottom: 30px;
+  font-family: 'PT Sans', sans-serif
 }
 
 #mask {
@@ -69,7 +75,7 @@ h2 {
   color: #FFF;
   box-shadow: 0 1px 0 #313131;
   border-top: 1px solid rgba(211, 211, 211, 0.12);
-  padding: 6px;
+  padding: 6px 6px 6px 2em;
   background: rgba(73, 73, 73, 0.29);
 }
 
@@ -98,15 +104,6 @@ table, tr, td, tbody {
   color: #fff;
 }
 
-/* Header */
-
-#headerbg {
-  width: 100%;
-  height: 175px;
-  padding-top: 110px;
-  background: #EBEBEB;
-}
-
 .light {
   background: url('../images/headerbg.png') repeat top left;
 }
@@ -117,14 +114,10 @@ table, tr, td, tbody {
 
 #header {
   width: 1000px;
-  height: 150px;
-  background: url('../images/header3.png') no-repeat top left;
-  border: solid 1px #FFFFFF;
-  box-shadow: inset 0 0 27px #AFAFAF;
+  height: 70px;
   margin: -15px auto 0;
+  overflow: hidden;
 }
-
-/* Main section */
 
 section {
   width: 100%;
@@ -152,6 +145,8 @@ section {
   float: left;
   background: #181818;
   border: 1px solid #2B2B2B;
+  text-decoration: none;
+  letter-spacing: 0.2px
 }
 
 #leftmenu ul, #rightmenu ul {
@@ -184,8 +179,6 @@ section {
   float: left;
   border: 1px solid #2B2B2B;
 }
-
-/* News */
 
 .news1, .news2 {
   margin-bottom: 15px;
@@ -223,19 +216,27 @@ section {
   font-size: 12px;
 }
 
-.innlegsdato {
-  clear: right;
-  float: right;
-  display: block;
-  margin-left: 3px;
-}
-
 .news2 b, .news1 b {
   float: left;
   color: #fff;
   font-size: 14px;
   text-transform: capitalize;
   padding: 7px 0 10px 10px
+}
+
+.news_admin {
+  background: #800;
+}
+
+.news_mod {
+  background: #0052A5;
+}
+
+.innlegsdato {
+  clear: right;
+  float: right;
+  display: block;
+  margin-left: 3px;
 }
 
 input[type="button"], input[type="submit"], .button {
@@ -279,14 +280,9 @@ input[type="text"]:not(.frelst) {
   height: 16px;
 }
 
-/* Functions */
-
 #main p, #main pre {
   padding: 15px;
-  /* width: 560px; */
   line-height: 1.2;
-  /* padding: 10px; */
-  /* padding-inline-start: 10px; */
 }
 
 .feil2 {
@@ -340,8 +336,6 @@ input[type="text"]:not(.frelst) {
   font-size: 12px;
 }
 
-/* Footer */
-
 footer {
   width: 1000px;
   margin: 0 auto 0 auto;
@@ -358,7 +352,6 @@ footer a {
 footer a:hover {
   color: #ccc;
 }
-
 
 footer #spot1 {
   width: 200px;
@@ -383,10 +376,8 @@ footer #spot3 {
   float: left;
 }
 
-/* Tables */
 .table, #garasje {
   border-collapse: collapse;
-  /* width: 100%; */
   margin: auto;
 }
 
@@ -420,7 +411,7 @@ footer #spot3 {
 }
 
 .normrad1 {
-  background: #333 !important;
+  background: #333;
 }
 
 #bilfrakt input {
@@ -428,7 +419,7 @@ footer #spot3 {
 }
 
 .table.flyplass {
-  width: 400px !important;
+  width: 400px;
 }
 
 .table.chat {
@@ -436,13 +427,17 @@ footer #spot3 {
 }
 
 .table.chat2 {
-  width: 80px !important;
-  padding: 10px !important;
+  width: 80px;
+  padding: 10px;
 }
 
 .table.chat3 {
-  width: 380px !important;
-  padding: 10px !important;
+  width: 380px;
+  padding: 10px;
+}
+
+div#praten {
+  padding: 15px;
 }
 
 .table.tema td {
@@ -451,7 +446,7 @@ footer #spot3 {
 }
 
 .table.bj td {
-  padding: 0 !important;
+  padding: 0;
   text-align: center;
 }
 
@@ -477,12 +472,17 @@ footer #spot3 {
   text-align: center;
 }
 
+table.tablemain {
+  margin: 0 auto;
+  width: 100%;
+}
+
 #lotto th {
-  background: #666 !important;
+  background: #666;
 }
 
 #lotto th[colspan="2"] {
-  background: #222 !important;
+  background: #222;
 }
 
 .bank {
@@ -492,7 +492,7 @@ footer #spot3 {
 
 .forumimg {
   width: 150px;
-  padding: 0 !important;
+  padding: 0;
 }
 
 ul.adminpanel {
@@ -543,7 +543,7 @@ ul.adminpanel li:last-child {
 }
 
 .profiltekst {
-  padding-top: 15px;
+  padding: 15px 3em 3em;
 }
 
 .profiltekst a {
@@ -557,24 +557,26 @@ ul.adminpanel li:last-child {
 }
 
 .ct1 {
-  /* width: 580px; */
-  padding: 5px 10px 5px 10px;
-  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
   font-size: 10px;
-  color: #fff;
+  color: #606060;
 }
 
 .ct2 {
-  /*width: 580px;*/
-  padding: 5px 10px 5px 10px;
-  background: rgba(26, 26, 26, 0.5);
+  padding: 5px;
   font-size: 10px;
-  color: #fff;
+  color: #606060;
+}
+
+.ct3 {
+  padding: 5px;
+  background: none;
+  color: #606060;
 }
 
 .chattext {
   font-size: 12px;
-  color: #fff;
+  color: #4a4a4a;
   max-width: 580px;
   margin-top: 5px;
 }
@@ -631,7 +633,6 @@ ul.adminpanel li:last-child {
   background-color: #292929;
 }
 
-/*FORUM*/
 .object_one {
   display: block;
   float: left;
@@ -656,41 +657,33 @@ ul.adminpanel li:last-child {
   width: 401px;
 }
 
-/* Status colors! */
 .stat1 {
-  /* Admin */
-  color: #0ff !important;
+  color: #0ff;
 }
 
 .stat2 {
-  /* Moderator */
-  color: #0f0 !important;
+  color: #0f0;
 }
 
 .stat3 {
-  /* Forum-moderator */
-  color: #ff0 !important;
+  color: #ff0;
 }
 
 .statpic {
-  /* Picmaker */
-  background: linear-gradient(to right, orange, yellow, #00b100, cyan, #7878ff, violet) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  font-weight: bold !important;
+  background: linear-gradient(to right, orange, yellow, #00b100, cyan, #7878ff, violet);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
 }
 
 .stat4 {
-  /* Vanlig spiller */
-  color: #fff !important;
+  color: #fff;
 }
 
 .statnpc {
-  /* NPC */
   color: orange;
 }
 
-/* Pagination */
 .pagination {
   text-align: center;
 }
@@ -730,14 +723,14 @@ ul.adminpanel li:last-child {
 }
 
 #navbar_top {
-  position: fixed;
   width: 100%;
   height: 68px;
   top: 0;
-  background: #333333;
-  box-shadow: inset 0 0 27px #000000;
-  margin-top: -15px;
   z-index: 333;
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+  margin-top: 0;
 }
 
 #navbar_top .content {
@@ -808,9 +801,11 @@ ul.adminpanel li:last-child {
 #navbar_top nav ul {
   width: 100%;
   display: table;
-  height: 54px;
   table-layout: fixed;
   border-right: 1px solid rgba(255, 255, 255, 0.14);
+  height: 54px;
+  position: relative;
+  top: -13px;
 }
 
 #navbar_top nav ul li {
@@ -823,7 +818,6 @@ ul.adminpanel li:last-child {
 }
 
 #navbar_top nav a {
-  color: #FFF;
   text-decoration: none;
   font-size: 100%;
   opacity: 0.8;
@@ -831,6 +825,8 @@ ul.adminpanel li:last-child {
   display: block;
   width: 100%;
   height: 100%;
+  color: #636363;
+  padding-top: 3px;
 }
 
 #navbar_top nav a:hover {
@@ -865,21 +861,23 @@ ul.adminpanel li:last-child {
   width: 340px;
 }
 
-#write::-webkit-input-placeholder, #write:-moz-placeholder, #write::-moz-placeholder, #write:-ms-input-placeholder {
+#write::placeholder {
   color: #4a4a4a;
 }
 
 #write {
   font-size: 11px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
   height: 17px;
-  width: 568px;
-  margin-left: 9px;
   margin-top: -6px;
   margin-bottom: 12px;
-  background: #FFFFFF;
-  padding: 5px;
+  color: #FFFFFF;
+  outline: none;
+  border: none;
+  border-radius: 0;
+  padding: 18px;
+  background: #262626;
+  margin-left: 0;
+  width: 100%;
 }
 
 #avatar {
@@ -893,8 +891,33 @@ ul.adminpanel li:last-child {
   color: #999;
   border-right: 1px solid rgba(253, 253, 253, 0.03);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 0;
+  padding: 5px;
   background: #0C0B0B;
+}
+
+table.online tbody td, table.extra tbody td {
+  padding: 10px;
+}
+
+.table, #garasje {
+  border-collapse: collapse;
+  margin: auto;
+  width: 100%;
+}
+
+#leftmenu a, #rightmenu a {
+  transition: all 0.5s ease;
+  color: #5d5d5d;
+}
+
+#leftmenu a:hover, #rightmenu a:hover {
+  color: #cecece;
+  transition: all 0.5s ease;
+}
+
+#leftmenu li, #rightmenu li {
+  padding-bottom: 4px;
+  padding-top: 4px;
 }
 
 .shadow {
@@ -988,7 +1011,7 @@ td input, td textarea {
 }
 
 table.online {
-  width: 90%;
+  width: 100%;
 }
 
 table.extra {
@@ -1010,7 +1033,7 @@ table.online tbody td, table.extra tbody td {
 }
 
 #information {
-  display: block;
+  display: none;
   border: 2px solid #f00;
   z-index: 20;
   height: auto;
@@ -1020,259 +1043,39 @@ table.online tbody td, table.extra tbody td {
   margin-top: 70px;
 }
 
-/* MIKKAL CSS */
-
-.profiltekst {
-  padding: 15px 3em 3em !important;
-}
-
-body {
-  font-family: 'PT Sans', sans-serif !important;
-}
-
-#headerbg {
-  background: #2d2d2d !important;
-}
-
-#information {
-  display: none !important;
-}
-
-.table td {
-  padding: 5px !important;
-}
-
-#header {
-  box-shadow: none !important;
-  border: none !important;
-}
-
-#leftmenu a, #rightmenu a {
-  text-decoration: none !important;
-  letter-spacing: 0.2px !important;
-}
-
-#header {
-  background: url(../images/banner_test.svg) no-repeat top left !important;
-}
-
-.ct1 {
-  padding: 5px !important;
-  background: none !important;
-  color: #606060 !important;
-}
-
-.ct2 {
-  padding: 5px !important;
-  background: none !important;
-  color: #606060 !important;
-}
-
-.ct3 {
-  padding: 5px !important;
-  background: none !important;
-  color: #606060 !important;
-}
-
-.chattext {
-  color: #4a4a4a !important;
+section.newsection {
+  height: 7em;
+  background: #242424 url(../images/banner_test.svg) no-repeat center;
 }
 
 div#ct {
-  padding-top: 10px;
-  opacity: 0.6 !important;
+  padding-top: 0;
+  position: absolute;
+  opacity: 0.6;
   transition: all 0.5s ease;
 }
 
 div#ct:hover {
-  opacity: 0.9 !important;
+  opacity: 0.9;
   transition: all 0.5s ease;
-
-}
-
-#headerbg {
-  margin-top: 110px;
-  padding-top: 0 !important;
-}
-
-#header {
-  overflow: hidden !important;
-  height: 70px !important;
-}
-
-img#profileuserimage {
-  padding: 2em;
-  opacity: 0.4 !important;
-  transition: all 0.5s ease;
-}
-
-img#profileuserimage:hover {
-  padding: 2em;
-  opacity: 0.9 !important;
-  transition: all 0.5s ease;
-}
-
-section.newsection {
-  background: url(../images/banner_test.svg) #242424 center;
-  height: 7em !important;
-  background-repeat: no-repeat !important;
-}
-
-#header {
-  background: none !important;
-}
-
-#headerbg {
-  width: 100% !important;
-  height: 80px !important;
-  padding-top: 82px !important;
-}
-
-#navbar_top {
-  position: relative !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-input#write {
-  outline: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 9px !important;
-  background: #565656 !important;
-}
-
-#headerbg {
-  width: 100% !important;
-  height: 80px !important;
-  padding-top: 23px !important;
-}
-
-#navbar_top {
-  margin-top: 0 !important;
-
-}
-
-#headerbg {
-  background: #2d2d2d !important;
-  margin-top: 71px !important;
-}
-
-#navbar_top nav ul {
-  height: 54px !important;
-  position: relative !important;
-  top: -13px !important;
-}
-
-#navbar_top nav a {
-  color: #636363 !important;
-  padding-top: 3px !important;
-}
-
-table.online {
-  width: 100% !important;
-}
-
-table.online tbody td, table.extra tbody td {
-  padding: 10px !important;
-}
-
-div#ct {
-  padding-top: 0 !important;
-}
-
-div#ct {
-  padding-top: 0 !important;
-  position: absolute !important;
-  top: 149px !important;
-}
-
-h2 {
-  padding-left: 2em !important;
-}
-
-.table, #garasje {
-  border-collapse: collapse;
-  margin: auto;
-  width: 100%;
-}
-
-#leftmenu a, #rightmenu a {
-  transition: all 0.5s ease;
-  color: #5d5d5d !important;
-
-}
-
-#leftmenu a:hover, #rightmenu a:hover {
-  color: #cecece !important;
-  transition: all 0.5s ease;
-}
-
-#leftmenu li, #rightmenu li {
-  padding-bottom: 4px !important;
-  padding-top: 4px !important;
-}
-
-div#praten {
-  padding: 15px !important;
-}
-
-input#write {
-  outline: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 18px !important;
-  background: #262626 !important;
-  margin-left: 0 !important;
-  width: 100% !important;
-}
-
-#write {
-  color: #fff !important;
-}
-
-#write::-webkit-input-placeholder {
-  color: #4a4a4a !important;
-}
-
-#write:-moz-placeholder {
-  color: #4a4a4a !important;
-}
-
-#write::-moz-placeholder {
-  color: #4a4a4a !important;
-}
-
-#write:-ms-input-placeholder {
-  color: #4a4a4a !important;
-}
-
-table.tablemain {
-  margin: 0 auto;
-  width: 100%;
-}
-
-table.tablemain {
-  margin: 0 auto;
-  width: 100% !important;
-}
-
-.over_wrapper {
-  top: 56px;
-  position: relative;
-}
-
-.news_admin {
-  background: #800;
-}
-
-.news_mod {
-  background: #0052A5;
+  top: 149px
 }
 
 .left_div {
   width: 100px;
   height: 4px;
   background: #f00;
+}
+
+img#profileuserimage {
+  padding: 2em;
+  opacity: 0.4;
+  transition: all 0.5s ease;
+}
+
+img#profileuserimage:hover {
+  padding: 2em;
+  opacity: 0.9;
+  transition: all 0.5s ease;
 }
 

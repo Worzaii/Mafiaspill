@@ -9,7 +9,7 @@ abstract class mainclass
     protected PDO $database;
     protected string $title;
 
-    public function __construct(User $user, PDO $database, string $title = "")
+    public function __construct(User $user, PDO $database, string $title = "ReplaceMe")
     {
         $this->user = $user;
         $this->database = $database;
