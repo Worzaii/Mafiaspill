@@ -3,7 +3,7 @@
 
 namespace UserObject;
 
-class Jail extends \mainclass
+class Jail extends \MainClass
 {
     public function __construct(User $user, PDO $database, string $title = "")
     {

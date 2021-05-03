@@ -1,8 +1,11 @@
 <?php
 
+namespace Game;
+
+use PDO;
 use \UserObject\User;
 
-abstract class mainclass
+abstract class MainClass
 {
     protected string $out = "";
     protected User $user;

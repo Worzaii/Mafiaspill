@@ -3,7 +3,7 @@
 
 namespace UserObject;
 
-class Profil extends \mainclass
+class Profil extends \MainClass
 {
     /* Initializing out variable as it doesn't get initialized from extending */
     protected string $out = "";

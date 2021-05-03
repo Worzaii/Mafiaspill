@@ -5,7 +5,7 @@ namespace UserObject\Crime;
 use PDO;
 use UserObject\User;
 
-class Crime extends \mainclass
+class Crime extends \MainClass
 {
     protected function execute()
     {

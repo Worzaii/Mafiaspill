@@ -1,15 +1,13 @@
 <?php
 define('BASEPATH', true);
 require_once './system/config.php';
-require_once './classes/Database.php';
+require_once './inc/database.php';
 require_once './inc/functions.php';
-$db = new \DatabaseObject\database();
-$db->connect();
-$s = $db->query("SELECT * FROM `resetpasset` WHERE `resgen` = '" . $db->escape($_GET['resgen']) . "' 
-AND `uid` = '" . $db->escape($_GET['id']) . "' AND `used` = '0'"
-    . " AND `timestamp` < (UNIX_TIMESTAMP()+3600)");
-if ($db->num_rows() == 1) {
-    $res = $db->fetch_object();
+$s = $db->prepare("SELECT count(*) FROM `resetpasset` WHERE `resgen` = ? AND `uid` = ? AND `used` = '0' AND `timestamp` < (UNIX_TIMESTAMP()+3600)");
+$s->execute([$_GET['resgen'], $_GET['id']]);
+if ($s->fetchColumn() == 1) {
+    $s2 = $db->prepare("SELECT * FROM `resetpasset` WHERE `resgen` = ? AND `uid` = ? AND `used` = '0' AND `timestamp` < (UNIX_TIMESTAMP()+3600)");
+    $res = $s2->fetchObject();
     $time = ($res->timestamp + 3600) - time();
     $user = user($res->uid, 1);
     $valid = true;

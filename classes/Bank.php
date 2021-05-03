@@ -1,10 +1,9 @@
 <?php
 
 
-namespace UserObject;
+namespace UserObject\Bank;
 
-
-class Bank extends \mainclass
+class Bank extends \MainClass
 {
     protected function execute()
     {

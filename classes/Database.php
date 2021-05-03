@@ -25,7 +25,7 @@ namespace DatabaseObject {
             function connect()
             {
                 $connection = mysqli_init();
-                mysqli_ssl_set($connection, $this->key, $this->cert, $this->ca, null, null);
+                //mysqli_ssl_set($connection, $this->key, $this->cert, $this->ca, null, null);
                 if ($connection->real_connect(
                     $this->host,
                     $this->user,
