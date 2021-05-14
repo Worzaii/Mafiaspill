@@ -1,7 +1,7 @@
 <?php
 
 
-class Crime extends \MainClass
+class Crime extends MainClass
 {
     protected function execute()
     {

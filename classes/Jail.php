@@ -1,17 +1,12 @@
 <?php
 
 
-namespace UserObject;
-
-class Jail extends \MainClass
+class Jail extends MainClass
 {
-    public function __construct(User $user, PDO $database, string $title = "")
-    {
-    }
 
     protected function execute()
     {
-        if ($write = canUseFunction(1, 1)) {
+        if ($write = canUseFunction(0, 1)) {
             $this->out .= $write;
         } else {
             $this->readyJail();

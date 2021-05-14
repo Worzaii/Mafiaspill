@@ -62,13 +62,13 @@ $onl = "online.php";
         echo '<li><a href="biltyveri.php">Biltyveri</a> <span style="font-size:10px;" id="bilteller">' . $btl . '</span>
 <script>teller(' . $btl . ',"bilteller",false,"ned");</script></li>';
     }
-    if ($rtl == null) {
-        echo '<li><a href="stjel.php">Ran Spiller</a>';
-    } else {
-        echo '<li><a href="stjel.php">Ran Spiller</a>
-<span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
-<script>teller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
-    }
+//    if ($rtl == null) {
+//        echo '<li><a href="stjel.php">Ran Spiller</a>';
+//    } else {
+//        echo '<li><a href="stjel.php">Ran Spiller</a>
+//<span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
+//<script>teller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
+//    }
     if ($jte == null) {
         echo '<li><a href="fengsel.php">Fengsel</a>';
         if ($ant2 >= 1) {

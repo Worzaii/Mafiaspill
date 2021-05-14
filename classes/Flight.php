@@ -1,10 +1,5 @@
 <?php
 
-namespace UserObject\Flight;
-
-use PDO;
-use UserObject\User;
-
 class Flight
 {
     public User $user;

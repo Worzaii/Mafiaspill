@@ -1,7 +1,5 @@
 <?php
 
-use UserObject\User;
-
 abstract class MainClass
 {
     protected string $out = "";
