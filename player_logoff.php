@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 if (!r1()) {
     startpage("Ingen tilgang");
@@ -29,7 +30,9 @@ if (!r1()) {
                     if ($logout->rowCount() == 1) {
                         echo lykket('Neste gang ' . status($u->user) . ' oppdaterer siden blir de logget ut!');
                     } else {
-                        echo warning('Det er mulig ' . status($u->user) . ' allerede har blitt satt til å logges ut neste gang.');
+                        echo warning(
+                            'Det er mulig ' . status($u->user) . ' allerede har blitt satt til å logges ut neste gang.'
+                        );
                     }
                 }
             }

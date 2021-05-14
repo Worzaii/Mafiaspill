@@ -1,9 +1,12 @@
 <?php
+
 include("core.php");
 startpage("Ledelsen");
 $getcrewcount = $db->query("SELECT count(*) FROM `users` WHERE `status` IN('1','2') ORDER BY `status` ASC, `id` ASC");
 if ($getcrewcount->fetchColumn() >= 1) {
-    $getcrew = $db->query("SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `status` IN('1','2') ORDER BY `status` ASC, `id` ASC");
+    $getcrew = $db->query(
+        "SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `status` IN('1','2') ORDER BY `status` ASC, `id` ASC"
+    );
     $crewcontent = "";
     while ($r = $getcrew->fetchObject()) {
         if ($r->status == 1) {
@@ -25,7 +28,9 @@ HTML;
 
 $forummodsnum = $db->query("SELECT count(*) FROM `users` WHERE `status` = '3' ORDER BY `id` ASC");
 if ($forummodsnum->fetchColumn() >= 1) {
-    $forummods = $db->query("SELECT id,user,status, (unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '3' ORDER BY `id` ASC");
+    $forummods = $db->query(
+        "SELECT id,user,status, (unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '3' ORDER BY `id` ASC"
+    );
     $forumcontent = "";
     while ($r = $forummods->fetchObject()) {
         $st = '<span class="stat3">Forum Moderator</span>';
@@ -43,7 +48,9 @@ HTML;
 
 $piccount = $db->query("SELECT count(*) FROM `users` WHERE `status` = '4' ORDER BY `id` ASC");
 if ($piccount->fetchColumn() >= 1) {
-    $picmk = $db->query("SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '4' ORDER BY `id` ASC");
+    $picmk = $db->query(
+        "SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '4' ORDER BY `id` ASC"
+    );
     $piccontent = "";
     while ($r = $picmk->fetchObject()) {
         $user = user($r->id);
@@ -59,7 +66,9 @@ HTML;
 }
 $supportscount = $db->query("SELECT COUNT(*) FROM `users` WHERE `support` = '1' ORDER BY `status` ASC, `id` ASC");
 if ($supportscount->fetchColumn() >= 1) {
-    $supports = $db->query("SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `support` = '1' ORDER BY `status` ASC, `id` ASC");
+    $supports = $db->query(
+        "SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `support` = '1' ORDER BY `status` ASC, `id` ASC"
+    );
     $supportcontent = "";
     while ($r = $supports->fetchObject()) {
         if ($r->status == 1) {

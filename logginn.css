@@ -17,7 +17,7 @@ a {
 	text-decoration: none;
 }
 body {
-	background: #000 url(logginn/bg.png) repeat-x fixed left bottom;
+	background: #000 url(images/logginn/bg.png) repeat-x fixed left bottom;
 	color: #555;
 	margin: 20px 0;
 	text-align: center;
@@ -32,7 +32,7 @@ li {
 }
 code {
 	font: normal 1em "Lucida Sans Unicode",serif;
-	background: url(logginn/bgcode.gif);
+	background: url(images/logginn/bgcode.gif);
 	color: #888;
 	display: block;
 	padding: 3px 6px;
@@ -45,7 +45,7 @@ code {
 div.quote {
 	margin-bottom: 12px;
 	font: normal 1.1em "Lucida Sans Unicode",serif;
-	background: url(logginn/quote.gif) no-repeat;
+	background: url(images/logginn/quote.gif) no-repeat;
 	padding-left: 28px;
 	color: #666;
 }
@@ -80,7 +80,7 @@ div.quote {
 
 /* Menu */
 .menu a {
-	background: #000 url(logginn/bgmenu.png) repeat-x;
+	background: #000 url(images/logginn/bgmenu.png) repeat-x;
 	border-right: 1px solid #222;
 	border-top: 1px solid #1A1A1A;
 	color: #444;
@@ -117,7 +117,7 @@ div.quote {
 	margin: 0 0 12px;
 }
 .item {
-	background: #030303 url(logginn/bgitem.gif) repeat-x;
+	background: #030303 url(images/logginn/bgitem.gif) repeat-x;
 	padding: 8px 10px;
 }
 
@@ -127,7 +127,7 @@ div.quote {
 	border: none;
 	height: 30px;
 	width: 150px;
-	background: url('logginn/menu_heading.png') repeat-x;
+	background: url('images/logginn/menu_heading.png') repeat-x;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;

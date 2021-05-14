@@ -5,6 +5,8 @@ include("classes/Profil.php");
 
 use UserObject\Profil;
 
+/** @var TYPE_NAME $obj */
+/** @var TYPE_NAME $db */
 $profil = new Profil($obj, $db, "Profil");
 die();
 startpage("Profil");

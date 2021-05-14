@@ -1,4 +1,5 @@
 <?php
+
 echo '<html>
 <head>
 <title>Du har blitt drept!</title>

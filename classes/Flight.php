@@ -10,7 +10,7 @@ class Flight
     public User $user;
     public object $database;
     public string $out = "";
-    
+
     /**
      * Flight constructor.
      *
@@ -23,7 +23,7 @@ class Flight
         $this->database = $database;
         $this->execute();
     }
-    
+
     private function execute()
     {
         if ($write = canUseFunction(1, 1)) {
@@ -33,7 +33,7 @@ class Flight
         }
         $this->loadPage();
     }
-    
+
     /**
      * @uses waitText();
      * Checks whether or not User can have options listed up, if not print waitText
@@ -56,7 +56,7 @@ class Flight
             $this->getFlights();
         }
     }
-    
+
     /**
      * @param $time
      *
@@ -71,7 +71,7 @@ class Flight
         </script>
         ';
     }
-    
+
     /**
      * This will execute a POST event where "valget" is set.
      */
@@ -85,25 +85,35 @@ class Flight
             $this->doFlight($choice);
         }
     }
-    
+
     public function doFlight($choice)
     {
         $fly = $this->database->prepare("UPDATE `users` SET `hand` = (`hand` - 10000), `city` = ? WHERE `id` = ?");
         $fly->execute([$choice, $this->user->getId()]);
         if ($fly->rowCount() == 1) {
-            $this->out .= lykket('Du har betalt for en billett til ' . city($choice) . ' til prisen
+            $this->out .= lykket(
+                'Du har betalt for en billett til ' . city($choice) . ' til prisen
                                     av 10,000kr!
-                                    Du må nå vente i 20 minutter før du kan reise igjen.');
-            $flightlog = $this->database->prepare("insert into flight_log(uid, timestamp, from_city, to_city, price)
-values (?,unix_timestamp(), ?, ?, 10000)");
+                                    Du må nå vente i 20 minutter før du kan reise igjen.'
+            );
+            $flightlog = $this->database->prepare(
+                "insert into flight_log(uid, timestamp, from_city, to_city, price)
+values (?,unix_timestamp(), ?, ?, 10000)"
+            );
             $flightlog->execute([$this->user->getId(), $this->user->getCity(), $choice]);
-            error_log("Trying to add to flight log... Result: " . var_export($flightlog->fetchAll(),
-                    true));
+            error_log(
+                "Trying to add to flight log... Result: " . var_export(
+                    $flightlog->fetchAll(),
+                    true
+                )
+            );
         } else {
-            $this->out .= feil('Du kunne ikke reise på grunn av en feil i enten spørring eller i databasen, ta kontakt med Ledelsen!');
+            $this->out .= feil(
+                'Du kunne ikke reise på grunn av en feil i enten spørring eller i databasen, ta kontakt med Ledelsen!'
+            );
         }
     }
-    
+
     /**
      * This will get all the available Crime options
      */
@@ -112,7 +122,7 @@ values (?,unix_timestamp(), ?, ?, 10000)");
         $this->out .= lykket("Du er klar til å fly!");
         $this->listFlightChoices();
     }
-    
+
     public function listFlightChoices()
     {
         $choices = "";
@@ -154,9 +164,8 @@ values (?,unix_timestamp(), ?, ?, 10000)");
             }
         </style>
 END;
-    
     }
-    
+
     /**
      * This prints the page depending on the results of functions called.
      */
@@ -168,5 +177,5 @@ END;
         echo $this->out;
         endpage();
     }
-    
+
 }

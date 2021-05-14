@@ -3,7 +3,6 @@
 namespace UserObject;
 
 use PDO;
-use UserObject\User;
 
 class CarTheft
 {
@@ -31,6 +30,14 @@ private function execute()
     $this->loadPage();
 }
 
+public function loadPage()
+{
+    startpage("Biltyveri");
+    echo '<h1>Biltyveri</h1><img src="images/headers/biltyveri.png"><p>Når du først starter med biltyveri, så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp.</p>';
+    echo $this->out;
+    endpage();
+}
+
 public function waitText($time)
 {
     return '
@@ -39,14 +46,6 @@ public function waitText($time)
         teller(' . ($time - time()) . ', "biltyveri", false, "ned");
         </script>
         ';
-}
-
-public function loadPage()
-{
-    startpage("Biltyveri");
-    echo '<h1>Biltyveri</h1><img src="images/headers/biltyveri.png"><p>Når du først starter med biltyveri, så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp.</p>';
-    echo $this->out;
-    endpage();
 }
 
 private function listCarChoices()

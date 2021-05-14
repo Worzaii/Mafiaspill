@@ -7,7 +7,6 @@ class Jail extends \MainClass
 {
     public function __construct(User $user, PDO $database, string $title = "")
     {
-
     }
 
     protected function execute()
@@ -23,7 +22,9 @@ class Jail extends \MainClass
 
     private function readyJail()
     {
-        $ready = $this->database->prepare("select count(*) from jail where uid = ? and breaker is null and timeleft > unix_timestamp() limit 1");
+        $ready = $this->database->prepare(
+            "select count(*) from jail where uid = ? and breaker is null and timeleft > unix_timestamp() limit 1"
+        );
         $ready->execute([$this->user->getId()]);
         if ($ready->fetchColumn() == 1) {
             $this->isJailed();
@@ -34,18 +35,15 @@ class Jail extends \MainClass
 
     private function isJailed()
     {
-
     }
 
     private function canBreakBuy()
     {
-
     }
 
     private function listJailed()
     {
         $jailed = $this->database->prepare("select * from jail where breaker is null and timeleft > unix_timestamp()");
-
     }
 
     protected function loadPage()

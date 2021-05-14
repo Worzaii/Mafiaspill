@@ -1,4 +1,5 @@
 <?php
+
 global $obj;
 global $db;
 if ($obj->image == null || $obj->image == '') {

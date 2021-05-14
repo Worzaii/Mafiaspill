@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 startpage("Firma-paneler");
 if (bunker()) {
@@ -89,14 +90,20 @@ HTML;
                     if ($v1 == $current_value1 && $v2 == $current_value2 && $v3 == $current_value3 && $v4 == $current_value4) {
                         echo feil('Verdiene er allerede oppdatert, prøv heller å endre den før du lagrer! =)');
                     } elseif (($v1 >= 10000 && $v1 <= 1000000) && ($v2 >= 10 && $v2 <= 60) && ($v3 >= 5 && $v3 <= 30) && ($v4 >= 100 && $v4 <= 1000)) {
-                        if ($db->query("INSERT INTO lotteryconfig(`ticketprice`,`timestamp`,`percentage`,`numticks`) VALUES('$v1','$v2','$v3','$v4')")) {
+                        if ($db->query(
+                            "INSERT INTO lotteryconfig(`ticketprice`,`timestamp`,`percentage`,`numticks`) VALUES('$v1','$v2','$v3','$v4')"
+                        )) {
                             echo lykket('Du har oppdatert instillingene for lotto, de vil bli aktive ved neste runde.');
                             $current_value1 = $v1;
                             $current_value2 = $v2;
                             $current_value3 = $v3;
                             $current_value4 = $v4;
                         } else {
-                            echo feil('Det oppstod en feil ved oppdatering, ta kontakt med Werzaire og gi han dette: "' . mysqli_error($db->con) . '"');
+                            echo feil(
+                                'Det oppstod en feil ved oppdatering, ta kontakt med Werzaire og gi han dette: "' . mysqli_error(
+                                    $db->con
+                                ) . '"'
+                            );
                         }
                     } else {
                         if ($v1 >= 10000 && $v1 <= 1000000) {
@@ -109,7 +116,9 @@ HTML;
                             echo warning('Tallet må være mellom 5%-15% på prosenten som trekkes av til firmakonto!');
                         }
                         if ($v4 >= 100 && $v4 <= 1000) {
-                            echo warning('Tallet må være mellom 100-1,000 stk på antall lodd spillere kan kjøpe samtidig!');
+                            echo warning(
+                                'Tallet må være mellom 100-1,000 stk på antall lodd spillere kan kjøpe samtidig!'
+                            );
                         }
                     }
                 }
@@ -136,7 +145,9 @@ HTML;
             echo '<form method="post" action="">
     <table class="table">
       <thead>
-        <tr><th colspan="2">Type: ' . $config['type'][$a->Type] . '&raquo;<span title="Flyplassens navn">' . htmlentities($a->Navn) . "</span>" . $by . '</th></tr>
+        <tr><th colspan="2">Type: ' . $config['type'][$a->Type] . '&raquo;<span title="Flyplassens navn">' . htmlentities(
+                    $a->Navn
+                ) . "</span>" . $by . '</th></tr>
       </thead>
       <tbody>
       <tr>

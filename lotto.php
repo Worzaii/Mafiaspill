@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 startpage("Lotto");
 echo "<h1>Lotto</h1>";
@@ -32,7 +33,9 @@ HTML;
         $tid = time() + (10 * 60);//10 minutters pause første runden
         $co = $db->query("SELECT * FROM lotteryconfig ORDER BY `id` DESC LIMIT 0,1");//Henter siste config og oppdaterer
         $conf = $db->fetch_object();
-        $db->query("INSERT INTO lottery(`round`,`timestamp`,`winnerid`,`timestartstamp`,`pl`,`pr`,`ti`,`al`,`pot`) VALUES('$run','$tid',NULL,'$now','{$conf->Loddpris}','{$conf->Prosent}','{$conf->Tid}','{$conf->Antlodd}',NULL);") or die(mysqli_error($db->connetion_id));
+        $db->query(
+            "INSERT INTO lottery(`round`,`timestamp`,`winnerid`,`timestartstamp`,`pl`,`pr`,`ti`,`al`,`pot`) VALUES('$run','$tid',NULL,'$now','{$conf->Loddpris}','{$conf->Prosent}','{$conf->Tid}','{$conf->Antlodd}',NULL);"
+        ) or die(mysqli_error($db->connetion_id));
     } else {//Fortsetter med nåværende runde
         $f = $db->fetch_object($s);
         $run = $f->runde;
@@ -41,16 +44,23 @@ HTML;
         $left = $f->tid - time();
         if ($tid < time() && $vinner == null) {
             /*Om tiden er ute og vinneren ikke er trukket enda, så trekkes vinner og neste runde starter automatisk*/
-            $co = $db->query("SELECT * FROM lotteryconfig ORDER BY `id` DESC LIMIT 1");//Henter siste config og oppdaterer
+            $co = $db->query(
+                "SELECT * FROM lotteryconfig ORDER BY `id` DESC LIMIT 1"
+            );//Henter siste config og oppdaterer
             $conf = $db->fetch_object();
             $nytid = time() + ($conf->Tid * 60);//Minutter før trekning settes
             $db->query("SELECT * FROM lotterytickets WHERE `round` = '$run' ORDER BY `id` DESC");
             $allnum = $db->num_rows();
             if ($allnum == 0) {/*Starter runden på nytt*/
-                $db->query("UPDATE lottery SET `timestamp` = '" . (($conf->Tid * 60) + time()) . "' WHERE `id` = '" . $f->id . "'");
+                $db->query(
+                    "UPDATE lottery SET `timestamp` = '" . (($conf->Tid * 60) + time(
+                        )) . "' WHERE `id` = '" . $f->id . "'"
+                );
             } else {
                 $random = mt_rand(0, ($allnum - 1));
-                $db->query("SELECT * FROM lotterytickets WHERE `round` = '$run' ORDER BY `id` DESC LIMIT " . $random . ", " . $allnum);
+                $db->query(
+                    "SELECT * FROM lotterytickets WHERE `round` = '$run' ORDER BY `id` DESC LIMIT " . $random . ", " . $allnum
+                );
                 $vinner = $db->fetch_object();
                 $lotto = $db->query("SELECT * FROM lottery ORDER BY `id` DESC LIMIT 1");
                 $lotf = $db->fetch_object();
@@ -59,14 +69,20 @@ HTML;
                 $sum2 = ($sum / 100) * $lotf->pr;
                 $sum = $sum - $sum2;
                 $nyr = $run + 1;
-                $db->query("UPDATE lottery SET `winnerid` = '{$vinner->uid}',`pot` = '$sum',`timestamp` = unix_timestamp() WHERE `round` = '$run' AND `timestamp` = '$tid'");
+                $db->query(
+                    "UPDATE lottery SET `winnerid` = '{$vinner->uid}',`pot` = '$sum',`timestamp` = unix_timestamp() WHERE `round` = '$run' AND `timestamp` = '$tid'"
+                );
                 if ($db->affected_rows() != 1) {
                     echo '<p>Kunne ikke oppdatere lotto! evt feil: ' . mysqli_error($db->con) . '</p>';
                     die();
                 }
-                $db->query("UPDATE `users` SET `hand` = (`hand` + $sum),`exp` = (`exp` + 5) WHERE `id` = '{$vinner->uid}' LIMIT 1");
+                $db->query(
+                    "UPDATE `users` SET `hand` = (`hand` + $sum),`exp` = (`exp` + 5) WHERE `id` = '{$vinner->uid}' LIMIT 1"
+                );
                 #$db->query("INSERT INTO `sysmail`(`uid`,`time`,`msg`) VALUES ('" . $vinner->uid . "','" . time() . "','" . $db->slash('--<b>Vunnet i lotto!</b><br>Du har vunnet ' . number_format($sum) . 'kr') . "')");
-                $db->query("INSERT INTO lottery(`round`,`timestamp`,`winnerid`,`timestartstamp`,`pl`,`pr`,`ti`,`al`) VALUES('$nyr','$nytid',NULL,'$now','{$conf->Loddpris}','{$conf->Prosent}','{$conf->Tid}','{$conf->Antlodd}')");
+                $db->query(
+                    "INSERT INTO lottery(`round`,`timestamp`,`winnerid`,`timestartstamp`,`pl`,`pr`,`ti`,`al`) VALUES('$nyr','$nytid',NULL,'$now','{$conf->Loddpris}','{$conf->Prosent}','{$conf->Tid}','{$conf->Antlodd}')"
+                );
                 $db->query("UPDATE `firms` SET `bank` = (`bank` + " . $sum2 . ") WHERE `id` = '1'");
                 #$db->query("SELECT * FROM `oppuid` WHERE `uid` = '{$vinner->uid}' ORDER BY `oid` DESC LIMIT 1");
                 /*if ($db->num_rows() == 1) {
@@ -75,7 +91,9 @@ HTML;
             }//Trekke vinner end
         }
     }
-    $l = $db->query("SELECT COUNT(`id`) AS `egenlodd` FROM lotterytickets WHERE `uid` = '{$obj->id}' AND `round` = '$run'");
+    $l = $db->query(
+        "SELECT COUNT(`id`) AS `egenlodd` FROM lotterytickets WHERE `uid` = '{$obj->id}' AND `round` = '$run'"
+    );
     $al = $db->query("SELECT COUNT(`id`) AS `antlodd` FROM `lotterytickets` WHERE `round` = '$run'");
     $f1 = $db->fetch_object($l);
     $f2 = $db->fetch_object($al);
@@ -99,7 +117,9 @@ HTML;
                             }
                         }
                         if ($db->query($add)) {
-                            if ($db->query("UPDATE `users` SET `hand` = (`hand` - $pris) WHERE `id` = '{$obj->id}' LIMIT 1;")) {
+                            if ($db->query(
+                                "UPDATE `users` SET `hand` = (`hand` - $pris) WHERE `id` = '{$obj->id}' LIMIT 1;"
+                            )) {
                                 $textout .= '<p class="lykket">Du har kjøpt ' . number_format($ant) . ' lodd!</p>';
                             } else {
                                 if ($obj->status == 1) {
@@ -151,7 +171,8 @@ HTML;
     $lotto = $db->query("SELECT * FROM lottery ORDER BY `id` DESC LIMIT 1");
     $lotf = $db->fetch_object();
     ?>
-    <h1>Lotto<?php if ($obj->status == 1) {
+    <h1>Lotto<?php
+        if ($obj->status == 1) {
             echo '<sub><a href="?contestants">Vis deltagere!(adminfunksjon)</a></sub>';
         } ?></h1>
     <?php
@@ -159,7 +180,9 @@ HTML;
         echo '<h4><a href="Firmaer">Vis firmapanel</a></h4>';
     }
     if (isset($_GET['contestants']) && $obj->status == 1) {
-        $l = $db->query("SELECT `uid`,COUNT(*) AS `antlodd` FROM `lotterytickets` WHERE `round` = '$run' GROUP BY `uid` ORDER BY COUNT(*) DESC");
+        $l = $db->query(
+            "SELECT `uid`,COUNT(*) AS `antlodd` FROM `lotterytickets` WHERE `round` = '$run' GROUP BY `uid` ORDER BY COUNT(*) DESC"
+        );
         echo '<table class="table" style="width:300px;"><tr><th colspan="2">Loddoversikt:</th></tr>';
         while ($r = mysqli_fetch_object($l)) {
             echo '<tr>
@@ -177,7 +200,8 @@ HTML;
             </tr>
             <tr>
                 <th>Lottoen eies av:</th>
-                <td><?php echo status($uf->user); ?></td>
+                <td><?php
+                    echo status($uf->user); ?></td>
             </tr>
             <tr>
                 <th>Navn på firma:</th>
@@ -187,11 +211,11 @@ HTML;
                 <th colspan="2">Tid igjen:
                     <span id="lottoleft"></span>
                     <script>
-                      teller(<?php if (empty($left)) {
-                          echo($conf->Tid * 60);
-                      } else {
-                          echo $left;
-                      }?>, 'lottoleft', true, 'ned');
+                        teller(<?php if (empty($left)) {
+                            echo($conf->Tid * 60);
+                        } else {
+                            echo $left;
+                        }?>, 'lottoleft', true, 'ned');
                     </script>
                 </th>
             </tr>
@@ -205,7 +229,9 @@ HTML;
             </tr>
             <tr>
                 <th>Pris per lodd:</th>
-                <td><?php echo number_format($f->pl); ?>kr</td>
+                <td><?php
+                    echo number_format($f->pl); ?>kr
+                </td>
             </tr>
             <tr>
                 <th>Maks lodd per bruker:</th>
@@ -213,7 +239,9 @@ HTML;
             </tr>
             <tr>
                 <th>Pot:</th>
-                <td><?php echo number_format($antlodd * $f->pl); ?> kr</td>
+                <td><?php
+                    echo number_format($antlodd * $f->pl); ?> kr
+                </td>
             </tr>
             <tr>
                 <th>Trekkes fra til eier:</th>
@@ -221,10 +249,10 @@ HTML;
             </tr>
             <tr>
                 <td colspan="2"><input class="" type="submit" value="Kjøp lodd"> <input
-                            style="-webkit-appearance: button;
+                        style="-webkit-appearance: button;
 -webkit-padding-end: 20px;border: 1px solid #AAA;color: #555;font-size: inherit;width: 32px;height: 20px;background-color: #aaa;"
-                            type="text" name="antloddkj" value="1" min="1" max="<?= $max ?>"
-                            style="width:50px;"></td>
+                        type="text" name="antloddkj" value="1" min="1" max="<?= $max ?>"
+                        style="width:50px;"></td>
                 <br>
             </tr>
         </table>
@@ -239,12 +267,16 @@ HTML;
             <td>Premie</td>
         </tr>
         <?php
-        $getll = $db->query("SELECT * FROM lottery WHERE `winnerid` is not null AND `winnerid` > 0 ORDER BY `id` DESC LIMIT 10");
+        $getll = $db->query(
+            "SELECT * FROM lottery WHERE `winnerid` is not null AND `winnerid` > 0 ORDER BY `id` DESC LIMIT 10"
+        );
         while ($r = mysqli_fetch_object($getll)) {
             echo '
 <tr>
-<td>#' . $r->id . ' ' . user($r->vinner) . '</td><td>' . date("H:i:s d.m.Y",
-                    $r->tid) . '</td><td>' . number_format($r->premie) . 'Kr</td>
+<td>#' . $r->id . ' ' . user($r->vinner) . '</td><td>' . date(
+                    "H:i:s d.m.Y",
+                    $r->tid
+                ) . '</td><td>' . number_format($r->premie) . 'Kr</td>
 </tr>
 ';
         }

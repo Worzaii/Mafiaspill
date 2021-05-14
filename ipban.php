@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 if (r1() || r2()) {
     startpage("IP-ban bruker");
@@ -12,7 +13,9 @@ if (r1() || r2()) {
             echo warning("IP-adressen er allerede bannet!");
         } else {
             $grunn = $_POST['grunn'];
-            $banip = $db->prepare("INSERT INTO `ipban`(ip, timestamp, reason, banner) VALUES(?, unix_timestamp(), ?, ?)");
+            $banip = $db->prepare(
+                "INSERT INTO `ipban`(ip, timestamp, reason, banner) VALUES(?, unix_timestamp(), ?, ?)"
+            );
             $banip->execute([$iplong, $_POST['grunn'], $obj->id]);
             if ($banip->rowCount() == 1) {
                 echo lykket("IP-adressen <u>" . htmlentities($ip) . "</u> er bannet!");
@@ -79,14 +82,16 @@ if (r1() || r2()) {
             <tbody>
             <?php
             $i = $db->query("SELECT * FROM `ipban` where active = '1' ORDER BY `id` DESC");
-            error_log("Dumping some data:\n
+            error_log(
+                "Dumping some data:\n
             Errorcode: " . $i->errorCode() . "\n
             Rowcount: " . $i->rowCount() . "\n
             Columns: " . $i->columnCount() . "\n
             i fetch object dump: " . /*var_export($i->fetchObject(), true) . */ "\n
             Fetchall dump: " . var_export($i->fetchObject(), true)
             );
-            $i->closeCursor();$i->execute();
+            $i->closeCursor();
+            $i->execute();
             if ($i->rowCount() >= 1) {
                 while ($r = $i->fetchObject()) {
                     echo '<tr>

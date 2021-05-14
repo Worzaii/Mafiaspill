@@ -1,9 +1,6 @@
 <?php
 
-namespace Game;
-
-use PDO;
-use \UserObject\User;
+use UserObject\User;
 
 abstract class MainClass
 {

@@ -1,12 +1,15 @@
 <?php
 
-define("BASEPATH", 1);
+const BASEPATH = 1;
+function my_autoloader($class)
+{
+    error_log("Looking for \"$class\"!");
+    include $_SERVER['DOCUMENT_ROOT'] . '/classes/' . $class . '.php';
+}
+
+spl_autoload_register("my_autoloader");
 include_once __DIR__ . '/system/config.php';
 include_once __DIR__ . '/inc/functions.php';
-include_once __DIR__ . '/classes/User.php';
-include_once __DIR__ . '/classes/MinSide.php';
-include_once __DIR__ . '/classes/BBcodes.php';
-include_once __DIR__ . '/classes/mainClass.php';
 if (isset($_SERVER['X-Requested-With'])) {
     if ($_SERVER['X-Requested-With'] == "XMLHttpRequest") {
         define("JSON", 1);
@@ -19,14 +22,14 @@ if (isset($_SERVER['X-Requested-With'])) {
 if (isset($_SESSION['sessionzar'])) {
     include __DIR__ . "/inc/database.php";
     $m = explode(" ", microtime());
-    $start = $m[0] + $m[1];
+    $start = (float)$m[0] + (float)$m[1];
     [$user, $pass, $sss] = $_SESSION['sessionzar'];
-    $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? $_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR']
+    $ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) ? ($_SERVER['HTTP_X_FORWARDED_FOR'] . $_SERVER['REMOTE_ADDR'])
         : $_SERVER['REMOTE_ADDR'];
-    #    $st1 = $db->prepare("SELECT id,user,pass,ip,forceout,lastactive, health, status, image, exp, bank, hand, points, city, family, bullets, weapon, support, profile FROM `users` WHERE `user` = ? AND `pass` = ?");
+    /** @var PDO $db */
     $st1 = $db->prepare("SELECT * FROM `users` WHERE `user` = ? AND `pass` = ?");
     $st1->execute([$user, $pass]);
-    $obj = $st1->fetchObject(\UserObject\User::class);
+    $obj = $st1->fetchObject(User::class);
     if (!$obj) {
         header("Location: " . WWWPATH . "/loggut.php?g=4");
         die('<a href="' . WWWPATH . '/loggut.php">Det kan se ut som du har blitt logget ut, det er noen andre som har logget på din bruker.</a>');

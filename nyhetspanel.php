@@ -1,4 +1,5 @@
 <?php
+
 /*
  * TODO: Consider adding colors to the different sections to make it easier to see for visibility and status.
  *
@@ -63,7 +64,6 @@ HTML;
     </tbody>
 </table>
 HTML;
-
 } else {
     noaccess();
 }

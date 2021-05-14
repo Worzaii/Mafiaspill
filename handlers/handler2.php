@@ -1,4 +1,5 @@
 <?php
+
 header('Content-type: application/json');
 $posted_data = json_decode(file_get_contents("php://input"), true);
 $data = ["get" => $_GET, "post" => $_POST, "other" => $posted_data];

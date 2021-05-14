@@ -1,4 +1,5 @@
 <?php
+
 function genpass()
 {
     $pass_chars = "abcdefghijklmnopqrstuvwxyz0123456789-_.!\"#%&\\/()=?";

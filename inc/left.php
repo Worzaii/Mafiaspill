@@ -1,18 +1,23 @@
 <?php
+
 global $db, $obj;
 $ant = $GLOBALS["stored_queries"]["online"];
 $sql3 = $db->query("SELECT COUNT(*) as `numrows` FROM `chat`");
 $num2 = $sql3->fetchObject()->numrows;
 $ant2 = $GLOBALS["stored_queries"]["jail"];
 #error_log("Antall i fengsel lagret i array: " . $ant2);
-$klpre = $db->prepare("SELECT timewait FROM `krimlogg` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1");
+$klpre = $db->prepare(
+    "SELECT timewait FROM `krimlogg` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1"
+);
 $klpre->execute([$obj->id]);
 if ($res = $klpre->fetchColumn()) {
     $ktl = (($res - time()) >= 1) ? ($res - time()) : null;
 } else {
     $ktl = null;
 }
-$clpre = $db->prepare("SELECT `timewait` FROM `carslog` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1");
+$clpre = $db->prepare(
+    "SELECT `timewait` FROM `carslog` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1"
+);
 $clpre->execute([$obj->id]);
 if ($wait = $clpre->fetchColumn()) {
     $btl = (($wait - time()) >= 1) ? ($wait - time()) : null;
@@ -20,7 +25,9 @@ if ($wait = $clpre->fetchColumn()) {
     $bt = null;
     $btl = null;
 }
-$rlpre = $db->prepare("SELECT timestamp FROM `rob_log` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1");
+$rlpre = $db->prepare(
+    "SELECT timestamp FROM `rob_log` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1"
+);
 $rlpre->execute([$obj->id]);
 if ($wait = $rlpre->fetchColumn()) {
     $rtl = (($wait - time()) >= 1) ? ($wait - time()) : null;
@@ -28,7 +35,9 @@ if ($wait = $rlpre->fetchColumn()) {
     $rt = null;
     $rtl = null;
 }
-$jailself = $db->prepare("SELECT timeleft FROM `jail` WHERE `uid` = ? AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1");
+$jailself = $db->prepare(
+    "SELECT timeleft FROM `jail` WHERE `uid` = ? AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1"
+);
 $jailself->execute([$obj->id]);
 if ($jail = $jailself->fetchObject()) {
     $jte = (($jail->timeleft - time()) >= 1) ? ($jail->timeleft - time()) : null;
@@ -92,7 +101,7 @@ $onl = "online.php";
     <li><a href="innboks.php">Innboks</a></li>
     <li><a href="#deputy.php">Send inn søknad!</a></li>
     <li><a href="#support.php">Support</a></li>
-    <li><a href="<?=$onl;?>">Spillere pålogget</a> (<?=$ant;?>)</li>
+    <li><a href="<?= $onl; ?>">Spillere pålogget</a> (<?= $ant; ?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
     <li><a href="ledelse.php">Ledelsen</a></li>
 </ul>

@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 function linejump($text)
 {
@@ -29,7 +30,9 @@ if (!isset($_GET['page'])) {
         while ($r = mysqli_fetch_object($q)) {
             echo "<tr>
 <td onclick=\"goto({$r->id});\">$r->title</td>
-<td><a href='profil.php?id=" . $r->uid . "' data-id='" . $r->uid . "' data-user='' class='user_menu'>" . status($r->uid) . "</a></td>
+<td><a href='profil.php?id=" . $r->uid . "' data-id='" . $r->uid . "' data-user='' class='user_menu'>" . status(
+                    $r->uid
+                ) . "</a></td>
 <td>" . date("d.m.y H:i:s", $r->timestamp) . "</td></tr>";
         }
         echo '</table>';
@@ -63,8 +66,10 @@ if (!isset($_GET['page'])) {
 
 END;
             } else {
-                echo feil('Det finnes ingen melding til deg med den IDen. <br>
-                Er du sikker på at den ikke er slettet? <br> Gjerne kontakt support for å sjekke opp dette.');
+                echo feil(
+                    'Det finnes ingen melding til deg med den IDen. <br>
+                Er du sikker på at den ikke er slettet? <br> Gjerne kontakt support for å sjekke opp dette.'
+                );
             }
         } elseif ($page === 'ny') {
             if (isset($_GET['user'])) {
@@ -125,7 +130,9 @@ END;
                 while ($r = mysqli_fetch_object($q)) {
                     echo "<tr>
     <td onclick='goto(" . $r->id . ")'>$r->title</td>
-    <td><a class='user_menu'" . $r->tid . " data-id='" . $r->tid . "' data-user='' href='profil.php?id=%name'>" . status($r->tid) . "</a></td>
+    <td><a class='user_menu'" . $r->tid . " data-id='" . $r->tid . "' data-user='' href='profil.php?id=%name'>" . status(
+                            $r->tid
+                        ) . "</a></td>
     <td>" . date("d.m.y H:i:s", $r->timestamp) . "</td>
 </tr>";
                 }
@@ -139,9 +146,9 @@ END;
 }
 ?>
     <script>
-      function goto(id) {
-        window.location.href = 'innboks.php?page=les&id=' + id;
-      }
+        function goto(id) {
+            window.location.href = 'innboks.php?page=les&id=' + id;
+        }
     </script>
 <?php
 endpage();

@@ -14,17 +14,17 @@ if (isset($_SESSION['sessionzar'])) {
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <title><?=NAVN_DOMENE;?></title>
+    <title><?= NAVN_DOMENE; ?></title>
     <link rel="stylesheet"
           href="css/login.css">
     <meta http-equiv="content-type"
           content="text/html;charset=UTF-8">
     <meta name="description"
-          content="<?=DESC;?>">
+          content="<?= DESC; ?>">
     <meta name="keywords"
-          content="<?=KEYWORDS;?>">
+          content="<?= KEYWORDS; ?>">
     <meta name="author"
-          content="<?=UTVIKLER;?>">
+          content="<?= UTVIKLER; ?>">
     <script src="js/jquery-3.5.1.js"></script>
     <script src="js/handler.js"></script>
     <script src="js/tabs.js"></script>
@@ -38,7 +38,7 @@ if (isset($_SESSION['sessionzar'])) {
         <div id="shadow"></div>
         <div id="information">
             <p>Dette er en melding for å vise varsler i forhold til spillet.<br> Det vil inkluderes en funksjon i
-               spillet for å oppdatere denne i adminpanelet på et tidspunkt.</p>
+                spillet for å oppdatere denne i adminpanelet på et tidspunkt.</p>
         </div>
         <div id="content">
             <ul>
@@ -51,7 +51,7 @@ if (isset($_SESSION['sessionzar'])) {
             </ul>
             <div id="login">
                 <h2>Innlogging</h2>
-                <?=(isset($grunn) ? $grunn : "")?>
+                <?= (isset($grunn) ? $grunn : "") ?>
                 <div id="loginresult"></div>
                 <noscript><p>Du må ha javascript aktivert for å spille!</p></noscript>
                 <form class="loginform"
@@ -60,22 +60,22 @@ if (isset($_SESSION['sessionzar'])) {
                       action="handlers/handler.php?login">
                     <fieldset id="loginfield"
                               style="border: 0;">
-                        
+
                         Brukernavn: <input autocomplete="username"
                                            class="text"
                                            disabled
                                            name="username"
                                            placeholder="Brukernavn"
-                                           value="<?=(isset($_SERVER['DEV']) && $_SERVER['DEV'] =
-                                                   '1') ? "user" : null;?>"
+                                           value="<?= (isset($_SERVER['DEV']) && $_SERVER['DEV'] =
+                                                   '1') ? "user" : null; ?>"
                                            required
                                            type="text"><br> Passord:<input autocomplete="password"
                                                                            class="text"
                                                                            disabled
                                                                            name="password"
                                                                            placeholder="Passord"
-                                                                           value="<?=(isset($_SERVER['DEV']) && $_SERVER['DEV'] =
-                                                                                   '1') ? "user" : null;?>"
+                                                                           value="<?= (isset($_SERVER['DEV']) && $_SERVER['DEV'] =
+                                                                                   '1') ? "user" : null; ?>"
                                                                            required
                                                                            type="password"><br><br>
                         <input class="button"
@@ -90,8 +90,8 @@ if (isset($_SESSION['sessionzar'])) {
                 <h2>Motta Invitasjon</h2>
                 <div id="registerresult"></div>
                 <p>Du kan kun sende &eacute;n mail hver halvtime, så om du ikke klarer det første gangen må du vente en
-                   stund, så pass på at du skriver riktig e-postadresse når du skal motta registreringslink.
-                   Alternativt, ta kontakt med ledelsen på <?=HENVEND_MAIL_SAFE?></p>
+                    stund, så pass på at du skriver riktig e-postadresse når du skal motta registreringslink.
+                    Alternativt, ta kontakt med ledelsen på <?= HENVEND_MAIL_SAFE ?></p>
                 <form class="loginform"
                       name="reginfo"
                       id="getaccessform"
@@ -125,7 +125,7 @@ if (isset($_SESSION['sessionzar'])) {
                                                                                                  class="button">
                 </form>
                 <div class="cleanify"></div>
-            
+
             </div>
             <div id="rules">
                 <h2>Reglement</h2>
@@ -164,7 +164,7 @@ if (isset($_SESSION['sessionzar'])) {
                             <li>Du har selv ansvaret for hva du velger å legge ut på din profil, men det må på ingen
                                 måte stride med det norske lovverk. Du må heller ikke bryte følgende regler:
                                 <ul class="regler">
-                                    
+
                                     <li>Se &sect;2. Kommunikasjon</li>
                                 </ul>
                             </li>
@@ -184,7 +184,7 @@ if (isset($_SESSION['sessionzar'])) {
             <div id="info">
                 <h2>Informasjon</h2>
                 <p>Når du logger inn eller registrerer deg hos oss vil en del informasjon bli sendt inn til oss.
-                   Følgende informasjon vil vi bli å motta:<br></p>
+                    Følgende informasjon vil vi bli å motta:<br></p>
                 <ol>
                     <li>Nettleser:</li>
                     <ul class="regler">
@@ -197,8 +197,9 @@ if (isset($_SESSION['sessionzar'])) {
                     </ul>
                 </ol>
                 <p>Vi bruker denne informasjonen vil bli brukt for å forbedre din opplevelse av spillet, slik at vi på
-                   best mulig måte kan gjøre spillet bedre for nettopp deg, og alle andre som spiller spillet. Om du har
-                   spørsmål, så kan du ta kontakt, se denne siden: <a
+                    best mulig måte kan gjøre spillet bedre for nettopp deg, og alle andre som spiller spillet. Om du
+                    har
+                    spørsmål, så kan du ta kontakt, se denne siden: <a
                         href="#kontakt"
                         title="Kontaktsiden">Kontakt</a></p>
             </div>
@@ -208,8 +209,8 @@ if (isset($_SESSION['sessionzar'])) {
                 <p style="cursor: pointer"
                    title="Klikk for å vise mail url."
                    onclick="this.title = '';
-                       this.innerHTML = '<a href=\'mailto:<?=HENVEND_MAIL;?>\'><?=HENVEND_MAIL;?></a>'"><?=HENVEND_MAIL_SAFE;?></p>
-                
+                       this.innerHTML = '<a href=\'mailto:<?= HENVEND_MAIL; ?>\'><?= HENVEND_MAIL; ?></a>'"><?= HENVEND_MAIL_SAFE; ?></p>
+
                 <div class="cleanify"></div>
             </div>
         </div>

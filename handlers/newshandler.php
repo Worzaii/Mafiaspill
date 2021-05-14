@@ -1,4 +1,5 @@
 <?php
+
 define("LVL", true);
 include "../core.php";
 header('Content-type: application/json');
@@ -26,7 +27,9 @@ if (isset($_POST["action"]) && isset($_POST["id"])) {
             $get->execute();
             $showing = $get->fetchColumn();
             $change = ($showing == 1) ? 0 : 1;
-            $switch = $db->prepare("UPDATE news SET showing = ? WHERE id = ? and showing = ? and userlevel >= ? LIMIT 1");
+            $switch = $db->prepare(
+                "UPDATE news SET showing = ? WHERE id = ? and showing = ? and userlevel >= ? LIMIT 1"
+            );
             $switch->execute([$change, $id, $showing, $obj->status]);
             if ($switch->rowCount() == 1) {
                 $str['string'] = "Nyheten med ID $id har blitt satt som " . (($change == 1) ? "synlig" : "skjult") . "!";

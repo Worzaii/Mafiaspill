@@ -396,6 +396,9 @@ function types($a, $b = 0)
 
 function famidtoname($id, $link = 0)
 {
+    /**
+     * TODO: Create table for families.
+     */
     global $db;
     $db->query("SELECT * FROM `familier` WHERE `id` = '$id'") or die(mysqli_error($db->con));
     if ($db->num_rows() == 1) {
@@ -412,6 +415,9 @@ function famidtoname($id, $link = 0)
 
 function sysmel($til, $melding)
 {
+    /**
+     * Create table for system messages, might implement with inbox.php
+     */
     global $db;
     if (is_array($til)) {
         $q = "INSERT INTO `sysmail` VALUES";
@@ -432,23 +438,6 @@ function noaccess()
     <p>Du har ikke <b style="color: #f00;">TILGANG</b> til denne siden</p>
     <p>Dersom du mener du skal ha tilgang, kontakt en admin/moderator eller send en henvendelse til support.</p>
 HTML;
-}
-
-function weapons($r)
-{
-    $w = [
-        0 => "ingen",
-        1 => "Colt 1911",
-        2 => ".44 Magnum",
-        3 => "Beretta 9mm",
-        4 => "M8A1",
-        5 => "DSR 50",
-        6 => "SVT-40",
-        7 => "M4",
-        8 => "Ak 47",
-        9 => "M14"
-    ];
-    return $w[$r];
 }
 
 function weapon($r)
@@ -496,9 +485,9 @@ function canUseFunction($jail, $bunker)
         $fe = fengsel(true);
         if ($fe !== false) {
             $write .= feil(
-                'Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
+                    'Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
             <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $fe))
-            ) .
+                ) .
                 '<script>teller(' . $fe . ', "fengsel", false, \'ned\');</script>';
         }
     }

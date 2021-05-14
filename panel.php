@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 startpage("Paneler");
 if (r1() || r2() || r3() || support()) {
@@ -16,7 +17,7 @@ if (r1() || r2() || r3() || support()) {
             <li><a href="#">Spiller-informasjon</a></li>
             <li><a href="player_logoff.php">Logg ut en spiller!</a></li>
             <li><a href="publiser.php">Nyhetsadministrasjon</a></li>
-            <li style="display: inline;float: left;width:50%;border-right: 1px solid #000"><a href="ban_user.php">Ban en
+            <li style="display: inline;float: left;width:50%;border-right: 1px solid #000"><a href="#">Ban en
                     spiller</a></li>
             <li style="display: inline;float: left;width:50%;"><a href="ban_list.php">Ban-liste</a></li>
             <li><a href="/Multizone">Multi-muligheter</a></li>
@@ -34,11 +35,10 @@ if (r1() || r2() || r3() || support()) {
             <li><a href="bankalle.php">Bankoverføringer</a></li>
             <li><a href="publiser.php">Legge til en nyhet</a></li>
             <li><a href="ipsjekk.php">Sjekk spillere som kan bruke multi</a></li>
-            <li><a href="ban_user.php">Modkill spiller</a></li>
+            <li><a href="#"><s>Modkill spiller</s></a></li>
             <li><a href="ban_list.php">Ban-liste</a></li>
             <li><a href="poenglogg.php">Poeng-logg</a></li>
             <li><a href="ban_list.php">Se alle som er modkillet</a></li>
-            <li><a href="edityourself.php">Endre egne verdier</a></li>
             <li><a href="faq_panel.php">FAQ Panel</a></li>
         </ul>
         <?php

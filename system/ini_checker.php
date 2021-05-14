@@ -1,10 +1,13 @@
 <?php
+
 if (php_sapi_name() != "cli") {
     ob_start("nl2br");
 }
 echo "This file checks the PHP.ini settings for DEVELOPMENT environment\n";
 echo "Checking if you're using the same hostname as cookie name:\n";
-echo (ini_get("session.cookie_domain") != $_SERVER['HTTP_HOST']) ? "You're not!!! PHP.ini value is \"" . ini_get("session.cookie_domain") . "\" and hostname is: \"" . $_SERVER['HTTP_HOST'] . "\"\n\n" : "Domain is equal to hostname! Awesome!\n\n";
+echo (ini_get("session.cookie_domain") != $_SERVER['HTTP_HOST']) ? "You're not!!! PHP.ini value is \"" . ini_get(
+        "session.cookie_domain"
+    ) . "\" and hostname is: \"" . $_SERVER['HTTP_HOST'] . "\"\n\n" : "Domain is equal to hostname! Awesome!\n\n";
 echo "Your error log logs to: " . ini_get("error_log") . "\n";
 echo "Showing errors? display_errors: " . ini_get("display_errors") . " (Recommend: 1)\n";
 echo "Showing startup errors? display_startup_errors: " . ini_get("display_startup_errors") . " (Recommend: 1)\n";

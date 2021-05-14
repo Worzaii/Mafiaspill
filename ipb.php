@@ -1,11 +1,12 @@
 <?php
+
 define("BASEPATH", true);
 include './system/config.php';
 include("./classes/Database.php");
-$db  = new database;
+$db = new database;
 $db->configure();
 $db->connect();
-$ipq = $db->query("SELECT * FROM `ipban` WHERE `ip`='".$_SERVER['REMOTE_ADDR']."'");
+$ipq = $db->query("SELECT * FROM `ipban` WHERE `ip`='" . $_SERVER['REMOTE_ADDR'] . "'");
 if ($db->num_rows() == 1) {
     $ip = $db->fetch_object();
     ?>
@@ -15,17 +16,17 @@ if ($db->num_rows() == 1) {
             <th colspan="1" align="center">Du har blitt IP-Bannet!</th>
         </tr>
 
-        <?php
-        echo "
+    <?php
+    echo "
 <tr>
-<td>Ip-adressen: <u>".$ip->ip."</u> er blitt utestengt!<br><br>
-Grunn: ".$ip->grunn."<br>
-Bannet dato: ".date("H:i:s d.m.Y", $ip->dato)."
+<td>Ip-adressen: <u>" . $ip->ip . "</u> er blitt utestengt!<br><br>
+Grunn: " . $ip->grunn . "<br>
+Bannet dato: " . date("H:i:s d.m.Y", $ip->dato) . "
 </tr>";
 
-        echo '
+    echo '
 </table>
-<p>Om du mener at denne IP-bannen er gjort på gale vilkår/grunnlag, send en mail til denne mailadressen: <a href="mailto:'.HENVEND_MAIL.'?subject=Ip-ban%20p&aring%20'.$_SERVER['REMOTE_ADDR'].'">'.HENVEND_MAIL.'</a></p><br><br><a href="loggut.php">Logg ut!</a>';
+<p>Om du mener at denne IP-bannen er gjort på gale vilkår/grunnlag, send en mail til denne mailadressen: <a href="mailto:' . HENVEND_MAIL . '?subject=Ip-ban%20p&aring%20' . $_SERVER['REMOTE_ADDR'] . '">' . HENVEND_MAIL . '</a></p><br><br><a href="loggut.php">Logg ut!</a>';
 } else {
     header("Location: /nyheter.php");
 }

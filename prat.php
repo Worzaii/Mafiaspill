@@ -1,10 +1,16 @@
 <?php
+
 $start = microtime(true);
 error_log("Starting the execution of prat.php at " . date("H:m:i.u d.m.Y", $start));
 define("NOUPDATE", 1);
 require_once './core.php';
 $after_require = microtime(true);
-error_log("Core finished, continuing to the main part at: " . date("H:m:i.u d.m.Y", $after_require) . ", ".($after_require - $start) . " seconds later.");
+error_log(
+    "Core finished, continuing to the main part at: " . date(
+        "H:m:i.u d.m.Y",
+        $after_require
+    ) . ", " . ($after_require - $start) . " seconds later."
+);
 header('Content-Type: text/html; charset=UTF-8');
 $ikkevis = false;
 if (isset($_GET['write'])) {
@@ -19,8 +25,10 @@ if (isset($_GET['write'])) {
                 + 10)
         ];
     } else {
-        $s = $db->prepare("SELECT count(*) FROM `forumban` WHERE `uid` = ? AND `bantime` > unix_timestamp() AND
-                               `active` = '1' ORDER BY `bantime` DESC LIMIT 1");
+        $s = $db->prepare(
+            "SELECT count(*) FROM `forumban` WHERE `uid` = ? AND `bantime` > unix_timestamp() AND
+                               `active` = '1' ORDER BY `bantime` DESC LIMIT 1"
+        );
         $s->execute([$obj->id]);
         if ($s->fetchColumn() == 1) {
             /* If banned from the forum, don't post messages to the chat */
@@ -38,10 +46,12 @@ if (isset($_GET['write'])) {
                 ];
             } else {
                 $ins = $db->prepare("INSERT INTO `chat` VALUES(NULL,?,?,UNIX_TIMESTAMP())");
-                $ins->execute([
-                    $obj->id,
-                    $w
-                ]);
+                $ins->execute(
+                    [
+                        $obj->id,
+                        $w
+                    ]
+                );
                 header("Content-Type: application/json");
                 if ($ins->rowCount() == 0) {
                     echo json_encode(['s' => 0]);
@@ -74,14 +84,18 @@ if ($ikkevis == false) {
         }
         if ($r->id % 2) {
             echo
-                '<div class="chat ct1"><b>[' . date("H:i:s d.m.y",
-                    $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
+                '<div class="chat ct1"><b>[' . date(
+                    "H:i:s d.m.y",
+                    $r->timestamp
+                ) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
         } else {
             echo
-                '<div class="chat ct2"><b>[' . date("H:i:s d.m.y",
-                    $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
+                '<div class="chat ct2"><b>[' . date(
+                    "H:i:s d.m.y",
+                    $r->timestamp
+                ) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
         }
     }
 }
 $end = microtime(true);
-error_log("Script completed after ". ($end - $start));
+error_log("Script completed after " . ($end - $start));

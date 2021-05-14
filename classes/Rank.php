@@ -1,8 +1,5 @@
 <?php
 
-
-namespace UserObject;
-
 class Rank
 {
     public float $xp;

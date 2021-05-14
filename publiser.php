@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 if (r1() || r2()) {
     startpage("Publiser nyheter");
@@ -13,13 +14,17 @@ if (r1() || r2()) {
             if (strlen($mel) <= 2) {
                 echo '<p>Meldingen er for kort!</p>';
             } else {
-                $new = $db->prepare("INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES(?,?,?,UNIX_TIMESTAMP(),1,?)");
+                $new = $db->prepare(
+                    "INSERT INTO `news`(`title`,`text`,`author`,`timestamp`,`showing`,`userlevel`) VALUES(?,?,?,UNIX_TIMESTAMP(),1,?)"
+                );
                 try {
                     if ($new->execute([$tema, $mel, $obj->id, $lvl])) {
                         echo lykket("Du har publisert en nyhet!");
                         if ($lvl == 5) {
                             /* Only announce news if it's for everyone */
-                            $chatnews = $db->prepare("insert into chat values(null,(select id from users where user='System' limit 1),concat('En nyhet med tema ', ?, ' har blitt postet av ',?), unix_timestamp())");
+                            $chatnews = $db->prepare(
+                                "insert into chat values(null,(select id from users where user='System' limit 1),concat('En nyhet med tema ', ?, ' har blitt postet av ',?), unix_timestamp())"
+                            );
                             try {
                                 $chatnews->execute([$tema, $obj->user]);
                                 echo lykket("En melding har blitt lagt i chat om at nyheten har blitt publisert!");
@@ -28,13 +33,15 @@ if (r1() || r2()) {
                             }
                         }
                     } else {
-                        error_log("Couldn't execute this query: " . $new->queryString . ". Got this error: " . $new->errorInfo()[2]);
+                        error_log(
+                            "Couldn't execute this query: " . $new->queryString . ". Got this error: " . $new->errorInfo(
+                            )[2]
+                        );
                         echo feil('Kunne ikke publisere nyheten, se loggen for feilmeldinger.');
                     }
                 } catch (PDOException $exception) {
                     echo feil("Kunne ikke utføre på grunn av følgende feil: " . $exception->getMessage());
                 }
-                
             }
         }
         ?>

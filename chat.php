@@ -1,4 +1,5 @@
 <?php
+
 include("core.php");
 startpage("Chat");
 echo "<h1>Chat - Snakk med andre spillere</h1>";
@@ -15,16 +16,24 @@ END;
     echo info($dis2);
 }
 
-$s = $db->prepare("SELECT count(*) FROM `forumban` WHERE `uid` = ? AND `bantime` > UNIX_TIMESTAMP() AND `active` = '1' ORDER BY `bantime` DESC LIMIT 1");
-$s->execute([
-    $obj->id
-]);
+$s = $db->prepare(
+    "SELECT count(*) FROM `forumban` WHERE `uid` = ? AND `bantime` > UNIX_TIMESTAMP() AND `active` = '1' ORDER BY `bantime` DESC LIMIT 1"
+);
+$s->execute(
+    [
+        $obj->id
+    ]
+);
 
 if ($s->fetchColumn() == 1) {
-    $s2 = $db->prepare("SELECT bantime,uid,banner,reason FROM `forumban` WHERE `uid` = ? AND `bantime` > UNIX_TIMESTAMP() AND `active` = '1' ORDER BY `bantime` DESC LIMIT 1");
-    $s2->execute([
-        $obj->id
-    ]);
+    $s2 = $db->prepare(
+        "SELECT bantime,uid,banner,reason FROM `forumban` WHERE `uid` = ? AND `bantime` > UNIX_TIMESTAMP() AND `active` = '1' ORDER BY `bantime` DESC LIMIT 1"
+    );
+    $s2->execute(
+        [
+            $obj->id
+        ]
+    );
     $f = $s2->fetchObject();
     $timeleft = $f->bantime - time();
     $banner = user($f->banner);

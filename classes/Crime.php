@@ -1,9 +1,5 @@
 <?php
 
-namespace UserObject\Crime;
-
-use PDO;
-use UserObject\User;
 
 class Crime extends \MainClass
 {
@@ -84,27 +80,37 @@ class Crime extends \MainClass
         $thechance = $chance->fetchObject();
         if ($thechance->chance >= 74) {
             $ran2 = rand(10, 46);
-            $chanceupd = $this->database->prepare("UPDATE `chance` SET `chance` = (`chance` - ?) WHERE `uid` = ? AND `option` = ? LIMIT 1");
+            $chanceupd = $this->database->prepare(
+                "UPDATE `chance` SET `chance` = (`chance` - ?) WHERE `uid` = ? AND `option` = ? LIMIT 1"
+            );
             $chanceupd->execute([$ran2, $this->user->getId(), $choice]);
             $thechance->chance -= $ran2;
         } elseif ($thechance->chance <= 73) {
             $ran2 = rand(1, 3);
-            $chanceupd = $this->database->prepare("UPDATE `chance` SET `chance` = (`chance` + ?) WHERE `uid` = ? AND `option` = ? AND `chance` < '80'");
+            $chanceupd = $this->database->prepare(
+                "UPDATE `chance` SET `chance` = (`chance` + ?) WHERE `uid` = ? AND `option` = ? AND `chance` < '80'"
+            );
             $chanceupd->execute([$ran2, $this->user->getId(), $choice]);
             $thechance->chance += $ran2;
         }
         $kr = mt_rand($info->minval, $info->maxval);
         $timewait = $info->untilnext + time();
         if (mt_rand(0, 100) <= $thechance->chance) {
-            $prep = $this->database->prepare("UPDATE `users` SET `hand` = (`hand` + ?),`exp` = (`exp` + ?) WHERE `id` = ? LIMIT 1");
-            $prep->execute([
-                $kr,
-                $info->expgain,
-                $this->user->getId()
-            ]);
+            $prep = $this->database->prepare(
+                "UPDATE `users` SET `hand` = (`hand` + ?),`exp` = (`exp` + ?) WHERE `id` = ? LIMIT 1"
+            );
+            $prep->execute(
+                [
+                    $kr,
+                    $info->expgain,
+                    $this->user->getId()
+                ]
+            );
             $rows = $prep->rowCount();
             if ($rows == 1) {
-                $secondprep = $this->database->prepare("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,?,(? + UNIX_TIMESTAMP()))");
+                $secondprep = $this->database->prepare(
+                    "INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,?,(? + UNIX_TIMESTAMP()))"
+                );
                 if ($secondprep->execute(
                     [
                         $this->user->getId(),
@@ -125,21 +131,31 @@ class Crime extends \MainClass
                 <p>Feil i spørring2: ' . var_export($this->database->errorInfo()) . '</p>
                 ';
                 } else {
-                    $this->out .= feil("Det var feil i utførelse av spørringer, vennligst rapporter dette til support, slik at de kan se i loggen hva som hendte!");
+                    $this->out .= feil(
+                        "Det var feil i utførelse av spørringer, vennligst rapporter dette til support, slik at de kan se i loggen hva som hendte!"
+                    );
                 }
             } elseif (r1()) {
-                $this->out = feil('Feil i spørring: ' . var_export($this->database->errorInfo(),
-                        true));
+                $this->out = feil(
+                    'Feil i spørring: ' . var_export(
+                        $this->database->errorInfo(),
+                        true
+                    )
+                );
             } else {
                 $this->out = feil('Det var feil i utførelse av spørringer, vennligst rapporter dette til support!');
             }
         } else {
-            $failed = $this->database->prepare("INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,'0',?)");
+            $failed = $this->database->prepare(
+                "INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,'0',?)"
+            );
             $failed->execute([$this->user->getId(), $choice, $timewait]);
             if ($failed->rowCount() == 1) {
                 $fen = mt_rand(0, 3);
                 if ($fen !== 2) {
-                    $this->out .= feil('Du klarte det ikke! <br>Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.') . '
+                    $this->out .= feil(
+                            'Du klarte det ikke! <br>Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.'
+                        ) . '
               <script>
               teller(' . $info->untilnext . ', "krim", false, \'ned\');
               </script>
@@ -148,16 +164,22 @@ class Crime extends \MainClass
                     $time = time();
                     $time2 = time() + $timewait;
                     $punish = $time + $info->punishtime;
-                    $q = $this->database->prepare("INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES(?,?,UNIX_TIMESTAMP(),?,?)");
-                    $q->execute([
-                        $this->user->getId(),
-                        "Prøvde å være litt kriminiminel",
-                        $punish,
-                        2500000
-                    ]);
+                    $q = $this->database->prepare(
+                        "INSERT INTO `jail`(`uid`,`reason`,`timestamp`,`timeleft`,`priceout`) VALUES(?,?,UNIX_TIMESTAMP(),?,?)"
+                    );
+                    $q->execute(
+                        [
+                            $this->user->getId(),
+                            "Prøvde å være litt kriminiminel",
+                            $punish,
+                            2500000
+                        ]
+                    );
                     $this->out .= feil('Du klarte det ikke, og politiet oppdaget deg!');
                     if ($q->rowCount() == 1) {
-                        $this->out .= feil('Du ble satt i fengsel! <br>Gjenstående tid: <span id="krim2">' . ($info->punishtime) . '</span>.<script>teller(' . $info->punishtime . ', "krim2", false, \'ned\');</script>');
+                        $this->out .= feil(
+                            'Du ble satt i fengsel! <br>Gjenstående tid: <span id="krim2">' . ($info->punishtime) . '</span>.<script>teller(' . $info->punishtime . ', "krim2", false, \'ned\');</script>'
+                        );
                         $jailed = true;
                     } else {
                         $this->out .= feil('Klarte ikke å sette deg i fengsel! Så bra...');
@@ -181,7 +203,9 @@ class Crime extends \MainClass
 
     public function listCrimeChoices()
     {
-        $get_actions = $this->database->prepare("select * from crime where levelmin <= ? ORDER BY `levelmin` DESC,`id` DESC");
+        $get_actions = $this->database->prepare(
+            "select * from crime where levelmin <= ? ORDER BY `levelmin` DESC,`id` DESC"
+        );
         $get_actions->execute([$this->user->exp->getRankID()]);
         $this->out .= '
         <form name="krim"
@@ -201,10 +225,14 @@ class Crime extends \MainClass
                     <td><b>Straff</b></td>
                 </tr>';
         while ($r = $get_actions->fetchObject()) {
-            $sql2 = $this->database->prepare("SELECT count(*) FROM `chance` WHERE `uid` = ? AND `type` = '1' AND `option` = ?");
+            $sql2 = $this->database->prepare(
+                "SELECT count(*) FROM `chance` WHERE `uid` = ? AND `type` = '1' AND `option` = ?"
+            );
             $sql2->execute([$this->user->id, $r->id]);
             if ($sql2->fetchColumn() >= 1) {
-                $sql3 = $this->database->prepare("SELECT * FROM `chance` WHERE `uid` = ? AND `type` = '1' AND `option` = ?");
+                $sql3 = $this->database->prepare(
+                    "SELECT * FROM `chance` WHERE `uid` = ? AND `type` = '1' AND `option` = ?"
+                );
                 $sql3->execute([$this->user->id, $r->id]);
                 $res = $sql3->fetchObject();
                 $sjanse = $res->chance . '%';
@@ -214,8 +242,13 @@ class Crime extends \MainClass
                 $sjanse = "0%";
             }
             $this->out .= '<tr class="valg" onclick="sendpost(' . $r->id . ')">
-<td>' . htmlentities($r->description, ENT_NOQUOTES | ENT_HTML401,
-                    "UTF-8") . '</td><td>' . number_format($r->minval) . '-' . number_format($r->maxval) . 'kr</td><td>' . $r->untilnext . ' sekunder</td><td>' . $sjanse . '</td><td>' . $r->punishtime . ' sekunder</td>
+<td>' . htmlentities(
+                    $r->description,
+                    ENT_NOQUOTES | ENT_HTML401,
+                    "UTF-8"
+                ) . '</td><td>' . number_format($r->minval) . '-' . number_format(
+                    $r->maxval
+                ) . 'kr</td><td>' . $r->untilnext . ' sekunder</td><td>' . $sjanse . '</td><td>' . $r->punishtime . ' sekunder</td>
 </tr>';
         }
         $this->out .= <<<END

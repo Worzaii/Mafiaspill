@@ -1,15 +1,20 @@
 <?php
+
 define("BASEPATH", true);
 require_once('system/config.php');
 include "./inc/database.php";
 $disa1 = null;
 $disa2 = null;
-$s = $db->prepare("SELECT count(*) FROM `invsjekk` WHERE `code` = ? 
-AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
+$s = $db->prepare(
+    "SELECT count(*) FROM `invsjekk` WHERE `code` = ?
+AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()"
+);
 if ($s->execute([$_GET['code'], $_GET['mail']])) {
     if ($s->fetchColumn() == 1) {
-        $s2 = $db->prepare("SELECT * FROM `invsjekk` WHERE `code` = ? 
-AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
+        $s2 = $db->prepare(
+            "SELECT * FROM `invsjekk` WHERE `code` = ?
+AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()"
+        );
         $s2->execute([$_GET['code'], $_GET['mail']]);
         $f = $s2->fetchObject();
         $mail = $f->mail;
@@ -70,6 +75,7 @@ AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
         </div>
     </div>
 </section>
-<?php include "inc/footer.php"; ?>
+<?php
+include "inc/footer.php"; ?>
 </body>
 </html>

@@ -4,7 +4,6 @@
 namespace UserObject;
 
 use PDO;
-use UserObject\User;
 
 
 class MinSide

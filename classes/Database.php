@@ -1,5 +1,7 @@
 <?php
+
 namespace DatabaseObject {
+
     if (!defined('THRUTT')) {
         die('No access! :(');
     }
@@ -55,7 +57,7 @@ namespace DatabaseObject {
 
             function query($query)
             {
-                sql_log("Running a query: ".$query);
+                sql_log("Running a query: " . $query);
                 $this->last_query = $query;
                 $this->num_queries++;
                 $this->result = $this->con->query($this->last_query);
@@ -98,10 +100,14 @@ namespace DatabaseObject {
                 if (!isset($obj)) {
                     $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ': ' . $this->last_query;
                 } else {
-                    $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ' sent by session (' . $obj->user . ', ID: {' . $obj->id . '}): ' . mysqli_error($this->con) . '. ' . PHP_EOL . 'Query was: ' . $this->last_query;
+                    $feil = 'MySQL error in file: ' . $_SERVER["REQUEST_URI"] . ' sent by session (' . $obj->user . ', ID: {' . $obj->id . '}): ' . mysqli_error(
+                            $this->con
+                        ) . '. ' . PHP_EOL . 'Query was: ' . $this->last_query;
                 }
                 error_log($feil);
-                $this->last_error = "Det var en feil ved spørringen: &quote;" . $this->last_query . "&quote;(" . mysqli_errno($this->con) . ")Feil: " . mysqli_error($this->con);
+                $this->last_error = "Det var en feil ved spørringen: &quote;" . $this->last_query . "&quote;(" . mysqli_errno(
+                        $this->con
+                    ) . ")Feil: " . mysqli_error($this->con);
                 return false;
             }
 
@@ -130,7 +136,11 @@ namespace DatabaseObject {
             function clean_input($in)
             {
                 $in = stripslashes($in);
-                return str_replace(array("<", ">", '"', "'", "\n"), array("&lt;", "&gt;", "&quot;", "&#39;", "<br>"), $in);
+                return str_replace(
+                    array("<", ">", '"', "'", "\n"),
+                    array("&lt;", "&gt;", "&quot;", "&#39;", "<br>"),
+                    $in
+                );
             }
 
             function clean_input_nohtml($in)
@@ -153,8 +163,9 @@ namespace DatabaseObject {
             {
                 return mysqli_affected_rows($this->con);
             }
-            function PDO_query(){
 
+            function PDO_query()
+            {
             }
         }
     }

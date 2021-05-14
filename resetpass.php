@@ -1,12 +1,17 @@
 <?php
+
 define('BASEPATH', true);
 require_once './system/config.php';
 require_once './inc/database.php';
 require_once './inc/functions.php';
-$s = $db->prepare("SELECT count(*) FROM `resetpasset` WHERE `resgen` = ? AND `uid` = ? AND `used` = '0' AND `timestamp` < (UNIX_TIMESTAMP()+3600)");
+$s = $db->prepare(
+    "SELECT count(*) FROM `resetpasset` WHERE `resgen` = ? AND `uid` = ? AND `used` = '0' AND `timestamp` < (UNIX_TIMESTAMP()+3600)"
+);
 $s->execute([$_GET['resgen'], $_GET['id']]);
 if ($s->fetchColumn() == 1) {
-    $s2 = $db->prepare("SELECT * FROM `resetpasset` WHERE `resgen` = ? AND `uid` = ? AND `used` = '0' AND `timestamp` < (UNIX_TIMESTAMP()+3600)");
+    $s2 = $db->prepare(
+        "SELECT * FROM `resetpasset` WHERE `resgen` = ? AND `uid` = ? AND `used` = '0' AND `timestamp` < (UNIX_TIMESTAMP()+3600)"
+    );
     $res = $s2->fetchObject();
     $time = ($res->timestamp + 3600) - time();
     $user = user($res->uid, 1);
@@ -67,6 +72,7 @@ if ($s->fetchColumn() == 1) {
         </div>
     </div>
 </section>
-<?php include_once './inc/footer.php'; ?>
+<?php
+include_once './inc/footer.php'; ?>
 </body>
 </html>
