@@ -16,7 +16,8 @@
     "ext-gd": "*",
     "ext-pdo": "*",
     "ext-readline": "*",
-    "ext-intl": "*"
+    "ext-intl": "*",
+    "php": "8.*"
   },
   "scripts": {
     "phpcs": "phpcs --standard=PSR2"

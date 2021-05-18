@@ -8,9 +8,10 @@
           href="./favicon.ico">
     <meta http-equiv="content-type"
           content="text/html; charset=UTF-8">
-    <title><?= $title; ?></title>
-    <script src="./js/jquery-3.5.1.js"></script>
-    <script src="./js/teller.js"></script>
+    <title><?= /** @var string $title */
+        $title; ?></title>
+    <script type="text/javascript" src="./js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="./js/teller.js"></script>
 </head>
 <body>
 <section class="newsection"></section>
@@ -31,7 +32,8 @@
 <div id="information">
     <p>Spillet har blitt oppdatert. CTRL + F5</p>
 </div>
-<?= $chat; ?>
+<?= /** @var string $chat */
+$chat; ?>
 <noscript><p>å spille uten javascript aktivert vil vise seg å være fungere dårlig, vennligst aktiver javascript eller
         bruk en nettleser som støtter dette.</p>
 </noscript>

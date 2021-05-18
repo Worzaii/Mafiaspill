@@ -11,11 +11,11 @@ if ($obj->image == null || $obj->image == '') {
 <h2><?= $obj->user; ?></h2>
 <a href="profil.php?id=<?= $obj->id; ?>"><img id="avatar" src="<?= $img; ?>" alt=""></a>
 <?php
-if (r1() || r2() || r3() || $obj->support == 1) {
+if (r1() || r2() || r3() || supp()) {
     echo '<h2>Paneler</h2><ul>';
     echo '<li><a href="panel.php" title="Paneler du har tilgjengelige vises her">Dine paneler</a></li>';
 
-    if (r1() || r2() || support()) {
+    if (r1() || r2() || supp()) {
         echo '<li><a href="supportpanel.php">Supportsenter</a></li>';
     }
     echo '</ul>';
@@ -33,8 +33,8 @@ if (r1() || r2() || r3() || $obj->support == 1) {
                  style="height:4px;background: #0f0;width:<?= $obj->health ?>%;"></div>
         </div>
     </li>
-    <li>Familie: <?= ($obj->family == null) ? "<i>ingen</i>" :
-            '<a href="#">' . famidtoname($obj->family, 1) . '</a>'; ?></li>
+    <!--<li>Familie: <?= /*($obj->family == null) ? "<i>ingen</i>" :
+            '<a href="#">' . famidtoname($obj->family, 1) . '</a>';*/null ?></li>-->
     <li>Kuler: <?= number_format($obj->bullets); ?>
     <li>Våpen: <?= weapon($obj->weapon) ?></li>
 </ul>

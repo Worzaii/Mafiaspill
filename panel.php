@@ -2,7 +2,7 @@
 
 include("core.php");
 startpage("Paneler");
-if (r1() || r2() || r3() || support()) {
+if (r1() || r2() || r3() || supp()) {
     if (r1()) {
         ?>
         <h1 class="center">Administrasjon</h1>
@@ -53,7 +53,7 @@ if (r1() || r2() || r3() || support()) {
             <li><a href="chatlog.php">Vis loggførte chat logger</a></li>
         </ul>
         <?php
-    } elseif (r1() || r2() || support()) {
+    } elseif (r1() || r2() || supp()) {
         /* Soon implementing the support panel feature here. */
         ?>
         <h1>Supportpage to be</h1>

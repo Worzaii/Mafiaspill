@@ -4,7 +4,7 @@ if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
 if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
-    error_log("Development mode is enabled from the fastcgi_params in your nginx setup!");
+    //error_log("Development mode is enabled from the fastcgi_params in your nginx setup!");
     ini_set("display_errors", "on");
     ini_set("display_startup_errors", "on");
     ini_set("error_reporting", "32767");
@@ -12,20 +12,10 @@ if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
     ini_set("track_errors", "on");
     ini_set("html_errors", "on");
     ini_set("error_log", $_SERVER["LOGLOCATION"]);
-    define("LOCALWRITE", $_SERVER['LOGLOCATION']); /* Inserts typical linux path */
-}
-function sql_log($query)
-{
-    if (defined("LOCALWRITE")) {
-        $file = LOCALWRITE;
-    } elseif ($_SERVER['SERVER_NAME'] == "mafia.localhost.localdomain") {
-        $file = $_SERVER["DOCUMENT_ROOT"] . "\\logs\\sql.log";
-    } else {
-        $file = "/var/www/mafia.werzaire.net/logs/sql.log";
-    }
-    $f = fopen($file, "a+");
-    fwrite($f, date("[d-M-Y H:i:s e] ") . $query . "\n");
-    fclose($f);
+    define(
+        "LOCALWRITE",
+        $_SERVER['LOGLOCATION']
+    ); /* Inserts nginx-defined location, see fastcgi_param LOGLOCATION "REPLACEPATH"; */
 }
 
 function safegen($u, $p)
@@ -33,7 +23,7 @@ function safegen($u, $p)
     $ua = $_SERVER["HTTP_USER_AGENT"];
     #$l = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
     $i = isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? $_SERVER["HTTP_X_FORWARDED_FOR"] : null;
-    return md5(sha1($u . $p . $ua . $i . "tissbajs194\""));
+    return md5(sha1($u . $p . $ua . $i . "ra\""));
 }
 
 function codegen($length = 12)
@@ -47,7 +37,7 @@ function codegen($length = 12)
 }
 
 /* Config must be loaded before any other scripts, this must be defined and correct */
-define('THRUTT', "Sperrederrp!");
+const THRUTT = "Sperrederrp!";
 if (empty($_SERVER["SERVER_NAME"])) {
     define('DOMENE_NAVN', "localhost.localdomain");
 } else {
@@ -56,23 +46,23 @@ if (empty($_SERVER["SERVER_NAME"])) {
         $_SERVER["SERVER_NAME"]
     ); /* Name is fetched from the nginx configuration*/
 }
-define('NAVN_DOMENE', 'Werzaire.net');
-define('MAIL_SENDER', 'werzaire.net');
-define('UTVIKLER', 'Nicholas Arnesen');
-define('DESC', 'Kommer senere...');
-define('KEYWORDS', 'mafia, spill');
-define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
+const NAVN_DOMENE = 'Werzaire.net';
+const MAIL_SENDER = 'werzaire.net';
+const UTVIKLER = 'Nicholas Arnesen';
+const DESC = 'Kommer senere...';
+const KEYWORDS = 'mafia, spill';
+define("HENVEND_MAIL", $_SERVER['mailto']);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 if (php_sapi_name() != "cli") {
     define("WWWPATH", "https://" . $_SERVER["HTTP_HOST"]);
 }
-$timeout = (60 * (120));
+const TIMEOUT = 7200;
 
 /* Database connection parametres START */
-define("HOST", "localhost");
-define("DATABASE", "mafia");
-define("USERNAME", "mafia");
-define("PASSWORD", "mafia");
+const HOST = "localhost";
+const DATABASE = "mafia";
+const USERNAME = "mafia";
+const PASSWORD = "mafia";
 /* Database connection parametres END */
 
 /* Starting session */

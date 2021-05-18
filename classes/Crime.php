@@ -1,11 +1,10 @@
 <?php
 
-
 class Crime extends MainClass
 {
     protected function execute()
     {
-        if ($write = canUseFunction(1, 1)) {
+        if ($write = canUseFunction(jail: 1, bunker: 1)) {
             $this->out .= $write;
         } else {
             $this->readyCrime();
@@ -43,6 +42,7 @@ class Crime extends MainClass
      */
     public function waitText($time)
     {
+
         return '
         <p class="warning">Du må vente <span id="krim">' . ($time - time()) . '</span> før neste krim.</p>
         <script>
@@ -111,14 +111,16 @@ class Crime extends MainClass
                 $secondprep = $this->database->prepare(
                     "INSERT INTO `krimlogg`(`uid`,`timestamp`,`crime`,`result`,`timewait`) VALUES(?,UNIX_TIMESTAMP(),?,?,(? + UNIX_TIMESTAMP()))"
                 );
-                if ($secondprep->execute(
-                    [
+                if (
+                    $secondprep->execute(
+                        [
                         $this->user->getId(),
                         $choice,
                         $kr,
                         $info->untilnext
-                    ]
-                )) {
+                        ]
+                    )
+                ) {
                     $this->out .= '
                         <p class="lykket">Du var heldig og fikk ' . number_format($kr) . 'kr med deg!</p>
                         <p class="feil">Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.</p>
@@ -154,8 +156,8 @@ class Crime extends MainClass
                 $fen = mt_rand(0, 3);
                 if ($fen !== 2) {
                     $this->out .= feil(
-                            'Du klarte det ikke! <br>Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.'
-                        ) . '
+                        'Du klarte det ikke! <br>Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.'
+                    ) . '
               <script>
               teller(' . $info->untilnext . ', "krim", false, \'ned\');
               </script>
@@ -243,12 +245,12 @@ class Crime extends MainClass
             }
             $this->out .= '<tr class="valg" onclick="sendpost(' . $r->id . ')">
 <td>' . htmlentities(
-                    $r->description,
-                    ENT_NOQUOTES | ENT_HTML401,
-                    "UTF-8"
-                ) . '</td><td>' . number_format($r->minval) . '-' . number_format(
-                    $r->maxval
-                ) . 'kr</td><td>' . $r->untilnext . ' sekunder</td><td>' . $sjanse . '</td><td>' . $r->punishtime . ' sekunder</td>
+                $r->description,
+                ENT_NOQUOTES | ENT_HTML401,
+                "UTF-8"
+            ) . '</td><td>' . number_format($r->minval) . '-' . number_format(
+                $r->maxval
+            ) . 'kr</td><td>' . $r->untilnext . ' sekunder</td><td>' . $sjanse . '</td><td>' . $r->punishtime . ' sekunder</td>
 </tr>';
         }
         $this->out .= <<<END
@@ -287,5 +289,4 @@ END;
         echo $this->out;
         endpage();
     }
-
 }

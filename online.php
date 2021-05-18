@@ -29,7 +29,13 @@ startpage("Påloggede spillere");
     <h1>Påloggede spillere</h1>
 <?php
 if (r1() || r2()) {
-    echo '<p>Tabell 2 tidsjusteringer: <a href="online.php?timespan=1">En dag</a> | <a href="online.php?timespan=2">En uke (standard)</a> | <a href="online.php?timespan=3">En måned</a> | <a href="online.php?timespan=4">Ett år</a></p>';
+    echo <<<END
+<p>Tabell 2 tidsjusteringer: <a href="online.php?timespan=1">En dag</a> |
+    <a href="online.php?timespan=2">En uke (standard)</a> |
+    <a href="online.php?timespan=3">En måned</a> |
+    <a href="online.php?timespan=4">Ett år</a>
+</p>
+END;
     $add1 = "<th>IP-adresse</th>";
     $add3 = "<th>Hostname</th>";
     $cols = 4;
@@ -38,6 +44,7 @@ if (r1() || r2()) {
     $cols = 2;
     $add3 = null;
 }
+/** @var PDO $db */
 $online = $db->query(
     "SELECT id,user,lastactive,ip,hostname,status FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800) AND UNIX_TIMESTAMP()
 ORDER BY `lastactive` DESC"

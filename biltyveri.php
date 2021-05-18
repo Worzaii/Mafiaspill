@@ -4,7 +4,7 @@ include("core.php");
 include_once("inc/bilconfig.php");
 startpage("Biltyveri");
 echo '<img src="images/headers/biltyveri.png"><p>Når du først starter med biltyveri, så vil du kun ha et valg. Ettersom du kommer opp i rank, så vil nye valg låses opp.</p>';
-if ($write = canUseFunction(1, 1)) {
+if ($write = canUseFunction(jail: 1, bunker: 1)) {
     echo $write;
 } else {
     $q = $db->query(

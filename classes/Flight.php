@@ -21,7 +21,7 @@ class Flight
 
     private function execute()
     {
-        if ($write = canUseFunction(1, 1)) {
+        if ($write = canUseFunction(jail: 1, bunker: 1)) {
             $this->out .= $write;
         } else {
             $this->readyFlight();

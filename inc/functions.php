@@ -185,9 +185,12 @@ function status($s)
     );
     $pre->bindParam(":val1", $s);
     $pre->bindParam(":val2", $s);
-    error_log("Result of execution: " . (($pre->execute()) ? "Successful!" : "Failed!!"));
+    error_log(
+        "File: " . __FILE__ . ", function: " . __FUNCTION__ . ": Result of execution: " . (($pre->execute(
+        )) ? "Successful!" : "Failed!!") . "on line: " . __LINE__
+    );
     if ($user = $pre->fetchObject()) {
-        error_log("Status function called, values: " . var_export($user, true));
+//        error_log("Status function called, values: " . var_export($user, true));
         if ($user->status == 1) {
             $span = "stat1"; /* Admin */
         } elseif ($user->status == 2) {
@@ -209,23 +212,23 @@ function status($s)
     }
 }
 
-function getUser($username, $ret = 0)
+function getUser($username, $returntype = 0)
 {
     global $db;
     $userexists = $db->prepare("SELECT count(*) FROM `users` WHERE `user` = ?");
     $userexists->execute([$username]);
     if ($userexists->fetchColumn() == 1) {
-        if ($ret == 0) {
+        if ($returntype == 0) {
             return true;
         } else {
             $userexists = $db->prepare("SELECT * FROM `users` WHERE `user` = ?");
             $userexists->execute([$username]);
             $f = $userexists->fetchObject();
-            if ($ret == 1) {
+            if ($returntype == 1) {
                 $f = $db->fetch_object();
                 return $f->id;
             }
-            if ($ret == 2) {
+            if ($returntype == 2) {
                 return $db->fetch_object();
             }
         }
@@ -376,7 +379,7 @@ function r3()
     return ($obj->status == 3);
 }
 
-function support()
+function supp()
 {
     global $obj;
     return ($obj->support == 1);
@@ -387,11 +390,10 @@ function types($a, $b = 0)
     $c = [0, 1, 2, 3];
     $d = ["Om spillet", "Om funksjoner", "Feil i spillet", "Klage", "Forslag"];
     if ($b == 0) {
-        $e = str_replace($c, $d, $a); //Bytter om
+        return str_replace($c, $d, $a);
     } elseif ($b == 1) {
-        $e = str_replace($d, $c, $a); //Bytter om
+        return str_replace($d, $c, $a);
     }
-    return ($e);
 }
 
 function famidtoname($id, $link = 0)
@@ -488,7 +490,7 @@ function canUseFunction($jail, $bunker)
                     'Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
             <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $fe))
                 ) .
-                '<script>teller(' . $fe . ', "fengsel", false, \'ned\');</script>';
+                '<script type="text/javascript">teller(' . $fe . ', "fengsel", false, \'ned\');</script>';
         }
     }
     if ($bunker === 1) {
