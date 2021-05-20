@@ -25,7 +25,7 @@ if (isset($_SESSION['sessionzar'])) {
           content="<?= KEYWORDS; ?>">
     <meta name="author"
           content="<?= UTVIKLER; ?>">
-    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/jquery-3.6.0.js"></script>
     <script src="js/handler.js"></script>
     <script src="js/tabs.js"></script>
 </head>

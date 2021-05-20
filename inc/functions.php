@@ -6,12 +6,17 @@
 function startpage($title = NAVN_DOMENE)
 {
     global $obj, $db;
-    $jail = $db->query(
-        "SELECT COUNT(*) as `numrows` FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL"
-    );
-    $numrows = $jail->fetchColumn();
-    $GLOBALS["stored_queries"]["jail"] = $numrows;
-    $anyjail = ($numrows > 0) ? " (" . $numrows . ")" : null;
+    try {
+        $jail = $db->query(
+            "SELECT COUNT(*) as `numrows` FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL"
+        );
+        $numrows = $jail->fetchColumn();
+        $GLOBALS["stored_queries"]["jail"] = $numrows;
+        $anyjail = ($numrows > 0) ? " (" . $numrows . ")" : null;
+    } catch (Exception $e) {
+        error_log("Kunne ikke laste inn fengsel fra database, feilmelding: " . $e->getMessage());
+    }
+
     $online = $db->query(
         "SELECT COUNT(*) as `numrows` FROM `users` WHERE `lastactive` BETWEEN (UNIX_TIMESTAMP() - 1800)
     AND UNIX_TIMESTAMP() ORDER BY `lastactive` DESC"

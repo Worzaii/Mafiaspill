@@ -2,48 +2,67 @@
 
 global $db, $obj;
 $ant = $GLOBALS["stored_queries"]["online"];
-$sql3 = $db->query("SELECT COUNT(*) as `numrows` FROM `chat`");
-$num2 = $sql3->fetchObject()->numrows;
-$ant2 = $GLOBALS["stored_queries"]["jail"];
-#error_log("Antall i fengsel lagret i array: " . $ant2);
-$klpre = $db->prepare(
-    "SELECT timewait FROM `krimlogg` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1"
-);
-$klpre->execute([$obj->id]);
-if ($res = $klpre->fetchColumn()) {
-    $ktl = (($res - time()) >= 1) ? ($res - time()) : null;
-} else {
-    $ktl = null;
+try {
+    $sql3 = $db->query("SELECT COUNT(*) as `numrows` FROM `chat`");
+    $num2 = $sql3->fetchObject()->numrows;
+    $ant2 = $GLOBALS["stored_queries"]["jail"];
+} catch (Exception $e) {
+    error_log("Kunne ikke laste inn chat fra database, feilmelding: " . $e->getMessage());
 }
-$clpre = $db->prepare(
-    "SELECT `timewait` FROM `carslog` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1"
-);
-$clpre->execute([$obj->id]);
-if ($wait = $clpre->fetchColumn()) {
-    $btl = (($wait - time()) >= 1) ? ($wait - time()) : null;
-} else {
-    $bt = null;
-    $btl = null;
+try {
+    $klpre = $db->prepare(
+        "SELECT timewait FROM `krimlogg` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `timestamp` DESC LIMIT 0,1"
+    );
+    $klpre->execute([$obj->id]);
+    if ($res = $klpre->fetchColumn()) {
+        $ktl = (($res - time()) >= 1) ? ($res - time()) : null;
+    } else {
+        $ktl = null;
+    }
+} catch (Exception $e) {
+    error_log("Kunne ikke laste inn krimlogg fra database, feilmelding: " . $e->getMessage());
 }
-$rlpre = $db->prepare(
-    "SELECT timestamp FROM `rob_log` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1"
-);
-$rlpre->execute([$obj->id]);
-if ($wait = $rlpre->fetchColumn()) {
-    $rtl = (($wait - time()) >= 1) ? ($wait - time()) : null;
-} else {
-    $rt = null;
-    $rtl = null;
+try {
+    $clpre = $db->prepare(
+        "SELECT `timewait` FROM `carslog` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1"
+    );
+    $clpre->execute([$obj->id]);
+    if ($wait = $clpre->fetchColumn()) {
+        $btl = (($wait - time()) >= 1) ? ($wait - time()) : null;
+    } else {
+        $bt = null;
+        $btl = null;
+    }
+} catch (Exception $e) {
+    error_log("Kunne ikke laste inn carslog fra database, feilmelding: " . $e->getMessage());
 }
-$jailself = $db->prepare(
-    "SELECT timeleft FROM `jail` WHERE `uid` = ? AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1"
-);
-$jailself->execute([$obj->id]);
-if ($jail = $jailself->fetchObject()) {
-    $jte = (($jail->timeleft - time()) >= 1) ? ($jail->timeleft - time()) : null;
-} else {
-    $jt = null;
-    $jte = null;
+try {
+    $rlpre = $db->prepare(
+        "SELECT timestamp FROM `rob_log` WHERE `uid` = ? AND `timestamp` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 1"
+    );
+    $rlpre->execute([$obj->id]);
+    if ($wait = $rlpre->fetchColumn()) {
+        $rtl = (($wait - time()) >= 1) ? ($wait - time()) : null;
+    } else {
+        $rt = null;
+        $rtl = null;
+    }
+} catch (Exception $e) {
+    error_log("Kunne ikke laste inn rob_log fra database, feilmelding: " . $e->getMessage());
+}
+try {
+    $jailself = $db->prepare(
+        "SELECT timeleft FROM `jail` WHERE `uid` = ? AND `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL ORDER BY `id` DESC LIMIT 1"
+    );
+    $jailself->execute([$obj->id]);
+    if ($jail = $jailself->fetchObject()) {
+        $jte = (($jail->timeleft - time()) >= 1) ? ($jail->timeleft - time()) : null;
+    } else {
+        $jt = null;
+        $jte = null;
+    }
+} catch (Exception $e) {
+    error_log("Kunne ikke laste inn jail fra database, feilmelding: " . $e->getMessage());
 }
 $onl = "online.php";
 ?>
@@ -108,10 +127,10 @@ $onl = "online.php";
 <h2>Sosialt</h2>
 <ul>
     <li><a href="chat.php">Chat</a><?php
-    if ($num2 >= 2) {
-        echo "($num2)";
-    }
-    ?></li>
+        if ($num2 >= 2) {
+            echo "($num2)";
+        }
+        ?></li>
     <!--<li><a href="nyforum.php?type=1">Generelt Forum </a></li>
     <li><a href="nyforum.php?type=2">Salg og Søknadsforum </a></li>
     <li><a href="nyforum.php?type=3">Annet </a></li>-->
@@ -121,6 +140,7 @@ $onl = "online.php";
     } else {
         echo '<li><a href="Familie">Gjengene </a></li>';
     }*/
+
     ?>
 </ul>
 <h2>Gambling</h2>

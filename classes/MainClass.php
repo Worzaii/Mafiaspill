@@ -7,6 +7,13 @@ abstract class MainClass
     protected PDO $database;
     protected string $title;
 
+    /**
+     * MainClass constructor.
+     * <p>Defaults to __construct()->execute()->loadpage()</p>
+     * @param User $user
+     * @param PDO $database
+     * @param string $title
+     */
     public function __construct(User $user, PDO $database, string $title = "ReplaceMe")
     {
         $this->user = $user;

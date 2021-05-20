@@ -1,5 +1,10 @@
 #!/usr/bin/php
 <?php
+
+/**
+ * TODO: Broken in PHP8.0!!! Need to find some sort of fix for this.
+ */
+
 if (php_sapi_name() != "cli") {
     /*If someone were to try running it from the browser, it would stop the entirety of PHP execution, so stopping it here already to be safe*/
     die("This script must be run in Command line by an admin of the game!");
@@ -75,7 +80,7 @@ Status: ";
                         ]
                     );
                     echo "\nKommando utført!\nAntall rader endret: " . $userq->rowCount(
-                        ) . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
+                    ) . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
                 } else {
                     echo "Brukernavn eksisterer allerede! Forsøk et annet brukernavn!\n\n";
                 }
@@ -129,7 +134,7 @@ END;
                                             echo "Ny bankverdi for $user satt til $bank! \n\n";
                                         } else {
                                             echo "Kunne ikke sette ny verdi! Feilmelding: \n" . $updateuser->errorCode(
-                                                ) . ": " . $updateuser->errorInfo() . "\n\n";
+                                            ) . ": " . $updateuser->errorInfo() . "\n\n";
                                         }
                                     } elseif ($bank[0] == '-') {
                                         /**
@@ -172,7 +177,7 @@ END;
                                              * Couldn't update user status. Show error:
                                              */
                                             echo "Kunne ikke oppdaterer status: " . $updateuser->errorCode(
-                                                ) . ": " . $updateuser->errorInfo() . "\n\n\n";
+                                            ) . ": " . $updateuser->errorInfo() . "\n\n\n";
                                         }
                                     } else {
                                         echo "Avbryter endring og går tilbake til hovedmeny.\n\n";
@@ -182,7 +187,7 @@ END;
                                     }
                                 } else {
                                     echo "Kunne ikke hente brukerdata: " . $updateuser->errorCode(
-                                        ) . ": " . $updateuser->errorInfo() . "\n\n\n";
+                                    ) . ": " . $updateuser->errorInfo() . "\n\n\n";
                                 }
                                 $choice = 0;
                                 $endrechoice = 0;
@@ -263,13 +268,15 @@ DATA;
                             $preparedelete = $db->prepare(
                                 "delete from users where id = ? and user = ? and status = ? limit 1"
                             );
-                            if ($preparedelete->execute(
-                                [
+                            if (
+                                $preparedelete->execute(
+                                    [
                                     $userinfo->id,
                                     $userinfo->user,
                                     $userinfo->status
-                                ]
-                            )) {
+                                    ]
+                                )
+                            ) {
                                 if ($preparedelete->rowCount() == 1) {
                                     echo "Brukerkontoen har blitt slettet. Ta vare på informasjonen over om det på et tidspunkt blir nødvendig å legge inn dataene på nytt.\n\n";
                                 } else {
@@ -277,21 +284,21 @@ DATA;
                                 }
                             } else {
                                 echo "Kunne ikke utføre sletting av brukerkonto!\n" . $preparedelete->errorCode(
-                                    ) . ": " . $preparedelete->errorInfo();
+                                ) . ": " . $preparedelete->errorInfo();
                             }
                         } else {
                             echo "Du skrev ikke riktig tekst. Hvis du skrev feil så må du gjenta hele prosessen, om ikke vil det bli tatt som at du ønsket å avbryte slettingen av dataene. Returnerer til hovedmeny...\n\n";
                         }
                     } else {
                         echo "Utføringen av kommandoen fungerte ikke!\n" . $preparedelete->errorCode(
-                            ) . ": " . $preparedelete->errorInfo();
+                        ) . ": " . $preparedelete->errorInfo();
                     }
                 } else {
                     echo "Fant $numrows brukere på $bruker. Kan ikke fortsette, går til hovedmeny...\n\n";
                 }
             } else {
                 echo "Kunne ikke sjekke om brukerkonto eksisterer.\n" . $preparedelete->errorCode(
-                    ) . ": " . $preparedelete->errorInfo();
+                ) . ": " . $preparedelete->errorInfo();
             }
         } else {
             echo "Enten skrev du ikke rett eller ønsket å avbryte slettingen. Du må velge fra hovedmenyen på nytt om du ønsker å slette.\n\n";
@@ -314,12 +321,14 @@ DATA;
             $newpass = readline("Nytt passord: ");
             $newpass = (strlen($newpass) <= 3) ? genpass() : $newpass;
             $update = $db->prepare("update users set pass = ? where $queryadd = ?");
-            if ($update->execute(
-                [
+            if (
+                $update->execute(
+                    [
                     password_hash($newpass, PASSWORD_DEFAULT),
                     $value
-                ]
-            )) {
+                    ]
+                )
+            ) {
                 if ($update->rowCount() == 1) {
                     echo "Passordet har blitt satt til: " . $newpass;
                 }
