@@ -136,16 +136,6 @@ function bilde($i)
     return ($res);
 }
 
-function ipbanned($ip)
-{
-    global $db;
-    $st = $db->prepare("SELECT `reason` FROM `ipban` WHERE `ip` = ? AND `active` = 1 ORDER BY `id` DESC LIMIT 1");
-    $st->execute([ip2long($ip)]);
-    if ($reason = $st->fetchColumn()) {
-        die('<p>' . $ip . ' er blokkert fra dette stedet, grunnet:<br>' . $reason . '</p>');
-    }
-}
-
 function timec($sec)
 {
     $res = null;
@@ -245,14 +235,6 @@ function firma($id)
         return [$f->Navn, $f->Eier, $f->Type, $f->Konto, $f->By];
     } else {
         return false;
-    }
-}
-
-function liv_check()
-{
-    global $obj;
-    if ($obj->health <= 0) {
-        return require("death.php");
     }
 }
 

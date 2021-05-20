@@ -26,4 +26,4 @@ nbproject/project.xml
 /localssl/
 /system/error.log
 composer.phar
-/tests/*
+tests/lol.php

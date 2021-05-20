@@ -1,13 +1,15 @@
 <?php
 
-define("LVL", true);
+const LVL = true;
 include "../core.php";
 header('Content-type: application/json');
 $str = ['string' => feil('Error: Action not set!'), 'state' => 0];
 if (isset($_POST["action"]) && isset($_POST["id"])) {
     $ac = $_POST['action'];
     $id = $_POST['id'];
+    /** @var PDO $db */
     $pre = $db->prepare("select count(*) as numrows from mafia.news where id = ? and userlevel >= ?");
+    /** @var User $obj */
     $pre->execute([$id, $obj->status]);
     if ($pre->fetchColumn() == 1) {
         if ($ac == 1) {

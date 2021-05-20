@@ -55,8 +55,6 @@ if (isset($_SESSION['sessionzar'])) {
                 'Klikk her for å gå til innloggingssiden: <a href="' . WWWPATH . 'loggut.php">Index</a></h1>';
             die();
         }
-        liv_check();
-        ipbanned($ip);
         if ($obj->forceout == 1) {
             $db->query("UPDATE `users` SET `forceout` = '0' WHERE `id` = '{$obj->id}'");
             die(
