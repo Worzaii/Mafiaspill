@@ -2,12 +2,16 @@
 
 include("core.php");
 startpage("Ledelsen");
+/** @var PDO $db */
 $getcrewcount = $db->query("SELECT count(*) FROM `users` WHERE `status` IN('1','2') ORDER BY `status` ASC, `id` ASC");
+$crewcontent = "";
 if ($getcrewcount->fetchColumn() >= 1) {
     $getcrew = $db->query(
-        "SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `status` IN('1','2') ORDER BY `status` ASC, `id` ASC"
+        "SELECT id,user,status,(unix_timestamp() - lastactive) as last
+FROM `users`
+WHERE `status` IN('1','2') ORDER BY `status` ASC, `id` ASC"
     );
-    $crewcontent = "";
+    $getcrew->execute();
     while ($r = $getcrew->fetchObject()) {
         if ($r->status == 1) {
             $st = '<span class="stat1">Admin</span>';
@@ -18,7 +22,7 @@ if ($getcrewcount->fetchColumn() >= 1) {
         $crewcontent .= <<<HTML
       <tr>
           <td>$user <b>(</b>$st<b>)</b></td>
-              <td><span id="cuser$r->id"></span><script>teller($r->last,"cuser$r->id",false,"opp");</script></td>
+              <td><span id="cuser$r->id"></span><script type="text/javascript">teller($r->last,"cuser$r->id",false,"opp");</script></td>
       </tr>
 HTML;
     }
@@ -27,18 +31,18 @@ HTML;
 }
 
 $forummodsnum = $db->query("SELECT count(*) FROM `users` WHERE `status` = '3' ORDER BY `id` ASC");
+$forumcontent = "";
 if ($forummodsnum->fetchColumn() >= 1) {
     $forummods = $db->query(
         "SELECT id,user,status, (unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '3' ORDER BY `id` ASC"
     );
-    $forumcontent = "";
     while ($r = $forummods->fetchObject()) {
         $st = '<span class="stat3">Forum Moderator</span>';
         $user = user($r->id);
         $forumcontent .= <<<HTML
       <tr>
           <td>$user <b>(</b>$st<b>)</b></td>
-              <td><span id="fuser$r->id"></span><script>teller($r->last,"fuser$r->id",false,"opp");</script></td>
+              <td><span id="fuser$r->id"></span><script type="text/javascript">teller($r->last,"fuser$r->id",false,"opp");</script></td>
       </tr>
 HTML;
     }
@@ -47,17 +51,17 @@ HTML;
 }
 
 $piccount = $db->query("SELECT count(*) FROM `users` WHERE `status` = '4' ORDER BY `id` ASC");
+$piccontent = "";
 if ($piccount->fetchColumn() >= 1) {
     $picmk = $db->query(
         "SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '4' ORDER BY `id` ASC"
     );
-    $piccontent = "";
     while ($r = $picmk->fetchObject()) {
         $user = user($r->id);
         $piccontent .= <<<HTML
     <tr>
         <td>$user <b>(</b><span class="stat4">Picmaker</span><b>)</b></td>
-            <td><span id="puser$r->id"></span><script>teller($r->last,"puser$r->id",false,"opp");</script></td>
+            <td><span id="puser$r->id"></span><script type="text/javascript">teller($r->last,"puser$r->id",false,"opp");</script></td>
     </tr>
 HTML;
     }
@@ -65,11 +69,11 @@ HTML;
     $piccontent .= '<tr><td colspan="2"><em>Fant ingen picmakere...</em></td></tr>';
 }
 $supportscount = $db->query("SELECT COUNT(*) FROM `users` WHERE `support` = '1' ORDER BY `status` ASC, `id` ASC");
+$supportcontent = "";
 if ($supportscount->fetchColumn() >= 1) {
     $supports = $db->query(
         "SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `support` = '1' ORDER BY `status` ASC, `id` ASC"
     );
-    $supportcontent = "";
     while ($r = $supports->fetchObject()) {
         if ($r->status == 1) {
             $st = '<span class="stat1">Admin</span>';
@@ -86,7 +90,7 @@ if ($supportscount->fetchColumn() >= 1) {
         $supportcontent .= <<<HTML
     <tr>
         <td>$user  <b>(</b>$st<b>)</b></td>
-        <td><span id="suser$r->id"></span><script>teller($r->last,"suser$r->id",false,"opp");</script></td>
+        <td><span id="suser$r->id"></span><script type="text/javascript">teller($r->last,"suser$r->id",false,"opp");</script></td>
     </tr>
 HTML;
     }

@@ -15,7 +15,7 @@ if ($write = canUseFunction(jail: 1, bunker: 1)) {
         $left = $qf->timewait - time();
         echo feil(
                 'Du m&aring vente <span id="tid"></span> før neste gang!'
-            ) . '<script>teller(' . $left . ',"tid",false,"ned");</script>';
+            ) . '<script type="text/javascript">teller(' . $left . ',"tid",false,"ned");</script>';
     } else {
         if (isset($_POST['valget'])) {
             $v = $db->escape($_POST['valget']);
@@ -59,7 +59,7 @@ if ($write = canUseFunction(jail: 1, bunker: 1)) {
                                             + $se->punishtime) . "', 5000)"
                                     )) {
                                         echo feil(
-                                            'Tid igjen: <span id="fengsel"></span><script>teller(' . $se->punishtime . ',"fengsel",false,"ned");</script>'
+                                            'Tid igjen: <span id="fengsel"></span><script type="text/javascript">teller(' . $se->punishtime . ',"fengsel",false,"ned");</script>'
                                         );
                                     } else {
                                         echo feil('Prøvde å fengsle deg, men klarte det ikke... :7');

@@ -15,7 +15,7 @@ if (!(bunker())) {
             "H:i:s d.m.Y",
             (time() + $bu)
         ) . '</p>
-	<script>
+	<script type="text/javascript">
 	teller(' . $bu . ',\'bunker\',false,\'ned\');
 	</script>
 	';
@@ -161,7 +161,7 @@ if (!(bunker())) {
                         <td>' . user($r->uid, 0) . '</td>
                             <td>' . $r->reason . '</td>
                                 <td><span id="f' . $r->id . '"></span>
-                                    <script>teller(' . $left . ',"f' . $r->id . '",false,"ned");</script>
+                                    <script type="text/javascript">teller(' . $left . ',"f' . $r->id . '",false,"ned");</script>
                                 </td>
                                 <td>' . number_format($r->priceout) . 'kr</td>
                         </tr>';
@@ -198,7 +198,7 @@ if (!(bunker())) {
         </table>
         <input type="hidden" id="valget" value name="valget">
     </form>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $('.velg').hover(function () {
                 $(this).not(".valgt").removeClass().addClass('c_2 velg').css('cursor', 'pointer');

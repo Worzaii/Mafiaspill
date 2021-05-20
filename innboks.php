@@ -145,7 +145,7 @@ END;
     }
 }
 ?>
-    <script>
+    <script type="text/javascript">
         function goto(id) {
             window.location.href = 'innboks.php?page=les&id=' + id;
         }

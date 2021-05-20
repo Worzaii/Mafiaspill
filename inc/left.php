@@ -54,21 +54,21 @@ $onl = "online.php";
         echo '<li><a href="krim.php">Kriminalitet</a>';
     } else {
         echo '<li><a href="krim.php">Kriminalitet</a> <span style="font-size:10px;" id="krimteller">' . $ktl . '</span>
-<script>teller(' . $ktl . ',"krimteller",false,"ned");</script></li>';
+<script type="text/javascript">teller(' . $ktl . ',"krimteller",false,"ned");</script></li>';
     }
     if ($btl == null) {
         echo '<li><a href="biltyveri.php">Biltyveri</a>';
     } else {
         echo '<li><a href="biltyveri.php">Biltyveri</a> <span style="font-size:10px;" id="bilteller">' . $btl . '</span>
-<script>teller(' . $btl . ',"bilteller",false,"ned");</script></li>';
+<script type="text/javascript">teller(' . $btl . ',"bilteller",false,"ned");</script></li>';
     }
-//    if ($rtl == null) {
-//        echo '<li><a href="stjel.php">Ran Spiller</a>';
-//    } else {
-//        echo '<li><a href="stjel.php">Ran Spiller</a>
-//<span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
-//<script>teller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
-//    }
+    //    if ($rtl == null) {
+    //        echo '<li><a href="stjel.php">Ran Spiller</a>';
+    //    } else {
+    //        echo '<li><a href="stjel.php">Ran Spiller</a>
+    //<span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
+    //<script type="text/javascript">teller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
+    //    }
     if ($jte == null) {
         echo '<li><a href="fengsel.php">Fengsel</a>';
         if ($ant2 >= 1) {
@@ -77,30 +77,30 @@ $onl = "online.php";
         echo '</li>';
     } else {
         echo '<li><a href="fengsel.php">Fengsel</a> <span style="font-size:10px;" id="jailteller">' . $jte . '</span>
-<script>teller(' . $jte . ',"jailteller",false,"ned");</script></li>';
+<script type="text/javascript">teller(' . $jte . ',"jailteller",false,"ned");</script></li>';
     }
     ?>
     <li><a href="fly.php">Flyplass</a></li>
-    <li><a href="#Drap">Drap </a></li>
+    <!--<li><a href="#Drap">Drap </a></li>
     <li><a href="#oppdrag.php">Oppdrag</li>
-    <li><a href="#Ran">Ran </a></li>
+    <li><a href="#Ran">Ran </a></li>-->
 </ul>
 <h2>Verdier</h2>
 <ul>
-    <li><a href="#Marked">Svartebørsen </a></li>
-    <li><a href="#Bunker">Bunker </a></li>
+    <!--<li><a href="#Marked">Svartebørsen </a></li>
+    <li><a href="#Bunker">Bunker </a></li>-->
     <li><a href="bank.php">Banken </a></li>
-    <li><a href="#Poeng">Poeng </a></li>
+    <!--<li><a href="#Poeng">Poeng </a></li>
     <li><a href="#verving.php">Verving </a></li>
     <li><a href="#Auksjon">Auksjon </a></li>
     <li><a href="#Firmaer">Firmaer </a></li>
-    <li><a href="garasje.php">Garasje </a></li>
+    <li><a href="garasje.php">Garasje </a></li>-->
 </ul>
 <h2>Kommunikasjon</h2>
 <ul>
     <li><a href="innboks.php">Innboks</a></li>
-    <li><a href="#deputy.php">Send inn søknad!</a></li>
-    <li><a href="#support.php">Support</a></li>
+    <!--<li><a href="#deputy.php">Send inn søknad!</a></li>
+    <li><a href="#support.php">Support</a></li>-->
     <li><a href="<?= $onl; ?>">Spillere pålogget</a> (<?= $ant; ?>)</li>
     <li><a href="nyheter.php">Nyheter</a></li>
     <li><a href="ledelse.php">Ledelsen</a></li>
@@ -108,23 +108,23 @@ $onl = "online.php";
 <h2>Sosialt</h2>
 <ul>
     <li><a href="chat.php">Chat</a><?php
-        if ($num2 >= 2) {
-            echo "($num2)";
-        }
-        ?></li>
-    <li><a href="nyforum.php?type=1">Generelt Forum </a></li>
+    if ($num2 >= 2) {
+        echo "($num2)";
+    }
+    ?></li>
+    <!--<li><a href="nyforum.php?type=1">Generelt Forum </a></li>
     <li><a href="nyforum.php?type=2">Salg og Søknadsforum </a></li>
-    <li><a href="nyforum.php?type=3">Annet </a></li>
+    <li><a href="nyforum.php?type=3">Annet </a></li>-->
     <?php
-    if ($obj->family != null) {
+    /*if ($obj->family != null) {
         echo '<li><a href="familiepanel.php?side=konfam">Gjengen </a></li>';
     } else {
         echo '<li><a href="Familie">Gjengene </a></li>';
-    }
+    }*/
     ?>
 </ul>
 <h2>Gambling</h2>
 <ul>
-    <li><a href="Lotto">Lotto </a></li>
-    <li><a href="bj.php">Blackjack </a></li>
+    <!--<li><a href="Lotto">Lotto </a></li>
+    <li><a href="bj.php">Blackjack </a></li>-->
 </ul>

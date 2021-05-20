@@ -52,7 +52,7 @@ if ($s->fetchColumn() == 1) {
                 ?>
                 <div id="resetpassword">
                     <p>Tid som gjenstår med følgende kode: <span id="timeleft"></span>
-                        <script>teller(<?= $time; ?>, "timeleft", false, "ned");</script>
+                        <script type="text/javascript">teller(<?= $time; ?>, "timeleft", false, "ned");</script>
                     </p>
                     <hr>
                     <div id="resetpasswordresult"></div>

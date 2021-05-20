@@ -130,7 +130,7 @@ VALUES(?,'2',?)"
     {
         return '
         <p class="warning">Du må vente <span id="biltyveri">' . ($time - time()) . '</span> før neste krim.</p>
-        <script>
+        <script type="text/javascript">
         teller(' . ($time - time()) . ', "biltyveri", false, "ned");
         </script>
         ';

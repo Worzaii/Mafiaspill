@@ -12,13 +12,13 @@ if (fengsel()) {
             'Du er i fengsel, gjenstående tid: <span id="fengsel">' . $bu . '</span>
 <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $bu))
         ) .
-        '<script>teller(' . $bu . ', "fengsel", false, \'ned\');</script>';
+        '<script type="text/javascript">teller(' . $bu . ', "fengsel", false, \'ned\');</script>';
 } elseif (bunker()) {
     $bu = bunker(true);
     echo '
     <p class="feil">Du er i bunker, gjenstående tid:
     <span id="bunker">' . $bu . '</span><br>Du er ute kl. ' . date("H:i:s d.m.Y", $bu) . '</p>
-    <script>
+    <script type="text/javascript">
     teller(' . ($bu - time()) . ', "bunker", false, \'ned\');
     </script>
     ';
@@ -38,7 +38,7 @@ if (fengsel()) {
         if (time() < $f->timewait) {
             echo '
         <p class="warning">Du må vente <span id="krim">' . ($f->timewait - time()) . '</span> før neste krim.</p>
-        <script>
+        <script type="text/javascript">
         teller(' . ($f->timewait - time()) . ', "krim", false, "ned");
         </script>
         ';
@@ -97,7 +97,7 @@ if (fengsel()) {
                                 echo '
                                 <p class="lykket">Du var heldig og fikk ' . number_format($kr) . 'kr med deg!</p>
                                 <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
-                                <script>
+                                <script type="text/javascript">
                                 teller(' . $v->untilnext . ', "krim", false, \'ned\');
                                 </script>
                                 ';
@@ -130,7 +130,7 @@ if (fengsel()) {
                                 echo '
               <p class="feil">Du klarte det ikke!</p>
               <p class="feil">Tid til neste krim: <span id="krim">' . $v->untilnext . '</span>.</p>
-              <script>
+              <script type="text/javascript">
               teller(' . $v->untilnext . ', "krim", false, \'ned\');
               </script>
               ';
@@ -145,7 +145,7 @@ if (fengsel()) {
                                 if ($db->affected_rows() == 1) {
                                     echo '
                 <p class="feil">Du ble satt i fengsel! <br>Gjenstående tid: <span id="krim2">' . ($v->punishtime) . '</span>.</p>
-                <script>
+                <script type="text/javascript">
                 teller(' . $v->punishtime . ', "krim2", false, \'ned\');
                 </script>
                 ';
@@ -221,7 +221,7 @@ if (fengsel()) {
                            name="valget"
                            id="valget">
                 </form>
-                <script>
+                <script type="text/javascript">
                     function sendpost(valg) {
                         $('#valget').val(valg);
                         $('#krim').submit();

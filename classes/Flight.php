@@ -61,7 +61,7 @@ class Flight
     {
         return '
         <p class="warning">Du må vente <span id="flight">' . $time . '</span> før neste flytur.</p>
-        <script>
+        <script type="text/javascript">
         teller(' . $time . ', "flight", false, "ned");
         </script>
         ';

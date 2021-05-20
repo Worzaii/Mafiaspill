@@ -8,7 +8,7 @@ if (bunker()) {
     $tid = date("H:i:s d.m.Y", $bu);
     echo <<<HTML
     <p class="feil">Du er i fengsel, gjenstående tid: <span id="fengsel">$bu</span><br>Du er ute: $tid</p>
-    <script>
+    <script type="text/javascript">
     teller('$bu','bunker',false,'ned');
     </script>
     ';
@@ -18,7 +18,7 @@ HTML;
     $tid = date("H:i:s d.m.Y", $fe);
     echo <<<HTML
     <p class="feil">Du er i fengsel, gjenstående tid: <span id="fengsel">$fe</span><br>Du er ute: $tid</p>
-    <script>
+    <script type="text/javascript">
     teller('$fe','bunker',false,'ned');
     </script>
     ';
@@ -210,7 +210,7 @@ HTML;
             <tr>
                 <th colspan="2">Tid igjen:
                     <span id="lottoleft"></span>
-                    <script>
+                    <script type="text/javascript">
                         teller(<?php if (empty($left)) {
                             echo($conf->Tid * 60);
                         } else {

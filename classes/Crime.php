@@ -45,7 +45,7 @@ class Crime extends MainClass
 
         return '
         <p class="warning">Du må vente <span id="krim">' . ($time - time()) . '</span> før neste krim.</p>
-        <script>
+        <script type="text/javascript">
         teller(' . ($time - time()) . ', "krim", false, "ned");
         </script>
         ';
@@ -124,7 +124,7 @@ class Crime extends MainClass
                     $this->out .= '
                         <p class="lykket">Du var heldig og fikk ' . number_format($kr) . 'kr med deg!</p>
                         <p class="feil">Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.</p>
-                        <script>
+                        <script type="text/javascript">
                         teller(' . $info->untilnext . ', "krim", false, \'ned\');
                         </script>
                     ';
@@ -158,7 +158,7 @@ class Crime extends MainClass
                     $this->out .= feil(
                         'Du klarte det ikke! <br>Tid til neste krim: <span id="krim">' . $info->untilnext . '</span>.'
                     ) . '
-              <script>
+              <script type="text/javascript">
               teller(' . $info->untilnext . ', "krim", false, \'ned\');
               </script>
               ';
@@ -180,7 +180,7 @@ class Crime extends MainClass
                     $this->out .= feil('Du klarte det ikke, og politiet oppdaget deg!');
                     if ($q->rowCount() == 1) {
                         $this->out .= feil(
-                            'Du ble satt i fengsel! <br>Gjenstående tid: <span id="krim2">' . ($info->punishtime) . '</span>.<script>teller(' . $info->punishtime . ', "krim2", false, \'ned\');</script>'
+                            'Du ble satt i fengsel! <br>Gjenstående tid: <span id="krim2">' . ($info->punishtime) . '</span>.<script type="text/javascript">teller(' . $info->punishtime . ', "krim2", false, \'ned\');</script>'
                         );
                         $jailed = true;
                     } else {
@@ -260,7 +260,7 @@ class Crime extends MainClass
                    name="valget"
                    id="valget">
         </form>
-        <script>
+        <script type="text/javascript">
           function sendpost(valg) {
             $('#valget').val(valg);
             $('#krim').submit();

@@ -12,13 +12,13 @@ if ($obj->image == null || $obj->image == '') {
 <a href="profil.php?id=<?= $obj->id; ?>"><img id="avatar" src="<?= $img; ?>" alt=""></a>
 <?php
 if (r1() || r2() || r3() || supp()) {
-    echo '<h2>Paneler</h2><ul>';
-    echo '<li><a href="panel.php" title="Paneler du har tilgjengelige vises her">Dine paneler</a></li>';
+    echo '<h2>Paneler</h2>';
+    /*echo '<ul><li><a href="panel.php" title="Paneler du har tilgjengelige vises her">Dine paneler</a></li>';
 
     if (r1() || r2() || supp()) {
         echo '<li><a href="supportpanel.php">Supportsenter</a></li>';
     }
-    echo '</ul>';
+    echo '</ul>';*/
 }
 ?>
 <h2><?= htmlentities($obj->user); ?></h2>
@@ -34,24 +34,25 @@ if (r1() || r2() || r3() || supp()) {
         </div>
     </li>
     <!--<li>Familie: <?= /*($obj->family == null) ? "<i>ingen</i>" :
-            '<a href="#">' . famidtoname($obj->family, 1) . '</a>';*/null ?></li>-->
+            '<a href="#">' . famidtoname($obj->family, 1) . '</a>';*/
+    null ?></li>-->
     <li>Kuler: <?= number_format($obj->bullets); ?>
     <li>Våpen: <?= weapon($obj->weapon) ?></li>
 </ul>
 <h2>Oversikt</h2>
 <ul>
-    <li><a href="#">FAQ</a></li>
+    <!--<li><a href="#">FAQ</a></li>
     <li><a href="#">BB-koder</a></li>
     <li><a href="/minside.php">Min side</a></li>
     <li><a href="/statistikk.php">Statistikk</a></li>
-    <li><a href="/Ranstikk">Ran statistikk</a></li>
+    <li><a href="/Ranstikk">Ran statistikk</a></li>-->
 </ul>
 <h2>Innstillinger</h2>
 <ul>
-    <li><a href="endre.php">Endre innstillinger</a></li>
+    <!--<li><a href="endre.php">Endre innstillinger</a></li>
     <li><a href="finnspiller.php">Finn spiller</a></li>
     <li><a href="endreprofil.php">Endre profil</a></li>
-    <li><a href="nypassord.php">Endre passord</a></li>
+    <li><a href="nypassord.php">Endre passord</a></li>-->
     <li><a href="loggut.php" onclick="return confirm('Er du sikker på at du vil logge ut? ')">Logg
             ut</a></li>
 </ul>

@@ -1,20 +1,19 @@
-function teller(tid, span, redir, oppned) {
+function teller(tid = 0, span = "", redir = false, oppned = "ned")
+{
     let skriv = '';
     let id = document.getElementById(span);
     let week = Math.floor(tid / 604800);
     let day = Math.floor((tid - (week * 604800)) / 86400);
     let tim = Math.floor((tid - ((week * 604800) + (day * 86400))) / 3600);
     let min = Math.floor(
-        (tid - ((week * 604800) + (day * 86400) + (tim * 3600))) / 60);
+        (tid - ((week * 604800) + (day * 86400) + (tim * 3600))) / 60
+    );
     let sec = Math.floor(
-        tid - ((week * 604800) + (day * 86400) + (tim * 3600) + (min * 60)));
+        tid - ((week * 604800) + (day * 86400) + (tim * 3600) + (min * 60))
+    );
     if (week !== 0) {
         skriv = week;
-        if (week > 1) {
-            skriv = skriv + 'u';
-        } else {
-            skriv = skriv + 'u';
-        }
+        skriv = skriv + 'u';
     }
     if (day !== 0) {
         if (week !== 0) {
@@ -81,6 +80,7 @@ function teller(tid, span, redir, oppned) {
         }
         setTimeout(
             'teller(' + tid + ',"' + span + '",' + redir + ',"' + oppned + '");',
-            1000);
+            1000
+        );
     }
 }

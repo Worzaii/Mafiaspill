@@ -39,7 +39,7 @@ if (!r1()) {
             $user = $u->user;
             echo <<<HTML
     <form method="post" action="player_logoff.php?usr=$user">
-    Sist aktiv: <span id="utid"></span><script>teller($tid,"utid",false,"opp");</script>
+    Sist aktiv: <span id="utid"></span><script type="text/javascript">teller($tid,"utid",false,"opp");</script>
     <input type="submit" name="utlogg" value="Logg ut spilleren!">
     </form>
 HTML;

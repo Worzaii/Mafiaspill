@@ -42,7 +42,7 @@ if ($s->fetchColumn() == 1) {
     echo <<<HTML
 	<div style="border-width: 2px; border-style: dotted; border-color: red; "><p class="feil"> Du er utestengt fra forumet!</p>
 	<br><b>Du har blitt utestengt av forumet av $banner og derfor kan du se chatten men uten tilgang til å skrive.<br>
-    Du har </h3><span id="$uid"></span><script>teller($timeleft,"$uid","true","ned");</script> igjen av straffen din. Hvis du mener du har fått den ved en feiltagelse, kontakt Support!<br><br>
+    Du har </h3><span id="$uid"></span><script type="text/javascript">teller($timeleft,"$uid","true","ned");</script> igjen av straffen din. Hvis du mener du har fått den ved en feiltagelse, kontakt Support!<br><br>
 	Grunnen for at du ble utestengt er: $grunn</b></div><br>
 HTML;
 } else {

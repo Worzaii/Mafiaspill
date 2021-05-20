@@ -84,7 +84,7 @@ ORDER BY `lastactive` DESC"
           <tr>
           <td style="cursor:pointer;" onclick="window.location=\'profil.php?id=' . $r->id . '\'">
           ' . status($r->user) . '</td><td><span id="id' . $r->id . '"></span>
-          <script>teller(' . $newtime . ',"id' . $r->id . '",false,"opp");</script></td>
+          <script type="text/javascript">teller(' . $newtime . ',"id' . $r->id . '",false,"opp");</script></td>
           ' . $add2 . $add3 . '
           </tr>
           ';
@@ -143,7 +143,7 @@ if (r1() || r2()) {
           <tr>
           <td style="cursor:pointer;" onclick="window.location=\'profil.php?id=' . $s->id . '\'">
           ' . status($s->user) . '</td><td><span id="id' . $s->id . '"></span>
-          <script>teller(' . $newtime . ',"id' . $s->id . '",false,"opp");</script>
+          <script type="text/javascript">teller(' . $newtime . ',"id' . $s->id . '",false,"opp");</script>
           ' . $add2 . $add3 . '
           </tr>
           ';

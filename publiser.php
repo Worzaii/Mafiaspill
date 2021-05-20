@@ -1,6 +1,8 @@
 <?php
 
 include("core.php");
+$news = new News(user:$obj, database: $db, title: "Publiser nyhet!");
+die();
 if (r1() || r2()) {
     startpage("Publiser nyheter");
     ?>
@@ -64,7 +66,7 @@ if (r1() || r2()) {
                                                                           value="Publiser nyheten!">
         </form>
     </div>
-    <script>
+    <script type="text/javascript">
         $('#rang').change(function () {
             let $sp = $('#rankrange');
 

@@ -1,8 +1,8 @@
-#!/usr/bin/php7.4
+#!/usr/bin/php
 <?php
 if (php_sapi_name() != "cli") {
     /*If someone were to try running it from the browser, it would stop the entirety of PHP execution, so stopping it here already to be safe*/
-    die("This script must be run in Command line!");
+    die("This script must be run in Command line by an admin of the game!");
 }
 chdir(dirname(__FILE__)); # This allows the script to be run from wherever php started if from.
 /**
