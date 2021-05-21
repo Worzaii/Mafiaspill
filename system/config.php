@@ -51,7 +51,7 @@ const MAIL_SENDER = 'werzaire.net';
 const UTVIKLER = 'Nicholas Arnesen';
 const DESC = 'Kommer senere...';
 const KEYWORDS = 'mafia, spill';
-define("HENVEND_MAIL", $_SERVER['mailto']);
+define("HENVEND_MAIL", ((isset($_SERVER['mailto'])) ? $_SERVER['mailto'] : "root@localhost.localdomain"));
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 if (php_sapi_name() != "cli") {
     define("WWWPATH", "https://" . $_SERVER["HTTP_HOST"]);

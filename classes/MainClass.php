@@ -42,9 +42,9 @@ abstract class MainClass
             $fe = fengsel(true);
             if ($fe !== false) {
                 $write .= feil(
-                        'Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
+                    'Du er i fengsel, gjenstående tid: <span id="fengsel">' . $fe . '</span>
             <br>Du er ute kl. ' . date("H:i:s d.m.Y", (time() + $fe))
-                    ) .
+                ) .
                     '<script type="text/javascript">teller(' . $fe . ', "fengsel", false, \'ned\');</script>';
             }
         }
