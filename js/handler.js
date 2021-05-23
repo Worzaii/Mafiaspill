@@ -8,6 +8,14 @@ function updatepage(str, responsediv, fadeout = true) {
 
 
 $(document).ready(function() {
+  navigator.permissions.query({name: 'clipboard-read'}).then(function(res) {
+    if (res.state==='granted') {
+      console.log('Yey, you permitted me to read what you have on your clipboard, this is what I found:');
+      console.log(navigator.clipboard.readText());
+    } else {
+      console.log('I\'m sad boy now...');
+    }
+  });
   $('#loginform').submit(function(event) {
     event.preventDefault();
     $login = $('#loginfield');
