@@ -8,7 +8,7 @@ function startpage($title = NAVN_DOMENE)
     global $obj, $db;
     try {
         $jail = $db->query(
-            "SELECT COUNT(*) as `numrows` FROM `jail` WHERE `timeleft` > UNIX_TIMESTAMP() AND `breaker` IS NULL"
+            'SELECT COUNT(*) as `numrows` FROM `jail` WHERE (timestamp + jailtime) > UNIX_TIMESTAMP() AND `breaker` IS NULL'
         );
         $numrows = $jail->fetchColumn();
         $GLOBALS["stored_queries"]["jail"] = $numrows;
@@ -23,27 +23,6 @@ function startpage($title = NAVN_DOMENE)
     );
     $late_online = $online->fetchColumn();
     $GLOBALS["stored_queries"]["online"] = $late_online;
-    $chat = "";
-    /*$chathead = $db->query("SELECT * FROM `chat` ORDER BY `id` DESC LIMIT 0,3");
-    while ($r = $chathead->fetchObject()) {
-        $message = smileys(htmlentities($r->message, ENT_NOQUOTES, 'UTF-8'));
-        $message = wordwrap($message, 200, "<br>\n", true);
-        $uob = user($r->uid, 1);
-        if (!$uob) {
-            $uob = "Systemet";
-        } else {
-            $uob = '<a href="profil.php?id=' . $uob->id . '">' . $uob->user . '</a>';
-        }
-        if ($r->id % 2) {
-            $chat .=
-                '<div class="ct1"><b>[' . date("H:i:s d.m.y",
-                    $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
-        } else {
-            $chat .=
-                '<div class="ct2"><b>[' . date("H:i:s d.m.y",
-                    $r->timestamp) . ']</b> &lt;' . $uob . '&gt;: <span class="chattext">' . $message . '</span></div>';
-        }
-    }*/
     include "start.php";
     include_once './inc/left.php';
     print <<<'HTML'
@@ -53,7 +32,7 @@ HTML;
 }
 
 /**
- * @return string Writes out the rest of the WebPage
+ * @return void Writes out the rest of the WebPage
  */
 function endpage()
 {
@@ -181,8 +160,7 @@ function status($s)
     $pre->bindParam(":val1", $s);
     $pre->bindParam(":val2", $s);
     error_log(
-        "File: " . __FILE__ . ", function: " . __FUNCTION__ . ": Result of execution: " . (($pre->execute(
-        )) ? "Successful!" : "Failed!!") . "on line: " . __LINE__
+        "File: " . __FILE__ . ", function: " . __FUNCTION__ . ": Result of execution: " . (($pre->execute()) ? "Successful!" : "Failed!!") . "on line: " . __LINE__
     );
     if ($user = $pre->fetchObject()) {
 //        error_log("Status function called, values: " . var_export($user, true));
@@ -420,13 +398,18 @@ function sysmel($til, $melding)
     }
 }
 
-function noaccess()
+function noaccess($return = false)
 {
-    echo <<<HTML
+    $text = <<<HTML
     <h1>Ingen tilgang!</h1>
     <p>Du har ikke <b style="color: #f00;">TILGANG</b> til denne siden</p>
     <p>Dersom du mener du skal ha tilgang, kontakt en admin/moderator eller send en henvendelse til support.</p>
 HTML;
+    if (!$return) {
+        echo $text;
+    } else {
+        return $text;
+    }
 }
 
 function weapon($r)

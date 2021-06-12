@@ -4,7 +4,7 @@ class Crime extends MainClass
 {
     protected function execute()
     {
-        if ($write = canUseFunction(jail: 1, bunker: 1)) {
+        if ($write = $this->canUseFunction(jail: 1, bunker: 1)) {
             $this->out .= $write;
         } else {
             $this->readyCrime();

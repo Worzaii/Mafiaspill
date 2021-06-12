@@ -5,30 +5,30 @@ include "Rank.php";
 
 class User
 {
-    public $id;
-    public $user;
-    public $mail;
-    public $image;
-    public $profile;
-    public $family;
-    public $bank;
-    public $hand;
-    public $city;
-    public $weapon;
-    public $bullets;
-    public $health;
-    public $points;
-    public $exp;
-    public $status;
-    public $support;
-    public $ip;
-    public $regip;
-    public $hostname;
-    public $reghostname;
-    public $lastactive;
-    public $forceout;
-    public $regstamp;
-    public $picmaker;
+    public int $id;
+    public string $user;
+    public string $mail;
+    public string $image;
+    public string|null $profile;
+    public int $family;
+    public int $bank;
+    public int $hand;
+    public int $city;
+    public int $weapon;
+    public int $bullets;
+    public int $health;
+    public float $points;
+    public Rank|float $exp;
+    public int $status;
+    public int $support;
+    public string $ip;
+    public string|null $regip;
+    public string|null $hostname;
+    public string|null $reghostname;
+    public int $lastactive;
+    public int $forceout;
+    public int $regstamp;
+    public int $picmaker;
     public PDO $db;
     public $rank;
     public $rankname;
@@ -138,7 +138,7 @@ class User
     /**
      * @return mixed
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }

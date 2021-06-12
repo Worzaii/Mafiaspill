@@ -32,10 +32,14 @@ if (isset($_GET['login'])) {
                         $uid->pass,
                         safegen($uid->user, $uid->pass)
                     ];
-                    $st3 = $db->prepare(
-                        "insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())"
-                    );
-                    $st3->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
+                    try {
+                        $st3 = $db->prepare(
+                            "insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())"
+                        );
+                        $st3->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
+                    } catch (Exception $e) {
+                        error_log("Couldn't insert into sessions table... " . $e->getMessage());
+                    }
 
                     $st4 = $db->prepare(
                         "UPDATE `users` SET `lastactive` = UNIX_TIMESTAMP(), `ip` = ?, `hostname` = ? where `id` = ? AND `pass` = ?"

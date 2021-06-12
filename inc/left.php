@@ -8,6 +8,13 @@ try {
     $ant2 = $GLOBALS["stored_queries"]["jail"];
 } catch (Exception $e) {
     error_log("Kunne ikke laste inn chat fra database, feilmelding: " . $e->getMessage());
+} finally {
+    if (!isset($ant2)) {
+        $ant2 = null;
+    }
+    if (!isset($num2)) {
+        $num2 = null;
+    }
 }
 try {
     $klpre = $db->prepare(
@@ -21,6 +28,10 @@ try {
     }
 } catch (Exception $e) {
     error_log("Kunne ikke laste inn krimlogg fra database, feilmelding: " . $e->getMessage());
+} finally {
+    if (!isset($ktl)) {
+        $ktl = null;
+    }
 }
 try {
     $clpre = $db->prepare(
@@ -35,6 +46,10 @@ try {
     }
 } catch (Exception $e) {
     error_log("Kunne ikke laste inn carslog fra database, feilmelding: " . $e->getMessage());
+} finally {
+    if (!isset($btl)) {
+        $btl = null;
+    }
 }
 try {
     $rlpre = $db->prepare(
@@ -49,6 +64,10 @@ try {
     }
 } catch (Exception $e) {
     error_log("Kunne ikke laste inn rob_log fra database, feilmelding: " . $e->getMessage());
+} finally {
+    if (!isset($rtl)) {
+        $rtl = null;
+    }
 }
 try {
     $jailself = $db->prepare(
@@ -63,6 +82,10 @@ try {
     }
 } catch (Exception $e) {
     error_log("Kunne ikke laste inn jail fra database, feilmelding: " . $e->getMessage());
+} finally {
+    if (!isset($jte)) {
+        $jte = null;
+    }
 }
 $onl = "online.php";
 ?>

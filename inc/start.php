@@ -32,8 +32,8 @@
 <div id="information">
     <p>Spillet har blitt oppdatert. CTRL + F5</p>
 </div>
-<?= /** @var string $chat */
-$chat; ?>
+<?php /** @var string $chat */
+/*$chat;*/ ?>
 <noscript><p>å spille uten javascript aktivert vil vise seg å være fungere dårlig, vennligst aktiver javascript eller
         bruk en nettleser som støtter dette.</p>
 </noscript>
