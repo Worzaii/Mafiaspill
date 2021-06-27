@@ -9,6 +9,6 @@
             "\u{00D8}nsker tilgang"
         )) ?>&Body=<?= (rawurlencode("IP-adresse: " . $_SERVER['REMOTE_ADDR'] . "\nLegg til kommentar her:\n\n")) ?>">trykke
         her</a> og fylle inn følgende informasjon: </p>
-<p>IP-adresse: <?= $_SERVER['REMOTE_ADDR']; ?></p>
+<p>IP-adresse: <b><?= $_SERVER['REMOTE_ADDR']; ?></b></p>
 </body>
 </html>
