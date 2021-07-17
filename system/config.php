@@ -3,17 +3,22 @@
 if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
-if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
+if (isset($_SERVER['DEV']) && $_SERVER['DEV'] == 1) {
     //error_log("Development mode is enabled from the fastcgi_params in your nginx setup!");
-    ini_set("display_errors", "on");
-    ini_set("display_startup_errors", "on");
-    ini_set("error_reporting", "32767");
-    ini_set("log_errors", "on");
-    ini_set("track_errors", "on");
-    ini_set("html_errors", "on");
-    ini_set("error_log", $_SERVER["LOGLOCATION"]);
+    if (!isset($_SERVER['LOGLOCATION']) /*||
+        !isset($_SERVER['LOGLOCATION'])*/) {
+        throw new Exception('DEV env is active but is missing important values.
+        Please see that LOGLOCATION is defined in either php.ini or passed by nginx/apache');
+    }
+    ini_set('display_errors', "on");
+    ini_set('display_startup_errors', "on");
+    ini_set('error_reporting', "32767");
+    ini_set('log_errors', "on");
+    ini_set('track_errors', "on");
+    ini_set('html_errors', "on");
+    ini_set('error_log', $_SERVER['LOGLOCATION']);
     define(
-        "LOCALWRITE",
+        'LOCALWRITE',
         $_SERVER['LOGLOCATION']
     ); /* Inserts nginx-defined location, see fastcgi_param LOGLOCATION "REPLACEPATH"; */
 }
@@ -37,7 +42,7 @@ function codegen($length = 12)
 }
 
 /* Config must be loaded before any other scripts, this must be defined and correct */
-const THRUTT = "Sperrederrp!";
+const THRUTT = 'Sperrederrp!';
 if (empty($_SERVER["SERVER_NAME"])) {
     define('DOMENE_NAVN', "localhost.localdomain");
 } else {
