@@ -10,7 +10,7 @@ class User
     public string $mail;
     public string $image;
     public string|null $profile;
-    public int $family;
+    public int|null $family;
     public int $bank;
     public int $hand;
     public int $city;
