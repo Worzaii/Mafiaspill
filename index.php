@@ -82,6 +82,10 @@ if (isset($_SESSION['sessionzar'])) {
                                disabled
                                type="Submit"
                                value="Logg inn">
+                        Forbli innlogget: <input
+                            name="staylogged"
+                            type="checkbox"
+                            value="yes">
                     </fieldset>
                 </form>
                 <div class="cleanify"></div>

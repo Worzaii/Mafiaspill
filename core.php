@@ -1,6 +1,10 @@
 <?php
 
 const BASEPATH = 1;
+/**
+ * @param $class
+ * @return void
+ */
 function classify($class)
 {
     error_log("Looking for \"$class\" in this path: " . $_SERVER['DOCUMENT_ROOT'] . '/classes/' . $class . '.php');
@@ -10,12 +14,16 @@ function classify($class)
 spl_autoload_register('classify', true);
 include_once __DIR__ . '/system/config.php';
 include_once __DIR__ . '/inc/functions.php';
+/**
+ * 604800 = 7 days
+ * 86400 = 1 day
+ */
 if (isset($_SERVER['DEV']) &&
     $_SERVER['DEV'] == 1 &&
-    ini_get('session.cookie_lifetime') == 86400 &&
+    ini_get('session.cookie_lifetime') == 604800 &&
     ini_get('session.cookie_secure') == 1 &&
     ini_get('date.timezone') == 'Europe/Oslo' &&
-    ini_get('session.gc_maxlifetime') == 86400
+    ini_get('session.gc_maxlifetime') == 604800
 ) {
     /**
      * TODO: Add more settings that needs to be set!

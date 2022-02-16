@@ -27,6 +27,7 @@ if (isset($_GET['login'])) {
                 $st2->execute([$us]);
                 $uid = $st2->fetchObject();
                 if (password_verify($pa, $uid->pass) && $uid->health > 0) {
+                    $staylog = isset($_POST['staylogged']);
                     $_SESSION['sessionzar'] = [
                         $uid->user,
                         $uid->pass,
@@ -34,7 +35,7 @@ if (isset($_GET['login'])) {
                     ];
                     try {
                         $st3 = $db->prepare(
-                            "insert into sessions(uid, user_agent, user_ip, timestamp) VALUES (?, ?, ? ,UNIX_TIMESTAMP())"
+                            "insert into sessions(uid, user_agent, user_ip, timestamp, staylogged) VALUES (?, ?, ? ,UNIX_TIMESTAMP(), $staylog)"
                         );
                         $st3->execute([$uid->id, $_SERVER["HTTP_USER_AGENT"], ip2long($ip)]);
                     } catch (Exception $e) {

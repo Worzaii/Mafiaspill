@@ -38,7 +38,7 @@ AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()"
     <meta name="keywords" content="">
     <meta name="author" content="">
     <link type="text/css" rel="stylesheet" href="css/login.css">
-    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/jquery-3.6.0.js"></script>
     <script src="js/handler.js" type="text/javascript"></script>
 </head>
 <body>
