@@ -1,4 +1,4 @@
-/tests/
-/logs/
-/vendor/
+/tests
+/logs
+/vendor
 /.idea
