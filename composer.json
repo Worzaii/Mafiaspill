@@ -1,32 +1,32 @@
 {
-  "name": "werzaire.net/mafia.werzaire.net",
-  "description": "Mafiaspillet",
-  "type": "project",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Worzaii",
-      "email": "baretester@live.no"
+    "name": "werzaire.net/mafia.werzaire.net",
+    "description": "Mafiaspillet",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Worzaii",
+            "email": "baretester@live.no"
+        }
+    ],
+    "require": {
+        "squizlabs/php_codesniffer": "*",
+        "ext-mysqli": "*",
+        "ext-json": "*",
+        "ext-gd": "*",
+        "ext-pdo": "*",
+        "ext-readline": "*",
+        "ext-intl": "*",
+        "php": ">=8.1",
+        "psr/log": "^3.0",
+        "monolog/monolog": "^2.3"
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=PSR2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Classes\\": "Classes/"
+        }
     }
-  ],
-  "require": {
-    "squizlabs/php_codesniffer": "*",
-    "ext-mysqli": "*",
-    "ext-json": "*",
-    "ext-gd": "*",
-    "ext-pdo": "*",
-    "ext-readline": "*",
-    "ext-intl": "*",
-    "php": ">=8.1",
-    "psr/log": "^3.0",
-    "monolog/monolog": "^2.3"
-  },
-  "scripts": {
-    "phpcs": "phpcs --standard=PSR2"
-  },
-  "autoload": {
-    "psr-4": {
-      "Classes\\": "Classes/"
-    }
-  }
 }

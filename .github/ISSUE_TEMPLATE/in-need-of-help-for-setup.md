@@ -1,10 +1,9 @@
 ---
 name: In need of help for setup
 about: Use this template if you're in any need of help for project related issues
-title: "[Help wanted] - Contact or other, name it here"
+title: '[Help wanted] - Contact or other, name it here'
 labels: help wanted
 assignees: Worzaii
-
 ---
 
 **If you have any issues setting up the game, describe what you've done so far here**
