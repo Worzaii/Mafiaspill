@@ -1,4 +1,4 @@
-#!/usr/bin/php7.4
+#!/usr/bin/php8.4
 <?php
 if (php_sapi_name() != "cli") {
     /*If someone were to try running it from the browser, it would stop the entirety of PHP execution, so stopping it here already to be safe*/

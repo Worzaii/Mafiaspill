@@ -1,5 +1,14 @@
 <?php
-
+if (isset($_SERVER['HTTPS']) &&
+($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+$protocol = 'https://';
+}
+else {
+$protocol = 'http://';
+}
+define("PROTOCOL", $protocol);
 if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
@@ -56,15 +65,15 @@ if (empty($_SERVER["SERVER_NAME"])) {
         $_SERVER["SERVER_NAME"]
     ); /* Name is fetched from the nginx configuration*/
 }
-define('NAVN_DOMENE', 'Werzaire.net');
-define('MAIL_SENDER', 'werzaire.net');
+define('NAVN_DOMENE', 'Mafiaspill');
+define('MAIL_SENDER', 'mafiaspill');
 define('UTVIKLER', 'Nicholas Arnesen');
 define('DESC', 'Kommer senere...');
 define('KEYWORDS', 'mafia, spill');
 define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 if (php_sapi_name() != "cli") {
-    define("WWWPATH", "https://" . $_SERVER["HTTP_HOST"]);
+    define("WWWPATH", PROTOCOL . $_SERVER["HTTP_HOST"]);
 }
 $timeout = (60 * (120));
 
@@ -86,7 +95,7 @@ if (php_sapi_name() != "cli") {
             error_log("Removing the information so it can be set anew...");
             unset($_SESSION['HTTP_USER_AGENT']);
             error_log("Result of removal: " . ((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
-            header('Location: https://' . DOMENE_NAVN . '/loggut.php?g=8');
+            header('Location: ' . PROTOCOL . DOMENE_NAVN . '/loggut.php?g=8');
             exit('Cross-network-tilgang avslått!');
         }
     } else {

@@ -40,7 +40,7 @@ if (isset($_GET['login'])) {
                     $str = [
                         'string' => lykket('Innlogget! Et lite øyeblikk imens vi sender deg inn til nyhetssiden...'),
                         'state' => 1,
-                        'href' => 'https://' . $domain . '/nyheter.php'
+                        'href' => PROTOCOL . $domain . '/nyheter.php'
                     ];
                 } else {
                     $str['string'] = feil('Feil passord');
@@ -68,7 +68,7 @@ if (isset($_GET['getaccess'])) {
             $ins = $db->prepare("INSERT INTO `invsjekk`(`mail`,timestamp,`ip`,`code`) 
 VALUES(?,(UNIX_TIMESTAMP() + 600),?,?)");
             if ($ins->execute([$m, $ip, $randomseed])) {
-                $url = 'https://' . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . urlencode($m);
+                $url = PROTOCOL . DOMENE_NAVN . '/registermail.php?code=' . $randomseed . '&mail=' . urlencode($m);
                 $message = "
                     <html>
                     <head>
@@ -165,7 +165,7 @@ Du må også passe på at passordet inneholder minst 4 tegn eller mer.');
                     ]);
                     if ($newuser->rowCount() == 1) {
                         $str['string'] = lykket('Du har blitt registrert, du kan nå logge inn! 
-                        <a href="https://' . DOMENE_NAVN . '/">Trykk her for å gå til innlogging</a>');
+                        <a href="' . PROTOCOL . DOMENE_NAVN . '/">Trykk her for å gå til innlogging</a>');
                         $str['res'] = 1;
                         $inv = $db->prepare("UPDATE `invsjekk` SET `used` = '1' WHERE `mail` = ? AND `code` = ?");
                         $inv->execute([
@@ -224,8 +224,8 @@ if (isset($_GET['forgotpassword'])) {
       <p>Noen med følgende IP-adresse <i>' . $_SERVER['REMOTE_ADDR'] . '</i> har bedt om at passordet på
        brukernavn <b>' . $i->user . '</b> skal tilbakestilles.<br>
       Klikk på denne lenken for å tilbakestille passordet:<br>
-      <a href="https://' . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '">
-      https://' . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '</a><br>
+      <a href="'. PROTOCOL . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '">
+      ' . PROTOCOL . $domain . '/resetpass.php?id=' . $i->id . '&resgen=' . $resgen . '</a><br>
       Om det ikke var du som ba om at passordet skulle tilbakestilles anbefales det at du ser bort fra denne mailen.
        Det kan også være det at noen har kontroll på din e-post og dermed prøver å 
        få tilgang til din bruker igjennom din e-post! Hvis du er smart, oppdater ditt passord på både

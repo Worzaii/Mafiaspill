@@ -1273,3 +1273,6 @@ from `users`
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-12-25  1:58:46
+
+-- Setter inn standard systembruker
+insert into users(user,pass,mail,regstamp,status) values('System','system','nomail@nodomain.no',UNIX_TIMESTAMP(),5);

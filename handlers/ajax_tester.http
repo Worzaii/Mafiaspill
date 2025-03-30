@@ -1,7 +1,0 @@
-POST https://mafia.werzaire.net/handlers/handler2.php?login
-Content-Type: application/json
-Accept: application/json
-
-{"username": "Werzy", "password": "test"}
-
-###
