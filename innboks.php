@@ -21,12 +21,13 @@ startpage("Innboks");
 <?php
 if (!isset($_GET['page'])) {
     /* Showing inbox as a natural first page*/
-    $q = $db->query("select * from mafia.mails where tid = '{$obj->id}' and deleted = '0' order by id desc ");
-    if ($q->num_rows == 0) {
+    $qq = $db->query("select count(*) from mails where tid = '{$obj->id}' and deleted = '0' order by id desc ");
+    if ($qq->fetchColumn() == 0) {
         echo info("Du har ingen meldinger.");
     } else {
+        $q = $db->query("select * from mails where tid = '{$obj->id}' and deleted = '0' order by id desc ");
         echo '<table class="table"><tr><th>Tema</th><th>Avsender</th><th>Dato</th></tr>';
-        while ($r = mysqli_fetch_object($q)) {
+        while ($r = $q->fetchObject()) {
             echo "<tr>
 <td onclick=\"goto({$r->id});\">$r->title</td>
 <td><a href='profil.php?id=" . $r->uid . "' data-id='" . $r->uid . "' data-user='' class='user_menu'>" . status($r->uid) . "</a></td>
@@ -39,9 +40,10 @@ if (!isset($_GET['page'])) {
     if (in_array($page, ['utboks', 'sperringer', 'support', 'les', 'ny'])) {
         if ($page === 'les') {
             $id = (int)$_GET['id'];
-            $q = $db->query("select * from mafia.mails where tid = '" . $obj->id . "' and id = '$id'");
-            if ($q->num_rows == 1) {
-                $res = mysqli_fetch_object($q);
+            $rq = $db->query("select count(*) from mails where tid = '" . $obj->id . "' and id = '$id'");
+            if ($rq->fetchColumn() == 1) {
+                $resr = $db->query("select * from mails where tid = '" . $obj->id . "' and id = '$id'");
+                $res = $resr->fetchObject();
                 $user = user($res->uid, 1)->user;
                 $title = $res->title;
                 $message = linejump($res->message);
@@ -117,12 +119,13 @@ END;
 END;
         } elseif ($page === "utboks") {
             /* Showing inbox as a natural first page*/
-            $q = $db->query("select * from mafia.mails where uid = '{$obj->id}' order by id desc ");
-            if ($q->num_rows == 0) {
+            $qq = $db->query("select count(*) from mails where uid = '{$obj->id}' order by id desc ");
+            if ($qq->fetchColumn() == 0) {
                 echo info("Du har ikke sendt noen meldinger.");
             } else {
+                $q = $db->query("select * from mails where uid = '{$obj->id}' order by id desc ");
                 echo '<table class="table"><tr><th>Tema</th><th>Mottaker</th><th>Dato</th></tr>';
-                while ($r = mysqli_fetch_object($q)) {
+                while ($r = $q->fetchObject()) {
                     echo "<tr>
     <td onclick='goto(" . $r->id . ")'>$r->title</td>
     <td><a class='user_menu'" . $r->tid . " data-id='" . $r->tid . "' data-user='' href='profil.php?id=%name'>" . status($r->tid) . "</a></td>
