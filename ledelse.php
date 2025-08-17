@@ -23,10 +23,10 @@ HTML;
     $crewcontent .= '<tr><td colspan="2"><em>Fant ingen i ledelsen</em></td></tr>';
 }
 
+$forumcontent = "";
 $forummodsnum = $db->query("SELECT count(*) FROM `users` WHERE `status` = '3' ORDER BY `id` ASC");
 if ($forummodsnum->fetchColumn() >= 1) {
     $forummods = $db->query("SELECT id,user,status, (unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '3' ORDER BY `id` ASC");
-    $forumcontent = "";
     while ($r = $forummods->fetchObject()) {
         $st = '<span class="stat3">Forum Moderator</span>';
         $user = user($r->id);
@@ -41,26 +41,10 @@ HTML;
     $forumcontent .= '<tr><td colspan="2"><em>Fant ingen forum-moderatorer</em></td></tr>';
 }
 
-$piccount = $db->query("SELECT count(*) FROM `users` WHERE `status` = '4' ORDER BY `id` ASC");
-if ($piccount->fetchColumn() >= 1) {
-    $picmk = $db->query("SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `status` = '4' ORDER BY `id` ASC");
-    $piccontent = "";
-    while ($r = $picmk->fetchObject()) {
-        $user = user($r->id);
-        $piccontent .= <<<HTML
-    <tr>
-        <td>$user <b>(</b><span class="stat4">Picmaker</span><b>)</b></td>
-            <td><span id="puser$r->id"></span><script>teller($r->last,"puser$r->id",false,"opp");</script></td>
-    </tr>
-HTML;
-    }
-} else {
-    $piccontent .= '<tr><td colspan="2"><em>Fant ingen picmakere...</em></td></tr>';
-}
+$supportcontent = "";
 $supportscount = $db->query("SELECT COUNT(*) FROM `users` WHERE `support` = '1' ORDER BY `status` ASC, `id` ASC");
 if ($supportscount->fetchColumn() >= 1) {
-    $supports = $db->query("SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `support` = '1' ORDER BY `status` ASC, `id` ASC");
-    $supportcontent = "";
+    $supports = $db->query("SELECT id,user,status,(unix_timestamp() - lastactive) as last FROM `users` WHERE `support` = '1' and `status` != '5' ORDER BY `status` ASC, `id` ASC");
     while ($r = $supports->fetchObject()) {
         if ($r->status == 1) {
             $st = '<span class="stat1">Admin</span>';
@@ -68,8 +52,6 @@ if ($supportscount->fetchColumn() >= 1) {
             $st = '<span class="stat2">Moderator</span>';
         } elseif ($r->status == 3) {
             $st = '<span class="stat3">Forum-moderator</span>';
-        } elseif ($r->status == 6) {
-            $st = '<span class="stat4">Picmaker</span>';
         } else {
             $st = '<span style="color:#DEB86C;font-weight:bold;">Supportspiller</span>';
         }
@@ -99,13 +81,6 @@ HTML;
             <th colspan="2">Utnevnte Forum mods:</th>
         </tr>
         <?= $forumcontent ?>
-    </table>
-    <br>
-    <table class="table" style="margin-top: 1px; text-align: center; width: 540px;">
-        <tr>
-            <th colspan="2">Utnevnte Picmakere:</th>
-        </tr>
-        <?= $piccontent ?>
     </table>
     <table class="table" style="margin-top: 1px; text-align: center; width: 540px;">
         <tr>
