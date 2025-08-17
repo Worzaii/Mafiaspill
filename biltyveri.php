@@ -6,24 +6,27 @@ echo '<img src="images/headers/biltyveri.png"><p>Når du først starter med bilt
 if ($write = canUseFunction(1, 1)) {
     echo $write;
 } else {
-    $q = $db->query("SELECT * FROM `carslog` WHERE `uid` = '$obj->id' AND `timewait` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1");
-    if ($q->num_rows() == 1) {
-        $qf = $db->fetch_object($q);
+    $qc =$db->query("SELECT count(*) FROM `carslog` WHERE `uid` = '$obj->id' AND `timewait` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1"); 
+    if($qc->fetchColumn() == 1) {
+        $q = $db->query("SELECT * FROM `carslog` WHERE `uid` = '$obj->id' AND `timewait` > UNIX_TIMESTAMP() ORDER BY `id` DESC LIMIT 0,1");
+        $qf = $db->fetchObject();
         $left = $qf->timewait - time();
         echo feil('Du m&aring vente <span id="tid"></span> før neste gang!') . '<script>teller(' . $left . ',"tid",false,"ned");</script>';
     } else {
         if (isset($_POST['valget'])) {
-            $v = $db->escape($_POST['valget']);
+            $v = $_POST['valget'];
             if (is_numeric($v) && $v >= 1) {
-                $s = $db->query("SELECT * FROM `cars` WHERE `id` = '$v' LIMIT 1");
-                if ($db->num_rows() == 1) {
-                    $se = $db->fetch_object();
+                $sq = $db->query("SELECT count(*) FROM `cars` WHERE `id` = '$v' LIMIT 1");
+                if($sq->fetchColumn() == 1) {
+                    $s = $db->query("SELECT * FROM `cars` WHERE `id` = '$v' LIMIT 1");
+                    $se = $s->fetchObject();
                     if ($se->bilmin > $se->bilmax || $se->bilmin < 1) {
                         echo feil('Feil i bilvalg! Kontakt admin for &aring fikse!');
                     } else {
-                        $sa = $db->query("SELECT * FROM `chance` WHERE `type` = '2' AND `uid` = '$obj->id' AND `option` = '$v'");
-                        if ($db->num_rows() == 1) {
-                            $si = $db->fetch_object();
+                        $saq = $db->query("SELECT count(*) FROM `chance` WHERE `type` = '2' AND `uid` = '$obj->id' AND `option` = '$v'");
+                        if ($saq->fetchColumn() == 1) {
+                            $sa = $db->query("SELECT * FROM `chance` WHERE `type` = '2' AND `uid` = '$obj->id' AND `option` = '$v'");
+                            $si = $sa->fetchObject();
                             if (rand(1, 100) > $si->chance) {
                                 if (rand(1, 2) == 1) {
                                     echo feil('Du klarte det ikke!');
@@ -100,20 +103,26 @@ WHERE `uid` = '$obj->id' AND
                             <td>Ventetid</td>
                         </tr>
                         <?php
-                        $rank = rank($obj->exp);
-                        $s = $db->query("SELECT * FROM `cars` WHERE `levelmin` <= '" . $rank[0] . "' 
+                        $rank = $obj->rank->getRankID();
+                        $sq = $db->query("SELECT count(*) FROM `cars` WHERE `levelmin` <= '" . $rank . "' 
                         ORDER BY `levelmin` DESC,`id` DESC");
-                        if ($db->num_rows() >= 1) {
-                            while ($r = mysqli_fetch_object($s)) {
-                                $sql2 = $db->query("SELECT * FROM `chance` 
+                        if ($sq->fetchColumn() >= 1) {
+                            $s = $db->query("SELECT * FROM `cars` WHERE `levelmin` <= '" . $rank . "' 
+                        ORDER BY `levelmin` DESC,`id` DESC");
+                            while ($r = $s->fetchObject()) {
+                                $sql2q = $db->query("SELECT count(*) FROM `chance` 
 WHERE `uid` = '{$obj->id}' AND 
       `type` = '2' AND 
       `option` = '{$r->id}'");
-                                if ($db->num_rows() >= 1) {
-                                    $get2 = $db->fetch_object($sql2);
+                                if ($sql2q->fetchColumn() >= 1) {
+                                    $sql2 = $db->query("SELECT * FROM `chance` 
+                                    WHERE `uid` = '{$obj->id}' AND 
+                                        `type` = '2' AND 
+                                        `option` = '{$r->id}'");
+                                    $get2 = $sql2->fetchObject();
                                 } else {
-                                    $db->query("INSERT INTO `chance`(`uid`,`type`,`option`) 
-VALUES('$obj->id','2','$r->id')");
+                                    $db->query("INSERT INTO `chance`(`uid`,`type`,`option`) VALUES('$obj->id','2','$r->id')");
+                                    $get2->chance = 0;
                                 }
                                 echo '
             <tr class="valg" onclick="sendpost(' . $r->id . ')">
