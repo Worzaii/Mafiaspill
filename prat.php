@@ -1,10 +1,7 @@
 <?php
-$start = microtime(true);
-error_log("Starting the execution of prat.php at " . date("H:m:i.u d.m.Y", $start));
 define("NOUPDATE", 1);
 require_once './core.php';
 $after_require = microtime(true);
-error_log("Core finished, continuing to the main part at: " . date("H:m:i.u d.m.Y", $after_require) . ", ".($after_require - $start) . " seconds later.");
 header('Content-Type: text/html; charset=UTF-8');
 $ikkevis = false;
 if (isset($_GET['write'])) {
@@ -83,5 +80,3 @@ if ($ikkevis == false) {
         }
     }
 }
-$end = microtime(true);
-error_log("Script completed after ". ($end - $start));
