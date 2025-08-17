@@ -74,13 +74,13 @@ class MinSide
 
     private function loadPage()
     {
-        $prosent = $this->user->exp->progress();
-        $remainxp = $this->user->exp->remaining();
+        $prosent = $this->user->rank->progress();
+        $remainxp = $this->user->rank->remaining();
         error_log("Valuetypes prosent and remainxp: ");
         error_log("Prosent: " . gettype($prosent));
         error_log("Remainxp: " . gettype($remainxp));
         global $ip;
-        if ($this->user->exp->getRankID() == 12) {
+        if ($this->user->rank->getRankID() == 12) {
             $rest = "Du har nådd høyeste rank, gratulerer! :)";
         } else {
             $rest = 1;
@@ -96,7 +96,7 @@ class MinSide
         </tr>
         <tr>
             <td>Rank:</td>
-            <td style="width:200px">{$this->user->exp->getRank()}(?)</td>
+            <td style="width:200px">{$this->user->rank->getRank()}(?)</td>
         </tr>
     </table>
 <br>
@@ -125,7 +125,7 @@ class MinSide
     </div>
     <p style="padding:0;z-index: 2;position: relative;margin:0;top:22px;text-align: center">$prosent%</p>
 </div>
-<p>Nåværende xp: {$this->user->exp->xp}<br>
+<p>Nåværende xp: {$this->user->rank->xp}<br>
     Gjenværende xp i denne ranken: $remainxp</p>
 END;
 
