@@ -34,14 +34,14 @@ namespace UserObject {
         public $regstamp;
         public $picmaker;
         public PDO $db;
-        public $rank;
+        public Rank $rank;
         public $rankname;
         public $maxxp;
-        protected $password;
+        protected $pass;
 
         public function __construct()
         {
-            $this->exp = new Rank($this->exp);
+            $this->rank = new Rank($this->exp);
             return $this;
         }
 
@@ -176,15 +176,15 @@ namespace UserObject {
          */
         public function getPassword()
         {
-            return $this->password;
+            return $this->pass;
         }
 
         /**
-         * @param mixed $password
+         * @param mixed $pass
          */
-        public function setPassword($password): void
+        public function setPassword($pass): void
         {
-            $this->password = $password;
+            $this->pass = $pass;
         }
 
         /**
@@ -347,7 +347,7 @@ namespace UserObject {
 
         public function handformat()
         {
-            return number_format($this->getHand(), null, null, " ") . "kr";
+            return number_format($this->getHand(), 0, "", " ") . "kr";
         }
 
     }
