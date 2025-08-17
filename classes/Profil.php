@@ -60,7 +60,7 @@ class Profil extends \mainclass
 <td>Meldinger sendt:</td><td>XXXX</td>
 </tr>
 <tr>
-<td>Rank:</td><td>{$profile->exp->getRank()}</td>
+<td>Rank:</td><td>{$profile->rank->getRank()}</td>
 </tr>
 <tr>
 <td>Familie:</td><td>{$profile->getFamily()}</td>
