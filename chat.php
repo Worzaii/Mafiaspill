@@ -12,7 +12,7 @@ END;
 END;
 
     echo info($dis);
-    echo info($dis2);
+    /*echo info($dis2);*/
 }
 
 $s = $db->prepare("SELECT count(*) FROM `forumban` WHERE `uid` = ? AND `bantime` > UNIX_TIMESTAMP() AND `active` = '1' ORDER BY `bantime` DESC LIMIT 1");
