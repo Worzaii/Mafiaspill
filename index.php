@@ -66,16 +66,14 @@ if (isset($_SESSION['sessionzar'])) {
                                            disabled
                                            name="username"
                                            placeholder="Brukernavn"
-                                           value="<?=(isset($_SERVER['DEV']) && $_SERVER['DEV'] =
-                                                   '1') ? "user" : null;?>"
+                                           value="<?=DEV_USERNAME;?>"
                                            required
                                            type="text"><br> Passord:<input autocomplete="password"
                                                                            class="text"
                                                                            disabled
                                                                            name="password"
                                                                            placeholder="Passord"
-                                                                           value="<?=(isset($_SERVER['DEV']) && $_SERVER['DEV'] =
-                                                                                   '1') ? "user" : null;?>"
+                                                                           value="<?=DEV_PASSWORD; ?>"
                                                                            required
                                                                            type="password"><br><br>
                         <input class="button"
