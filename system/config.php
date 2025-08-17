@@ -3,17 +3,16 @@ if (isset($_SERVER['HTTPS']) &&
 ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
 isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
 $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-$protocol = 'https://';
+    $protocol = 'https://';
+} else {
+    $protocol = 'http://';
 }
-else {
-$protocol = 'http://';
-}
+
 define("PROTOCOL", $protocol);
 if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
 if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
-    error_log("Development mode is enabled from the fastcgi_params in your nginx setup!");
     ini_set("display_errors", "on");
     ini_set("display_startup_errors", "on");
     ini_set("error_reporting", "32767");
@@ -22,6 +21,8 @@ if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
     ini_set("html_errors", "on");
     ini_set("error_log", $_SERVER["LOGLOCATION"]);
     define("LOCALWRITE", $_SERVER['LOGLOCATION']); /* Inserts typical linux path */
+    define("DEV_USERNAME",$_SERVER['dev_username']);
+    define("DEV_PASSWORD",$_SERVER['dev_password']);
 }
 function sql_log($query)
 {
@@ -30,7 +31,7 @@ function sql_log($query)
     } elseif ($_SERVER['SERVER_NAME'] == "mafia.localhost.localdomain") {
         $file = $_SERVER["DOCUMENT_ROOT"] . "\\logs\\sql.log";
     } else {
-        $file = "/var/www/mafia.werzaire.net/logs/sql.log";
+        $file = "/var/www/html/logs/sql.log";
     }
     $f = fopen($file, "a+");
     fwrite($f, date("[d-M-Y H:i:s e] ") . $query . "\n");
