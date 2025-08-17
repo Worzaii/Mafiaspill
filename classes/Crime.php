@@ -175,14 +175,14 @@ class Crime extends \mainclass
         $this->out .= lykket("Du er klar til å utføre kriminalitet!");
         $getCrimes = "select * from crime where levelmin <= ? ORDER BY `levelmin` DESC,`id` DESC";
         $q1 = $this->database->prepare($getCrimes);
-        $q1->execute([$this->user->exp->getRankID()]);
+        $q1->execute([$this->user->rank->getRankID()]);
         $this->listCrimeChoices();
     }
 
     public function listCrimeChoices()
     {
         $get_actions = $this->database->prepare("select * from crime where levelmin <= ? ORDER BY `levelmin` DESC,`id` DESC");
-        $get_actions->execute([$this->user->exp->getRankID()]);
+        $get_actions->execute([$this->user->rank->getRankID()]);
         $this->out .= '
         <form name="krim"
               method="post"
