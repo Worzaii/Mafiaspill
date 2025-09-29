@@ -1,15 +1,17 @@
 <?php
 define('BASEPATH', true);
 require_once './system/config.php';
-require_once './classes/Database.php';
+require_once './inc/pdoinc.php';
 require_once './inc/functions.php';
-$db = new \DatabaseObject\database();
-$db->connect();
-$s = $db->query("SELECT * FROM `resetpasset` WHERE `resgen` = '" . $db->escape($_GET['resgen']) . "' 
-AND `uid` = '" . $db->escape($_GET['id']) . "' AND `used` = '0'"
-    . " AND `timestamp` < (UNIX_TIMESTAMP()+3600)");
-if ($db->num_rows() == 1) {
-    $res = $db->fetch_object();
+
+$sp = $db->prepare("SELECT count(*) from resetpasset " .
+    "WHERE resgen = ? AND uid = ? AND used = '0' AND timestamp < (UNIX_TIMESTAMP()+3600)");
+$sp->execute([$_GET['resgen'], $_GET['id']]);
+if ($sp->fetchColumn() == 1) {
+    $s = $db->prepare("SELECT * from resetpasset " .
+        "WHERE resgen = ? AND uid = ? AND used = '0' AND timestamp < (UNIX_TIMESTAMP()+3600)");
+    $s->execute([$_GET['resgen'], $_GET['id']]);
+    $res = $s->fetchObject();
     $time = ($res->timestamp + 3600) - time();
     $user = user($res->uid, 1);
     $valid = true;
@@ -20,12 +22,12 @@ if ($db->num_rows() == 1) {
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <title><?= NAVN_DOMENE; ?> Gjenopprett Passord</title>
+    <title><?php echo NAVN_DOMENE; ?> Gjenopprett Passord</title>
     <link type="text/css" rel="stylesheet" href="./css/login.css">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
-    <meta name="description" content="<?= DESC; ?>">
-    <meta name="keywords" content="<?= KEYWORDS; ?>">
-    <meta name="author" content="<?= UTVIKLER; ?>">
+    <meta name="description" content="<?php echo DESC; ?>">
+    <meta name="keywords" content="<?php echo KEYWORDS; ?>">
+    <meta name="author" content="<?php echo UTVIKLER; ?>">
     <script src="./js/jquery-3.5.1.js" type="text/javascript"></script>
     <script src="js/handler.js" type="text/javascript"></script>
     <script src="./js/teller.js" type="text/javascript"></script>
@@ -49,13 +51,14 @@ if ($db->num_rows() == 1) {
                 ?>
                 <div id="resetpassword">
                     <p>Tid som gjenstår med følgende kode: <span id="timeleft"></span>
-                        <script>teller(<?= $time; ?>, "timeleft", false, "ned");</script>
+                        <script>teller(<?php echo $time; ?>, "timeleft", false, "ned");</script>
                     </p>
                     <hr>
                     <div id="resetpasswordresult"></div>
                     <form class="loginform" id="resetpasswordform" action="handlers/handler.php?resetpassword">
-                        <?= '<input type="text" class="text" value="' . $user->user . '" readonly="">'; ?>
-                        <input type="hidden" name="uid" value="<?= $user->id; ?>"><br>
+                        <?php echo '<input type="text" class="text" value="' . $user->user . '" readonly="">'; ?>
+                        <input type="hidden" name="uid" value="<?php echo $user->id; ?>"><br>
+                        <input type="hidden" name="resgen" value="<?php echo $res->resgen; ?>">
                         <input autofocus="" class="text" name="p1" placeholder="Passord" required=""
                                tabindex="1" type="password"><br>
                         <input class="text" name="p2" placeholder="Gjenta passord" required="" tabindex="2"
