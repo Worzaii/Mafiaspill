@@ -4,11 +4,11 @@ require_once('system/config.php');
 include "./inc/database.php";
 $disa1 = null;
 $disa2 = null;
-$s = $db->prepare("SELECT count(*) FROM `invsjekk` WHERE `code` = ? 
+$s = $db->prepare("SELECT count(*) FROM `invsjekk` WHERE `code` = ?
 AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
 if ($s->execute([$_GET['code'], $_GET['mail']])) {
     if ($s->fetchColumn() == 1) {
-        $s2 = $db->prepare("SELECT * FROM `invsjekk` WHERE `code` = ? 
+        $s2 = $db->prepare("SELECT * FROM `invsjekk` WHERE `code` = ?
 AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
         $s2->execute([$_GET['code'], $_GET['mail']]);
         $f = $s2->fetchObject();
@@ -29,7 +29,7 @@ AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
 <head>
     <title>Mafia-no Registrering</title>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
-    <meta name="description" content="<?= DESC ?>">
+    <meta name="description" content="<?php echo DESC ?>">
     <meta name="keywords" content="">
     <meta name="author" content="">
     <link type="text/css" rel="stylesheet" href="css/login.css">
@@ -54,15 +54,15 @@ AND `mail` = ? AND `used` = '0' AND `timestamp` > UNIX_TIMESTAMP()");
                 <div id="ressu"></div>
                 <form class="loginform" id="registerform" action="handlers/handler.php?brukerreg">
                     <input type="email" class="text" name="mail" placeholder="Email" readonly
-                           value="<?= $mail ?>"><br>
+                           value="<?php echo $mail ?>"><br>
                     <input type="text" class="text" name="code" placeholder="Kode" readonly
-                           value="<?= $code ?>"><br>
+                           value="<?php echo $code ?>"><br>
                     <input type="text" class="text" name="vervetav"
                            placeholder="Hvem ble du vervet av?"
                            tabindex="1"><br>
-                    <input type="text" class="text" name="user"<?= $disa1 ?>
+                    <input type="text" class="text" name="user"<?php echo $disa1 ?>
                            placeholder="Brukernavn" tabindex="2"><br>
-                    <input type="password" class="text" name="pass"<?= $disa2 ?>
+                    <input type="password" class="text" name="pass"<?php echo $disa2 ?>
                            placeholder="Passord" tabindex="3"><br>
                     <input type="submit" value="Registrer deg" tabindex="4" class="button">
                 </form>

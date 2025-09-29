@@ -3,7 +3,7 @@ include 'core.php';
 if (r1() || r2()) {
     startpage("$obj->user");
     ?>
-    <h1><?= $obj->user ?></h1>
+    <h1><?php echo $obj->user ?></h1>
     <?php
     if (isset($_POST['poeng'])) {
         $points = intval($_POST['poeng']);
@@ -14,8 +14,8 @@ if (r1() || r2()) {
         $db->query("UPDATE `users` SET `points` = '$points',`exp` = '$exp',`hand`='$hand',`bank`='$bank',
 `bullets`='$bullets' WHERE `id` = '$obj->id' LIMIT 1");
         if ($db->affected_rows() == 1) {
-            $db->query("INSERT INTO `selfedit`(id, uid, bank_old, bank_new, exp_old, exp_new, hand_old, hand_new, 
-                       bullets_old, bullets_new,points_old,points_new,timestamp) 
+            $db->query("INSERT INTO `selfedit`(id, uid, bank_old, bank_new, exp_old, exp_new, hand_old, hand_new,
+                       bullets_old, bullets_new,points_old,points_new,timestamp)
                        VALUES (NULL,'$obj->id','$obj->bank','$bank','$obj->exp','$exp','$obj->hand','$hand',
                                '$obj->bullets','$bullets','$obj->points','$points',UNIX_TIMESTAMP())");
             echo '<p class="lykket">Oppdatert!';
@@ -30,21 +30,21 @@ if (r1() || r2()) {
                 <th>Endre egne verdier</th>
             </tr>
             <tr>
-                <td>Poeng: <input style="float:right;" name="poeng" type="number" value="<?= $obj->points ?>"></td>
+                <td>Poeng: <input style="float:right;" name="poeng" type="number" value="<?php echo $obj->points ?>"></td>
             </tr>
             <tr>
-                <td>Exp: <input style="float:right;" name="epx" type="text" value="<?= $obj->exp ?>"><br></td>
+                <td>Exp: <input style="float:right;" name="epx" type="text" value="<?php echo $obj->exp ?>"><br></td>
             </tr>
             <tr>
                 <td>Penger på handa: <input style="float:right;" name="dnah" type="number"
-                                                  value="<?= $obj->hand ?>"></td>
+                                                  value="<?php echo $obj->hand ?>"></td>
             </tr>
             <tr>
-                <td>Penger i banken: <input style="float:right;" name="kanb" type="number" value="<?= $obj->bank ?>">
+                <td>Penger i banken: <input style="float:right;" name="kanb" type="number" value="<?php echo $obj->bank ?>">
                 </td>
             </tr>
             <tr>
-                <td>Kuler: <input style="float:right;" name="kuls" type="number" value="<?= $obj->bullets ?>"></td>
+                <td>Kuler: <input style="float:right;" name="kuls" type="number" value="<?php echo $obj->bullets ?>"></td>
             </tr>
         </table>
         <input type="submit" value="Lagre">

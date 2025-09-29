@@ -46,11 +46,11 @@ ORDER BY `lastactive` DESC"
     <table class="table online">
         <thead>
         <tr>
-            <th colspan="<?= $cols; ?>">Pålogget nå:</th>
+            <th colspan="<?php echo $cols; ?>">Pålogget nå:</th>
         </tr>
         <tr>
             <th style="width:95px;">Spiller:</th>
-            <th>Sist aktiv:</th><?= $add1 . $add3; ?>
+            <th>Sist aktiv:</th><?php echo $add1 . $add3; ?>
         </tr>
         </thead>
         <tbody>

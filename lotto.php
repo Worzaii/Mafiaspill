@@ -173,7 +173,7 @@ HTML;
         <table class="table2" style="width:300px;">
             <tr>
                 <th style="height:35px;color:#999;background:#222;" colspan="2">
-                    Runde <?= $run; ?></th>
+                    Runde <?php echo $run; ?></th>
             </tr>
             <tr>
                 <th>Lottoen eies av:</th>
@@ -181,7 +181,7 @@ HTML;
             </tr>
             <tr>
                 <th>Navn på firma:</th>
-                <td><?= $Navn; ?></td>
+                <td><?php echo $Navn; ?></td>
             </tr>
             <tr>
                 <th colspan="2">Tid igjen:
@@ -197,11 +197,11 @@ HTML;
             </tr>
             <tr>
                 <th>Antall lodd:</th>
-                <td><?= $antlodd ?></td>
+                <td><?php echo $antlodd ?></td>
             </tr>
             <tr>
                 <th>Dine lodd:</th>
-                <td><?= $egenlodd ?></td>
+                <td><?php echo $egenlodd ?></td>
             </tr>
             <tr>
                 <th>Pris per lodd:</th>
@@ -209,7 +209,7 @@ HTML;
             </tr>
             <tr>
                 <th>Maks lodd per bruker:</th>
-                <td><?= $f->al; ?></td>
+                <td><?php echo $f->al; ?></td>
             </tr>
             <tr>
                 <th>Pot:</th>
@@ -217,13 +217,13 @@ HTML;
             </tr>
             <tr>
                 <th>Trekkes fra til eier:</th>
-                <td><?= $lotf->pr; ?> %</td>
+                <td><?php echo $lotf->pr; ?> %</td>
             </tr>
             <tr>
                 <td colspan="2"><input class="" type="submit" value="Kjøp lodd"> <input
                             style="-webkit-appearance: button;
 -webkit-padding-end: 20px;border: 1px solid #AAA;color: #555;font-size: inherit;width: 32px;height: 20px;background-color: #aaa;"
-                            type="text" name="antloddkj" value="1" min="1" max="<?= $max ?>"
+                            type="text" name="antloddkj" value="1" min="1" max="<?php echo $max ?>"
                             style="width:50px;"></td>
                 <br>
             </tr>

@@ -49,7 +49,7 @@ if (r1() || r2()) {
             </thead>
             <tr class="uhead">
                 <td>IP-adresse:</td>
-                <td><input required="" value="<?= $ip; ?>" type="text" name="ip"
+                <td><input required="" value="<?php echo $ip; ?>" type="text" name="ip"
                            class="input frelst"></td>
             </tr>
             <tr class="ehead">

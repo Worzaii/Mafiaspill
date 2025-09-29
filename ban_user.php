@@ -21,7 +21,7 @@ order by id desc limit 1")) {
                         if ($db->num_rows() == 1) {
                             echo warning('Brukeren er allerede bannet. Mente du å fjerne ban på brukerkontoen?');
                         } else {
-                            if ($db->query("INSERT INTO `banlog`(`uid`,`timestamp`,`reason`,`banner`) 
+                            if ($db->query("INSERT INTO `banlog`(`uid`,`timestamp`,`reason`,`banner`)
 VALUES('" . $userexists->id . "',UNIX_TIMESTAMP(),'$grunn','" . $obj->id . "')")) {
                                 if ($db->affected_rows() == 1) {
                                     echo lykket('Spilleren har blitt modkillet, og kan ikke lengre logge inn!');
@@ -36,7 +36,7 @@ VALUES('" . $userexists->id . "',UNIX_TIMESTAMP(),'$grunn','" . $obj->id . "')")
                         echo feil('Kunne ikke spørre tabellen om brukeren allerede er bannet!');
                     }
                 } elseif ($valg == 2) {
-                    if ($db->query("select * from `banlog` 
+                    if ($db->query("select * from `banlog`
 where uid = '{$userexists->id}' and active = '1' order by id desc limit 1")) {
                         if ($db->num_rows() === 1) {
                             $banlog = $db->fetch_object();
@@ -84,7 +84,7 @@ where uid = '{$userexists->id}' and active = '1' order by id desc limit 1")) {
             </tr>
             <tr>
                 <td>Bruker:</td>
-                <td><input type="text" value="<?= $uname; ?>" autofocus name="bruker"></br></td>
+                <td><input type="text" value="<?php echo $uname; ?>" autofocus name="bruker"></br></td>
             </tr>
             <tr>
                 <td>Grunn:</td>
@@ -94,8 +94,8 @@ Kan redigeres i ettertid om nødvendig."></textarea></td>
             <tr>
                 <td>Valg:</td>
                 <td>
-                    <input type="radio" name="valg" value="1"<?= $ban1; ?>>Ban bruker<br>
-                    <input type="radio" name="valg" value="2"<?= $ban2; ?>>Fjern ban fra bruker
+                    <input type="radio" name="valg" value="1"<?php echo $ban1; ?>>Ban bruker<br>
+                    <input type="radio" name="valg" value="2"<?php echo $ban2; ?>>Fjern ban fra bruker
                 </td>
             </tr>
         </table>

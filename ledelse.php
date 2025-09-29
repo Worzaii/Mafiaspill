@@ -73,20 +73,20 @@ HTML;
             <th>Administrator / Moderator</th>
             <th>Sist aktiv:</th>
         </tr>
-        <?= $crewcontent ?>
+        <?php echo $crewcontent ?>
     </table>
     <br>
     <table class="table" style="margin-top: 1px; text-align: center; width: 540px;">
         <tr>
             <th colspan="2">Utnevnte Forum mods:</th>
         </tr>
-        <?= $forumcontent ?>
+        <?php echo $forumcontent ?>
     </table>
     <table class="table" style="margin-top: 1px; text-align: center; width: 540px;">
         <tr>
             <th colspan="2">Utnevnte Supportspillere:</th>
         </tr>
-        <?= $supportcontent ?>
+        <?php echo $supportcontent ?>
     </table>
 
 <?php
