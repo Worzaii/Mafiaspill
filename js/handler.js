@@ -18,18 +18,17 @@ $(document).ready(function () {
             beforeSend: function () {
                 $login.attr("disabled", "disabled");
             },
-            success: function (data) {
-                const $res = eval(data);
-                if ($res.state === 1) {
+            success: function (res) {
+                if (res.state === 1) {
                     let count = 1.5;
                     setInterval(function () {
                         if (count < 0) {
-                            window.location.href = $res.href;
+                            window.location.href = res.href;
                         }
                         count -= 0.5;
                     }, 500);
                 }
-                updatepage($res.string, 'loginresult');
+                updatepage(res.string, 'loginresult');
             },
             error: function (data) {
                 updatepage('Feil skjedde ved databehandling, tilbakemelding:' +

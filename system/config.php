@@ -1,8 +1,9 @@
 <?php
+
 if (isset($_SERVER['HTTPS']) &&
-($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
     $protocol = 'https://';
 } else {
     $protocol = 'http://';
@@ -13,18 +14,10 @@ if (!defined('BASEPATH')) {
     die('Ingen tilgang!');
 }
 if (isset($_SERVER["DEV"]) && $_SERVER["DEV"] == 1) {
-    ini_set("display_errors", "on");
-    ini_set("display_startup_errors", "on");
-    ini_set("error_reporting", "32767");
-    ini_set("log_errors", "on");
-    ini_set("track_errors", "on");
-    ini_set("html_errors", "on");
-    ini_set("error_log", $_SERVER["LOGLOCATION"]);
-    define("LOCALWRITE", $_SERVER['LOGLOCATION']); /* Inserts typical linux path */
-    define("DEV_USERNAME",$_SERVER['dev_username']);
-    define("DEV_PASSWORD",$_SERVER['dev_password']);
+    define("DEV_USERNAME", $_SERVER['DEV_USERNAME']);
+    define("DEV_PASSWORD", $_SERVER['DEV_PASSWORD']);
 }
-function sql_log($query)
+function SqlLog($query): void
 {
     if (defined("LOCALWRITE")) {
         $file = LOCALWRITE;
@@ -38,7 +31,7 @@ function sql_log($query)
     fclose($f);
 }
 
-function safegen($u, $p)
+function safegen($u, $p): string
 {
     $ua = $_SERVER["HTTP_USER_AGENT"];
     #$l = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
@@ -46,7 +39,7 @@ function safegen($u, $p)
     return md5(sha1($u . $p . $ua . $i . "tissbajs194\""));
 }
 
-function codegen($length = 12)
+function CodeGen($length = 12): string
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $string = null;
@@ -57,7 +50,7 @@ function codegen($length = 12)
 }
 
 /* Config must be loaded before any other scripts, this must be defined and correct */
-define('THRUTT', "Sperrederrp!");
+const THRUTT = "Sperrederrp!";
 if (empty($_SERVER["SERVER_NAME"])) {
     define('DOMENE_NAVN', "localhost.localdomain");
 } else {
@@ -66,12 +59,12 @@ if (empty($_SERVER["SERVER_NAME"])) {
         $_SERVER["SERVER_NAME"]
     ); /* Name is fetched from the nginx configuration*/
 }
-define('NAVN_DOMENE', 'Mafiaspill');
-define('MAIL_SENDER', 'mafiaspill');
-define('UTVIKLER', 'Nicholas Arnesen');
-define('DESC', 'Kommer senere...');
-define('KEYWORDS', 'mafia, spill');
-define("HENVEND_MAIL", "henvendelser@" . DOMENE_NAVN);
+const NAVN_DOMENE = 'Mafiaspill';
+const MAIL_SENDER = 'mafiaspill';
+const UTVIKLER = 'Nicholas Arnesen';
+const DESC = 'Kommer senere...';
+const KEYWORDS = 'mafia, spill';
+const HENVEND_MAIL = "henvendelser@" . DOMENE_NAVN;
 define("HENVEND_MAIL_SAFE", str_replace([".", "@"], ["[dot]", "[at]"], HENVEND_MAIL));
 if (php_sapi_name() != "cli") {
     define("WWWPATH", PROTOCOL . $_SERVER["HTTP_HOST"]);
@@ -79,10 +72,10 @@ if (php_sapi_name() != "cli") {
 $timeout = (60 * (120));
 
 /* Database connection parametres START */
-define("HOST", "localhost");
-define("DATABASE", "mafia");
-define("USERNAME", "mafia");
-define("PASSWORD", "mafia");
+const HOST = "mysql";
+const DATABASE = "mafia";
+const USERNAME = "mafia";
+const PASSWORD = "mafia";
 /* Database connection parametres END */
 
 /* Starting session */
