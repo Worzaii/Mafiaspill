@@ -1,4 +1,5 @@
 <?php
+
 global $db, $obj;
 $ant = $GLOBALS["stored_queries"]["online"];
 $sql3 = $db->query("SELECT COUNT(*) as `numrows` FROM `chat`");
@@ -38,74 +39,45 @@ if ($jail = $jailself->fetchObject()) {
 }
 $onl = "online.php";
 ?>
-<h2>Rank</h2>
+<h2>The Climb</h2>
 <ul>
     <?php
     if ($ktl == null) {
-        echo '<li><a href="krim.php">Kriminalitet</a>';
+        echo '<li><a href="crime.php">Crime</a>';
     } else {
-        echo '<li><a href="krim.php">Kriminalitet</a> <span style="font-size:10px;" id="krimteller">' . $ktl . '</span>
-<script>teller(' . $ktl . ',"krimteller",false,"ned");</script></li>';
+        echo '<li><a href="crime.php">Action 1</a> <span style="font-size:10px;" id="action1Counter">' . $ktl . '</span>
+<script>teller(' . $ktl . ',"action1Counter",false,"ned");</script></li>';
     }
     if ($btl == null) {
-        echo '<li><a href="biltyveri.php">Biltyveri</a>';
+        echo '<li><a href="carTheft.php">action2</a>';
     } else {
-        echo '<li><a href="biltyveri.php">Biltyveri</a> <span style="font-size:10px;" id="bilteller">' . $btl . '</span>
-<script>teller(' . $btl . ',"bilteller",false,"ned");</script></li>';
+        echo '<li><a href="carTheft.php">action2</a> <span style="font-size:10px;" id="action2Counter">' . $btl . '</span>
+<script>teller(' . $btl . ',"action2Counter",false,"ned");</script></li>';
     }
-    /*if ($rtl == null) {
-        echo '<li><a href="stjel.php">Ran Spiller</a>';
-    } else {
-        echo '<li><a href="stjel.php">Ran Spiller</a>
-<span style="font-size:10px;" id="ranteller">' . $rtl . '</span>
-<script>teller(' . $rtl . ',"ranteller",false,"ned");</script></li>';
-    }*/
-    /*if ($jte == null) {
-        echo '<li><a href="fengsel.php">Fengsel</a>';
-        if ($ant2 >= 1) {
-            echo "($ant2)";
-        }
-        echo '</li>';
-    } else {
-        echo '<li><a href="fengsel.php">Fengsel</a> <span style="font-size:10px;" id="jailteller">' . $jte . '</span>
-<script>teller(' . $jte . ',"jailteller",false,"ned");</script></li>';
-    }*/
     ?>
-    <li><a href="fly.php">Flyplass</a></li>
-    <!--<li><a href="#Drap">Drap </a></li>-->
-    <!--<li><a href="#oppdrag.php">Oppdrag</li>-->
-    <!--<li><a href="#Ran">Ran </a></li>-->
+    <li><a href="airport.php">Airport</a></li>
 </ul>
-<h2>Verdier</h2>
+<h2>Fortune</h2>
 <ul>
-    <!--<li><a href="#Marked">Svartebørsen </a></li>
-    <li><a href="#Bunker">Bunker </a></li>-->
-    <li><a href="bank.php">Banken </a></li>
-    <!--<li><a href="#Poeng">Poeng </a></li>
-    <li><a href="#verving.php">Verving </a></li>
-    <li><a href="#Auksjon">Auksjon </a></li>
-    <li><a href="#Firmaer">Firmaer </a></li>-->
-    <!--<li><a href="garasje.php">Garasje </a></li>-->
+    <li><a href="bank.php">Bank</a></li>
 </ul>
-<h2>Kommunikasjon</h2>
+<h2>Communication</h2>
 <ul>
-    <li><a href="innboks.php">Innboks</a></li>
-    <!--<li><a href="#deputy.php">Send inn søknad!</a></li>
-    <li><a href="#support.php">Support</a></li>-->
-    <li><a href="<?=$onl;?>">Spillere pålogget</a> (<?=$ant;?>)</li>
-    <li><a href="nyheter.php">Nyheter</a></li>
-    <li><a href="ledelse.php">Ledelsen</a></li>
+    <li><a href="innboks.php">Inbox</a></li>
+    <li><a href="<?= $onl; ?>">Players online</a> (<?= $ant; ?>)</li>
+    <li><a href="news.php">News</a></li>
+    <li><a href="crew.php">Crew</a></li>
 </ul>
-<h2>Sosialt</h2>
+<h2>Social</h2>
 <ul>
     <li><a href="chat.php">Chat<?php
-        if ($num2 >= 2) {
-            echo "($num2)";
-        }
-        ?></a></li>
-    <!--<li><a href="nyforum.php?type=1">Generelt Forum </a></li>
-    <li><a href="nyforum.php?type=2">Salg og Søknadsforum </a></li>
-    <li><a href="nyforum.php?type=3">Annet </a></li>-->
+            if ($num2 >= 2) {
+                echo "($num2)";
+            }
+            ?></a></li>
+    <li><a href="nyforum.php?type=1">General Forum</a></li>
+    <li><a href="nyforum.php?type=2">Sales Forum</a></li>
+    <li><a href="nyforum.php?type=3">Off topic</a></li>
     <?php
     /*if ($obj->family != null) {
         echo '<li><a href="familiepanel.php?side=konfam">Gjengen </a></li>';
@@ -116,6 +88,6 @@ $onl = "online.php";
 </ul>
 <h2>Gambling</h2>
 <ul>
-    <!--<li><a href="Lotto">Lotto </a></li>
-    <li><a href="bj.php">Blackjack </a></li>-->
+    <li><a href="Lotto">Lotto </a></li>
+    <li><a href="bj.php">Blackjack </a></li>
 </ul>

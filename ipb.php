@@ -25,8 +25,8 @@ Bannet dato: ".date("H:i:s d.m.Y", $ip->dato)."
 
         echo '
 </table>
-<p>Om du mener at denne IP-bannen er gjort på gale vilkår/grunnlag, send en mail til denne mailadressen: <a href="mailto:'.HENVEND_MAIL.'?subject=Ip-ban%20p&aring%20'.$_SERVER['REMOTE_ADDR'].'">'.HENVEND_MAIL.'</a></p><br><br><a href="loggut.php">Logg ut!</a>';
+<p>Om du mener at denne IP-bannen er gjort på gale vilkår/grunnlag, send en mail til denne mailadressen: <a href="mailto:'.HENVEND_MAIL.'?subject=Ip-ban%20p&aring%20'.$_SERVER['REMOTE_ADDR'].'">'.HENVEND_MAIL. '</a></p><br><br><a href="logout.php">Logg ut!</a>';
 } else {
-    header("Location: /nyheter.php");
+    header("Location: /news.php");
 }
 

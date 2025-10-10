@@ -47,7 +47,7 @@ if (isset($_GET['login'])) {
                     $str = [
                         'string' => lykket('Innlogget! Et lite øyeblikk imens vi sender deg inn til nyhetssiden...'),
                         'state' => 1,
-                        'href' => PROTOCOL . $domain . '/nyheter.php'
+                        'href' => PROTOCOL . $domain . '/news.php'
                     ];
                 } else {
                     $str['string'] = feil('Feil passord');

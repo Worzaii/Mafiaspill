@@ -3,7 +3,7 @@
 define('BASEPATH', true);
 require_once('system/config.php');
 if (isset($_SESSION['sessionzar'])) {
-    header("Location: /nyheter.php");
+    header("Location: /news.php");
 } elseif (isset($_SESSION['grunn'])) {
     $grunn = $_SESSION['grunn'];
     unset($_SESSION['grunn']);

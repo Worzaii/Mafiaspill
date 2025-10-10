@@ -2,6 +2,7 @@
   This file will create all necessary tables in the database that is defined by docker-compose.yml.
   If not changed, it'll be "mafia".
  */
+
 CREATE TABLE `users`
 (
     `id`          int                                            NOT NULL AUTO_INCREMENT,
@@ -34,6 +35,13 @@ CREATE TABLE `users`
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
+
+/**
+  Password is invalid on purpose. To create account, run ./setup/setup.php and create admin user.
+ */
+INSERT INTO `users`
+VALUES (1, 'System', 'system', 'nomail@nodomain.no', '/imgs/nopic.png', NULL, NULL, 0, 0, '1', '0', 0, 100, 0, 0.000,
+        '5', '0', NULL, NULL, NULL, NULL, 0, _binary '\0', 1759142109, _binary '\0');
 
 CREATE TABLE `bank_transfer`
 (
@@ -426,6 +434,14 @@ CREATE TABLE `news`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
+/**
+  Insert a default news to greet creator / admin
+ */
+INSERT INTO `mafia`.`news`(`title`, `text`, `author`, `timestamp`)
+    VALUE ('Welcome to the game!',
+           'This is a fresh copy of the game.\nFeel free to do with it as you please.',
+           '1', unix_timestamp());
+
 CREATE TABLE `resetpasset`
 (
     `id`        bigint         NOT NULL AUTO_INCREMENT,
@@ -548,9 +564,3 @@ CREATE TABLE `support`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
-/**
-  Password is invalid on purpose. To create account, run ./setup/setup.php and create admin user.
- */
-INSERT INTO `users`
-VALUES (1, 'System', 'system', 'nomail@nodomain.no', '/imgs/nopic.png', NULL, NULL, 0, 0, '1', '0', 0, 100, 0, 0.000,
-        '5', '0', NULL, NULL, NULL, NULL, 0, _binary '\0', 1759142109, _binary '\0');

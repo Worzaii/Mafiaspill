@@ -89,7 +89,7 @@ if (php_sapi_name() != "cli") {
             error_log("Removing the information so it can be set anew...");
             unset($_SESSION['HTTP_USER_AGENT']);
             error_log("Result of removal: " . ((isset($_SESSION['HTTP_USER_AGENT']) ? "Failed" : "Successful")));
-            header('Location: ' . PROTOCOL . DOMENE_NAVN . '/loggut.php?g=8');
+            header('Location: ' . PROTOCOL . DOMENE_NAVN . '/logout.php?g=8');
             exit('Cross-network-tilgang avslått!');
         }
     } else {

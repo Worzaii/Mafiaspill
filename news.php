@@ -6,7 +6,8 @@ startpage("Nyheter");
     <h1>Nyheter</h1>
 <?php
 if (r1() || r2()) {
-    echo '<p class="button2"><a href="publiser.php">Skriv en ny nyhet!</a></p><p class="button2"><a href="nyhetspanel.php">Behandle nyheter!</a></p>';
+    echo '<p class="button2"><a href="publiser.php">Publish news!</a></p>';
+    echo '<p class="button2"><a href="nyhetspanel.php">Handle news!</a></p>';
 }
 $np = $db->prepare(
     "SELECT COUNT(*) as `numrows` FROM `news` WHERE `showing` = '1' AND `userlevel` >= ? ORDER BY `id` DESC LIMIT 0,10"
@@ -15,7 +16,7 @@ $np->execute([$obj->status]);
 $count = $np->fetchColumn();
 
 if ($count == 0) {
-    echo info('Ingen nyheter er publisert!');
+    echo info('No news have been published!');
 } else {
     echo <<<HTML
 <div class="nyheter">

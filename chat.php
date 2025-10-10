@@ -1,14 +1,14 @@
 <?php
 include("core.php");
 startpage("Chat");
-echo "<h1>Chat - Snakk med andre spillere</h1>";
+echo "<h1>Chat - Talk with other players</h1>";
 
 if (r1() || r2() || r3()) {
     $dis = <<<END
-<a href="tomprat.php" onclick="return confirm('Sikker på at du vil tømme prat?');">Tøm prat</a>
+<a href="tomprat.php" onclick="return confirm('Are you sure you want to empty the chat?');">Wipe chat</a>
 END;
     $dis2 = <<<END
-<a href="visprat.php">Vis hele prat databasen</a>
+<a href="visprat.php">Show the entire chat history</a>
 END;
 
     echo info($dis);
@@ -32,14 +32,14 @@ if ($s->fetchColumn() == 1) {
     $grunn = $f->reason;
     echo <<<HTML
 	<div style="border-width: 2px; border-style: dotted; border-color: red; "><p class="feil"> Du er utestengt fra forumet!</p>
-	<br><b>Du har blitt utestengt av forumet av $banner og derfor kan du se chatten men uten tilgang til å skrive.<br>
-    Du har </h3><span id="$uid"></span><script>teller($timeleft,"$uid","true","ned");</script> igjen av straffen din. Hvis du mener du har fått den ved en feiltagelse, kontakt Support!<br><br>
-	Grunnen for at du ble utestengt er: $grunn</b></div><br>
+	<br><b>You've been shut out of the chat by $banner. You can only read.<br>
+    You have </h3><span id="$uid"></span><script>teller($timeleft,"$uid","true","ned");</script> left of the write-out. If this might have been by mistake, reach out to support.<br><br>
+	Reason for ban: $grunn</b></div><br>
 HTML;
 } else {
     echo <<<HTML
     <br>
-    <input name="write" type="text" id="write" placeholder="Enter for å skrive">
+    <input name="write" type="text" id="write" placeholder="Enter to post">
     <br>
 HTML;
 }

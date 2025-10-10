@@ -14,7 +14,8 @@
     "ext-gd": "*",
     "ext-pdo": "*",
     "ext-readline": "*",
-    "ext-intl": "*"
+    "ext-intl": "*",
+    "symfony/string": "^7.3"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*"

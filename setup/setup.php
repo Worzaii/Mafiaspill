@@ -18,40 +18,40 @@ $choice = 0;
 while ($doLoop) {
     while ($noselect) {
         echo <<<TAG
-\e[38;5;32mMeny:\e[0m
-1: \e[38;5;40mOpprett bruker\e[0m
-2: \e[38;5;11mEndre bruker\e[0m
-3: \e[38;5;40mSlett bruker\e[0m
-4: \e[38;5;40mEndre passord for bruker\e[0m
-Q: \e[38;5;196mAvslutt program\e[0m \n\n
+\e[38;5;32mMenu:\e[0m
+1: \e[38;5;40mCreate account\e[0m
+2: \e[38;5;11mChange account\e[0m
+3: \e[38;5;40mDelete user\e[0m
+4: \e[38;5;40mChange password for user\e[0m
+Q: \e[38;5;196mQuit program\e[0m \n\n
 TAG;
-        $choice = readline("Gjør et valg: (1|2|3|4|q): ");
+        $choice = readline("Make a choice: (1|2|3|4|q): ");
         if (in_array($choice, [1, 2, 3, 4])) {
             $noselect = false;
         } elseif (strtolower($choice) == "q") {
             $noselect = false;
             $doLoop = false;
-            echo "Script avsluttes...\n";
+            echo "Script exiting...\n";
         } else {
-            echo "\nDet er ikke et valg! Prøv igjen!\n\n";
+            echo "\nThat's not a valid choice, try again\n\n";
         }
     }
     if ($choice == 1) {
-        $user = readline("Brukernavn: ");
+        $user = readline("Username: ");
         $regex = preg_match("/^[a-z0-9\-_]{3,10}$/i", $user);
         if ($regex) {
-            echo "Brukernavn gyldig!\n";
-            $pass = readline("Opprett et passord, eller la stå tomt for tilfeldig generert passord: ");
+            echo "Username valid!\n";
+            $pass = readline("Write in a password or let empty for auto-generated: ");
             if (strlen($pass) == 0) {
                 $genpas = genpass();
-                echo "Du laget ikke passord selv, generer et for deg...\n\n";
-                echo "Passord generert: \e[1m" . $genpas . "\e[0m\n\n";
+                echo "You didn't set a password, generating...\n\n";
+                echo "Password: \e[1m" . $genpas . "\e[0m\n\n";
             }
-            echo "\e[0m\nHvilket tilgangsnivå skal brukeren ha?
+            echo "\e[0m\nSelect user account level?
 1=\e[38;5;51mAdministrator\e[0m
 2=\e[38;5;46mModerator\e[0m,
 3=\e[38;5;33mForum-moderator\e[0m,
-4=\e[38;5;15mVanlig bruker\e[0m
+4=\e[38;5;15mDefault user account\e[0m
 5=\e[38;5;9mNPC\e[0m
 Status: ";
             $status = readline(
@@ -71,43 +71,43 @@ Status: ";
                             password_hash($inpass, PASSWORD_DEFAULT),
                             $status,
                             time(),
-                            "user@localhost.localdomain"
+                            "noreply@invalidmail.com"
                         ]
                     );
-                    echo "\nKommando utført!\nAntall rader endret: " . $userq->rowCount(
-                        ) . PHP_EOL . "Med andre ord, brukerkontoen har blitt opprettet og kan allerede nå logge på.\n\n";
+                    echo "\nCommand executed!\nAffected rows: " . $userq->rowCount() . PHP_EOL .
+                        "Account is ready to log on\n\n";
                 } else {
-                    echo "Brukernavn eksisterer allerede! Forsøk et annet brukernavn!\n\n";
+                    echo "Username is taken! Try another one!\n\n";
                 }
             } else {
-                echo "\nDet var ikke et gyldig valg!\n\n";
+                echo "\nNot a valid choice!\n\n";
             }
         } else {
-            echo "Brukernavnet er ikke innenfor, prøv igjen!\n\n";
+            echo "Username didn't match criteria.\n\n";
         }
         $choice = 0;
     } elseif ($choice == 2) {
-        echo "::Endre bruker::\n\n";
-        $user = readline("Oppgi bruker som skal endres (brukernavn): ");
-        echo "Du oppga '$user', stemmer det?\n";
-        $svar = readline("Ja eller nei (q for å avslutte og returnere til hovedmeny):");
+        echo "::Change user::\n\n";
+        $user = readline("Type username: ");
+        echo "You wrote '$user', continue?\n";
+        $svar = readline("Yes or no: (q to go back to main menu):");
         if (strtolower($svar) == "ja") {
             /* Continues execution */
-            echo "Sjekker om brukerkonto eksisterer...\n";
+            echo "Checking if user account exists...\n";
             $check = $db->prepare("select count(*) from users where user = ?");
             if ($check->execute([$user])) {
                 if ($check->fetchColumn() == 1) {
-                    echo "Bruker funnet, hva ønsker du å gjøre videre?\n\n";
+                    echo "Account found, next?\n\n";
                     $notchosen = true;
                     while ($notchosen) {
                         echo <<<END
-1: Legg til eller fjern verdier fra bank
-2: Endre status
-3: Endre supportspillerstatus
-4: Nullstill timere (krim, biltyveri, fengsel, flyplass, alle)
+1: Change bank values
+2: Change account level
+3: Change support status
+4: Reset countdowns (crime, car theft, jail, airport, all)
 
 END;
-                        $endrechoice = (int)readline("Skriv tall: ");
+                        $endrechoice = (int)readline("Select number: ");
                         if (in_array($endrechoice, [1, 2, 3, 4])) {
                             $notchosen = false;
                             if ($endrechoice == 1) {
@@ -128,8 +128,7 @@ END;
                                         if ($updateuser->execute([ltrim($bank, "="), $user])) {
                                             echo "Ny bankverdi for $user satt til $bank! \n\n";
                                         } else {
-                                            echo "Kunne ikke sette ny verdi! Feilmelding: \n" . $updateuser->errorCode(
-                                                ) . ": " . $updateuser->errorInfo() . "\n\n";
+                                            echo "Kunne ikke sette ny verdi! Feilmelding: \n" . $updateuser->errorCode() . ": " . $updateuser->errorInfo() . "\n\n";
                                         }
                                     } elseif ($bank[0] == '-') {
                                         /**
@@ -171,8 +170,7 @@ END;
                                             /**
                                              * Couldn't update user status. Show error:
                                              */
-                                            echo "Kunne ikke oppdaterer status: " . $updateuser->errorCode(
-                                                ) . ": " . $updateuser->errorInfo() . "\n\n\n";
+                                            echo "Kunne ikke oppdaterer status: " . $updateuser->errorCode() . ": " . $updateuser->errorInfo() . "\n\n\n";
                                         }
                                     } else {
                                         echo "Avbryter endring og går tilbake til hovedmeny.\n\n";
@@ -181,8 +179,7 @@ END;
                                         $notchosen = false;
                                     }
                                 } else {
-                                    echo "Kunne ikke hente brukerdata: " . $updateuser->errorCode(
-                                        ) . ": " . $updateuser->errorInfo() . "\n\n\n";
+                                    echo "Kunne ikke hente brukerdata: " . $updateuser->errorCode() . ": " . $updateuser->errorInfo() . "\n\n\n";
                                 }
                                 $choice = 0;
                                 $endrechoice = 0;
@@ -276,22 +273,19 @@ DATA;
                                     echo "Merkelig nok ble ingen rader berørt av utføringen... Sjekk om bruker eksisterer ved å sjekke i databasen manuelt.\n\n";
                                 }
                             } else {
-                                echo "Kunne ikke utføre sletting av brukerkonto!\n" . $preparedelete->errorCode(
-                                    ) . ": " . $preparedelete->errorInfo();
+                                echo "Kunne ikke utføre sletting av brukerkonto!\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
                             }
                         } else {
                             echo "Du skrev ikke riktig tekst. Hvis du skrev feil så må du gjenta hele prosessen, om ikke vil det bli tatt som at du ønsket å avbryte slettingen av dataene. Returnerer til hovedmeny...\n\n";
                         }
                     } else {
-                        echo "Utføringen av kommandoen fungerte ikke!\n" . $preparedelete->errorCode(
-                            ) . ": " . $preparedelete->errorInfo();
+                        echo "Utføringen av kommandoen fungerte ikke!\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
                     }
                 } else {
                     echo "Fant $numrows brukere på $bruker. Kan ikke fortsette, går til hovedmeny...\n\n";
                 }
             } else {
-                echo "Kunne ikke sjekke om brukerkonto eksisterer.\n" . $preparedelete->errorCode(
-                    ) . ": " . $preparedelete->errorInfo();
+                echo "Kunne ikke sjekke om brukerkonto eksisterer.\n" . $preparedelete->errorCode() . ": " . $preparedelete->errorInfo();
             }
         } else {
             echo "Enten skrev du ikke rett eller ønsket å avbryte slettingen. Du må velge fra hovedmenyen på nytt om du ønsker å slette.\n\n";
